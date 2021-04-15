@@ -15,7 +15,6 @@ namespace DoanData.Configurations
             builder.HasKey(x => x.Id);
             builder.Property(x => x.Name).IsRequired().HasMaxLength(250);
             builder.HasOne(x => x.function).WithMany(p => p.ActionList).HasForeignKey(k => k.FunctionsId);
-            builder.Property(x => x.Name).HasMaxLength(250);
         }
     }
 }

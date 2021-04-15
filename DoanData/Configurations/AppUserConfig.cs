@@ -13,7 +13,7 @@ namespace DoanData.Configurations
         {
             builder.ToTable("User");
             builder.HasKey(x => x.Id);
-            builder.Property(x => x.Avartar).HasDefaultValue<string>("/wwwroot/ServerAvartarDefault");
+            builder.Property(x => x.Avartar).HasDefaultValue<string>("/wwwroot/Server/AvartarDefault.jpg");
             builder.Property(x => x.Status).HasDefaultValue<bool>(true);
            
         }

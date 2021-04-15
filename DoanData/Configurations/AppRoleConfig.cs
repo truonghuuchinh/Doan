@@ -13,6 +13,8 @@ namespace DoanData.Configurations
         {
             builder.ToTable("Role");
             builder.HasKey(x => x.Id);
+            builder.Property(x => x.Name).IsRequired(true);
+            builder.Property(x => x.NormalizedName).IsRequired(false);
         }
     }
 }
