@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "E:\\HK5\\Prepare Project Last Semester\\Doan\\DoanApp\\DoanApp.csproj": {}
+    "E:\\HK5\\Prepare Project Last Semester\\DoanTotNghiep\\DoanApp\\DoanApp.csproj": {}
   },
   "projects": {
-    "E:\\HK5\\Prepare Project Last Semester\\Doan\\DoanApp\\DoanApp.csproj": {
+    "E:\\HK5\\Prepare Project Last Semester\\DoanTotNghiep\\DoanApp\\DoanApp.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "E:\\HK5\\Prepare Project Last Semester\\Doan\\DoanApp\\DoanApp.csproj",
+        "projectUniqueName": "E:\\HK5\\Prepare Project Last Semester\\DoanTotNghiep\\DoanApp\\DoanApp.csproj",
         "projectName": "DoanApp",
-        "projectPath": "E:\\HK5\\Prepare Project Last Semester\\Doan\\DoanApp\\DoanApp.csproj",
+        "projectPath": "E:\\HK5\\Prepare Project Last Semester\\DoanTotNghiep\\DoanApp\\DoanApp.csproj",
         "packagesPath": "C:\\Users\\hi\\.nuget\\packages\\",
-        "outputPath": "E:\\HK5\\Prepare Project Last Semester\\Doan\\DoanApp\\obj\\",
+        "outputPath": "E:\\HK5\\Prepare Project Last Semester\\DoanTotNghiep\\DoanApp\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"

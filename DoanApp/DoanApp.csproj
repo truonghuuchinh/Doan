@@ -5,8 +5,63 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Include="obj\Debug\netcoreapp3.1\.NETCoreApp,Version=v3.1.AssemblyAttributes.cs" />
+    <Compile Include="obj\Debug\netcoreapp3.1\DoanApp.AssemblyInfo.cs" />
+    <Compile Include="obj\Debug\netcoreapp3.1\DoanApp.RazorAssemblyInfo.cs" />
+    <Compile Include="obj\Debug\netcoreapp3.1\DoanApp.RazorTargetAssemblyInfo.cs" />
+    <Compile Include="obj\Debug\netcoreapp3.1\Razor\Views\Home\Index.cshtml.g.cs" />
+    <Compile Include="obj\Debug\netcoreapp3.1\Razor\Views\Home\Privacy.cshtml.g.cs" />
+    <Compile Include="obj\Debug\netcoreapp3.1\Razor\Views\Shared\Error.cshtml.g.cs" />
+    <Compile Include="obj\Debug\netcoreapp3.1\Razor\Views\Shared\_Layout.cshtml.g.cs" />
+    <Compile Include="obj\Debug\netcoreapp3.1\Razor\Views\Shared\_ValidationScriptsPartial.cshtml.g.cs" />
+    <Compile Include="obj\Debug\netcoreapp3.1\Razor\Views\_ViewImports.cshtml.g.cs" />
+    <Compile Include="obj\Debug\netcoreapp3.1\Razor\Views\_ViewStart.cshtml.g.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="bin\Debug\netcoreapp3.1\appsettings.Development.json" />
+    <Content Include="bin\Debug\netcoreapp3.1\appsettings.json" />
+    <Content Include="bin\Debug\netcoreapp3.1\DoanApp.deps.json" />
+    <Content Include="bin\Debug\netcoreapp3.1\DoanApp.runtimeconfig.dev.json" />
+    <Content Include="bin\Debug\netcoreapp3.1\DoanApp.runtimeconfig.json" />
+    <Content Include="obj\Debug\netcoreapp3.1\DoanApp.csproj.FileListAbsolute.txt" />
+    <Content Include="obj\Debug\netcoreapp3.1\staticwebassets\DoanApp.StaticWebAssets.xml" />
+    <Content Include="obj\DoanApp.csproj.nuget.dgspec.json" />
+    <Content Include="obj\project.assets.json" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Folder Include="wwwroot\Client\" />
     <Folder Include="wwwroot\Server\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="bin\Debug\netcoreapp3.1\DoanApp.dll" />
+    <None Include="bin\Debug\netcoreapp3.1\DoanApp.exe" />
+    <None Include="bin\Debug\netcoreapp3.1\DoanApp.pdb" />
+    <None Include="bin\Debug\netcoreapp3.1\DoanApp.Views.dll" />
+    <None Include="bin\Debug\netcoreapp3.1\DoanApp.Views.pdb" />
+    <None Include="obj\Debug\netcoreapp3.1\apphost.exe" />
+    <None Include="obj\Debug\netcoreapp3.1\DoanApp.AssemblyInfoInputs.cache" />
+    <None Include="obj\Debug\netcoreapp3.1\DoanApp.assets.cache" />
+    <None Include="obj\Debug\netcoreapp3.1\DoanApp.csproj.CopyComplete" />
+    <None Include="obj\Debug\netcoreapp3.1\DoanApp.csproj.CoreCompileInputs.cache" />
+    <None Include="obj\Debug\netcoreapp3.1\DoanApp.csprojAssemblyReference.cache" />
+    <None Include="obj\Debug\netcoreapp3.1\DoanApp.dll" />
+    <None Include="obj\Debug\netcoreapp3.1\DoanApp.genruntimeconfig.cache" />
+    <None Include="obj\Debug\netcoreapp3.1\DoanApp.MvcApplicationPartsAssemblyInfo.cache" />
+    <None Include="obj\Debug\netcoreapp3.1\DoanApp.pdb" />
+    <None Include="obj\Debug\netcoreapp3.1\DoanApp.RazorAssemblyInfo.cache" />
+    <None Include="obj\Debug\netcoreapp3.1\DoanApp.RazorCoreGenerate.cache" />
+    <None Include="obj\Debug\netcoreapp3.1\DoanApp.RazorTargetAssemblyInfo.cache" />
+    <None Include="obj\Debug\netcoreapp3.1\DoanApp.TagHelpers.input.cache" />
+    <None Include="obj\Debug\netcoreapp3.1\DoanApp.TagHelpers.output.cache" />
+    <None Include="obj\Debug\netcoreapp3.1\DoanApp.Views.dll" />
+    <None Include="obj\Debug\netcoreapp3.1\DoanApp.Views.pdb" />
+    <None Include="obj\Debug\netcoreapp3.1\staticwebassets\DoanApp.StaticWebAssets.Manifest.cache" />
+    <None Include="obj\DoanApp.csproj.nuget.g.props" />
+    <None Include="obj\DoanApp.csproj.nuget.g.targets" />
+    <None Include="obj\project.nuget.cache" />
   </ItemGroup>
 
 </Project>
