@@ -1,6 +1,9 @@
+using DoanApp.Services;
+using DoanData.DoanContext;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -23,7 +26,11 @@ namespace DoanApp
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            IMvcBuilder builder = services.AddRazorPages();
+            builder.AddRazorRuntimeCompilation();
             services.AddControllersWithViews();
+            services.AddDbContext<DpContext>(options=>options.UseSqlServer(Configuration.GetConnectionString("DpContext")));
+            services.AddScoped<IFunctionService, FunctionService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -32,6 +39,7 @@ namespace DoanApp
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+                
             }
             else
             {
@@ -43,14 +51,18 @@ namespace DoanApp
             app.UseStaticFiles();
 
             app.UseRouting();
-
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(
-                    name: "default",
-                    pattern: "{controller=Home}/{action=Index}/{id?}");
+                  name: "Administration",
+                  pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
+                endpoints.MapControllerRoute(
+                 name: "default",
+                 pattern: "{controller=Home}/{action=Index}/{id?}");
+               
             });
         }
     }

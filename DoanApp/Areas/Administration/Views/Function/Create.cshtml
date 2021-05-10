@@ -1,0 +1,49 @@
+﻿@model DoanData.Models.Function
+
+@{
+
+    Layout = null;
+}
+
+<div class="row">
+    <div class="col-md-6">
+        <form asp-action="Create" id="formCreate">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name"  id="Name" class="form-control" /> 
+                <span id="errorName" class="text-danger"></span>
+            </div>
+            <br />
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    $("#formCreate").submit(function (event) {
+        var nameFunction = $("#Name").val();
+        if (nameFunction == '') {
+            event.preventDefault();
+            $("#errorName").text("Vui lòng nhập tên chức năng");
+        } else {
+            $.get("/Administration/Function/ListFunctionJson", function(respone){
+                var list = JSON.parse(respone);
+                for (var item of list) {
+                    if (item.Name == nameFunction) {
+                        $("#errorName").text("Tên chức năng đã tồn tại, vui lòng nhập lại!");
+                        break;
+                    }
+                }
+            });
+            if ($("#errorName").text() =='') {
+                event.submit();
+            }
+            else {
+                event.preventDefault();  
+            }
+        }
+    });
+</script>

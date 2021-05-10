@@ -1,0 +1,159 @@
+﻿
+  
+    <form style="width: 96%;" method="GET" id="form__info" onsubmit="return validate__checkbox()">
+        <div class="container-fluid " style="min-height: 740px;">
+            <div class="row">
+                <div class="col-lg-8">
+                    <div class="container-fluid m-0">
+                        <div class="form-group row block__header_form-info block__form-info">
+                            <label for="staticEmail" style="padding-top: 10px;"
+                                   class="col-sm-4 col-form-label col__label_info">Email</label>
+                            <div class="col-sm-4">
+                                <input type="text" name="email" readonly class="form-control-plaintext"
+                                       id="staticEmail" value="tranvanbinh@gmail.com" required>
+                            </div>
+                            <div class="col-sm-4 m-1">
+                                <a name="" id="" class="btn btn-success btnActive" href="#" role="button">
+                                    <div id="textActive">
+                                        <img class="imageActive"
+                                             src="~/Administration/assets/img/ic_active_18px.svg" alt="">Đã xác nhận
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="form-group row block__form-info">
+                            <label for="inputName" class="col-sm-4 col-form-label col__label_info">
+                                Họ và
+                                tên
+                            </label>
+                            <div class="col-sm-8 ">
+                                <input type="text" name="ho__ten" class="form-control input__form-info"
+                                       id="inputName" value="Trần Văn Bình" required>
+                            </div>
+                        </div>
+                        <div class="form-group row block__form-info">
+                            <label for="inputPhone" class="col-sm-4 col-form-label col__label_info">
+                                Số điện
+                                thoại
+                            </label>
+                            <div class="col-sm-8">
+                                <input type="number" name="so_dt" class="form-control input__form-info"
+                                       id="inputPhone" value="09345000111" required>
+                            </div>
+                        </div>
+                        <div class="form-group row block__form-info">
+                            <label for="inputOffice" class="col-sm-4 col-form-label col__label_info">
+                                Đơn
+                                vị
+                            </label>
+                            <div class="col-sm-8">
+                                <input type="text" name="don__vi" class="form-control input__form-info"
+                                       id="inputOffice" value="Phòng Kinh doanh 1" required>
+                            </div>
+                        </div>
+                        <div class="form-group row block__form-info">
+                            <label for="inputUnit" class="col-sm-4 col-form-label col__label_info">
+                                Chức
+                                vụ
+                            </label>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control input__form-info" id="inputUnit"
+                                       value="Trưởng phòng kinh doanh" name="chuc__vu" required>
+                            </div>
+                        </div>
+                        <div class="form-group row block__form-info">
+                            <label for="" class="col-sm-4 col-form-label col__label_info">Chữ ký</label>
+                            <div class="col-sm-8 fileUploadWrap">
+                                <input type="file" id="uploadFile" hidden />
+                                <label id="label__upload" class="uploadTitle" for="uploadFile">
+                                    <img class="addImage" src="~/Administration/assets/img/ic_add_24px.svg" alt="">
+                                    Tải file chữ ký
+                                </label>
+                                <button type="button" class="close__upload-file"
+                                        onclick="close__uploaded()">
+                                    <img src="~/Administration/assets/img/ic_delete-doc.svg"
+                                         alt="">
+                                </button>
+                            </div>
+                        </div>
+                        <div class="form-group row block__form-info">
+                            <label for="inputPassword" class="col-sm-4 col-form-label">
+                                Dạng
+                                chứ ký
+                                số
+                            </label>
+                            <div class="col-sm-8">
+                                <div class="custom-control custom-checkbox mb-2 checkbox__custom">
+                                    <input type="checkbox" class="custom-control-input"
+                                           name="checkbox__info[]" id="customCheck1" style="opacity: 0;"
+                                           value="sms" checked>
+                                    <label class="custom-control-label checkbox__custom-control"
+                                           for="customCheck1">
+                                        Cho
+                                        phép
+                                        SMS
+                                    </label>
+                                </div>
+                                <div class="custom-control custom-checkbox checkbox__custom">
+                                    <input type="checkbox"
+                                           class="custom-control-input checkbox__custom-control"
+                                           id="customCheck2" name="checkbox__info[]" value="email"
+                                           style="opacity: 0;">
+                                    <label class="custom-control-label" for="customCheck2">
+                                        Cho phép
+                                        Email
+                                    </label>
+                                </div>
+                                <div style="display: none; color:red; " id="chk_option_error">
+                                    Vui lòng chọn 1 Dạng chữ ký số
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group row block__form-info end__form_group">
+                            <label for="inputPassword" class="col-sm-4 col-form-label col__label_info">
+                                Đổi
+                                mật khẩu
+                            </label>
+                            <div class="row col-sm-8 form-group right-addon position-relative input__change__password">
+                                <div class="password__block">
+                                    <img id="eye-password"
+                                         class="eye__password glyphicon position-absolute form-icon" alt=""
+                                         src="~/Administration/assets/img/Eye (closed).svg"
+                                         onclick="changeDisplayPassword('password')">
+                                    <input id="password" type="password" name="password"
+                                           class="form-control" placeholder="Nhập mật khẩu mới"
+                                           style="border-radius: 0px; margin-top: 14px; height: 36px;">
+                                </div>
+                                <div class="mt-1" style="display:none; color:red; " id="password__err">
+                                    <p>Vui lòng nhập mật khẩu</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 ">
+                    <input type="file" id="uploadImage" hidden />
+                    <label class="editImage" id="previewImage" ;
+                           style="background-image:url(/Administration/assets/img/Group.svg)" ; for="uploadImage">
+                        <img class="btneditImage" style="padding: 178px 0px 0px 135px;"
+                             src="~/Administration/assets/img/Edit.svg" alt="">
+                        <div class="noteText">
+                            <p>
+                                Dụng lượng file tối đa 1 MB <br>
+                                Định dạng:.JPEG, .PNG
+                            </p>
+                        </div>
+                    </label>
+                </div>
+            </div>
+        </div>
+
+        <button id="save" type="submit" hidden></button>
+        <button id="close" type="reset" hidden></button>
+    </form>
+    <div class="footer__info">
+        <div>
+            <label for="save" id="btnSave" type="submit" class="btn btn-primary">LƯU</label>
+            <label for="close" id="btnClose" type="reset" class="btn btn-primary">Hủy bỏ</label>
+        </div>
+    </div>

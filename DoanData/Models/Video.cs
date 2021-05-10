@@ -14,7 +14,7 @@ namespace DoanData.Models
         public int ViewCount { get; set; }
         public string CreateDate { get; set; }
         public bool HidenVideo { get; set; }
-        public bool Status { get; set; }
+        public bool Status { get; set; } = true;
         public int CategorysId { get; set; }
         public virtual Category category { get; set; }
         public int AppUserId { get; set; }
@@ -23,5 +23,6 @@ namespace DoanData.Models
         public List<Comment> Commmentsss { get; set; }
         public List<DetailVideo> DetailVideos { get; set; }
         public List<ReportVideo> ReportVideos { get; set; }
+        public List<LikeVideoDetail> LikeVideoDetails { get; set; }
     }
 }

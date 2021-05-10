@@ -13,7 +13,7 @@ namespace DoanData.Models
         public string CreateDate { get; set; }
         public int Like { get; set; }
         public int DisLike { get; set; }
-        public  bool Status { get; set; }
+        public bool Status { get; set; } = true;
         public int UserId { get; set; }
         public virtual AppUser appUser { get; set; }
         [ForeignKey("VideoId")]
