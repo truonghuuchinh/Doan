@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "9QSYMg7W/bIczB5lVqNMmMQA3CDUs4OZUCMGOTI799lVFgX6PydtaFzZgACpEuc9cHcMVvLXZVc1DPSSF8miPA==",
+  "dgSpecHash": "y+01y9OlbXonzTKer47bdxciht+yza3v82V87gp7sm5/SYKpGzrhWiSitbqyqkGH0gYTa2z6V/9jOOQGxS3daA==",
   "success": true,
-  "projectFilePath": "E:\\HK5\\Prepare Project Last Semester\\Doan\\DoanData\\DoanData.csproj",
+  "projectFilePath": "E:\\HK5\\Prepare Project Last Semester\\DoanTotNghiep\\DoanData\\DoanData.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\hi\\.nuget\\packages\\microsoft.aspnetcore.cryptography.internal\\3.1.1\\microsoft.aspnetcore.cryptography.internal.3.1.1.nupkg.sha512",
     "C:\\Users\\hi\\.nuget\\packages\\microsoft.aspnetcore.cryptography.keyderivation\\3.1.1\\microsoft.aspnetcore.cryptography.keyderivation.3.1.1.nupkg.sha512",

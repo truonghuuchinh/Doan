@@ -6,7 +6,7 @@ namespace DoanData.Models
     {
         public int Id { get; set; }
         public string Name { get; set; }
-        public bool Status { get; set; }
+        public bool Status { get; set; } = true;
         public List<Action> ActionList { get; set; }
     }
 }

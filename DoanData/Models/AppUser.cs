@@ -15,7 +15,7 @@ namespace DoanData.Models
         public string LastLogin { get; set; }
       
         public string Avartar { get; set; }
-        public bool Status { get; set; }
+        public bool Status { get; set; } = true;
         public List<Video> Videos { get; set; }
         public List<Comment> Comments { get; set; }
         public List<PlayList> PlayLists { get; set; }

@@ -311,15 +311,20 @@ namespace DoanData.Migrations
                         .HasColumnType("nvarchar(max)")
                         .HasDefaultValue("00/00/00 00:00:00");
 
-                    b.Property<int>("Reaction")
-                        .HasColumnType("int");
+                    b.Property<string>("Reaction")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("VideoId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
                     b.HasIndex("UserId");
+
+                    b.HasIndex("VideoId");
 
                     b.ToTable("LikeVideoDetail");
                 });
@@ -678,6 +683,12 @@ namespace DoanData.Migrations
                         .WithMany("LikeVideoDetails")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("DoanData.Models.Video", "video")
+                        .WithMany("LikeVideoDetails")
+                        .HasForeignKey("VideoId")
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
                 });
 

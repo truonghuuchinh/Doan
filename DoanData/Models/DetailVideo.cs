@@ -8,7 +8,7 @@ namespace DoanData.Models
     public class DetailVideo
     {
         public int Id { get; set; }
-        public bool Status { get; set; }
+        public bool Status { get; set; } = true;
         public int PlayListId { get; set; }
         public virtual PlayList playList { get; set; }
 

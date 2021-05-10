@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "E:\\HK5\\Prepare Project Last Semester\\Doan\\DoanApp\\DoanApp.csproj": {}
+    "E:\\HK5\\Prepare Project Last Semester\\DoanTotNghiep\\DoanApp\\DoanApp.csproj": {}
   },
   "projects": {
-    "E:\\HK5\\Prepare Project Last Semester\\Doan\\DoanApp\\DoanApp.csproj": {
+    "E:\\HK5\\Prepare Project Last Semester\\DoanTotNghiep\\DoanApp\\DoanApp.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "E:\\HK5\\Prepare Project Last Semester\\Doan\\DoanApp\\DoanApp.csproj",
+        "projectUniqueName": "E:\\HK5\\Prepare Project Last Semester\\DoanTotNghiep\\DoanApp\\DoanApp.csproj",
         "projectName": "DoanApp",
-        "projectPath": "E:\\HK5\\Prepare Project Last Semester\\Doan\\DoanApp\\DoanApp.csproj",
+        "projectPath": "E:\\HK5\\Prepare Project Last Semester\\DoanTotNghiep\\DoanApp\\DoanApp.csproj",
         "packagesPath": "C:\\Users\\hi\\.nuget\\packages\\",
-        "outputPath": "E:\\HK5\\Prepare Project Last Semester\\Doan\\DoanApp\\obj\\",
+        "outputPath": "E:\\HK5\\Prepare Project Last Semester\\DoanTotNghiep\\DoanApp\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
@@ -31,8 +31,8 @@
           "netcoreapp3.1": {
             "targetAlias": "netcoreapp3.1",
             "projectReferences": {
-              "E:\\HK5\\Prepare Project Last Semester\\Doan\\DoanData\\DoanData.csproj": {
-                "projectPath": "E:\\HK5\\Prepare Project Last Semester\\Doan\\DoanData\\DoanData.csproj"
+              "E:\\HK5\\Prepare Project Last Semester\\DoanTotNghiep\\DoanData\\DoanData.csproj": {
+                "projectPath": "E:\\HK5\\Prepare Project Last Semester\\DoanTotNghiep\\DoanData\\DoanData.csproj"
               }
             }
           }
@@ -46,6 +46,30 @@
       "frameworks": {
         "netcoreapp3.1": {
           "targetAlias": "netcoreapp3.1",
+          "dependencies": {
+            "Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation": {
+              "target": "Package",
+              "version": "[3.1.1, )"
+            },
+            "Microsoft.EntityFrameworkCore.SqlServer": {
+              "target": "Package",
+              "version": "[3.1.1, )"
+            },
+            "Microsoft.EntityFrameworkCore.Tools": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[3.1.1, )"
+            },
+            "Microsoft.VisualStudio.Web.CodeGeneration.Design": {
+              "target": "Package",
+              "version": "[3.1.5, )"
+            },
+            "Nancy": {
+              "target": "Package",
+              "version": "[2.0.0, )"
+            }
+          },
           "imports": [
             "net461",
             "net462",
@@ -68,14 +92,14 @@
         }
       }
     },
-    "E:\\HK5\\Prepare Project Last Semester\\Doan\\DoanData\\DoanData.csproj": {
+    "E:\\HK5\\Prepare Project Last Semester\\DoanTotNghiep\\DoanData\\DoanData.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "E:\\HK5\\Prepare Project Last Semester\\Doan\\DoanData\\DoanData.csproj",
+        "projectUniqueName": "E:\\HK5\\Prepare Project Last Semester\\DoanTotNghiep\\DoanData\\DoanData.csproj",
         "projectName": "DoanData",
-        "projectPath": "E:\\HK5\\Prepare Project Last Semester\\Doan\\DoanData\\DoanData.csproj",
+        "projectPath": "E:\\HK5\\Prepare Project Last Semester\\DoanTotNghiep\\DoanData\\DoanData.csproj",
         "packagesPath": "C:\\Users\\hi\\.nuget\\packages\\",
-        "outputPath": "E:\\HK5\\Prepare Project Last Semester\\Doan\\DoanData\\obj\\",
+        "outputPath": "E:\\HK5\\Prepare Project Last Semester\\DoanTotNghiep\\DoanData\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
