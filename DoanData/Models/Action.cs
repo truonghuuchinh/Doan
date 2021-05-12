@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.Serialization;
 using System.Text;
 
 namespace DoanData.Models
 {
+
     public class Action
     {
         public int Id { get; set; }

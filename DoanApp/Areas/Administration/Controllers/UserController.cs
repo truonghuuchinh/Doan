@@ -9,8 +9,9 @@ namespace DoanApp.Areas.Administration.Controllers
     [Area("Administration")]
     public class UserController : Controller
     {
-        public IActionResult Index()
+        public IActionResult InforUser()
         {
+            @ViewBag.TitlePage = "Thông tin tài khoản";
             return View();
         }
     }

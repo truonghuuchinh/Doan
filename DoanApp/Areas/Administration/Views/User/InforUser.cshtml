@@ -157,3 +157,76 @@
             <label for="close" id="btnClose" type="reset" class="btn btn-primary">Hủy bỏ</label>
         </div>
     </div>
+<script>
+    $("#uploadImage").change(function () {
+        if (this.files && this.files[0]) {
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                var elem = document.querySelector('.editImage');
+                // Setting the backgroundImage to none
+                console.log(elem);
+                elem.style.background = "url('" + e.target.result + "')";
+            }
+            reader.readAsDataURL(this.files[0]);
+        }
+    });
+
+    $().ready(function () {
+        $("#form__info").validate({
+            rules: {
+                "ho__ten": {
+                    required: true,
+                },
+                "so_dt": {
+                    required: true,
+                    rangelength: [10, 11]
+                },
+                "don__vi": {
+                    required: true,
+                },
+                "chuc__vu": {
+                    required: true,
+                },
+            },
+            messages: {
+                "ho__ten": {
+                    required: "Vui lòng nhập họ tên!"
+                },
+                "so_dt": {
+                    required: "Vui lòng nhập số điện thoại!",
+                    rangelength: "Số điện thoại chưa chính xác(từ 10 đến 11 số)!"
+                },
+                "don__vi": {
+                    required: "Vui lòng nhập tên đơn vị!"
+                },
+                "chuc__vu": {
+                    required: "Vui lòng nhập chức vụ!"
+                },
+            }
+        });
+    });
+
+    function validate__checkbox() {
+        var flag = 0;
+        var form_data = new FormData(document.querySelector("form"));
+        if (!form_data.has("checkbox__info[]")) {
+            document.getElementById("chk_option_error").style.display = "block";
+            flag = 0;
+        } else {
+            document.getElementById("chk_option_error").style.display = "none";
+            flag++;
+        }
+        var pass = document.getElementById("password");
+        if (pass.value == "") {
+            document.getElementById("password__err").style.display = "block";
+            flag = 0;
+        } else {
+            document.getElementById("password__err").style.display = "none";
+            flag++;
+        }
+        if (flag == 2)
+            return true;
+        else
+            return false;
+    }
+</script>

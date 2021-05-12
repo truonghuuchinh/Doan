@@ -11,5 +11,6 @@ namespace DoanApp.Models
         public int Id { get; set; }
         [Required(ErrorMessage = "Vui lòng nhập tên chức năng!")]
         public string Name { get; set; }
+        public bool Status { get; set; }
     }
 }

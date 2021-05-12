@@ -16,34 +16,30 @@
             </div>
             <br />
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <button type="button"  class="btn btn-cancel" data-dismiss="modal">Hủy bỏ</button>
+                <button type="submit"  class="btn btn-primary" >Xác nhận</button>
             </div>
         </form>
     </div>
 </div>
 
 <script>
+    $("#Name").blur(function () {
+
+        var functionName = $("#Name").val();
+        $("#errorName").text('');
+        $.get("/Administration/Function/checkName/?name=" + functionName, function (respone) {
+            if (respone == "Error") {
+                $("#errorName").text("Tên chức năng bạn nhập đã tồn tại!");
+            }
+        });
+
+    });
     $("#formCreate").submit(function (event) {
-        var nameFunction = $("#Name").val();
-        if (nameFunction == '') {
+        if ($("#Name").val() == '' || $("#errorName").text() != '') {
+            if ($("#Name").val() == '')
+                $("#errorName").text("Vui lòng nhập tên!");
             event.preventDefault();
-            $("#errorName").text("Vui lòng nhập tên chức năng");
-        } else {
-            $.get("/Administration/Function/ListFunctionJson", function(respone){
-                var list = JSON.parse(respone);
-                for (var item of list) {
-                    if (item.Name == nameFunction) {
-                        $("#errorName").text("Tên chức năng đã tồn tại, vui lòng nhập lại!");
-                        break;
-                    }
-                }
-            });
-            if ($("#errorName").text() =='') {
-                event.submit();
-            }
-            else {
-                event.preventDefault();  
-            }
         }
     });
 </script>

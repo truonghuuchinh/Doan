@@ -17,7 +17,6 @@ namespace DoanData.Configurations
             builder.HasOne(x => x.playList).WithMany(l => l.Details).HasForeignKey(p => p.PlayListId).HasPrincipalKey(t=>t.Id);
             builder.HasOne(x => x.video).WithMany(l => l.DetailVideos).HasForeignKey(p => p.VideoId).OnDelete(DeleteBehavior.NoAction).HasPrincipalKey(t=>t.Id);
            
-            builder.Property(x => x.Status).HasDefaultValue<bool>(true);
         }
     }
 }

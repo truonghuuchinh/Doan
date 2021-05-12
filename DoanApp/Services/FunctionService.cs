@@ -47,6 +47,7 @@ namespace DoanApp.Services
         {
             var function = _context.Function.FirstOrDefault(x => x.Id == functionRequest.Id);
             function.Name = functionRequest.Name;
+            function.Status = functionRequest.Status;
             _context.Update(function);
            return await _context.SaveChangesAsync();
         }

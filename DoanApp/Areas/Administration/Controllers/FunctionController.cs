@@ -25,7 +25,7 @@ namespace DoanApp.Areas.Administration.Controllers
         }
         public ActionResult Index()
         {
-
+            ViewBag.TitlePage = "Quản lý Chức năng";
             return View( _functionService.GetAll().Result);
         }
 
@@ -72,16 +72,31 @@ namespace DoanApp.Areas.Administration.Controllers
         public ActionResult Delete(int id)
         {
             var result = _functionService.DeleteAsync(id);
-            if (result.Result > 0) return Content("Success");
+            if (result.Result > 0) return Content(ListFunctionJson());
             else return Content("Error");
 
         }
-        public string ListFunctionJson()
+        public string ListFunctionJson(string name = null)
         {
-            var list = _functionService.GetAll();
-            /* var serialize= new JavaScriptSerializer();
-             var json=serialize.Serialize(list.Result);*/
-            return JsonConvert.SerializeObject(list.Result);
+            List<Function> list;
+            if (name != null)
+            {
+                list = _functionService.GetAll().Result.Where(x=>x.Name.Contains(name)).ToList();
+            }
+            else list = _functionService.GetAll().Result;
+           return JsonConvert.SerializeObject(list);
+        }
+        public ContentResult checkName(string name)
+        {
+            name = name == null ? " " : name;
+            foreach (var item in _functionService.GetAll().Result.ToList())
+            {
+                if (item.Name.Contains(name))
+                {
+                    return Content("Error");
+                }
+            }
+            return Content("Success");
         }
     }
 }
