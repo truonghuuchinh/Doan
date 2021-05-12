@@ -7,26 +7,16 @@
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <!-- Include jQuery -->
-    <script type="text/javascript" src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
-    <script src="https://code.jquery.com/ui/1.11.3/jquery-ui.min.js"
-            integrity="sha256-xI/qyl9vpwWFOXz7+x/9WkG5j/SVnSw21viy8fWwbeE=" crossorigin="anonymous"></script>
-    <script src="~/Administration/assets/js/scripts.js"></script>
-
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
-          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-
+    <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
+    <link href="~/lib/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />
     <!-- CSS -->
     <link rel="stylesheet" href="~/Administration/assets/css/style.css">
-
-    <!-- Datepicker -->
-
-    <link href='~/Administration/assets/css/bootstrap-datepicker3.standalone.min.css' rel='stylesheet' type='text/css'>
-    <script src='~/Administration/assets/js/bootstrap-datepicker.min.js' type='text/javascript'></script>
     <!-- link font Awesome -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css" />
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/css/bootstrap-select.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet" />
+   
     <style>
 
         .icon-sidebar-item {
@@ -78,7 +68,7 @@
                     </a>
                 </li>
                 <li class="text-white sidebar-item sidebar-menu">
-                    <a href="group-management.html">
+                    <a asp-action="Index" asp-controller="Actions">
                         <div class="row">
                             <img class="icon-sidebar-item" alt="" src="~/Administration/assets/img/behavior (1).png">
                             <span class="text-sidebar-item">Quản lý Hành động</span>
@@ -170,7 +160,7 @@
                     <div style="background-color: #0C386A; height:1px"></div>
                 </li>
                 <li class="text-white sidebar-item sidebar-menu">
-                    <a asp-action="Index" asp-controller="User">
+                    <a asp-action="InforUser" asp-controller="User">
                         <div class="row">
                             <img class="icon-sidebar-item" alt="" src="~/Administration/assets/img/Userprofile.png">
                             <span class="text-sidebar-item">Thông tin tài khoản</span>
@@ -189,7 +179,7 @@
             <div class="col site-layout">
                 <div class="header-site-layout d-flex flex-row">
                     <div class="icon-collapse-expand"><img alt="" src="~/Administration/assets/img/Frame 1.svg"></div>
-                    <div class="title-site-layout font-weight-bold">QUẢN LÝ NGƯỜI DÙNG</div>
+                    <div class="title-site-layout font-weight-bold">@ViewBag.TitlePage</div>
                 </div>
                 @*<div class="filter">
                     <div class="title-filter">Tìm kiếm</div>
@@ -226,27 +216,7 @@
             </div>
         </div>
     </div>
-    </div>
-    </div>
-    </div>
-    </script>
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/js/bootstrap-select.min.js"></script>
-    <script>
-        $(document).ready(function () {
-            $('.search_selects_text select').selectpicker();
-        })
-    </script>
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
-            integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
-            crossorigin="anonymous"></script>
     <script src="~/Administration/assets/js/scripts.js"></script>
-    <!-- time picker -->
-    <script src="https://unpkg.com/gijgo@1.9.13/js/gijgo.min.js" type="text/javascript"></script>
     <script src="~/js/site.js"></script>
     @RenderSection("Scripts", false)
     <!-- Modal -->
@@ -271,12 +241,12 @@
                     </div>
                 </div>
 
-                <div class="modal-footer-UPMT">
+                @*<div class="modal-footer-UPMT">
                     <div class="button-footer-UPMT ">
                         <button type="button" id="btn-cancel-sumitUPMT" class="btn btn-cancel" data-dismiss="modal">Hủy bỏ</button>
                         <button type="submit" id="btn-add-sumitUPMT_meeting" class="btn tn-add" data-dismiss="modal">Xác nhận</button>
                     </div>
-                </div>
+                </div>*@
             </div>
         </div>
     </div>

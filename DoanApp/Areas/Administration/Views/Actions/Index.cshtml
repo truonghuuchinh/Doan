@@ -1,19 +1,15 @@
-﻿@model IEnumerable<Function>
+﻿@model IEnumerable<DoanData.Models.Action>
 
 @{
     ViewData["Title"] = "Index";
     Layout = "~/Areas/Administration/Views/shared/_LayoutAdmin.cshtml";
 }
-<style>
-    #nameSearch{
-        width:800px;
-    }
-</style>
+
 <div class="filter">
     <div class="title-filter">Tìm kiếm</div>
     <div class="btn-filter d-flex justify-content-between" style="padding: 0px 11px 10px 10px">
         <div class="col">
-            <input  id="nameSearch" placeholder="Nhập tên đầy đủ" type="text" name="name"
+            <input style="width:800px;" id="nameSearch" placeholder="Nhập tên đầy đủ" type="text" name="name"
                    class="form-control d-inline rounded-0 ">
             <button class="btn btn-search text-white rounded-0 p-0 text-left col-2" id="btnSearch">
                 <img class="icon-search" alt="" src="~/Administration/assets/img/Search.svg">
@@ -22,7 +18,7 @@
             <button class="btn btn-reset" style="padding-left: 0.5rem" id="reload">
                 <img class="icon-reset" alt="" src="~/Administration/assets/img/Reset.svg">
             </button>
-            <span class="text-danger" id="errorName"></span>
+            <span class="text-danger" id="errorSearch"></span>
         </div>
         <div class="">
             <button type="button" class="btn btn-add text-white rounded-0 p-0 text-left" id="showCreate">
@@ -39,7 +35,7 @@
                 @Html.DisplayNameFor(model => model.Name)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Status)
+               Chức năng
             </th>
             <th></th>
         </tr>
@@ -51,18 +47,18 @@
                 @Html.DisplayFor(modelItem => item.Name)
             </td>
             <td>
-                @(item.Status?"Hoạt động":"Không hoạt động")
+                @Html.DisplayFor(modelItem => item.function.Name)
             </td>
             <td class="function_meeting">
                 <div class="functions_meeting__mes" onclick="editFunction(@item.Id)">
 
-                    <a class="functions_meeting__mes__btn" >
+                    <a class="functions_meeting__mes__btn">
                         <i class="fa fa-edit"></i>
                     </a>
 
                 </div>
                 <div class="functions_meeting__mes" onclick="deleteFunction(@item.Id)">
-                    <a class="functions_meeting__mes__btns" id="Delete" >
+                    <a class="functions_meeting__mes__btns" id="Delete">
                         <i class="fa fa-trash"></i>
                     </a>
                 </div>
@@ -71,64 +67,61 @@
 }
     </tbody>
 </table>
-<script>
-    $("#showCreate").click(function () {
-        OpenPopUp("Thêm chức năng", "/Administration/Function/Create");
-    });
-    function editFunction(id) {
-        OpenPopUp("Cập nhật chức năng", "/Administration/Function/Edit/?id=" + id);
-    }
-    function deleteFunction(id) {
-        var isDelete = confirm("Bạn có chắc muốn xóa phần tử này");
-        if (isDelete) {
-            replaceBody("/Administration/Function/Delete/?id=" + id);
+@section Scripts{ 
+    <script>
+        $("#showCreate").click(function () {
+            OpenPopUp("Thêm hành động", "/Administration/Actions/Create");
+        });
+        function editFunction(id) {
+            OpenPopUp("Cập nhật hành động", "/Administration/Actions/Edit/?id=" + id);
         }
-    }
-    $("#reload").click(function () {
-        location.reload();
-    });
-    $("#btnSearch").click(function () {
-        var namesearch = $("#nameSearch").val();
-         if (namesearch == '')
-            $("#errorName").text("Vui lòng nhập tên tìm kiếm");
-        else {
-             $("#errorName").text('');
-            replaceBody("/Administration/Function/ListFunctionJson/?name=" + namesearch);
+        function deleteFunction(id) {
+            var confirms = confirm("Bạn chắc muốn xóa phần tử này?");
+            if (confirms)
+                replaceBody("/Administration/Actions/Delete/?id=" + id);
         }
-       
-    });
-    function replaceBody(url) {
-        $.get(url, function (respone) {
-            var content = '';
-            var checkActive = "Hoạt dộng";
-            if (respone != null) {
-                respone = JSON.parse(respone);
-                $.each(respone, function (index, value) {
-                    if (value.Status == false) checkActive = "Tạm dừng";
-                    content +=
-                        ` <tr> <td> ${value.Name}</td>
+        $("#reload").click(function () {
+            location.reload();
+        });
+        $("#btnSearch").click(function () {
+            var namesearch = $("#nameSearch").val();
+            if (namesearch== '')
+                $("#errorSearch").text("Vui lòng nhập tên tìm kiếm");
+            else {
+                $("#errorSearch").text('');
+                replaceBody("/Administration/Actions/ListActionResult/?name=" + namesearch);
+            }
+        });
+        function replaceBody(url) {
+            $.get(url, function (respone) {
+                var contentReplace = '';
+                if (respone != null) {
+                    respone = JSON.parse(respone);
+                    $.each(respone, function (index, value) {
+                        contentReplace += `<tr>
                             <td>
-                                ${checkActive}
+                                ${value.Name}
+                            </td>
+                            <td>
+                                ${value.function.Name}
                             </td>
                             <td class="function_meeting">
                                 <div class="functions_meeting__mes" onclick="editFunction(${value.Id})">
-
-                                    <a class="functions_meeting__mes__btn" >
+                                    <a class="functions_meeting__mes__btn">
                                         <i class="fa fa-edit"></i>
                                     </a>
                                 </div>
                                 <div class="functions_meeting__mes" onclick="deleteFunction(${value.Id})">
-                                    <a class="functions_meeting__mes__btns" id="Delete" >
+                                    <a class="functions_meeting__mes__btns" id="Delete">
                                         <i class="fa fa-trash"></i>
                                     </a>
                                 </div>
                             </td>
-                        </tr>`
-                });
-                $("tbody").html(content);
-            }
-        });
-    }
-</script>
-
-
+                        </tr>`;
+                    });
+                    $('tbody').html(contentReplace);
+                }
+            });
+        }
+    </script>
+}

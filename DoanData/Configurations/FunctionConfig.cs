@@ -14,7 +14,7 @@ namespace DoanData.Configurations
             builder.ToTable("Function");
             builder.HasKey(x => x.Id);
             builder.Property(x => x.Name).HasMaxLength(250);
-        
+      
             builder.Property(x => x.Status).HasDefaultValue<bool>(true);
         }
     }

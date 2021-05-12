@@ -505,4 +505,7 @@ E:\HK5\Prepare Project Last Semester\DoanTotNghiep\DoanApp\obj\Debug\netcoreapp3
 E:\HK5\Prepare Project Last Semester\DoanTotNghiep\DoanApp\obj\Debug\netcoreapp3.1\Razor\Areas\Administration\Views\Function\Edit.cshtml.g.cs
 E:\HK5\Prepare Project Last Semester\DoanTotNghiep\DoanApp\bin\Debug\netcoreapp3.1\Microsoft.Extensions.PlatformAbstractions.dll
 E:\HK5\Prepare Project Last Semester\DoanTotNghiep\DoanApp\bin\Debug\netcoreapp3.1\Nancy.dll
-E:\HK5\Prepare Project Last Semester\DoanTotNghiep\DoanApp\obj\Debug\netcoreapp3.1\Razor\Areas\Administration\Views\User\Index.cshtml.g.cs
+E:\HK5\Prepare Project Last Semester\DoanTotNghiep\DoanApp\obj\Debug\netcoreapp3.1\Razor\Areas\Administration\Views\User\InforUser.cshtml.g.cs
+E:\HK5\Prepare Project Last Semester\DoanTotNghiep\DoanApp\obj\Debug\netcoreapp3.1\Razor\Areas\Administration\Views\Actions\Index.cshtml.g.cs
+E:\HK5\Prepare Project Last Semester\DoanTotNghiep\DoanApp\obj\Debug\netcoreapp3.1\Razor\Areas\Administration\Views\Actions\Create.cshtml.g.cs
+E:\HK5\Prepare Project Last Semester\DoanTotNghiep\DoanApp\obj\Debug\netcoreapp3.1\Razor\Areas\Administration\Views\Actions\Edit.cshtml.g.cs

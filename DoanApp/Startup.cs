@@ -29,8 +29,9 @@ namespace DoanApp
             IMvcBuilder builder = services.AddRazorPages();
             builder.AddRazorRuntimeCompilation();
             services.AddControllersWithViews();
-            services.AddDbContext<DpContext>(options=>options.UseSqlServer(Configuration.GetConnectionString("DpContext")));
-            services.AddScoped<IFunctionService, FunctionService>();
+            services.AddDbContext<DpContext>(options=>options.UseSqlServer(Configuration.GetConnectionString("DpContext")), ServiceLifetime.Transient);
+            services.AddTransient<IFunctionService, FunctionService>();
+            services.AddTransient<IActionService, ActionService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
