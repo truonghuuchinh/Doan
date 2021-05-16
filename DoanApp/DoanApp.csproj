@@ -7,7 +7,6 @@
   <ItemGroup>
     <Folder Include="Areas\Administration\Data\" />
     <Folder Include="Areas\Administration\Models\" />
-    <Folder Include="wwwroot\Client\" />
     <Folder Include="wwwroot\Server\" />
   </ItemGroup>
 

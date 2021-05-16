@@ -16,12 +16,21 @@ namespace DoanApp.Controllers
         {
             return View();
         }
-
-        public IActionResult Privacy()
+        public IActionResult Popular()
         {
             return View();
         }
-
-      
+        public IActionResult FavoritedVideo()
+        {
+            return View();
+        }
+        public IActionResult Login()
+        {
+            return View();
+        }
+        public IActionResult Register()
+        {
+            return View();
+        }
     }
 }
