@@ -1,23 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "E:\\HK5\\Prepare Project Last Semester\\DoanTotNghiep\\DoanData\\DoanData.csproj": {}
+    "D:\\đồ án hữu chinh\\doantotnghiep\\DoanData\\DoanData.csproj": {}
   },
   "projects": {
-    "E:\\HK5\\Prepare Project Last Semester\\DoanTotNghiep\\DoanData\\DoanData.csproj": {
+    "D:\\đồ án hữu chinh\\doantotnghiep\\DoanData\\DoanData.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "E:\\HK5\\Prepare Project Last Semester\\DoanTotNghiep\\DoanData\\DoanData.csproj",
+        "projectUniqueName": "D:\\đồ án hữu chinh\\doantotnghiep\\DoanData\\DoanData.csproj",
         "projectName": "DoanData",
-        "projectPath": "E:\\HK5\\Prepare Project Last Semester\\DoanTotNghiep\\DoanData\\DoanData.csproj",
-        "packagesPath": "C:\\Users\\hi\\.nuget\\packages\\",
-        "outputPath": "E:\\HK5\\Prepare Project Last Semester\\DoanTotNghiep\\DoanData\\obj\\",
+        "projectPath": "D:\\đồ án hữu chinh\\doantotnghiep\\DoanData\\DoanData.csproj",
+        "packagesPath": "C:\\Users\\Admin\\.nuget\\packages\\",
+        "outputPath": "D:\\đồ án hữu chinh\\doantotnghiep\\DoanData\\obj\\",
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
-        ],
         "configFilePaths": [
-          "C:\\Users\\hi\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\Admin\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -25,7 +22,7 @@
         ],
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-          "http://api.nuget.org/v3/index.json": {}
+          "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
           "netcoreapp3.1": {
