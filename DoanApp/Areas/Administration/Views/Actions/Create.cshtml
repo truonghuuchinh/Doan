@@ -1,0 +1,52 @@
+﻿@model DoanData.Models.Action
+
+@{
+
+    Layout = null;
+}
+
+<div class="row">
+    <input type="hidden" id="checkError" name="name" />
+    <div class="col-md-6">
+        <form asp-action="Create" id="SubmitCreate">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" class="form-control" id="Name" />
+                <span  id="errorName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="FunctionsId" class="control-label"></label>
+                <select id="idFunction" asp-for="FunctionsId" class="form-control" asp-items="ViewBag.Function"></select>
+                <span asp-validation-for="FunctionsId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <button type="button" class="btn btn-cancel" data-dismiss="modal">Hủy bỏ</button>
+                <button type="submit" class="btn btn-primary">Xác nhận</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    $("#Name").blur(function () {
+        
+        var actions = $("#Name").val();
+        $("#errorName").text('');
+        $.get("/Administration/Actions/checkName/?id=" + $("#idFunction").val() + "&name=" + actions, function (respone) {
+            if (respone == "Error") {
+                console.log("sau");
+                $("#errorName").text("Tên bạn nhập đã tồn tại trong chức năng!");
+            }
+        });
+      
+    });
+    $("#SubmitCreate").submit(function (event) {
+        if ($("#Name").val() == '' || $("#errorName").text() != '') {
+            if ($("#Name").val() == '')
+                $("#errorName").text("Vui lòng nhập tên!");
+            event.preventDefault();
+        }
+    });
+</script>
+

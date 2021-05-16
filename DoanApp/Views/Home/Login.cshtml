@@ -1,0 +1,29 @@
+﻿@model DoanData.Models.AppUser
+
+@{
+    ViewData["Title"] = "Login";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<div class="card-body">
+    <div class="brand-wrapper">
+        <img src="~/Client/img/logo.svg" alt="logo" class="logo">
+    </div>
+    <p class="login-card-description">Đăng nhập vào tài khoản của bạn</p>
+    <form method="post" asp-action="Login">
+        <div class="form-group">
+            <label asp-for="Email" class="sr-only">Email</label>
+            <input type="email" asp-for="Email" id="email" class="form-control" placeholder="Email address"  style="width:100%;">
+        </div>
+        <div class="form-group mb-4">
+            <label asp-for="PasswordHash" class="sr-only">Password</label>
+            <input type="password" asp-for="PasswordHash" id="password" class="form-control" placeholder="***********" style="width:100%;">
+        </div>
+        <input name="login" id="login" class="btn btn-block login-btn mb-4" type="submit" value="Login">
+    </form>
+    <a asp-action="ForgotPassword" class="forgot-password-link">Forgot password?</a>
+    <p style="color:#4f7afe;" class="login-card-footer-text">Don't have an account? <a asp-action="Register" class="text-reset">Register here</a></p>
+</div>
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

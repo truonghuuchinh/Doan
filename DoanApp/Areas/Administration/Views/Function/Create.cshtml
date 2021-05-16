@@ -1,0 +1,45 @@
+﻿@model DoanData.Models.Function
+
+@{
+
+    Layout = null;
+}
+
+<div class="row">
+    <div class="col-md-6">
+        <form asp-action="Create" id="formCreate">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name"  id="Name" class="form-control" /> 
+                <span id="errorName" class="text-danger"></span>
+            </div>
+            <br />
+            <div class="form-group">
+                <button type="button"  class="btn btn-cancel" data-dismiss="modal">Hủy bỏ</button>
+                <button type="submit"  class="btn btn-primary" >Xác nhận</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    $("#Name").blur(function () {
+
+        var functionName = $("#Name").val();
+        $("#errorName").text('');
+        $.get("/Administration/Function/checkName/?name=" + functionName, function (respone) {
+            if (respone == "Error") {
+                $("#errorName").text("Tên chức năng bạn nhập đã tồn tại!");
+            }
+        });
+
+    });
+    $("#formCreate").submit(function (event) {
+        if ($("#Name").val() == '' || $("#errorName").text() != '') {
+            if ($("#Name").val() == '')
+                $("#errorName").text("Vui lòng nhập tên!");
+            event.preventDefault();
+        }
+    });
+</script>

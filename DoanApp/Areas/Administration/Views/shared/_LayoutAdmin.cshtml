@@ -1,0 +1,255 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <!-- Include jQuery -->
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Bootstrap CSS -->
+    <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
+    <link href="~/lib/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />
+    <!-- CSS -->
+    <link rel="stylesheet" href="~/Administration/assets/css/style.css">
+    <!-- link font Awesome -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css" />
+   
+    <style>
+
+        .icon-sidebar-item {
+            margin-right: 10px;
+            margin-top: 3px;
+          @*  background: cadetblue;*@
+            padding:0px;
+        }
+        nav{
+            overflow:scroll;
+        }
+        .sidebar-menu a:hover{
+            text-decoration:none
+        }
+    </style>
+    <title>User Management</title>
+
+</head>
+
+
+<body>
+    <div class="layout">
+        <div class="row">
+            <nav class="col">
+                <div class="name-version text-center align-items-center">PHÒNG HỌP KHÔNG GIẤY Ver1.0</div>
+                <div class="info-card d-flex">
+                    <div class="avatar">
+                        <img alt="" src="~/Administration/assets/img/avatar.svg">
+                    </div>
+                    <div class="info-card-text text-white">
+                        <div class="name">Trần Văn Bình</div>
+                        <div class="role">Quản trị viên</div>
+                    </div>
+                </div>
+                <li class="sidebar-focus sidebar-item-first sidebar-menu">
+                    <a href="location-management.html">
+                        <div class="row">
+                            <img class="icon-sidebar-item" alt="" src="~/Administration/assets/img/users.png">
+                            <span class="text-sidebar-item">Quản lý Người dùng</span>
+                        </div>
+                    </a>
+                </li>
+                <li class="text-white sidebar-item sidebar-menu">
+                    <a asp-action="Index" asp-controller="Function">
+                        <div class="row">
+                            <img class="icon-sidebar-item" alt="" src="~/Administration/assets/img/optimization (1).png">
+                            <span class="active-sidebar-item">Quản lý Chức năng</span>
+                        </div>
+                    </a>
+                </li>
+                <li class="text-white sidebar-item sidebar-menu">
+                    <a asp-action="Index" asp-controller="Actions">
+                        <div class="row">
+                            <img class="icon-sidebar-item" alt="" src="~/Administration/assets/img/behavior (1).png">
+                            <span class="text-sidebar-item">Quản lý Hành động</span>
+                        </div>
+                    </a>
+                </li>
+                <li class="text-white sidebar-item sidebar-menu">
+                    <a href="layout_page_meeting_manager.html">
+                        <div class="row">
+                            <img class="icon-sidebar-item" alt="" src="~/Administration/assets/img/partnership.png">
+                            <span class="text-sidebar-item">Quản lý Vai trò</span>
+                        </div>
+                    </a>
+                </li>
+                <li class="text-white sidebar-item sidebar-menu">
+                    <a href="layout_role_management.html">
+                        <div class="row">
+                            <img class="icon-sidebar-item" alt="" src="~/Administration/assets/img/newspaper.png">
+                            <span class="text-sidebar-item">Quản lý Báo cáo Video</span>
+                        </div>
+                    </a>
+                </li>
+                <li class="text-white sidebar-item sidebar-menu">
+                    <a href="list-event_management.html">
+                        <div class="row">
+                            <img class="icon-sidebar-item" alt="" src="~/Administration/assets/img/video.png">
+                            <span class="text-sidebar-item">Quản lý Video </span>
+                        </div>
+                    </a>
+                </li>
+                <li class="text-white sidebar-item sidebar-menu">
+                    <a href="layout_schedule_management.html">
+                        <div class="row">
+                            <img class="icon-sidebar-item" alt="" src="~/Administration/assets/img/playlist.png">
+                            <span class="text-sidebar-item">Quản lý Danh sách phát</span>
+                        </div>
+                    </a>
+                </li>
+                <li class="text-white sidebar-item sidebar-menu">
+                    <a href="location-management.html">
+                        <div class="row">
+                            <img class="icon-sidebar-item" alt="" src="~/Administration/assets/img/notification.png">
+                            <span class="text-sidebar-item">Quản lý Thông báo</span>
+                        </div>
+                    </a>
+                </li>
+                <li class="text-white sidebar-item sidebar-menu">
+                    <a href="location-management.html">
+                        <div class="row">
+                            <img class="icon-sidebar-item" alt="" src="~/Administration/assets/img/wishlist.png">
+                            <span class="text-sidebar-item">Quản lý yêu thích</span>
+                        </div>
+                    </a>
+                </li>
+                <li class="text-white sidebar-item sidebar-menu">
+                    <a href="location-management.html">
+                        <div class="row">
+                            <img class="icon-sidebar-item" alt="" src="~/Administration/assets/img/video-player.png">
+                            <span class="text-sidebar-item">Quản lý Chi tiết like</span>
+                        </div>
+                    </a>
+                </li>
+                <li class="text-white sidebar-item sidebar-menu">
+                    <a href="location-management.html">
+                        <div class="row">
+                            <img class="icon-sidebar-item" alt="" src="~/Administration/assets/img/followers.png">
+                            <span class="text-sidebar-item">Quản lý Follow</span>
+                        </div>
+                    </a>
+                </li>
+                <li class="text-white sidebar-item sidebar-menu">
+                    <a href="location-management.html">
+                        <div class="row">
+                            <img class="icon-sidebar-item" alt="" src="~/Administration/assets/img/comments.png">
+                            <span class="text-sidebar-item">Quản lý Bình luận</span>
+                        </div>
+                    </a>
+                </li>
+                <li class="text-white sidebar-item sidebar-menu">
+                    <a href="location-management.html">
+                        <div class="row">
+                            <img class="icon-sidebar-item" alt="" src="~/Administration/assets/img/backend.png">
+                            <span class="text-sidebar-item">Quản lý chủ đề</span>
+                        </div>
+                    </a>
+                </li>
+
+                <li class="text-white sidebar-item sidebar-menu" style="height: 0px;">
+                    <div style="background-color: #0C386A; height:1px"></div>
+                </li>
+                <li class="text-white sidebar-item sidebar-menu">
+                    <a asp-action="InforUser" asp-controller="User">
+                        <div class="row">
+                            <img class="icon-sidebar-item" alt="" src="~/Administration/assets/img/Userprofile.png">
+                            <span class="text-sidebar-item">Thông tin tài khoản</span>
+                        </div>
+                    </a>
+                </li>
+                <li class="text-white sidebar-item sidebar-menu">
+                    <a href="#">
+                        <div class="row">
+                            <img class="icon-sidebar-item" alt="" src="~/Administration/assets/img/ic_logout_24px.svg">
+                            <span class="text-sidebar-item">Đăng xuất</span>
+                        </div>
+                    </a>
+                </li>
+            </nav>
+            <div class="col site-layout">
+                <div class="header-site-layout d-flex flex-row">
+                    <div class="icon-collapse-expand"><img alt="" src="~/Administration/assets/img/Frame 1.svg"></div>
+                    <div class="title-site-layout font-weight-bold">@ViewBag.TitlePage</div>
+                </div>
+                @*<div class="filter">
+                    <div class="title-filter">Tìm kiếm</div>
+                    <div class="btn-filter d-flex justify-content-between" style="padding: 0px 11px 10px 10px">
+                        <div class="col">
+                            <input id="name" placeholder="Nhập tên đầy đủ" type="text" name="name"
+                                   class="form-control d-inline rounded-0 col-2">
+                            <input id="email" placeholder="Nhập email" type="text" name="email"
+                                   class="form-control d-inline rounded-0 col-2">
+                            <input id="phone" placeholder="Nhập số điện thoại" type="text" name="phone"
+                                   class="form-control d-inline rounded-0 col-3">
+                            <input id="group-name" placeholder="Nhập tên nhóm" type="text" name="group-name"
+                                   class="form-control d-inline rounded-0 col-2">
+                            <button class="btn btn-search text-white rounded-0 p-0 text-left col-2">
+                                <img class="icon-search" alt="" src="~/Administration/assets/img/Search.svg">
+                                <span class="header-text-site-layout">TÌM KIẾM</span>
+                            </button>
+                            <button class="btn btn-reset" style="padding-left: 0.5rem">
+                                <img class="icon-reset" alt="" src="~/Administration/assets/img/Reset.svg">
+                            </button>
+                        </div>
+                        <div class="">
+                            <button type="button" class="btn btn-add text-white rounded-0 p-0 text-left"
+                                    data-toggle="modal" data-target="#modalAddNewUser">
+                                <img class="icon-add" alt="" src="~/Administration/assets/img/ic_add.svg">
+                                <span class="header-text-site-layout">THÊM MỚI</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>*@
+                <div class="container contentBody">
+                    @RenderBody()
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="~/Administration/assets/js/scripts.js"></script>
+    <script src="~/js/site.js"></script>
+    @RenderSection("Scripts", false)
+    <!-- Modal -->
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog"
+         aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content height_content_user" id="mdcontentUPMT">
+
+
+                <div class="modal-header-UPMT ">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="ModalTitle">
+                        </h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                </div>
+                <div class="modal-body-UPMT">
+                    <div class="col-lg-1-12 " id="ModalContent">
+
+                    </div>
+                </div>
+
+                @*<div class="modal-footer-UPMT">
+                    <div class="button-footer-UPMT ">
+                        <button type="button" id="btn-cancel-sumitUPMT" class="btn btn-cancel" data-dismiss="modal">Hủy bỏ</button>
+                        <button type="submit" id="btn-add-sumitUPMT_meeting" class="btn tn-add" data-dismiss="modal">Xác nhận</button>
+                    </div>
+                </div>*@
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
