@@ -73,12 +73,12 @@ li:hover {
 }
 .create {
     float: left;
-    margin-left: 200px;
+    margin-left: 175px;
     width: 2.5%;
     height: 30px;
     margin-top: 20px;
     background: turquoise;
-    background-image: url(/Client/img/tao.JPG); 
+    background-image: url(/Client/img/tao.JPG);
 }
 .notification {
     float: left;
@@ -97,7 +97,6 @@ li:hover {
     height: 40px;
     margin-top: 15px;
     background: turquoise;
-    background-image: url(/Client/img/profile1.png); 
     border-radius: 50%;
     overflow: hidden;
 }
@@ -1037,3 +1036,317 @@ background: #555;
     max-height: 167px;
     overflow: hidden;
 }
+.modal-dialog_es {
+    max-width: 500px !important;
+    background: white;
+    float: right;
+    margin-right: 70px;
+    position: relative;
+}
+
+.modal-content_es {
+    height: 300px;
+    width: 325px;
+}
+
+.modal_check_fier_all {
+    background: rosybrown;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+}
+
+.modal_check__fier__all {
+    display: flex;
+    flex-wrap: wrap;
+    background: #e9e9e9;
+    width: 100%;
+    padding: 10px;
+}
+
+.avartar_fier_left {
+    float: left;
+    border-radius:5px;
+    width: 20%;
+}
+.avartar_fier_left img{
+    border-radius:30px;
+}
+.khung_avartar_fier_left {
+    padding-top: 10px;
+    padding-left: 10px;
+    width: 100%;
+}
+
+.name__avartar_fier_right {
+    font-size: 18px;
+    font-weight: 600;
+    font-family: Roboto;
+    color: black;
+    margin-top: 8px;
+    margin-left: 10px;
+}
+.avartar_fier_right{
+    width:80%;
+}
+.email__avartar_fier_right {
+    margin-left: 10px;
+    font-size: 14px;
+    color: rgb(58, 56, 56);
+    margin-top: -3px;
+}
+
+.ke_ngang_fier {
+    border: 0.5px solid gray;
+    width: 100%;
+    background: gray;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.modal_check_function_fier {
+    display: flex;
+    flex-wrap: wrap;
+    background: mediumorchid;
+    width: 100%;
+    padding: 0px 16px 0 16px;
+}
+
+.modal_check_function_fier_left {
+    float: left;
+    width: 15%;
+    height: 40px;
+}
+
+.modal_check_function_fier_right {
+    width: 85%;
+    float: left;
+}
+
+.khung_function_fier_img {
+    width: 30px;
+    padding-top: 1px;
+    margin-top: 2px;
+    height: 35px;
+    background: gray;
+    border-radius: 4px;
+}
+
+.img_kenhdangky {
+    background-image: url(/Client/img/user_kenhdangky.png);
+    width: 24px;
+    height: 24px;
+    margin-top: 4px;
+    margin-left: 3px;
+}
+.img_Logout {
+    background-image: url(/Client/img/logoutClient.png);
+    width: 24px;
+    height: 24px;
+    margin-top: 4px;
+    margin-left: 3px;
+}
+.text_modal_check_function_fier {
+    margin-left: 20px;
+    margin-top: 7px;
+    color: 16px;
+    color: rgb(39, 36, 36);
+}
+
+.modal_check_function_fier:hover {
+    background: gray;
+}
+
+.text_modal_check_function_fier_all {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.text_modal_check_function_fier_left {
+    width: 80%;
+    float: left;
+    margin-left: 20px;
+    margin-top: 7px;
+    color: 16px;
+    color: rgb(39, 36, 36);
+}
+
+.text_modal_check_function_fier_right:after {
+    content: "\276F";
+    width: 20%;
+    float: right;
+    margin-top: 7px;
+}
+
+.pass_kenhcuaban {
+    width: 100%;
+    height: 100px;
+    display: flex;
+    flex-wrap: wrap;
+    padding-left: 100px;
+    background: white;
+}
+
+.pass_kenhcuaban_left {
+    width: 8%;
+    float: left;
+    margin-top: 10px;
+}
+
+.icon-sidebar-item_heiht {
+    width: 100%;
+}
+
+.pass_kenhcuaban_right {
+    width: 90%;
+    float: left;
+}
+
+.pass_kenhcuaban_rights {
+    margin-top: 20px;
+    margin-left: 20px;
+    font-size: 24px;
+    font-weight: 500;
+    color: black;
+}
+
+.sub_dangkykenh {
+    margin-left: 20px;
+    font-size: 16px;
+    color: rgb(63, 60, 60);
+}
+
+.danhsach_tible {
+    width: 100%;
+    height: 50px;
+    display: flex;
+    flex-wrap: wrap;
+    padding-left: 100px;
+    background: white;
+}
+
+.khichthuoc_kenhcb {
+    width: 15%;
+    float: left;
+    height: 100%;
+    background: white;
+    color: rgb(24, 23, 23);
+    font-weight: 500;
+}
+
+.trangchu_kenhcb {
+    text-align: center;
+    margin-top: 10px;
+}
+
+.video_kenhcb {
+    text-align: center;
+    margin-top: 10px;
+}
+
+.gioithieu_kenhcb {
+    text-align: center;
+    margin-top: 10px;
+}
+
+.danhsach_tible a {
+    text-decoration: none;
+}
+
+    .danhsach_tible a:hover {
+        background: #555;
+        color: white;
+    }
+
+.cbs_cb {
+    border-bottom: 2px solid gray;
+}
+
+.search_kencb {
+    width: 50%;
+    float: left;
+    margin-top: 10px;
+}
+
+.chuyenphai_kenhcb {
+    margin-left: 40%
+}
+
+.search_name_video {
+    width: 90%;
+    /* float: right; */
+    float: left;
+    padding-left: 10px;
+}
+
+.click_search_kenhcb {
+    width: 5%;
+    width: 30px;
+    height: 30px;
+    border: 1px solid gray;
+    float: left;
+    position: relative;
+    background-color: rgb(197, 179, 179);
+}
+
+.imgs_search_fier {
+    position: absolute;
+    background-image: url(img/magnifying-glass.png);
+    width: 24px;
+    height: 24px;
+    margin-top: 3px;
+    margin-left: 3px;
+}
+
+.video_tailenS {
+    margin-top: 10px;
+}
+
+.name_chu__de {
+    height: 40px;
+    width: 100%;
+    background: rgb(250, 242, 242);
+    ;
+}
+
+.name_chu__de_text {
+    color: black;
+    padding-top: 10px;
+    padding-left: 15px;
+    font-size: 20px;
+    font-weight: 500;
+}
+
+.detail_video_tieude {
+    width: 100%;
+    height: 50px;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.name__detail_video_tieude {
+    font-size: 18px;
+    font-weight: 500;
+    text-decoration: none;
+    line-height: 20px;
+    margin-bottom: 5px;
+}
+
+.container22 a {
+    text-decoration: none;
+    color: black;
+}
+
+.luotxem_detail_video_tieude {
+    float: left;
+    color: rgb(150, 138, 138);
+}
+
+.time_detail_video_tieude {
+    color: rgb(150, 138, 138);
+}
+
+    .time_detail_video_tieude::after {
+        float: left;
+        content: "•";
+        margin: 0 4px;

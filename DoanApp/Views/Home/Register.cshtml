@@ -1,4 +1,4 @@
-﻿@model DoanData.Models.AppUser
+﻿@model AppUserRequest
 
 @{
     ViewData["Title"] = "Register";
@@ -11,58 +11,61 @@
         margin-bottom: 10px;
         text-align:center;
     }
+    .form-control {
+        margin: 0px !important;
+        margin-bottom: 10px !important;
+    }
+    #confirmPassword,#inputAvartar{
+        margin-top:20px;
+    }
 </style>
 <div class="card-body" style=" padding:0px; padding-left:100px;">
-    <form asp-action="Register" method="post" style="max-width:450px;">
-        <h3 >Registration Form</h3>
+    <form asp-action="Register" id="submitForm" method="post" enctype="multipart/form-data" style="max-width:450px;">
+        <h3 >Đăng Ký</h3>
         <hr />
         <div class="form-group">
-            <input asp-for="FirtsName" type="text" placeholder="First Name" class="form-control" style=" padding: 3px 11px;">
+            <input asp-for="FirtsName" required type="text" placeholder="First Name" class="form-control" style=" padding: 3px 11px;">
             <span asp-validation-for="FirtsName" class="text-danger"></span>
-            <input asp-for="LastName" type="text" placeholder="Last Name" class="form-control" style=" padding: 3px 11px;">
+            <input asp-for="LastName" required type="text" placeholder="Last Name" class="form-control" style=" padding: 3px 11px;">
             <span asp-validation-for="LastName" class="text-danger"></span>
         </div>
         <div class="form-wrapper">
-            <input asp-for="UserName" type="text" placeholder="Username" class="form-control" style="padding: 3px 25px 3px 11px;">
-
-            <span asp-validation-for="UserName" class="text-danger"></span>
-        </div>
-        <div class="form-wrapper">
-            <input asp-for="Email" type="text" placeholder="Email Address" class="form-control" style="padding: 3px 25px 3px 11px;">
-
+            <input id="Email" required asp-for="Email" type="email" placeholder="Email Address" class="form-control" style="padding: 3px 25px 3px 11px;">
             <span asp-validation-for="Email" class="text-danger"></span>
         </div>
-        <div class="form-wrapper">
-            <input asp-for="PhoneNumber" type="text" placeholder="Email Address" class="form-control" style="padding: 3px 25px 3px 11px;">
-
-            <span asp-validation-for="PhoneNumber" class="text-danger"></span>
-        </div>
-        <div class="form-wrapper">
-            <input asp-for="PhoneNumber" type="text" placeholder="Email Address" class="form-control" style="padding: 3px 25px 3px 11px;">
-
-            <span asp-validation-for="PhoneNumber" class="text-danger"></span>
-        </div>
         <div class="input-group mb-3 form-group">
-        
             <div class="custom-file">
-                <input accept=".png, .jpg, .jpeg"  type="file" asp-for="Avartar" class="custom-file-input" id="inputAvartar">
+                <input  accept=".png, .jpg, .jpeg" name="avartarFile" type="file" class="custom-file-input" id="inputAvartar">
                 <label class="custom-file-label" for="inputAvartar">Chọn Avartar</label>
+               
             </div>
         </div>
 
         <div class="form-wrapper">
-            <input asp-for="PasswordHash" type="password" placeholder="Password" class="form-control" style="padding: 3px 25px 3px 11px;">
-
+            <input required id="password" asp-for="PasswordHash" type="password" placeholder="Password" class="form-control" style="padding: 3px 25px 3px 11px;">
             <span asp-validation-for="PasswordHash" class="text-danger"></span>
-            <input id="confirmPassword" type="password" placeholder="Confirm Password" class="form-control" style="padding: 3px 25px 3px 11px;">
-
-            <span id="errorMessage" class="text-danger"></span>
+            <input required id="confirmPassword" type="password" placeholder="Confirm Password" class="form-control" style="padding: 3px 25px 3px 11px;">
+            <span id="errorPassword" class="text-danger"></span>
         </div>
-        <button type="submit">
-            Register<i class="zmdi zmdi-arrow-right"></i>
+        <button type="submit" style="margin-bottom:15px;">
+            Tạo tài khoản <i class="zmdi zmdi-arrow-right"></i>
         </button>
     </form>
 </div>
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+<script>
+    $("#confirmPassword").change(function () {
+        $("#errorPassword").text('');
+        if ($("#password").val() != $(this).val()) {
+            $("#errorPassword").text("Vui lòng nhập đúng mật khẩu!");
+        }
+    });
+    $("#submitForm").submit(function (event) {
+        if ($("#errorPassword").text() == '') {
+            return;
+        }
+        event.preventDefault();
+    });
+</script>
 }
