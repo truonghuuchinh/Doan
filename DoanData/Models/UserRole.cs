@@ -8,12 +8,7 @@ namespace DoanData.Models
     {
         public int Id { get; set; }
         public string RoleName { get; set; }
-        public string CreateDate { get; set; }
         public int UserId { get; set; }
         public virtual AppUser appUser { get; set; }
-        public int ActionId { get; set; }
-        public  virtual Action action { get; set; }
-
-
     }
 }

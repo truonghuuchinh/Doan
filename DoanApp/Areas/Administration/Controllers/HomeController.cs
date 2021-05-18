@@ -9,7 +9,7 @@ namespace DoanApp.Areas.Administration.Controllers
     public class HomeController : Controller
     {
         [Area("Administration")]
-        public IActionResult Index()
+        public IActionResult Login()
         {
             return View();
         }

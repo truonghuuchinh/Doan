@@ -59,22 +59,7 @@
                         </div>
                     </a>
                 </li>
-                <li class="text-white sidebar-item sidebar-menu">
-                    <a asp-action="Index" asp-controller="Function">
-                        <div class="row">
-                            <img class="icon-sidebar-item" alt="" src="~/Administration/assets/img/optimization (1).png">
-                            <span class="active-sidebar-item">Quản lý Chức năng</span>
-                        </div>
-                    </a>
-                </li>
-                <li class="text-white sidebar-item sidebar-menu">
-                    <a asp-action="Index" asp-controller="Actions">
-                        <div class="row">
-                            <img class="icon-sidebar-item" alt="" src="~/Administration/assets/img/behavior (1).png">
-                            <span class="text-sidebar-item">Quản lý Hành động</span>
-                        </div>
-                    </a>
-                </li>
+               
                 <li class="text-white sidebar-item sidebar-menu">
                     <a href="layout_page_meeting_manager.html">
                         <div class="row">
@@ -148,7 +133,7 @@
                     </a>
                 </li>
                 <li class="text-white sidebar-item sidebar-menu">
-                    <a href="location-management.html">
+                    <a asp-action="Index" asp-controller="Category">
                         <div class="row">
                             <img class="icon-sidebar-item" alt="" src="~/Administration/assets/img/backend.png">
                             <span class="text-sidebar-item">Quản lý chủ đề</span>
