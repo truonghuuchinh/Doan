@@ -1,0 +1,502 @@
+﻿@{ 
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Trang Chủ</title>
+    <link rel="stylesheet" href="https://cdn.plyr.io/3.6.2/demo.css">
+    <link href="~/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="~/Client/css/style.css">
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="https://cdn.plyr.io/3.6.2/demo.js" crossorigin="anonymous"></script>
+</head>
+<body style="align-items: normal">
+    <div class="warpper">
+        <div class="header">
+            <div class="container-header">
+                <div class="menu">
+                    <div class="click_menu"></div>
+                </div>
+                <div class="logo"></div>
+                <input id="name" placeholder="Tìm Kiếm" type="text" name="name" class="search">
+                <div class="searchs">
+                    <a href="" class="search_sokiuty">
+                        <div class="search_sokiuty_img"></div>
+                    </a>
+                </div>
+                <div class="khoangcach"></div>
+                <div class="loginUser">
+                    @{
+                        var user = UserAuthenticated.GetUser(User.Identity.Name);
+                        if (User.Identity.IsAuthenticated&&user!=null)
+                        {
+                        <div id="completed_Login">
+                            <div class="create">
+                            </div>
+                            <div class="notification"></div>
+                            <div class="account_information">
+                                <div class="account_informationss" data-toggle="modal" data-target="#leave_the_check_avarta"><img src="@(user.LoginExternal ? user.Avartar : "/Client/avartar/" + user.Avartar)" alt="Alternate Text" /></div>
+                            </div>
+                        </div>
+                        @* Modal menu logout*@
+                        <div class="modal" id="leave_the_check_avarta">
+                            <div class="modal-dialog_es">
+                                <div class="modal-content_es">
+                                    <div class="modal_check_fier_all">
+                                        <div class="modal_check__fier__all">
+                                            <div class="avartar_fier_left">
+                                                <img src="@(user.LoginExternal ? user.Avartar : "/Client/avartar/" + user.Avartar)" alt="Alternate Text" />
+                                            </div>
+                                            <div class="avartar_fier_right">
+                                                <div class="name__avartar_fier_right">@(user.FirtsName + " " + user.LastName)</div>
+                                                <div class="email__avartar_fier_right">@(user.Email)</div>
+                                            </div>
+                                        </div>
+                                        <div class="ke_ngang_fier"></div>
+                                        <a href="kenhcuaban.html">
+                                            <div class="modal_check_function_fier">
+                                                <div class="modal_check_function_fier_left">
+                                                    <div class="khung_function_fier_img">
+                                                        <div class="img_kenhdangky"></div>
+                                                    </div>
+                                                </div>
+                                                <div class="modal_check_function_fier_right">
+                                                    <div class="text_modal_check_function_fier">Kênh của bạn</div>
+                                                </div>
+                                            </div>
+                                        </a>
+                                        <div class="modal_check_function_fier">
+                                            <div class="modal_check_function_fier_left">
+                                                <div class="khung_function_fier_img">
+                                                    <div class="img_Logout"></div>
+                                                </div>
+                                            </div>
+
+                                            <div class="modal_check_function_fier_right">
+                                                <a asp-action="Logout" asp-controller="Home">
+                                                    <div class="text_modal_check_function_fier">Đăng xuất</div>
+                                                </a>
+                                            </div>
+
+
+                                        </div>
+                                        <div class="ke_ngang_fier"></div>
+                                        <div class="modal_check_function_fier">
+                                            <div class="modal_check_function_fier_left">
+                                                <div class="khung_function_fier_img">
+                                                    <div class="img_kenhdangky"></div>
+                                                </div>
+                                            </div>
+                                            <div class="modal_check_function_fier_right">
+                                                <div class="text_modal_check_function_fier">Giao diện: Giao diện ...</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        }
+                        else
+                        {
+                        <div id="no_Login" class="list_dangnhap_header" data-toggle="modal" data-target="#leave_the_room">
+                            <a asp-action="Login" asp-controller="Home">
+                                <div class="list_dangnhap_left">
+                                    <div class="img_list_dangnhap"></div>
+                                </div>
+                                <div class="list_dangnhap_right">ĐĂNG NHẬP</div>
+                            </a>
+                        </div>
+                            }
+                        }
+                </div>
+            </div>
+        </div>
+        <div class="row all_nav_menus_as">
+            <div class="all_nav_menus">
+                <nav class="col strong_headers">
+                    <li class="sidebar-focus sidebar-item-first sidebar-menu sider_tops">
+                        <a asp-action="Index" asp-controller="Home">
+                            <div class="row">
+                                <img class="icon-sidebar-item" alt="" src="~/Client/img/home_mau.png">
+                                <span class="active-sidebar-item">Trang chủ</span>
+                            </div>
+                        </a>
+                    </li>
+                    <li class="text-white sidebar-item sidebar-menu">
+                        <a asp-action="Popular" asp-controller="Home">
+                            <div class="row">
+                                <img class="icon-sidebar-item" alt="" src="~/Client/img/explore.png">
+                                <span class="text-sidebar-item">Khám phá</span>
+                            </div>
+                        </a>
+                    </li>
+                    <li class="text-white sidebar-item sidebar-menu">
+                        <a href="">
+                            <div class="row">
+                                <img class="icon-sidebar-item" alt="" src="~/Client/img/youtube_danky.png">
+                                <span class="text-sidebar-item">Kênh đăng ký</span>
+                            </div>
+                        </a>
+                    </li>
+                    <li class="text-white sidebar-item sidebar-menu sider_colors" style="height: 0px;">
+                        <div style="background-color: #0C386A; height:1px"></div>
+                    </li>
+                    <li class="text-white sidebar-item sidebar-menu">
+                        <a href="">
+                            <div class="row">
+                                <img class="icon-sidebar-item" alt="" src="~/Client/img/youtube_thuvien.png">
+                                <span class="text-sidebar-item">Thư viện</span>
+                            </div>
+                        </a>
+                    </li>
+                    <li class="text-white sidebar-item sidebar-menu">
+                        <a href="">
+                            <div class="row">
+                                <img class="icon-sidebar-item" alt="" src="~/Client/img/future.png">
+                                <span class="text-sidebar-item">Video đã xem</span>
+                            </div>
+                        </a>
+                    </li>
+                    <li class="text-white sidebar-item sidebar-menu">
+                        <a href="">
+                            <div class="row">
+                                <img class="icon-sidebar-item" alt="" src="~/Client/img/youtube_videocuaban.png">
+                                <span class="text-sidebar-item">Video của bạn</span>
+                            </div>
+                        </a>
+                    </li>
+                    <li class="text-white sidebar-item sidebar-menu">
+                        <a href="">
+                            <div class="row">
+                                <img class="icon-sidebar-item" alt="" src="~/Client/img/clock.png">
+                                <span class="text-sidebar-item">Xem sau</span>
+                            </div>
+                        </a>
+                    </li>
+                    <li class="text-white sidebar-item sidebar-menu">
+                        <a asp-action="FavoritedVideo" asp-controller="Home">
+                            <div class="row">
+                                <img class="icon-sidebar-item" alt="" src="~/Client/img/like.png">
+                                <span class="text-sidebar-item">Video đã thích</span>
+                            </div>
+                        </a>
+                    </li>
+                    <li class="text-white sidebar-item sidebar-menu sider_colors" style="height: 0px;">
+                        <div style="background-color: #0C386A; height:1px"></div>
+                    </li>
+                    <div class="hearer_container_text">Kênh Đăng Ký</div>
+                    <div class="xohangall">
+                        <li class="text-white sidebar-item sidebar-menu fix_texts_count">
+                            <a href="">
+                                <div class="row">
+                                    <img class="icon-sidebar-item" alt="" src="~/Client/img/avatar.svg">
+                                    <span class="text-sidebar-item fix_texts">Phim hay</span>
+                                </div>
+                            </a>
+                        </li>
+                        <li class="text-white sidebar-item sidebar-menu fix_texts_count">
+                            <a href="">
+                                <div class="row">
+                                    <img class="icon-sidebar-item" alt="" src="~/Client/img/imgs.svg">
+                                    <span class="text-sidebar-item fix_texts">Khoa pug</span>
+                                </div>
+                            </a>
+                        </li>
+                        <li class="text-white sidebar-item sidebar-menu fix_texts_count">
+                            <a href="">
+                                <div class="row">
+                                    <img class="icon-sidebar-item" alt="" src="~/Client/img/avatar.svg">
+                                    <span class="text-sidebar-item fix_texts">Nhật Phạm</span>
+                                </div>
+                            </a>
+                        </li>
+                        <li class="text-white sidebar-item sidebar-menu fix_texts_count">
+                            <a href="">
+                                <div class="row">
+                                    <img class="icon-sidebar-item" alt="" src="~/Client/img/imgs.svg">
+                                    <span class="text-sidebar-item fix_texts">Khoa pug</span>
+                                </div>
+                            </a>
+                        </li>
+                        <li class="text-white sidebar-item sidebar-menu fix_texts_count">
+                            <a href="">
+                                <div class="row">
+                                    <img class="icon-sidebar-item" alt="" src="~/Client/img/avatar.svg">
+                                    <span class="text-sidebar-item fix_texts">Nhật Phạm</span>
+                                </div>
+                            </a>
+                        </li>
+                    </div>
+                    <div class="collapses">
+                        Xem thêm
+                    </div>
+
+                </nav>
+            </div>
+            <div class="col site-layout dong">
+
+            </div>
+        </div>
+        <div class="aa">
+            <div class="contentes">
+                <div class="content_all">
+                    <div class="content_left">
+                        <div class="contents_video">
+                            <video controls  playsinline
+                                   id="player">
+
+                                <source src="~/Client/video/videoplayback.mp4"
+                                        type="video/mp4"
+                                        size="576" />
+                            </video>
+                        </div>
+                        <div class="all_content_texts">
+                            <div class="header_content_video">Bé Thuỷ Làm Bữa Sáng Thay Lời Xin Lỗi Chồng Yêu | Lộc Fuho</div>
+                            <div class="funtion_contnet">
+                                <div class="funtion_contnet_left">
+                                    <div class="view_content">5.299 lượt xem . 23 thg 4, 2021</div>
+                                </div>
+                                <div class="funtion_contnet_right">
+                                    <div class="like_shares">
+                                        <a href="" class="unlike acount_share" style="border-bottom: none;">
+                                            <img class="icon-sidebar-item_content" alt="" src="~/Client/img/share.png">
+                                            <span class="text-sidebar-item_content">CHIA SẺ</span>
+                                        </a>
+                                        <a href="" class="unlike" style="border-bottom: none;">
+                                            <img style=" width: 24px; margin-top: 2px; " class="icon-sidebar-item_content" alt="" src="~/Client/img/dislike_comment.png">
+                                            <span class="text-sidebar-item_content">6</span>
+                                        </a>
+                                        <a href="" class="unlike" style="border-bottom: none;">
+                                            <img class="icon-sidebar-item_content" alt="" src="~/Client/img/like.png">
+                                            <span class="text-sidebar-item_content">574</span>
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="cut"></div>
+                            </div>
+                        </div>
+                        <div class="all_content_texts">
+                            <div class="funtion_contnets">
+                                <div class="funtion_contnets_left">
+                                    <div class="detail_video">
+                                        <img class="details_lerft icon-sidebar-items_video" alt="" src="~/Client/img/avatar.svg">
+                                        <span class="details_right text-sidebar-items_video">Kim Thủy Channel</span>
+                                    </div>
+                                </div>
+                                <div class="funtion_contnets_right">
+                                    <button class="registration">Đăng ký</button>
+                                </div>
+                            </div>
+                            <div class="funtions_comment">
+                                Tại Sao Campuchia NỔI ĐIÊN Đòi Hủy Hết Vắc-Xin Trung Quốc? Bao Giờ Mới Khôn Bằng Việt Nam?
+                                Tại Sao Campuchia NỔI ĐIÊN Đòi Hủy Hết Vắc-Xin Trung Quốc? Bao Giờ Mới Khôn Bằng Việt Nam?. Tại Sao Campuchia NỔI ĐIÊN Đòi Hủy Hết Vắc-Xin Trung Quốc? Bao Giờ Mới Khôn Bằng Việt Nam?
+                                Tại Sao Campuchia NỔI ĐIÊN Đòi Hủy Hết Vắc-Xin Trung Quốc? Bao Giờ Mới Khôn Bằng Việt Nam?.
+                                Tại Sao Campuchia NỔI ĐIÊN Đòi Hủy Hết Vắc-Xin Trung Quốc? Bao Giờ Mới Khôn Bằng Việt Nam?.
+                            </div>
+                            <div class="funtions_hien">
+                                HIỂN THI THÊM
+                            </div>
+                            <div class="cut"></div>
+                            <div class="count_comment">700 Comments</div>
+                            <div class="all_counts_comment">
+                                <div class="all_counts_comment_left">
+                                    <div class="customs_imgs_comment">
+                                        <img class="details_lerfts icon-sidebar-items_video" alt="" src="~/Client/img/avatar.svg">
+                                    </div>
+                                </div>
+                                <div class="all_counts_comment_right">
+                                    <input type="text" class="check_comments" placeholder="Bình Luận" type="text" required>
+                                    <div class="text__comment_right">
+                                        <button class="check_cancel">CANCEL</button>
+                                        <button class="check_comment" type="submit" onclick="comment()">COMMENT</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="noidung_comment" id="hello_coment" style="display: none;">
+                                <div class="all_counts_comment_left">
+                                    <div class="customs_imgs_comment">
+                                        <img class="details_lerfts icon-sidebar-items_video" alt="" src="~/Client/img/avatar.svg">
+                                    </div>
+                                </div>
+                                <div class="all_counts_comment_right">
+                                    <div class="khung_hang_1">
+                                        <div class="ten_tac_gia">phạm nhật</div>
+                                        <div class="thoi_gian_binh_luan">1 day ago</div>
+                                    </div>
+                                    <div class="khung_hang_2">
+                                        <div class="doan_thoi_gian_comment">2:03</div>
+                                        <div class="noi_dung_binh_luan">
+                                            Bắt đầu từ khoảnh khắc ấy chúng ta đã nhìn thấy 5 trái bóng được xoay cùng 1 lúc
+                                        </div>
+                                    </div>
+                                    <div class="khung_hang_3">
+                                        <div class="like_binh_luan"></div>
+                                        <div class="so_luong_like">8</div>
+                                        <div class="disklike_binh_luan"></div>
+                                        <div class="so_luong_disklike">8</div>
+                                        <div class="phan_hoi_binh_luan">REPLY</div></a>
+
+                                    </div>
+                                    <div class="all_counts_comment_rep">
+                                        <div class="all_counts_comment_rep_left">
+                                            <div class="customs_imgs_rep_comment">
+                                                <img class="details_lerfts icon-sidebar-items_video" alt="" src="~/Client/img/avatar.svg">
+                                            </div>
+                                        </div>
+                                        <div class="all_counts_comment_rep_right">
+                                            <input type="text" class="check_comments" placeholder="Bình Luận" type="text">
+                                            <div class="text__comment_rep_right">
+                                                <button class="check_rep_cancel">CANCEL</button>
+                                                <button class="check_rep_comment" onclick="actions()">REPLY</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="noidung_comment" id="hello_coments">
+                                        <div class="all_counts_comment_left">
+                                            <div class="customs_imgs_comment">
+                                                <img class="details_lerfts icon-sidebar-items_video" alt="" src="~/Client/img/avatar.svg">
+                                            </div>
+                                        </div>
+                                        <div class="all_counts_comment_right">
+                                            <div class="khung_hang_1">
+                                                <div class="ten_tac_gia">phạm nhật</div>
+                                                <div class="thoi_gian_binh_luan">1 day ago</div>
+                                            </div>
+                                            <div class="khung_hang_2">
+                                                <div class="doan_thoi_gian_comment">2:03</div>
+                                                <div class="noi_dung_binh_luan">
+                                                    Bắt đầu từ khoảnh khắc ấy chúng ta đã nhìn thấy 5 trái bóng được xoay cùng 1 lúc
+                                                </div>
+                                            </div>
+                                            <div class="khung_hang_3">
+                                                <div class="like_binh_luan"></div>
+                                                <div class="so_luong_like">8</div>
+                                                <div class="disklike_binh_luan"></div>
+                                                <div class="so_luong_disklike">8</div>
+                                                <div class="phan_hoi_binh_luan">REPLY</div></a>
+
+                                            </div>
+                                            <div class="all_counts_comment_rep">
+                                                <div class="all_counts_comment_rep_left">
+                                                    <div class="customs_imgs_rep_comment">
+                                                        <img class="details_lerfts icon-sidebar-items_video" alt="" src="~/Client/img/avatar.svg">
+                                                    </div>
+                                                </div>
+                                                <div class="all_counts_comment_rep_right">
+                                                    <input type="text" class="check_comments" placeholder="Bình Luận" type="text">
+                                                    <div class="text__comment_rep_right">
+                                                        <button class="check_rep_cancel">CANCEL</button>
+                                                        <button class="check_rep_comment">REPLY</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="content_right">
+                        <a href="detail.html">
+                            <div class="content_right_all">
+                                <div class="content_right_all_left">
+                                    <iframe width="173" height="119" src="https://www.youtube.com/embed/Vno-ZCAvmuA" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                                </div>
+                                <div class="content_right_all_right">
+                                    <div class="content_right_text_video">Sang Miệt Thứ , Chí Thống , Khan 33 Khải , Minh Vui , Hai Nồ.</div>
+                                    <div class="content_right_texts_video">KHƯƠNG DỪA CHANNEL</div>
+                                    <div class="content_right_textss_video">2.500 lượt xem • 24 thg 4, 2021</div>
+                                    
+                                </div>
+                            </div>
+                        </a>
+                        <a href="detail.html">
+                            <div class="content_right_all">
+                                <div class="content_right_all_left">
+                                    <iframe width="173" height="119" src="https://www.youtube.com/embed/Vno-ZCAvmuA" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                                </div>
+                                <div class="content_right_all_right">
+                                    <div class="content_right_text_video">Sang Miệt Thứ , Chí Thống , Khan 33 Khải , Minh Vui , Hai Nồ.</div>
+                                    <div class="content_right_texts_video">KHƯƠNG DỪA CHANNEL</div>
+                                    <div class="content_right_textss_video">2.500 lượt xem • 24 thg 4, 2021</div>
+                                    
+                                </div>
+                            </div>
+                        </a>
+                        <a href="detail.html">
+                            <div class="content_right_all">
+                                <div class="content_right_all_left">
+                                    <iframe width="173" height="119" src="https://www.youtube.com/embed/Vno-ZCAvmuA" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                                </div>
+                                <div class="content_right_all_right">
+                                    <div class="content_right_text_video">Sang Miệt Thứ , Chí Thống , Khan 33 Khải , Minh Vui , Hai Nồ.</div>
+                                    <div class="content_right_texts_video">KHƯƠNG DỪA CHANNEL</div>
+                                    <div class="content_right_textss_video">2.500 lượt xem • 24 thg 4, 2021</div>
+                                    
+                                </div>
+                            </div>
+                        </a>
+                        <a href="detail.html">
+                            <div class="content_right_all">
+                                <div class="content_right_all_left">
+                                    <iframe width="173" height="119" src="https://www.youtube.com/embed/Vno-ZCAvmuA" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                                </div>
+                                <div class="content_right_all_right">
+                                    <div class="content_right_text_video">Sang Miệt Thứ , Chí Thống , Khan 33 Khải , Minh Vui , Hai Nồ.</div>
+                                    <div class="content_right_texts_video">KHƯƠNG DỪA CHANNEL</div>
+                                    <div class="content_right_textss_video">2.500 lượt xem • 24 thg 4, 2021</div>
+                                    
+                                </div>
+                            </div>
+                        </a>
+                        <a href="detail.html">
+                            <div class="content_right_all">
+                                <div class="content_right_all_left">
+                                    <iframe width="173" height="119" src="https://www.youtube.com/embed/Vno-ZCAvmuA" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                                </div>
+                                <div class="content_right_all_right">
+                                    <div class="content_right_text_video">Sang Miệt Thứ , Chí Thống , Khan 33 Khải , Minh Vui , Hai Nồ.</div>
+                                    <div class="content_right_texts_video">KHƯƠNG DỪA CHANNEL</div>
+                                    <div class="content_right_textss_video">2.500 lượt xem • 24 thg 4, 2021</div>
+                                    
+                                </div>
+                            </div>
+                        </a>
+                        <a href="detail.html">
+                            <div class="content_right_all">
+                                <div class="content_right_all_left">
+                                    <iframe width="173" height="119" src="https://www.youtube.com/embed/Vno-ZCAvmuA" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                                </div>
+                                <div class="content_right_all_right">
+                                    <div class="content_right_text_video">Sang Miệt Thứ , Chí Thống , Khan 33 Khải , Minh Vui , Hai Nồ.</div>
+                                    <div class="content_right_texts_video">KHƯƠNG DỪA CHANNEL</div>
+                                    <div class="content_right_textss_video">2.500 lượt xem • 24 thg 4, 2021</div>
+                                    
+                                </div>
+                            </div>
+                        </a>
+                        <a href="detail.html">
+                            <div class="content_right_all">
+                                <div class="content_right_all_left">
+                                    <iframe width="173" height="119" src="https://www.youtube.com/embed/Vno-ZCAvmuA" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                                </div>
+                                <div class="content_right_all_right">
+                                    <div class="content_right_text_video">Sang Miệt Thứ , Chí Thống , Khan 33 Khải , Minh Vui , Hai Nồ.</div>
+                                    <div class="content_right_texts_video">KHƯƠNG DỪA CHANNEL</div>
+                                    <div class="content_right_textss_video">2.500 lượt xem • 24 thg 4, 2021</div>
+                                    
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="~/Client/js/site.js"></script>
+</body>
+</html>

@@ -14,7 +14,7 @@ using X.PagedList;
 namespace DoanApp.Areas.Administration.Controllers
 {
     [Area("Administration")]
-    public class CategoryController : Controller
+    public class CategoryController : BaseController
     {
         private readonly ICategoryService _categoryService;
         public CategoryController(ICategoryService categoryService)

@@ -16,7 +16,7 @@ namespace DoanApp.Areas.Identity
         public void Configure(IWebHostBuilder builder)
         {
             builder.ConfigureServices((context, services) => {
-                services.AddDefaultIdentity<AppUser>()
+                services.AddIdentity<AppUser,AppRole>()
               .AddEntityFrameworkStores<DpContext>().AddDefaultTokenProviders();
                 services.Configure<IdentityOptions>(options =>
                 {

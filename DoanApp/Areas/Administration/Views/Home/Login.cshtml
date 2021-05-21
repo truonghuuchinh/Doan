@@ -16,58 +16,59 @@
     <!--===============================================================================================-->
     <link rel="stylesheet" type="text/css" href="~/Administration/assets/login/fonts/iconic/css/material-design-iconic-font.min.css">
     <!--===============================================================================================-->
-    <link rel="stylesheet" type="text/css" href="~/Administration/assets/login/vendor/animate/animate.css">
-    <!--===============================================================================================-->
-    <link rel="stylesheet" type="text/css" href="~/Administration/assets/login/vendor/css-hamburgers/hamburgers.min.css">
-    <!--===============================================================================================-->
-    <link rel="stylesheet" type="text/css" href="~/Administration/assets/login/vendor/animsition/css/animsition.min.css">
-    <!--===============================================================================================-->
-    <link rel="stylesheet" type="text/css" href="~/Administration/assets/login/vendor/select2/select2.min.css">
-    <!--===============================================================================================-->
-    <link rel="stylesheet" type="text/css" href="~/Administration/assets/login/vendor/daterangepicker/daterangepicker.css">
-    <!--===============================================================================================-->
+
     <link rel="stylesheet" type="text/css" href="~/Administration/assets/login/css/util.css">
     <link rel="stylesheet" type="text/css" href="~/Administration/assets/login/css/main.css">
-    <!--===============================================================================================-->
 </head>
 <body>
     <div class="limiter">
         <div class="container-login100" style="background-image: url('/Administration/assets/login/images/bg-01.jpg'); ">
             <div class="wrap-login100">
-                <form class="login100-form validate-form">
+                <form class="login100-form validate-form" asp-action="Login" method="post">
+
                     <span class="login100-form-logo">
                         <i class="zmdi zmdi-landscape"></i>
                     </span>
 
                     <span class="login100-form-title p-b-34 p-t-27">
-                        Log in
+                        Đăng nhập Admin
                     </span>
-
-                    <div class="wrap-input100 validate-input" data-validate="Enter username">
-                        <input class="input100" type="text" name="username" placeholder="Username">
+                    <div asp-validation-summary="ModelOnly" class="text-center" style="color:#970715;"></div>
+                    <br />
+                    <div  class="wrap-input100 validate-input" data-validate="Enter username">
+                        <input class="input100" value="@Context.Request.Cookies["userName"]" type="text" id="email" name="Email" placeholder="Username">
                         <span class="focus-input100" data-placeholder="&#xf207;"></span>
-                    </div>
 
-                    <div class="wrap-input100 validate-input" data-validate="Enter password">
-                        <input class="input100" type="password" name="pass" placeholder="Password">
+                    </div>
+                    <span class="text-danger" id="errorEmail"></span>
+                    <div  class="wrap-input100 validate-input" data-validate="Enter password">
+                        <input class="input100"  value="@Context.Request.Cookies["password"]" id="password" type="password" name="PasswordHash" placeholder="Password">
                         <span class="focus-input100" data-placeholder="&#xf191;"></span>
                     </div>
+                    <span class="text-danger" id="errorPassword"></span>
 
                     <div class="contact100-form-checkbox">
-                        <input class="input-checkbox100" id="ckb1" type="checkbox" name="remember-me">
+                        @if (Context.Request.Cookies["userName"] != null)
+                        {
+                            <input checked class="input-checkbox100" id="ckb1" type="checkbox" name="RememberMe">
+                        }
+                        else
+                        {
+                            <input class="input-checkbox100" id="ckb1" type="checkbox" name="RememberMe">
+                        }
                         <label class="label-checkbox100" for="ckb1">
                             Remember me
                         </label>
                     </div>
 
                     <div class="container-login100-form-btn">
-                        <button class="login100-form-btn">
-                            Login
+                        <button style="width:150px;" class="login100-form-btn">
+                            Đăng nhập
                         </button>
                     </div>
 
                     <div class="text-center p-t-90">
-                        <a class="txt1" href="#">
+                        <a class="txt1" id="ForgotPassword">
                             Forgot Password?
                         </a>
                     </div>
@@ -75,26 +76,60 @@
             </div>
         </div>
     </div>
+   @* Modal*@
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog"
+         aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content height_content_user" id="mdcontentUPMT">
 
 
-    <div id="dropDownSelect1"></div>
+                <div class="modal-header-UPMT ">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="ModalTitle">
+                        </h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                </div>
+                <div class="modal-body-UPMT">
+                    <div class="col-lg-1-12 " id="ModalContent">
 
-    <!--===============================================================================================-->
+                    </div>
+                </div>
+
+                @*<div class="modal-footer-UPMT">
+                        <div class="button-footer-UPMT ">
+                            <button type="button" id="btn-cancel-sumitUPMT" class="btn btn-cancel" data-dismiss="modal">Hủy bỏ</button>
+                            <button type="submit" id="btn-add-sumitUPMT_meeting" class="btn tn-add" data-dismiss="modal">Xác nhận</button>
+                        </div>
+                    </div>*@
+            </div>
+        </div>
+    </div>
     <script src="~/Administration/assets/login/vendor/jquery/jquery-3.2.1.min.js"></script>
-    <!--===============================================================================================-->
-    <script src="~/Administration/assets/login/vendor/animsition/js/animsition.min.js"></script>
-    <!--===============================================================================================-->
-    <script src="~/Administration/assets/login/vendor/bootstrap/js/popper.js"></script>
-    <script src="~/Administration/assets/login/vendor/bootstrap/js/bootstrap.min.js"></script>
-    <!--===============================================================================================-->
-    <script src="~/Administration/assets/login/vendor/select2/select2.min.js"></script>
-    <!--===============================================================================================-->
-    <script src="~/Administration/assets/login/vendor/daterangepicker/moment.min.js"></script>
-    <script src="~/Administration/assets/login/vendor/daterangepicker/daterangepicker.js"></script>
-    <!--===============================================================================================-->
-    <script src="~/Administration/assets/login/vendor/countdowntime/countdowntime.js"></script>
-    <!--===============================================================================================-->
-    <script src="~/Administration/assets/loginjs/main.js"></script>
+    <script src="~/js/site.js"></script>
+    <script>
+        $("#ForgotPassword").click(function () {
+            OpenPopUp("Quên mật khẩu", "/Administration/Home/ForgotPassword");
+        });
+        $(".login100-form").submit(function (event) {
 
+            if ($("#email").val() != '' && $("#password").val() != '') {
+                return;
+            } else {
+                if ($("#email").val() == '')
+                    $("#errorEmail").text("Vui lòng nhập Email!");
+                else $("#errorPassword").text("Vui lòng nhập Password!");
+            }
+            event.preventDefault();
+        });
+        $("#email").keypress(function () {
+            $("#errorEmail").text("");
+        });
+        $("#password").keypress(function () {
+            $("#errorPassword").text("");
+        });
+    </script>
 </body>
 </html>

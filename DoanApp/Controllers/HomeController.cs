@@ -26,24 +26,29 @@ namespace DoanApp.Controllers
 {
     public class HomeController : Controller
     {
-        private IUserRoleService _roleService;
+        private readonly IUserService _userService;
         private readonly UserManager<AppUser> _userManager;
         private readonly SignInManager<AppUser> _signInManager;
-        private readonly DpContext _context;
+        static int countLockout = 0;
         public HomeController(UserManager<AppUser> userManager,
-            SignInManager<AppUser> signInManager, DpContext context,
-            IUserRoleService roleService)
+            SignInManager<AppUser> signInManager,
+            IUserService userService
+        )
         {
             _userManager = userManager;
             _signInManager = signInManager;
-            _context = context;
-            _roleService = roleService;
+          
+            _userService = userService;
         }
         public IActionResult Index()
         {
             return View();
         }
         public IActionResult Popular()
+        {
+            return View();
+        }
+        public IActionResult DetailVideo()
         {
             return View();
         }
@@ -62,38 +67,55 @@ namespace DoanApp.Controllers
         }
         public async Task<IActionResult> Login()
         {
+            countLockout = 0;
             ViewBag.Titles = "Đăng nhập";
             //Cleare cookie external to sure clean cookie
             await HttpContext.SignOutAsync(IdentityConstants.ExternalScheme);
             ViewBag.ExternaLogin = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             return View();
         }
+
         [HttpPost]
         public async Task<IActionResult> Login(AppUserRequest model)
         {
-                var result = await _signInManager.PasswordSignInAsync(model.Email, model.PasswordHash, model.RememberMe, lockoutOnFailure: false);
-                if (result.Succeeded)
+           
+         
+            var reusult = await _userService.Login(model);
+            var user = await _userManager.FindByEmailAsync(model.Email);
+                if (reusult)
                 {
-
-                 var user = await _userManager.FindByEmailAsync(model.Email);
-                    UserAuthenticated.Email = user.Email;
-                    UserAuthenticated.LoginExternal = user.LoginExternal;
-                    UserAuthenticated.FirtsName = user.FirtsName;
-                    UserAuthenticated.LastName = user.LastName;
-                    UserAuthenticated.Avartar = user.Avartar;
-                     return RedirectToAction("Index", "Home");
-                }
+                          return RedirectToAction("Index", "Home");
+                 }
                 else
                 {
+               
                     ViewBag.ExternaLogin = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
-                    ModelState.AddModelError(string.Empty, "Sai tài khoản hoặc mật khẩu vui lòng nhập lại!");
-                    return View();
+                    if (user == null)
+                    {
+                        ModelState.AddModelError(string.Empty, "Tài khoản  chưa đăng ký, đăng ký để tiếp tục!");
+                        return View();
+                    }
+                    else
+                    {
+                        countLockout++;
+                        if (countLockout >= 5&&user.LockoutEnabled)
+                        {
+                            await _userService.UpdatLockcout(user);
+                            ModelState.AddModelError(string.Empty, "Tài khoản đã bị khóa" +
+                                " vui lòng liên hệ Admin để được hỗ trợ");
+                            return View();
+                        }
+                        ModelState.AddModelError(string.Empty, "Lưu ý nhập sai 5 lần liên tiếp sẽ khóa tài khoản!");
+                        ModelState.AddModelError(string.Empty, "Sai tài khoản hoặc mật khẩu vui lòng nhập lại!");
+                        return View();
+                    }
+                    
                 }
         }
+
         [HttpPost]
-        public IActionResult ExternalLogin(string provider, string returnUrl = null)
+        public  IActionResult ExternalLogin(string provider, string returnUrl = null)
         {
-             HttpContext.SignOutAsync(IdentityConstants.ExternalScheme);
             var redirectUrl = Url.Action("ExternalCallback");
             var properties = _signInManager.ConfigureExternalAuthenticationProperties(provider, redirectUrl);
             return new ChallengeResult(provider, properties);
@@ -101,49 +123,36 @@ namespace DoanApp.Controllers
 
         public async Task<IActionResult> ExternalCallback()
         {
+            string email = null;
             var info = await _signInManager.GetExternalLoginInfoAsync();
             if (info == null)
             {
                 return RedirectToAction("Login");
             }
+            if (info.LoginProvider == "Facebook")
+                email = info.Principal.Claims.ToArray()[2].Value;
+            else email = info.Principal.Claims.ToArray()[4].Value;
             // Sign in the user with this external login provider if the user already has a login.
-            var result = await _signInManager.ExternalLoginSignInAsync(info.LoginProvider, info.ProviderKey, isPersistent: false, bypassTwoFactor: true);
-            if (result.Succeeded)
+            var users = await _userService.FindUser(email);
+
+            if (users!=null)
             {
+                
+                var addUserAuthenticated = new UserAuthenticated();
+                addUserAuthenticated.checkUserAuthenticated(users);
+                await _signInManager.SignInAsync(users, isPersistent: false, info.LoginProvider);
                 return RedirectToAction("Index");
             }
             else
             {
-                var userLogin = new AppUser();
-                if (info.Principal.HasClaim(c => c.Type == ClaimTypes.Email))
-                {
-                    userLogin.Email = info.Principal.FindFirstValue(ClaimTypes.Email);
-                }
-                if(info.Principal.HasClaim(c=>c.Type== "picture"))
-                    userLogin.Avartar= info.Principal.FindFirstValue("picture");
-                if (info.LoginProvider == "Facebook")
-                {
-                    userLogin.LastName = info.Principal.Claims.ToArray()[4].Value;
-                    userLogin.FirtsName = info.Principal.Claims.ToArray()[5].Value;
-                }
-                else
-                {
-                    userLogin.LastName = info.Principal.Claims.ToArray()[2].Value;
-                    userLogin.FirtsName = info.Principal.Claims.ToArray()[3].Value;
-                }
-                var user = new AppUser { UserName = userLogin.Email, 
-                    Email = userLogin.Email,FirtsName=userLogin.FirtsName,LastName=userLogin.LastName,
-                Avartar=userLogin.Avartar,LoginExternal=true};
+                var user = _userService.SetAttributeUser(info).Result;
                 var result1 = await _userManager.CreateAsync(user);
                 if (result1.Succeeded)
                 {
-                    var result2 = await _userManager.AddLoginAsync(user, info);
-                    if (result2.Succeeded)
-                    {
+                   
                         GenerationTokenEmail(user, ConfirmEmailAccount.External.ToString());
-                        await _signInManager.SignInAsync(user, isPersistent: false, info.LoginProvider);
+                        await _signInManager.SignInAsync(user, isPersistent: false);
                         return Redirect("EmailVerification");
-                    }
                 }
             }
             return View();
@@ -156,33 +165,16 @@ namespace DoanApp.Controllers
         [HttpPost]
         public async Task<IActionResult> Register(AppUserRequest model,IFormFile avartarFile)
         {
+            
             if (ModelState.IsValid)
             {
-                var user = new AppUser { UserName = model.Email, 
-                    Email = model.Email,FirtsName=model.FirtsName,LastName=model.LastName};
-                var result = await _userManager.CreateAsync(user, model.PasswordHash);
-                if (result.Succeeded)
-                {
-                    var findUser =await  _userManager.FindByEmailAsync(model.Email);
-                    if (avartarFile == null) findUser.Avartar = "avartarDefault.png";
-                    else
+                    if (_userService.Register(model,avartarFile).Result)
                     {
-                        findUser.Avartar = findUser.Id.ToString() + "." + avartarFile.FileName.Split('.')[1];
-                        using (var fileStream = new FileStream(Path.Combine("wwwroot" + "/Client/avartar", findUser.Avartar),
-                            FileMode.Create, FileAccess.Write))
-                        {
-                            avartarFile.CopyTo(fileStream);
-                        }
-                    }
-                    var resultUpdate=await _userManager.UpdateAsync(findUser);
-                    if (resultUpdate.Succeeded)
-                    {
-                        //generation token email
-                        GenerationTokenEmail(user, ConfirmEmailAccount.Register.ToString());
+                             var user = await _userService.FindUser(model.Email);
+                    //generation token email
+                          GenerationTokenEmail(user, ConfirmEmailAccount.Register.ToString());
                         return Redirect("EmailVerification");
                     }
-                }
-
             }
             ModelState.AddModelError("Lỗi", "Đăng ký không thành công");
             return View();
@@ -195,33 +187,17 @@ namespace DoanApp.Controllers
             var link = "";
             if (checkConirm.Contains("External"))
             {
-                link = Url.Action(nameof(VerifyEmail), "Home", new { userId = user.Id, token, check = 1 }, Request.Scheme);
+                link = Url.Action("VerifyEmail", "Home", new { userId = user.Id, token, check = 1 }, Request.Scheme);
             }
             if (checkConirm.Contains("Register"))
             {
-                link = Url.Action(nameof(VerifyEmail), "Home", new { userId = user.Id, token, check = 2 }, Request.Scheme);
+                link = Url.Action("VerifyEmail", "Home", new { userId = user.Id, token, check = 2 }, Request.Scheme);
             }
             if (checkConirm.Contains("ForgotPassword"))
             {
-                link = Url.Action(nameof(VerifyEmail), "Home", new { userId = user.Id, token, check = 3 }, Request.Scheme);
+                link = Url.Action("VerifyEmail", "Home", new { userId = user.Id, token, check = 3 }, Request.Scheme);
             }
-            var message = new MimeMessage();
-            message.From.Add(new MailboxAddress("Confirm Email", "khleson79929@gmail.com"));
-            message.To.Add(new MailboxAddress("test", user.Email));
-            message.Subject = "Confirm Email Register";
-
-            message.Body = new TextPart(MimeKit.Text.TextFormat.Html)
-            {
-                Text = "<a href=\"" + link + "\">Please click to confirm email</a>"
-            };
-            using (var client = new SmtpClient())
-            {
-                client.Connect("smtp.gmail.com", 587, false);
-                client.Authenticate("khleson79929@gmail.com", "phlakkmxjeceukbu");
-                client.Send(message);
-                client.Disconnect(true);
-            }
-
+            _userService.SendEmail(user, link);
         }
         
         public async Task<IActionResult> VerifyEmail(string userId, string token, int check)
@@ -234,10 +210,13 @@ namespace DoanApp.Controllers
             {
                 if (check == 1 || check == 2)
                 {
-                    var roleRequest = new UserRoleRequest("User",user.Id);
-                    await _roleService.Create(roleRequest);
+                    //Check user authenticated
+                    var addUserAuthenticated = new UserAuthenticated();
+                    addUserAuthenticated.checkUserAuthenticated(user);
+                    //--- end
                     ViewBag.Flag = true;
-                    await _signInManager.SignInAsync(user, isPersistent: true);
+                    ViewBag.InfoUserLogin = user;
+                    await _signInManager.SignInAsync(user, isPersistent: false);
                     return View();
                 }
                 if (check == 3)
@@ -254,7 +233,7 @@ namespace DoanApp.Controllers
             return JsonConvert.SerializeObject(user.Result);
         }
         [HttpPost]
-        public IActionResult ConfirmPassword(AppUserRequest userRequest)
+        public IActionResult ConfirmPassword(AppUser userRequest)
         {
             var user = new AppUser();
            
@@ -271,22 +250,21 @@ namespace DoanApp.Controllers
             return BadRequest();
         }
         [HttpPost]
-        public async Task<IActionResult> UpdatePassword(AppUserRequest userRequest)
+        public async Task<IActionResult> UpdatePassword(AppUser userRequest)
         {
             if (ModelState.IsValid)
             {
-
-                var user = await _userManager.FindByEmailAsync(userRequest.Email);
-                var removeResult = await _userManager.RemovePasswordAsync(user);
-                if (removeResult.Succeeded)
-                {
-                    var resultUpdate = await _userManager.AddPasswordAsync(user,userRequest.PasswordHash);
-                    if (resultUpdate.Succeeded)
+                    if(await _userService.Update(userRequest))
                     {
+                    var user =await _userService.FindUser(userRequest.Email);
                         await _signInManager.SignInAsync(user, isPersistent: true);
+                        ViewBag.InfoUserLogin = user;
+                        //Check user authenticated
+                        var addUserAuthenticated = new UserAuthenticated();
+                        addUserAuthenticated.checkUserAuthenticated(user);
+                        //----end
                         return Redirect("Index");
                     }
-                }
             }
             ModelState.AddModelError("", "Cập nhật không thành công");
             ViewBag.Flag = false;
