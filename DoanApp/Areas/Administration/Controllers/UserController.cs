@@ -6,12 +6,16 @@ using System.Threading.Tasks;
 
 namespace DoanApp.Areas.Administration.Controllers
 {
-    [Area("Administration")]
-    public class UserController : Controller
+    public class UserController : BaseController
     {
-        public IActionResult InforUser()
+        [Area("Administration")]
+        public IActionResult Index()
         {
             @ViewBag.TitlePage = "Thông tin tài khoản";
+            return View();
+        }
+        public IActionResult InforUser()
+        {
             return View();
         }
     }

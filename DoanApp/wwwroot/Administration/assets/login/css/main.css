@@ -41,6 +41,11 @@ body, html {
 	height: 100%;
 	font-family: Poppins-Regular, sans-serif;
 }
+/*-----------------------------Model content------------------------*/
+#ModalContent{
+	height:auto;
+	
+}
 
 /*---------------------------------------------*/
 a {
@@ -51,8 +56,8 @@ a {
 	margin: 0px;
 	transition: all 0.4s;
 	-webkit-transition: all 0.4s;
-  -o-transition: all 0.4s;
-  -moz-transition: all 0.4s;
+	-o-transition: all 0.4s;
+	-moz-transition: all 0.4s;
 }
 
 a:focus {
@@ -322,10 +327,16 @@ iframe {
 .input100:focus + .focus-input100::before {
   width: 100%;
 }
-
+.validate-input{
+	margin-bottom:0px !important;
+	margin-top:20px !important;
+}
+.contact100-form-checkbox{
+	margin-top:20px;
+}
 .has-val.input100 + .focus-input100::after {
-  top: -22px;
-  font-size: 18px;
+	top: -22px;
+	font-size: 18px;
 }
 
 .has-val.input100 + .focus-input100::before {

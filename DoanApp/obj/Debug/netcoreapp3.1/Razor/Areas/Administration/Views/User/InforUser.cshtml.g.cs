@@ -28,13 +28,20 @@ using DoanApp.Models;
 #nullable disable
 #nullable restore
 #line 3 "E:\HK5\Prepare Project Last Semester\DoanTotNghiep\DoanApp\Areas\Administration\Views\_ViewImports.cshtml"
+using DoanApp.Commons;
+
+#line default
+#line hidden
+#nullable disable
+#nullable restore
+#line 4 "E:\HK5\Prepare Project Last Semester\DoanTotNghiep\DoanApp\Areas\Administration\Views\_ViewImports.cshtml"
 using DoanData.Models;
 
 #line default
 #line hidden
 #nullable disable
     [global::Microsoft.AspNetCore.Razor.Hosting.RazorSourceChecksumAttribute(@"SHA1", @"ce2f7a743cd117e19a5fd24dd067c2f83859c9a8", @"/Areas/Administration/Views/User/InforUser.cshtml")]
-    [global::Microsoft.AspNetCore.Razor.Hosting.RazorSourceChecksumAttribute(@"SHA1", @"ab395a05fc1c45813e520392b0915e7416e797f4", @"/Areas/Administration/Views/_ViewImports.cshtml")]
+    [global::Microsoft.AspNetCore.Razor.Hosting.RazorSourceChecksumAttribute(@"SHA1", @"08817aeba715938e9c06f50867c02d7ce885c369", @"/Areas/Administration/Views/_ViewImports.cshtml")]
     public class Areas_Administration_Views_User_InforUser : global::Microsoft.AspNetCore.Mvc.Razor.RazorPage<dynamic>
     {
         private static readonly global::Microsoft.AspNetCore.Razor.TagHelpers.TagHelperAttribute __tagHelperAttribute_0 = new global::Microsoft.AspNetCore.Razor.TagHelpers.TagHelperAttribute("class", new global::Microsoft.AspNetCore.Html.HtmlString("imageActive"), global::Microsoft.AspNetCore.Razor.TagHelpers.HtmlAttributeValueStyle.DoubleQuotes);
@@ -81,7 +88,7 @@ using DoanData.Models;
         public async override global::System.Threading.Tasks.Task ExecuteAsync()
         {
             WriteLiteral("\r\n  \r\n    ");
-            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("form", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "ce2f7a743cd117e19a5fd24dd067c2f83859c9a89934", async() => {
+            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("form", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "ce2f7a743cd117e19a5fd24dd067c2f83859c9a810144", async() => {
                 WriteLiteral(@"
         <div class=""container-fluid "" style=""min-height: 740px;"">
             <div class=""row"">
@@ -101,7 +108,7 @@ using DoanData.Models;
                 BeginWriteAttribute("id", " id=\"", 961, "\"", 966, 0);
                 EndWriteAttribute();
                 WriteLiteral(" class=\"btn btn-success btnActive\" href=\"#\" role=\"button\">\r\n                                    <div id=\"textActive\">\r\n                                        ");
-                __tagHelperExecutionContext = __tagHelperScopeManager.Begin("img", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagOnly, "ce2f7a743cd117e19a5fd24dd067c2f83859c9a811502", async() => {
+                __tagHelperExecutionContext = __tagHelperScopeManager.Begin("img", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagOnly, "ce2f7a743cd117e19a5fd24dd067c2f83859c9a811713", async() => {
                 }
                 );
                 __Microsoft_AspNetCore_Mvc_Razor_TagHelpers_UrlResolutionTagHelper = CreateTagHelper<global::Microsoft.AspNetCore.Mvc.Razor.TagHelpers.UrlResolutionTagHelper>();
@@ -172,7 +179,7 @@ using DoanData.Models;
                                 <input type=""file"" id=""uploadFile"" hidden />
                                 <label id=""label__upload"" class=""uploadTitle"" for=""uploadFile"">
                                     ");
-                __tagHelperExecutionContext = __tagHelperScopeManager.Begin("img", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagOnly, "ce2f7a743cd117e19a5fd24dd067c2f83859c9a816095", async() => {
+                __tagHelperExecutionContext = __tagHelperScopeManager.Begin("img", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagOnly, "ce2f7a743cd117e19a5fd24dd067c2f83859c9a816306", async() => {
                 }
                 );
                 __Microsoft_AspNetCore_Mvc_Razor_TagHelpers_UrlResolutionTagHelper = CreateTagHelper<global::Microsoft.AspNetCore.Mvc.Razor.TagHelpers.UrlResolutionTagHelper>();
@@ -193,7 +200,7 @@ using DoanData.Models;
                                 <button type=""button"" class=""close__upload-file""
                                         onclick=""close__uploaded()"">
                                     ");
-                __tagHelperExecutionContext = __tagHelperScopeManager.Begin("img", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagOnly, "ce2f7a743cd117e19a5fd24dd067c2f83859c9a817645", async() => {
+                __tagHelperExecutionContext = __tagHelperScopeManager.Begin("img", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagOnly, "ce2f7a743cd117e19a5fd24dd067c2f83859c9a817856", async() => {
                 }
                 );
                 __Microsoft_AspNetCore_Mvc_Razor_TagHelpers_UrlResolutionTagHelper = CreateTagHelper<global::Microsoft.AspNetCore.Mvc.Razor.TagHelpers.UrlResolutionTagHelper>();
@@ -254,7 +261,7 @@ using DoanData.Models;
                             <div class=""row col-sm-8 form-group right-addon position-relative input__change__password"">
                                 <div class=""password__block"">
                                     ");
-                __tagHelperExecutionContext = __tagHelperScopeManager.Begin("img", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagOnly, "ce2f7a743cd117e19a5fd24dd067c2f83859c9a821663", async() => {
+                __tagHelperExecutionContext = __tagHelperScopeManager.Begin("img", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagOnly, "ce2f7a743cd117e19a5fd24dd067c2f83859c9a821874", async() => {
                 }
                 );
                 __Microsoft_AspNetCore_Mvc_Razor_TagHelpers_UrlResolutionTagHelper = CreateTagHelper<global::Microsoft.AspNetCore.Mvc.Razor.TagHelpers.UrlResolutionTagHelper>();
@@ -288,7 +295,7 @@ using DoanData.Models;
                     <label class=""editImage"" id=""previewImage"" ;
                            style=""background-image:url(/Administration/assets/img/Group.svg)"" ; for=""uploadImage"">
                         ");
-                __tagHelperExecutionContext = __tagHelperScopeManager.Begin("img", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagOnly, "ce2f7a743cd117e19a5fd24dd067c2f83859c9a824108", async() => {
+                __tagHelperExecutionContext = __tagHelperScopeManager.Begin("img", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagOnly, "ce2f7a743cd117e19a5fd24dd067c2f83859c9a824319", async() => {
                 }
                 );
                 __Microsoft_AspNetCore_Mvc_Razor_TagHelpers_UrlResolutionTagHelper = CreateTagHelper<global::Microsoft.AspNetCore.Mvc.Razor.TagHelpers.UrlResolutionTagHelper>();

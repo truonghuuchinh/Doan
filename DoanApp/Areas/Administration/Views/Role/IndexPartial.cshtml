@@ -1,0 +1,123 @@
+﻿@model IPagedList<DoanData.Models.AppRole>
+@using X.PagedList;
+@using X.PagedList.Mvc.Core;
+@{
+    int count = 0;
+    int totalUser = ViewBag.ListUser.Count;
+    Layout = null;
+}
+
+<style>
+    #nameSearch {
+        width: 800px;
+    }
+</style>
+<div class="filter">
+    <div class="title-filter">Tìm kiếm</div>
+    <div class="btn-filter d-flex justify-content-between" style="padding: 0px 11px 10px 10px">
+        <div class="col">
+            <input id="nameSearch" placeholder="Nhập tên đầy đủ" type="text" name="name"
+                   class="form-control d-inline rounded-0 ">
+            <button class="btn btn-search text-white rounded-0 p-0 text-left col-2" id="btnSearch">
+                <img class="icon-search" alt="" src="~/Administration/assets/img/Search.svg">
+                <span class="header-text-site-layout">TÌM KIẾM</span>
+            </button>
+            <button class="btn btn-reset" style="padding-left: 0.5rem" id="reload">
+                <img class="icon-reset" alt="" src="~/Administration/assets/img/Reset.svg">
+            </button>
+            <span class="text-danger" id="errorName"></span>
+        </div>
+        <div class="">
+            <button type="button" class="btn btn-add text-white rounded-0 p-0 text-left" id="showCreate">
+                <img class="icon-add" alt="" src="~/Administration/assets/img/ic_add.svg">
+                <span class="header-text-site-layout">THÊM MỚI</span>
+            </button>
+        </div>
+    </div>
+</div>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Tên Vai trò
+            </th>
+            <th>
+                User
+            </th>
+           
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @(count<totalUser? ViewBag.ListUser[count]:"không có User")
+                </td>
+                <td class="function_meeting">
+                    <div class="functions_meeting__mes" onclick="editFunction(@item.Id)">
+
+                        <a class="functions_meeting__mes__btn">
+                            <i class="fa fa-edit"></i>
+                        </a>
+
+                    </div>
+                    <div class="functions_meeting__mes" onclick="deleteFunction(@item.Id)">
+                        <a class="functions_meeting__mes__btns" id="Delete">
+                            <i class="fa fa-trash"></i>
+                        </a>
+                    </div>
+                </td>
+            </tr>
+            count++;
+        }
+    </tbody>
+</table>
+<div id="contentPager">
+    Trang @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) / @Model.PageCount
+    @Html.PagedListPager(Model, page => Url.Action("IndexPartial", new { page }))
+</div>
+<script>
+    $("#showCreate").click(function () {
+        OpenPopUp("Thêm Vai trò", "/Administration/Role/Create");
+    });
+    function editFunction(id) {
+        OpenPopUp("Cập nhật Vai trò", "/Administration/Role/Update/?Id=" + id);
+    }
+    function deleteFunction(id) {
+        var isDelete = confirm("Bạn có chắc muốn xóa phần tử này");
+        if (isDelete) {
+            replaceBody("/Administration/Role/Delete/?id=" + id);
+        }
+    }
+    $("#reload").click(function () {
+        location.reload();
+    });
+    $("#btnSearch").click(function () {
+        var namesearch = $("#nameSearch").val();
+        if (namesearch == '')
+            $("#errorName").text("Vui lòng nhập tên tìm kiếm");
+        else {
+            $("#errorName").text('');
+            replaceBody("/Administration/Role/IndexPartial/?name=" + namesearch);
+        }
+
+    });
+    function replaceBody(url) {
+        $.get(url, function (respone) {
+
+            if (respone == "Success") {
+                $.get("/Administration/Role/IndexPartial", function (result) {
+                    $("#contents").html(result);
+                });
+
+            } else {
+                $("#contents").html(respone);
+            }
+        });
+    }
+</script>

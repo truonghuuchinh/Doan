@@ -47,6 +47,5 @@ namespace DoanData.DoanContext
         public DbSet<PlayList> PlayList { get; set; }
         public DbSet<ReportVideo> ReportVideo { get; set; }
         public DbSet<Video> Video { get; set; }
-        public DbSet<UserRole> UserRole{ get; set; }
     }
 }
