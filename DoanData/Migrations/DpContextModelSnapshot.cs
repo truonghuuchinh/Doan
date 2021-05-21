@@ -393,29 +393,6 @@ namespace DoanData.Migrations
                     b.ToTable("ReportVideo");
                 });
 
-            modelBuilder.Entity("DoanData.Models.UserRole", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("RoleName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("appUserId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("appUserId");
-
-                    b.ToTable("UserRole");
-                });
-
             modelBuilder.Entity("DoanData.Models.Video", b =>
                 {
                     b.Property<int>("Id")
@@ -450,6 +427,9 @@ namespace DoanData.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PosterImg")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("Status")
@@ -670,13 +650,6 @@ namespace DoanData.Migrations
                         .HasForeignKey("VideoId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("DoanData.Models.UserRole", b =>
-                {
-                    b.HasOne("DoanData.Models.AppUser", "appUser")
-                        .WithMany("UserRoles")
-                        .HasForeignKey("appUserId");
                 });
 
             modelBuilder.Entity("DoanData.Models.Video", b =>

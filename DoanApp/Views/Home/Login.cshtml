@@ -12,11 +12,28 @@
     .card-body{
         text-align:center;
     }
+    .login-card form {
+        max-width: 400px !important;
+    }
     form {
         margin-left: 65px;
     }
+    .form-group{
+        max-width:none !important;
+    }
     #ForgotPassword {
         color: #938b8c;
+
+    }
+    #ForgotPassword:hover {
+        color: dodgerblue;
+        cursor:pointer;
+    }
+    .provider{
+        width:136px !important;
+    }
+    p{
+        width:auto;
     }
 </style>
 <div class="card-body">
@@ -47,12 +64,12 @@
                 {
                     if (dem == 0)
                     {
-                        <button type="submit" class="btn btn-primary" name="provider" 
+                        <button type="submit" class="btn btn-primary provider" name="provider" 
                                 value="@provider.Name" title="Log in using your @provider.DisplayName account"><i class="fab fa-facebook"></i> @provider.DisplayName</button>
                     }
                     else
                     {
-                        <button type="submit" class="btn btn-danger" name="provider" 
+                        <button type="submit" class="btn btn-danger provider" name="provider" 
                                 value="@provider.Name" title="Log in using your @provider.DisplayName account"><i class="fab fa-google"></i>  @provider.DisplayName</button>
                     }
                     dem++;

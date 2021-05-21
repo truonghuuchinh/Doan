@@ -14,6 +14,7 @@ namespace DoanData.Models
         public int ViewCount { get; set; }
         public string CreateDate { get; set; }
         public bool HidenVideo { get; set; }
+        public string PosterImg { get; set; }
         public bool Status { get; set; } = true;
         public int CategorysId { get; set; }
         public virtual Category category { get; set; }

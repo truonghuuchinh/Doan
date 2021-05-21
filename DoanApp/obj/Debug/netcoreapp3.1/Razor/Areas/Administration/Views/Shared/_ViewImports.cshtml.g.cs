@@ -28,6 +28,13 @@ using DoanApp.Models;
 #nullable disable
 #nullable restore
 #line 3 "E:\HK5\Prepare Project Last Semester\DoanTotNghiep\DoanApp\Areas\Administration\Views\_ViewImports.cshtml"
+using DoanApp.Commons;
+
+#line default
+#line hidden
+#nullable disable
+#nullable restore
+#line 4 "E:\HK5\Prepare Project Last Semester\DoanTotNghiep\DoanApp\Areas\Administration\Views\_ViewImports.cshtml"
 using DoanData.Models;
 
 #line default
@@ -48,7 +55,7 @@ using DoanApp.Areas.Identity;
 #line hidden
 #nullable disable
     [global::Microsoft.AspNetCore.Razor.Hosting.RazorSourceChecksumAttribute(@"SHA1", @"296274706a8a9a1275f63426974fdae90a912a8d", @"/Areas/Administration/Views/Shared/_ViewImports.cshtml")]
-    [global::Microsoft.AspNetCore.Razor.Hosting.RazorSourceChecksumAttribute(@"SHA1", @"ab395a05fc1c45813e520392b0915e7416e797f4", @"/Areas/Administration/Views/_ViewImports.cshtml")]
+    [global::Microsoft.AspNetCore.Razor.Hosting.RazorSourceChecksumAttribute(@"SHA1", @"08817aeba715938e9c06f50867c02d7ce885c369", @"/Areas/Administration/Views/_ViewImports.cshtml")]
     public class Areas_Administration_Views_Shared__ViewImports : global::Microsoft.AspNetCore.Mvc.Razor.RazorPage<dynamic>
     {
         #pragma warning disable 1998

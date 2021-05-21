@@ -34,9 +34,15 @@ namespace DoanApp
             builder.AddRazorRuntimeCompilation();
             services.AddControllersWithViews();
             services.AddRazorPages();
-            services.AddDbContext<DpContext>(options=>options.UseSqlServer(Configuration.GetConnectionString("DpContext")), ServiceLifetime.Scoped);
+            services.AddDbContext<DpContext>(options=>options.UseSqlServer(Configuration.GetConnectionString("DpContext")), ServiceLifetime.Transient);
             services.AddTransient<ICategoryService, CategoryService>();
-            services.AddTransient<IUserRoleService, UserRoleService>();
+            services.AddTransient<IUserService, UserService>();
+            services.AddSession(options =>
+            {
+                options.IdleTimeout = TimeSpan.FromMinutes(2);
+                options.Cookie.HttpOnly = true;
+                options.Cookie.IsEssential = true;
+            });
             services.AddAuthentication()
                  .AddFacebook(options =>
                  {
@@ -69,7 +75,9 @@ namespace DoanApp
                          context.Identity.AddClaim(new Claim("picture", picture));
                          return Task.CompletedTask;
                      };
-                 });
+                 })
+                 ;
+            
         }
         [Obsolete]
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -92,7 +100,7 @@ namespace DoanApp
             app.UseRouting();
             app.UseAuthentication();
             app.UseAuthorization();
-
+            app.UseSession();
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapRazorPages();

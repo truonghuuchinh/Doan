@@ -28,6 +28,13 @@ using DoanApp.Models;
 #nullable disable
 #nullable restore
 #line 3 "E:\HK5\Prepare Project Last Semester\DoanTotNghiep\DoanApp\Areas\Administration\Views\_ViewImports.cshtml"
+using DoanApp.Commons;
+
+#line default
+#line hidden
+#nullable disable
+#nullable restore
+#line 4 "E:\HK5\Prepare Project Last Semester\DoanTotNghiep\DoanApp\Areas\Administration\Views\_ViewImports.cshtml"
 using DoanData.Models;
 
 #line default
@@ -48,7 +55,7 @@ using X.PagedList.Mvc.Core;
 #line hidden
 #nullable disable
     [global::Microsoft.AspNetCore.Razor.Hosting.RazorSourceChecksumAttribute(@"SHA1", @"8777a33a56f60e603a0b6c515c67875c771d132d", @"/Areas/Administration/Views/Category/IndexPartial.cshtml")]
-    [global::Microsoft.AspNetCore.Razor.Hosting.RazorSourceChecksumAttribute(@"SHA1", @"ab395a05fc1c45813e520392b0915e7416e797f4", @"/Areas/Administration/Views/_ViewImports.cshtml")]
+    [global::Microsoft.AspNetCore.Razor.Hosting.RazorSourceChecksumAttribute(@"SHA1", @"08817aeba715938e9c06f50867c02d7ce885c369", @"/Areas/Administration/Views/_ViewImports.cshtml")]
     public class Areas_Administration_Views_Category_IndexPartial : global::Microsoft.AspNetCore.Mvc.Razor.RazorPage<IPagedList<Category>>
     {
         private static readonly global::Microsoft.AspNetCore.Razor.TagHelpers.TagHelperAttribute __tagHelperAttribute_0 = new global::Microsoft.AspNetCore.Razor.TagHelpers.TagHelperAttribute("class", new global::Microsoft.AspNetCore.Html.HtmlString("icon-search"), global::Microsoft.AspNetCore.Razor.TagHelpers.HtmlAttributeValueStyle.DoubleQuotes);
@@ -103,7 +110,7 @@ using X.PagedList.Mvc.Core;
                    class=""form-control d-inline rounded-0 "">
             <button class=""btn btn-search text-white rounded-0 p-0 text-left col-2"" id=""btnSearch"">
                 ");
-            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("img", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagOnly, "8777a33a56f60e603a0b6c515c67875c771d132d7264", async() => {
+            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("img", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagOnly, "8777a33a56f60e603a0b6c515c67875c771d132d7474", async() => {
             }
             );
             __Microsoft_AspNetCore_Mvc_Razor_TagHelpers_UrlResolutionTagHelper = CreateTagHelper<global::Microsoft.AspNetCore.Mvc.Razor.TagHelpers.UrlResolutionTagHelper>();
@@ -119,7 +126,7 @@ using X.PagedList.Mvc.Core;
             Write(__tagHelperExecutionContext.Output);
             __tagHelperExecutionContext = __tagHelperScopeManager.End();
             WriteLiteral("\r\n                <span class=\"header-text-site-layout\">TÌM KIẾM</span>\r\n            </button>\r\n            <button class=\"btn btn-reset\" style=\"padding-left: 0.5rem\" id=\"reload\">\r\n                ");
-            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("img", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagOnly, "8777a33a56f60e603a0b6c515c67875c771d132d8670", async() => {
+            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("img", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagOnly, "8777a33a56f60e603a0b6c515c67875c771d132d8880", async() => {
             }
             );
             __Microsoft_AspNetCore_Mvc_Razor_TagHelpers_UrlResolutionTagHelper = CreateTagHelper<global::Microsoft.AspNetCore.Mvc.Razor.TagHelpers.UrlResolutionTagHelper>();
@@ -138,7 +145,7 @@ using X.PagedList.Mvc.Core;
             BeginWriteAttribute("class", " class=\"", 1100, "\"", 1108, 0);
             EndWriteAttribute();
             WriteLiteral(">\r\n            <button type=\"button\" class=\"btn btn-add text-white rounded-0 p-0 text-left\" id=\"showCreate\">\r\n                ");
-            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("img", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagOnly, "8777a33a56f60e603a0b6c515c67875c771d132d10268", async() => {
+            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("img", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagOnly, "8777a33a56f60e603a0b6c515c67875c771d132d10478", async() => {
             }
             );
             __Microsoft_AspNetCore_Mvc_Razor_TagHelpers_UrlResolutionTagHelper = CreateTagHelper<global::Microsoft.AspNetCore.Mvc.Razor.TagHelpers.UrlResolutionTagHelper>();
