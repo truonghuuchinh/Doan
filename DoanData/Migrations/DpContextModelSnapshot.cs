@@ -189,6 +189,9 @@ namespace DoanData.Migrations
                     b.Property<int>("Like")
                         .HasColumnType("int");
 
+                    b.Property<string>("ReplyFor")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<bool>("Status")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bit")

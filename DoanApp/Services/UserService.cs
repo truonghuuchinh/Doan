@@ -5,6 +5,7 @@ using DoanData.Models;
 using MailKit.Net.Smtp;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using MimeKit;
 using System;
 using System.Collections.Generic;
@@ -31,6 +32,11 @@ namespace DoanApp.Services
         public async Task<AppUser> FindUser(string email)
         {
             return await _userManager.FindByEmailAsync(email);
+        }
+
+        public  List<AppUser> GetAll()
+        {
+            return  _context.AppUser.ToList();
         }
 
         public async Task<bool> Login(AppUserRequest model)
@@ -91,7 +97,7 @@ namespace DoanApp.Services
             };
             using (var client = new SmtpClient())
             {
-                client.Connect("smtp.gmail.com", 587, false);
+                client.Connect("smtp.gmail.com", 465, true);
                 client.Authenticate("khleson79929@gmail.com", "phlakkmxjeceukbu");
                 client.Send(message);
                 client.Disconnect(true);
