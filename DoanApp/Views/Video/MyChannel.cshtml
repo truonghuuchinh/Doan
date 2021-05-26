@@ -1,0 +1,376 @@
+﻿@model IPagedList<Video>
+@using X.PagedList;
+<div class="col site-layout">
+    <div class="noidung_kenh">
+        <div class="text__noidung_kenh">Nội dung của kênh</div>
+        <div class="video_tai__len">Video tải lên </div>
+    </div>
+    <div class="kengang_video_noidung"></div>
+    <table class="data-table">
+        <thead>
+            <tr class="data">
+                <th class="check">
+                    <!-- <div class="form-group">
+                        <input type="checkbox" class="custom-control-input_users" id="customCheck4" style="opacity: 0;"
+                        required="">
+                    </div> -->
+                </th>
+                <th class="video">Video</th>
+                <th></th>
+                <th class="chedohienthi">Chế độ hiển thị</th>
+
+                <th class="ngay">Ngày</th>
+                <th class="soluotxem">Số lượt xem</th>
+                <th class="sobinhluan">Số bình luận</th>
+                <th class="luotthich">Lượt thích</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model.Count > 0)
+            {
+                foreach (var item in Model)
+                {
+                    <tr class="datas">
+                        <td class="td_check"><input class="checkbox__label-info" type="checkbox" name="name" value="" /></td>
+                        <td class="td_video">
+                            <div class="img_td_video">
+                                <img src="~/Client/imgPoster/@item.PosterImg" alt="">
+                            </div>
+                            <div class="text_td_video">
+                                <div class="name__text_video">@item.Name</div>
+                                <div class="noidung__text_video">
+                                    @item.Description
+                                </div>
+                            </div>
+                        </td>
+                        <td class="optionVideo">
+                            <div class="dropdown">
+                                <img class="icon-more" src="~/Client/img/more.png" alt="Alternate Text" />
+                                <div class="contentEdit">
+                                    <div class="option"><i class="fas fa-pencil-alt"></i>      Chỉnh sửa tiêu đề và thông tin mô tả</div>
+                                    <div class="option"><i class="fas fa-file-download"></i>      Tải xuống</div>
+                                    <div class="option"><i class="fas fa-trash"></i>      Xóa vĩnh viễn</div>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="td_chedohienthi">
+                            <div class="all_td_chedohienthi" data-toggle="modal" data-target="#td_hienthi">
+                                <div class="img_td_chedohienthi">
+                                    <div class="imges_td_chedohienthi_an"></div>
+                                </div>
+                                <div class="text_td_chedohienthi">
+                                    Công khai
+                                </div>
+                                <div class="img_xungduoi_td_chedohienthi">
+                                    <div class="imges_td_chedohienthi"></div>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="td_ngay">
+                            <div class="all_td_ngay">
+                                <div class="time_td_ngay">@item.CreateDate.Split('|')[0]</div>
+                            </div>
+                        </td>
+                        <td class="td_soluotxem">
+                            <div class="count_td_soluotxem">@item.ViewCount</div>
+                        </td>
+                        <td class="td_sobinhluan">
+                            <div class="count_td_sobinhluan">9</div>
+                        </td>
+                        <td class="td_aluotthich">
+                            <div class="all_td_luotthich">
+                                <div class="cout_td__luotthich">@item.Like</div>
+                                <div class="soluong_td_luotthich">lượt thích</div>
+                                <div class="kengang_td_luotthich"></div>
+                            </div>
+                        </td>
+                    </tr>
+
+                }
+            }
+
+            else
+            {
+                
+                    <div class="noVideo">
+                        <img src="~/Client/img/imgUpload.PNG" alt="Alternate Text" />
+                        <p>Không có nội dung</p>
+                        <button class="btn btn-primary" data-toggle="modal" data-target="#click_video_create">Tải video Lên</button>
+                    </div>
+                
+               
+            }
+
+        </tbody>
+    </table>
+</div>
+
+
+
+<div class="modal" id="click_video_create" data-backdrop="static">
+    <div class="modal-dialog_create modal-dialog-centered_create">
+        <div class="modal-content_create">
+            <div class="modal_checkout_user">
+                <div class="name_create_video">Tải video lên</div>
+                <div class="down_create_video">
+                    <div class="click_down_create hover" data-dismiss="modal">X</div>
+                </div>
+            </div>
+            <div class="ke_ngang_create_video"></div>
+            <div class="khunganh_create">
+                <div class="img__khunganh_create"></div>
+            </div>
+            <div class="noidung__create_video">
+                <div class="text_noidung__create_video">Kéo và thả tệp video để tải lên</div>
+                <div class="text_noidung__create_videos">Các video của bạn sẽ ở chế độ riêng tư cho đến khi bạn xuất bản</div>
+            </div>
+            <div class="click_tep_video_up hover ">
+                CHỌN TỆP
+                <input id="inputFile" accept=".mp4" class="file-upload-input form-control hover" type="file"
+                       name="file__upload" />
+            </div>
+            <!-- data-toggle="modal" data-target="#tieude_noidung" -->
+            <div class="banquyen_video">Bạn cần đảm bảo không vi phạm bản quyền hoặc quyền riêng tư của người khác.</div>
+        </div>
+    </div>
+</div>
+
+<div class="modal diia" id="tieude_noidung" data-backdrop="static">
+    <div class="modal-dialog_create modal-dialog-centered_create">
+        <div class="modal-content_create">
+            <div class="modal_checkout_user">
+                <div class="name_create_video">Đăng Video</div>
+                <div class="down_create_video">
+                    <div class="click_down_create hover" data-dismiss="modal">X</div>
+                </div>
+            </div>
+            <div class="ke_ngang_create_video"></div>
+            <div class="all_noidung_tieude">
+                <div class="dis_all_noidung_tieude">
+                    <div class="dis_all_noidung_tieude_left">
+                        <div class="texts_chi_tiet">Chi tiết</div>
+                        <div class="tieude_batbuoc">Tiêu đề bắt buộc (*)</div>
+                        <textarea class="form-control_users_secrearys" rows="3" placeholder="Thêm tiêu đề để mô tả video của bạn" id="titleVideo" style="-webkit-appearance: none;"></textarea>
+                        <span style="margin-left:10px;" class="text-danger" id="errorTitle"></span>
+                        <div class="mota_video_no">Mô tả (?)</div>
+                        <textarea class="form-control_users_secrearys_mota" itemscope rows="5" placeholder="Thêm tiêu đề để mô tả video của bạn" id="descriptionVideo" style="-webkit-appearance: none;"></textarea>
+                        <div class="mota_video_no">Poster Video</div>
+                        <div class="custom-file poster">
+                            <input accept=".png, .jpg, .jpeg" name="posterVideo" type="file" class="custom-file-input" id="posterVideo">
+                            <label class="custom-file-label" id="labelPoster" for="posterVideo">Chọn ảnh Poster</label>
+                            <span style="margin-left:10px;" class="text-danger" id="errorMessage"></span>
+                        </div>
+                    </div>
+                    <div class="dis_all_noidung_tieude_right">
+                        <div class="khung_xuat_viedo">
+                            <div class="khung_video_xuatban">
+                                <video style="height: 192px;" controls="controls" id="video-tag">
+                                    <source id="video-source" type="video/mp4" />
+
+                                </video>
+                            </div>
+
+                            <div class="tentep_file_video">Tên tệp</div>
+                            <textarea readonly class="form-control" rows="1" placeholder="" id="data_meting_tep">
+                            </textarea>
+                            <div style="margin-top:64px;" class="tentep_file_video">Chủ đề Video</div>
+                            <select name="CategorysId" id="CategoryOption" class="form-control" asp-items="ViewBag.Title">
+                            </select>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="tieptuc_chuyentrang" data-toggle="modal" data-target="#chedo_hienthi"><button id="chuyentrang" disabled>Tiếp</button></div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<div class="modal" id="chedo_hienthi">
+    <div class="modal-dialog_create modal-dialog-centered_create">
+        <div class="modal-content_create">
+            <div class="modal_checkout_user">
+                <div class="name_create_video titleVideo">
+                    
+                </div>
+                <div class="down_create_video hover">
+                    <div class="click_down_create" data-dismiss="modal">X</div>
+                </div>
+            </div>
+            <div class="ke_ngang_create_video"></div>
+            <div class="all_noidung_tieude">
+                <form asp-action="Create" asp-controller="Video" id="fSubmitVideo" method="post" enctype="multipart/form-data">
+                    <div class="dis_all_noidung_tieude">
+                        <div class="dis_all_noidung_tieude_left">
+                            <div class="texts_chi_tiet">Chế độ hiển thị</div>
+                            <input id="Name" type="hidden" name="Name" />
+                            <input id="Description" type="hidden" name="Description" />
+                            <input id="PosterVideo" type="file" hidden name="PosterVideo" />
+                            <input id="LinkVideo" type="file" hidden name="LinkVideo" />
+                            <input type="hidden" name="HiddenVideo" id="HiddenVideo" />
+                            <input type="hidden" name="CategorysId" id="CategorysId" />
+                            <div class="khung_bao_chedo">
+                                <div class="form-check checkfrom1" style="padding-left: 0px;">
+                                    <label class="label_Checks">
+                                        
+                                        <span class="checkmark-radio-voting__txtes">
+                                            Lưu hoặc xuất bản
+                                            <div class="text_up_ck">Đặt video ở chết độ <b>công khai</b> hoặc <b>riêng tư</b></div>
+                                        </span>
+                                    </label>
+                                </div>
+                                <div class="form-check checkfrom2">
+                                    <label class="label_Checks privateVideo" >
+                                        <input type="radio"  name="checked1" class="kich_thuoc_check privateVideo">
+                                        <span class="checkmark-radio-voting__txtes">
+                                            Riêng tư
+                                        </span>
+                                        <div class="text_up_rt">Chỉ có bạn được xem video của bạn</div>
+                                    </label>
+                                    <label class="label_Checks publicVideo" >
+                                        <input type="radio"  name="checked1" class="kich_thuoc_check publicVideo">
+                                        <span class="checkmark-radio-voting__txtes">
+                                            Công khai
+                                        </span>
+                                        <div class="text_up_rt">Mọi người điều được xem video của bạn</div>
+                                    </label>
+                                </div>
+      
+                            </div>
+
+
+                        </div>
+
+                    </div>
+
+                    <div class="quaylai_mottrang">
+                        <button class="btn btn-primary quaydau_right" ><div class="quaydau_right" data-dismiss="modal">QUAY LẠI</div></button>
+                    </div>
+                    <button class=" createVideo btn btn-primary" type="submit">Tạo</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts{
+    <script>
+
+        let button = document.getElementsByClassName("collapses");
+        for (let i = 0; i < button.length; i++) {
+
+            button[i].addEventListener("click", function () {
+
+                if (button[i].classList.contains("active")) {
+                    button[i].innerHTML = "Xem thêm";
+
+                }
+                else {
+                    button[i].innerHTML = "Ẩn bớt";
+                }
+                this.classList.toggle("active");
+                let content = document.getElementsByClassName("xohangall")[i];
+                if (!content.style.maxHeight) {
+                    content.style.maxHeight = content.scrollHeight + "px";
+                }
+                else {
+                    content.style.maxHeight = null;
+                }
+            })
+        }
+    </script>
+    <script>
+        /*---------------Check file video hoặc ảnh có đúng dịnh dạng hay không-------------*/
+
+        function checkFormatName(event,flag) {
+            var names = event.target.files[0].name.toLowerCase().split(".");
+            var name = names[names.length - 1];
+            if (flag) {
+                if (name == "jpg" || name == "png" || name == "jpeg") {
+                    return true;
+                }
+                else
+                    return false;
+            } else {
+                if (name == "mp4") {
+                    return true;
+                }
+                else
+                    return false;
+            }
+        
+        }
+        //Post Video
+        $("#inputFile").change(function (event) {
+            var name = checkFormatName(event);
+            const videoSrc = document.querySelector("#video-source");
+            const videoTag = document.querySelector("#video-tag");
+            var fileVideo = event.target.files[0];
+        
+            if (event.target.files.length != 0 && fileVideo != undefined) {
+                const sizeVideo = parseInt(fileVideo.size / 1048576);
+                if (sizeVideo > 50) {
+                    alert("Dung lượng file không được vượt quá 50MB")
+                } else {
+                    if (name) {
+                        document.querySelector("#LinkVideo").files = event.target.files;
+                        $("#tieude_noidung").modal("show");
+                        var reader = new FileReader();
+                        reader.onload = (function (e) {
+                            videoSrc.src = e.target.result
+                            $("#data_meting_tep").text(fileVideo.name);
+                            videoTag.load();
+                        }).bind(fileVideo);
+                        reader.readAsDataURL(event.target.files[0]);
+                    }
+                    else alert("Vui lòng chọn đúng dịnh dạng MP4");
+                }
+
+            }
+
+        });
+        //Poster Video
+        $("#posterVideo").change(function (event) {
+       
+            var result = checkFormatName(event, true);
+            $("#errorMessage").text("");
+            $("#labelPoster").text(event.target.files[0].name);
+            if (result) {
+                if ($("#titleVideo").val() != '') {
+                    document.querySelector("#chuyentrang").removeAttribute("disabled");
+                    document.querySelector("#PosterVideo").files = event.target.files;
+                } else {
+                    $("#errorTitle").text("Vui lòng nhập trường này!");
+                }
+            } else {
+                $("#errorMessage").text("Vui lòng nhập đúng định dạng!");
+                document.querySelector("#chuyentrang").setAttribute("disabled","");
+            }
+        });
+        //Title Video
+        $("#titleVideo").change(function () {
+            $(".titleVideo").text($(this).val());
+            $("#Name").val($(this).val());
+            $("#errorTitle").text("");
+            if ($("#errorTitle").text() == '' &&$("#errorMessage").text() == '' && $("#posterVideo").val() != '') {
+                document.querySelector("#chuyentrang").removeAttribute("disabled");
+            }
+        });
+        //Description Video
+        $("#descriptionVideo").change(function () {
+            $("#Description").val($(this).val());
+        });
+        //Checked Private and Public
+        $(".privateVideo").click(function () {
+            $("#HiddenVideo").val("Private");
+            
+        });
+        $(".publicVideo").click(function () {
+            $("#HiddenVideo").val("Public");
+        });
+        $("#CategoryOption").change(function () {
+            $("#CategorysId").val($(this).val());
+            
+        })
+    </script>
+}

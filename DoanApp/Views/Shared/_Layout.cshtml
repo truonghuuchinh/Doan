@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Trang Chủ</title>
     <link rel="stylesheet" href="https://cdn.plyr.io/3.6.2/demo.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w==" crossorigin="anonymous" />
     <link href="~/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="~/Client/css/style.css">
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
@@ -21,41 +22,70 @@
                 </div>
                 <div class="logo"></div>
                 <input id="name" placeholder="Tìm Kiếm" type="text" name="name" class="search">
+                <button type="button" class="search_Voice"> <i class="fas fa-microphone"></i></button>
                 <div class="searchs">
                     <a href="" class="search_sokiuty">
                         <div class="search_sokiuty_img"></div>
                     </a>
                 </div>
+
                 <div class="khoangcach"></div>
                 <div class="loginUser">
-                    @{ 
+                    @{
                         var user = UserAuthenticated.GetUser(User.Identity.Name);
-                        if (User.Identity.IsAuthenticated&&user!=null)
+                        if (User.Identity.IsAuthenticated && user != null)
                         {
-                        <div id="completed_Login">
-                            <div class="create">
+                            <div id="completed_Login">
+                                <div class="create click_create" data-toggle="modal" data-target="#click_video_create">
+                                </div>
+                                <div class="notification"></div>
+                                <div class="account_information">
+                                    <div class="account_informationss" data-toggle="modal" data-target="#leave_the_check_avarta"><img src="@(user.LoginExternal ? user.Avartar : "/Client/avartar/" + user.Avartar)" alt="Alternate Text" /></div>
+                                </div>
                             </div>
-                            <div class="notification"></div>
-                            <div class="account_information">
-                                <div class="account_informationss" data-toggle="modal" data-target="#leave_the_check_avarta"><img src="@(user.LoginExternal ? user.Avartar : "/Client/avartar/" + user.Avartar)" alt="Alternate Text" /></div>
-                            </div>
-                        </div>
-                        @* Modal menu logout*@
-                        <div class="modal" id="leave_the_check_avarta">
-                            <div class="modal-dialog_es">
-                                <div class="modal-content_es">
-                                    <div class="modal_check_fier_all">
-                                        <div class="modal_check__fier__all">
-                                            <div class="avartar_fier_left">
-                                                <img src="@(user.LoginExternal ? user.Avartar : "/Client/avartar/" + user.Avartar)" alt="Alternate Text" />
+                            @* Modal menu logout*@
+                            <div class="modal" id="leave_the_check_avarta">
+                                <div class="modal-dialog_es">
+                                    <div class="modal-content_es">
+                                        <div class="modal_check_fier_all">
+                                            <div class="modal_check__fier__all">
+                                                <div class="avartar_fier_left">
+                                                    <img src="@(user.LoginExternal ? user.Avartar : "/Client/avartar/" + user.Avartar)" alt="Alternate Text" />
+                                                </div>
+                                                <div class="avartar_fier_right">
+                                                    <div class="name__avartar_fier_right">@(user.FirtsName + " " + user.LastName)</div>
+                                                    <div class="email__avartar_fier_right">@(user.Email)</div>
+                                                </div>
                                             </div>
-                                            <div class="avartar_fier_right">
-                                                <div class="name__avartar_fier_right">@(user.FirtsName + " " + user.LastName)</div>
-                                                <div class="email__avartar_fier_right">@(user.Email)</div>
+                                            <div class="ke_ngang_fier"></div>
+                                            <a href="kenhcuaban.html">
+                                                <div class="modal_check_function_fier">
+                                                    <div class="modal_check_function_fier_left">
+                                                        <div class="khung_function_fier_img">
+                                                            <div class="img_kenhdangky"></div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="modal_check_function_fier_right">
+                                                        <div class="text_modal_check_function_fier">Kênh của bạn</div>
+                                                    </div>
+                                                </div>
+                                            </a>
+                                            <div class="modal_check_function_fier">
+                                                <div class="modal_check_function_fier_left">
+                                                    <div class="khung_function_fier_img">
+                                                        <div class="img_Logout"></div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="modal_check_function_fier_right">
+                                                    <a asp-action="Logout" asp-controller="Home">
+                                                        <div class="text_modal_check_function_fier">Đăng xuất</div>
+                                                    </a>
+                                                </div>
+
+
                                             </div>
-                                        </div>
-                                        <div class="ke_ngang_fier"></div>
-                                        <a href="kenhcuaban.html">
+                                            <div class="ke_ngang_fier"></div>
                                             <div class="modal_check_function_fier">
                                                 <div class="modal_check_function_fier_left">
                                                     <div class="khung_function_fier_img">
@@ -63,53 +93,26 @@
                                                     </div>
                                                 </div>
                                                 <div class="modal_check_function_fier_right">
-                                                    <div class="text_modal_check_function_fier">Kênh của bạn</div>
+                                                    <div class="text_modal_check_function_fier">Giao diện: Giao diện ...</div>
                                                 </div>
-                                            </div>
-                                        </a>
-                                        <div class="modal_check_function_fier">
-                                            <div class="modal_check_function_fier_left">
-                                                <div class="khung_function_fier_img">
-                                                    <div class="img_Logout"></div>
-                                                </div>
-                                            </div>
-
-                                            <div class="modal_check_function_fier_right">
-                                                <a asp-action="Logout" asp-controller="Home">
-                                                    <div class="text_modal_check_function_fier">Đăng xuất</div>
-                                                </a>
-                                            </div>
-
-
-                                        </div>
-                                        <div class="ke_ngang_fier"></div>
-                                        <div class="modal_check_function_fier">
-                                            <div class="modal_check_function_fier_left">
-                                                <div class="khung_function_fier_img">
-                                                    <div class="img_kenhdangky"></div>
-                                                </div>
-                                            </div>
-                                            <div class="modal_check_function_fier_right">
-                                                <div class="text_modal_check_function_fier">Giao diện: Giao diện ...</div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
                         }
                         else
                         {
-                        <div id="no_Login" class="list_dangnhap_header" data-toggle="modal" data-target="#leave_the_room">
-                            <a asp-action="Login" asp-controller="Home">
-                                <div class="list_dangnhap_left">
-                                    <div class="img_list_dangnhap"></div>
-                                </div>
-                                <div class="list_dangnhap_right">ĐĂNG NHẬP</div>
-                            </a>
-                        </div>
-                            }
+                            <div id="no_Login" class="list_dangnhap_header" data-toggle="modal" data-target="#leave_the_room">
+                                <a asp-action="Login" asp-controller="Home">
+                                    <div class="list_dangnhap_left">
+                                        <div class="img_list_dangnhap"></div>
+                                    </div>
+                                    <div class="list_dangnhap_right">ĐĂNG NHẬP</div>
+                                </a>
+                            </div>
                         }
+                    }
                 </div>
             </div>
         </div>

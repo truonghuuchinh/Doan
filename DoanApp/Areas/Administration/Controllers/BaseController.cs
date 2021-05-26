@@ -1,4 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using DoanApp.Services;
+using DoanData.Models;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.AspNetCore.Routing;
 using System;
@@ -10,10 +13,12 @@ namespace DoanApp.Areas.Administration.Controllers
 {
     public class BaseController : Controller
     {
+       
         public override void OnActionExecuting(ActionExecutingContext context)
         {
             if (User.Identity.IsAuthenticated)
             {
+              
                 if (!User.IsInRole("Admin"))
                 {
                     context.Result = new RedirectToRouteResult(new

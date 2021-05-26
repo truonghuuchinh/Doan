@@ -37,6 +37,8 @@ namespace DoanApp
             services.AddDbContext<DpContext>(options=>options.UseSqlServer(Configuration.GetConnectionString("DpContext")), ServiceLifetime.Transient);
             services.AddTransient<ICategoryService, CategoryService>();
             services.AddTransient<IUserService, UserService>();
+            services.AddTransient<IVideoService, VideoService>();
+            services.AddTransient<ICommentService, CommentService>();
             services.AddSession(options =>
             {
                 options.IdleTimeout = TimeSpan.FromMinutes(2);
