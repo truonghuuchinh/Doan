@@ -12,6 +12,7 @@ namespace DoanApp.Models
         public string Description { get; set; }
         public string LinkVideo { get; set; }
         public int Like { get; set; }
+        public string PosterVideo { get; set; }
         public int DisLike { get; set; }
         public int ViewCount { get; set; }
         public bool HidenVideo { get; set; }

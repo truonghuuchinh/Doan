@@ -21,6 +21,7 @@ using Microsoft.AspNetCore.Authentication;
 using System.Security.Claims;
 using Newtonsoft.Json;
 using DoanApp.Services;
+using X.PagedList;
 
 namespace DoanApp.Controllers
 {
@@ -29,28 +30,105 @@ namespace DoanApp.Controllers
         private readonly IUserService _userService;
         private readonly UserManager<AppUser> _userManager;
         private readonly SignInManager<AppUser> _signInManager;
+        private readonly IVideoService _videoService;
+        private readonly ICommentService _commentService;
         static int countLockout = 0;
         public HomeController(UserManager<AppUser> userManager,
             SignInManager<AppUser> signInManager,
-            IUserService userService
+            IUserService userService,IVideoService videoService,
+            ICommentService commentService
         )
         {
             _userManager = userManager;
             _signInManager = signInManager;
-          
+            _videoService = videoService;
             _userService = userService;
+            _commentService = commentService;
         }
-        public IActionResult Index()
+        public IActionResult Index(int? page)
         {
-            return View();
+            if (page == null) page = 1;
+            var pageSize = 20;
+            var pageNumber = page ?? 1;
+            List<Video_vm> listVideo_Vm = new List<Video_vm>();
+            var listVideo = _videoService.GetAll();
+            var listUser = _userService.GetAll();
+            listVideo_Vm = GetVideo_Vm(listVideo, listUser);
+            return View(listVideo_Vm.ToPagedList(pageNumber,pageSize));
+        }
+        public List<Video_vm> GetVideo_Vm(List<Video> lVideo,List<AppUser> lUser)
+        {
+            List<Video_vm> listVideo_Vm = new List<Video_vm>();
+            var listVideo = (from video in lVideo
+                             join user in lUser on video.AppUserId equals user.Id
+                             select new
+                             {
+                                 video,
+                                 user
+                             });
+
+            foreach (var item in listVideo)
+            {
+                var video = new Video_vm();
+                video.PosterImg = item.video.PosterImg;
+                video.Name = item.video.Name;
+                video.Id = item.video.Id;
+                video.LinkVideo = item.video.LinkVideo;
+                video.Avartar = item.user.Avartar;
+                video.FirtsName = item.user.FirtsName;
+                video.LastName = item.user.LastName;
+                video.AppUserId = item.user.Id;
+                video.ViewCount = item.video.ViewCount;
+                video.LoginExternal = item.user.LoginExternal;
+                video.CreateDate = item.video.CreateDate;
+                listVideo_Vm.Add(video);
+            }
+            return listVideo_Vm;
+
         }
         public IActionResult Popular()
         {
             return View();
         }
-        public IActionResult DetailVideo()
+        public async Task<IActionResult> DetailVideo(int? id)
         {
-            return View();
+            var video =await  _videoService.FinVideoAsync((int)id);
+            var user = await _userManager.FindByIdAsync(video.AppUserId.ToString());
+            var video_Vm = new Video_vm();
+            video_Vm.PosterImg = video.PosterImg;
+            video_Vm.Name = video.Name;
+            video_Vm.Id = video.Id;
+            video_Vm.LinkVideo = video.LinkVideo;
+            video_Vm.Avartar = user.Avartar;
+            video_Vm.FirtsName = user.FirtsName;
+            video_Vm.LastName = user.LastName;
+            video_Vm.ViewCount = video.ViewCount;
+            video_Vm.AppUserId = video.AppUserId;
+            video_Vm.LoginExternal = user.LoginExternal;
+            video_Vm.CreateDate = video.CreateDate;
+            var lVideo = _videoService.GetAll().Where(x => x.CategorysId == video.CategorysId&&x.Id!=video.Id).ToList();
+            var lUser = _userService.GetAll();
+            ViewBag.VideoRelated = GetVideo_Vm(lVideo, lUser).ToPagedList(1, 15).ToList();
+            if (User.Identity.IsAuthenticated)
+            {
+                ViewBag.UserLogin = UserAuthenticated.GetUser(User.Identity.Name);
+            }
+            var comment = _commentService.GetAll().Where(x => x.VideoId == video.Id).ToList();
+            ViewBag.Comment = _commentService.GetAll_vm(lUser, comment).OrderByDescending(x => x.Id).ToList();
+;            return View(video_Vm);
+        }
+        [HttpPost]
+        public async Task<IActionResult> CreateComment_Partial(string comments)
+        {
+            var comment = JsonConvert.DeserializeObject<CommentRequest>(comments);
+            var result = await _commentService.Create(comment);
+            if(result>0)
+            {
+                var getComment = _commentService.GetCm_Vm(comment);
+                ViewBag.User = await _userService.FindUser(User.Identity.Name);
+                return View(getComment);
+            }
+            return Content("Error");
         }
         public IActionResult FavoritedVideo()
         {

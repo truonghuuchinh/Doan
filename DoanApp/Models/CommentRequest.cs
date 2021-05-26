@@ -13,5 +13,7 @@ namespace DoanApp.Models
         public int Like { get; set; }
         public int DisLike { get; set; }
         public int UserId { get; set; }
+        public string ReplyFor { get; set; }
+        public int VideoId { get; set; }
     }
 }

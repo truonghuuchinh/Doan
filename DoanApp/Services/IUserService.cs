@@ -18,5 +18,6 @@ namespace DoanApp.Services
         void SendEmail(AppUser user,string link);
         Task<bool> Update(AppUser userRequest);
         Task<int> UpdatLockcout(AppUser user);
+        List<AppUser> GetAll();
     }
 }

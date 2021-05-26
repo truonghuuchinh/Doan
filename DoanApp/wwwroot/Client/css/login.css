@@ -85,7 +85,7 @@ body {
 
 .modal-content {
     width: 666px;
-    height: 628px;
+    height: auto;
 }
 
 .modal_pasue_selete_user {
