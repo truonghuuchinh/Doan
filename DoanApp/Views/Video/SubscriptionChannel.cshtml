@@ -1,0 +1,103 @@
+﻿@model IPagedList<Video_vm>
+@using X.PagedList;
+@{
+    int count = 1;
+}
+
+<div class="col site-layout">
+    @if (User.Identity.IsAuthenticated)
+    {
+        @foreach (var item in Model)
+        {
+            <div class="container22">
+                <a asp-action="DetailVideo" asp-controller="Home" asp-route-id="@item.Id">
+                    <div class="container222">
+                        <video width="261" height="165" onmouseover="viewBefore(@item.Id)" onmouseout="clearBefore(@item.Id)" src="~/Client/video/@item.LinkVideo" title="YouTube video player" class=" nextSecond nextSecond-@item.Id"></video>
+                    </div>
+                    <div class="container222_end">
+                        <div class="detail_video">
+                            <img class="detail_lerft icon-sidebar-item_video" alt="" src="@(item.LoginExternal ? item.Avartar : "~/Client/avartar/" + item.Avartar)">
+                            <div class="detail_rights">
+                                <span class="detail_right titleName text-sidebar-item_video">@item.Name </span>
+                                <div class="text_color">@item.FirtsName @item.LastName</div>
+                                <div class="text_color_check">
+                                    @ConvertViewCount.ConvertView(item.ViewCount) lượt xem • @CaculatorHours.Caculator(item.CreateDate)
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </a>
+            </div>
+            if (count > 4)
+            {
+                count = 1;
+                <br />
+            }
+        }
+
+    }
+    else
+    {
+        <div class="content_Nologin" style=" padding: 259px;">
+            <div class="message_nologin">
+                <h2>Chưa có danh sách video đăng ký</h2>
+                <h6>Vui lòng Đăng nhập để xem</h6>
+            </div>
+            <div id="no_Login" class="list_dangnhap_center">
+                <a asp-action="Login" asp-controller="Home">
+                    <div class="login_center">
+                        <div class="img_list_dangnhap"></div>
+                        <div class="list_dangnhap_right">ĐĂNG NHẬP</div>
+                    </div>
+                </a>
+            </div>
+        </div>
+
+    }
+</div>
+<script>
+
+    $(document).ready(function () {
+        var currentPage = 2;
+        $('.site-layout').on('scroll', function () {
+            let div = $(this).get(0);
+
+            if (div.scrollTop + div.clientHeight >= div.scrollHeight) {
+                loadData();
+
+                currentPage += 1;
+            }
+        });
+        function loadData() {
+            $.get("/Video/SubscriptionChannel/?page=" + currentPage + "&flag=true", function (respone) {
+                respone = JSON.parse(respone);
+                $.each(respone, function (index, item) {
+                    $('.site-layout').append(`
+                        <div class="container22">
+                <a href="/Home/DetailVideo/${item.Id}">
+                    <div class="container222">
+                        <video width="261" height="165" onmouseover="viewBefore(${item.Id})" onmouseout="clearBefore(${item.Id})" src="/Client/video/${item.LinkVideo}" title="YouTube video player" class=" nextSecond nextSecond-${item.Id}"></video>
+                    </div>
+                    <div class="container222_end">
+                        <div class="detail_video">
+                            <img class="detail_lerft icon-sidebar-item_video" alt="" src="${item.LoginExternal ? item.Avartar : "/Client/avartar/" + item.Avartar}">
+                            <div class="detail_rights">
+                                <span class="detail_right titleName text-sidebar-item_video">${item.Name} </span>
+                                <div class="text_color">${item.FirtsName} ${item.LastName}</div>
+                                <div class="text_color_check">
+                                    ${convertViewCount(item.ViewCount)} lượt xem • ${item.CreateDate}
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </a>
+            </div>
+                    `);
+                });
+                loadSecondVideo();
+            });
+        }
+    });
+</script>

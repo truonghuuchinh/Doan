@@ -1,81 +1,53 @@
-﻿ <div class="site-layout">
-        <div class="site-layout_centent">
-            <div class="text_popular">Video thịnh hành</div>
-            <a href="detail.html">
-                <div class="popular_left">
-                    <video controls crossorigin playsinline 
-                    data-poster="https://cdn.plyr.io/static/demo/View_From_A_Blue_Moon_Trailer-HD.jpg" id="player">
-                    <source src="~/Client/video/video1.mp4"type="video/mp4" size="576"/>
-                </div>
-                <div class="popular_right">
-                    <div class="header__popular">SƠN TÙNG M-TP | MUỘN RỒI MÀ SAO CÒN | OFFICIAL MUSIC VIDEO</div>
-                    <div class="all_papge">
-                        <div class="ten_kenh">Sơn Tùng MTP Official</div>
-                        <div class="icon_music"></div>
-                        <div class="luot_xem">32 Tr lượt xem</div>
-                        <div class="dau_cham_cach">.</div>
-                        <div class="thoi_gian_cong_chieu">4 ngày trước</div>
-                    </div>
-                    <div class="mota_noidung_video">#MuonRoiMaSaoCon​ #SonTungMTP​ #MTP​ #MTPEntertainment​ #MTPTalent​ #MRMSC</div>
-                </div>
-            </a>
-            <a href="detail.html">
-                <div class="popular_left">
+﻿@model IPagedList<Video_vm>
+@using X.PagedList; 
 
+<div class="site-layout">
+    <div class="site-layout_centent ">
+        <div class="text_popular">Video thịnh hành</div>
+        @foreach (var item in Model)
+        {
+            <a asp-action="DetailVideo" asp-controller="Home" asp-route-id="@item.Id">
+                <div class="popular_left">
+                    <video onmouseover="viewBefore(@item.Id)" onmouseout="clearBefore(@item.Id)" class=" nextSecond nextSecond-@item.Id"
+                           data-poster="@item.PosterImg" id="player">
+                        <source src="~/Client/video/@item.LinkVideo" type="video/mp4" size="576" >
+                    </video>
                 </div>
                 <div class="popular_right">
-                    <div class="header__popular">SƠN TÙNG M-TP | MUỘN RỒI MÀ SAO CÒN | OFFICIAL MUSIC VIDEO</div>
+                    <div class="header__popular">@item.Name</div>
                     <div class="all_papge">
-                        <div class="ten_kenh">Sơn Tùng MTP Official</div>
-                        <div class="icon_music"></div>
-                        <div class="luot_xem">32 Tr lượt xem</div>
+                        <div class="ten_kenh">@item.FirtsName @item.LastName .</div>
+                        <div class="luot_xem">
+                           @ConvertViewCount.ConvertView(item.ViewCount) lượt xem
+                        </div>
                         <div class="dau_cham_cach">.</div>
-                        <div class="thoi_gian_cong_chieu">4 ngày trước</div>
+                        <div class="thoi_gian_cong_chieu">@CaculatorHours.Caculator(item.CreateDate)</div>
                     </div>
-                    <div class="mota_noidung_video">#MuonRoiMaSaoCon​ #SonTungMTP​ #MTP​ #MTPEntertainment​ #MTPTalent​ #MRMSC</div>
+                    <div class="mota_noidung_video">@item.Description</div>
                 </div>
             </a>
-            <div class="all_popular">
-                <div class="popular_left"></div>
-                <div class="popular_right">
-                    <div class="header__popular">SƠN TÙNG M-TP | MUỘN RỒI MÀ SAO CÒN | OFFICIAL MUSIC VIDEO</div>
-                    <div class="all_papge">
-                        <div class="ten_kenh">Sơn Tùng MTP Official</div>
-                        <div class="icon_music"></div>
-                        <div class="luot_xem">32 Tr lượt xem</div>
-                        <div class="dau_cham_cach">.</div>
-                        <div class="thoi_gian_cong_chieu">4 ngày trước</div>
-                    </div>
-                    <div class="mota_noidung_video">#MuonRoiMaSaoCon​ #SonTungMTP​ #MTP​ #MTPEntertainment​ #MTPTalent​ #MRMSC</div>
-                </div>
-            </div>
-            <div class="all_popular">
-                <div class="popular_left"></div>
-                <div class="popular_right">
-                    <div class="header__popular">SƠN TÙNG M-TP | MUỘN RỒI MÀ SAO CÒN | OFFICIAL MUSIC VIDEO</div>
-                    <div class="all_papge">
-                        <div class="ten_kenh">Sơn Tùng MTP Official</div>
-                        <div class="icon_music"></div>
-                        <div class="luot_xem">32 Tr lượt xem</div>
-                        <div class="dau_cham_cach">.</div>
-                        <div class="thoi_gian_cong_chieu">4 ngày trước</div>
-                    </div>
-                    <div class="mota_noidung_video">#MuonRoiMaSaoCon​ #SonTungMTP​ #MTP​ #MTPEntertainment​ #MTPTalent​ #MRMSC</div>
-                </div>
-            </div>
-            <div class="all_popular">
-                <div class="popular_left"></div>
-                <div class="popular_right">
-                    <div class="header__popular">SƠN TÙNG M-TP | MUỘN RỒI MÀ SAO CÒN | OFFICIAL MUSIC VIDEO</div>
-                    <div class="all_papge">
-                        <div class="ten_kenh">Sơn Tùng MTP Official</div>
-                        <div class="icon_music"></div>
-                        <div class="luot_xem">32 Tr lượt xem</div>
-                        <div class="dau_cham_cach">.</div>
-                        <div class="thoi_gian_cong_chieu">4 ngày trước</div>
-                    </div>
-                    <div class="mota_noidung_video">#MuonRoiMaSaoCon​ #SonTungMTP​ #MTP​ #MTPEntertainment​ #MTPTalent​ #MRMSC</div>
-                </div>
-            </div>
-        </div>
+        }
     </div>
+</div>
+@section Scripts{
+    <script>
+        $(document).ready(function () {
+            var currentPage = 2;
+
+            $('.site-layout').on('scroll', function () {
+                let div = $(this).get(0);
+                if (div.scrollTop + div.clientHeight >= div.scrollHeight) {
+                    loadData();
+                    currentPage += 1;
+                }
+            });
+            function loadData() {
+                $.get("/Home/Popular_Partial/?page=" + currentPage, function (respone) {
+                    $('.site-layout_centent').append(respone);
+                    loadSecondVideo();
+                });
+            }
+        });
+    </script>
+
+}

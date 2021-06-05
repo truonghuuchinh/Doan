@@ -24,13 +24,13 @@
                     <div class="click_menu"></div>
                 </div>
                 <div class="logo"></div>
-                <input id="name" placeholder="Tìm Kiếm" type="text" name="name" class="search">
-                <button type="button" class="search_Voice"> <i class="fas fa-microphone"></i></button>
-                <div class="searchs">
-                    <a href="" class="search_sokiuty">
-                        <div class="search_sokiuty_img"></div>
-                    </a>
-                </div>
+                <form asp-action="SearchVideo" asp-controller="Home" method="post" id="formSearchVideo">
+                    <input id="nameSearch" name="nameSearch" placeholder="Tìm Kiếm" type="text" class="search" value="@ViewBag.nameSearch">
+                    <button type="button" class="search_Voice"> <i class="fas fa-microphone"></i></button>
+                    <div class="searchs">
+                        <button type="submit" class="search_sokiuty_img"><i class=" fas fa-search"></i></button>
+                    </div>
+                </form>
                 <div class="khoangcach"></div>
                 <div class="loginUser">
                     @{
@@ -38,8 +38,11 @@
                         if (User.Identity.IsAuthenticated && user != null)
                         {
                             <div id="completed_Login">
-                                <div class="create">
-                                </div>
+                                <a asp-action="MyChannel" asp-controller="Video">
+                                    <div class="create click_create">
+
+                                    </div>
+                                </a>
                                 <div class="notification"></div>
                                 <div class="account_information">
                                     <div class="account_informationss" data-toggle="modal" data-target="#leave_the_check_avarta"><img src="@(user.LoginExternal ? user.Avartar : "/Client/avartar/" + user.Avartar)" alt="Alternate Text" /></div>
@@ -138,7 +141,7 @@
                         </a>
                     </li>
                     <li class="text-white sidebar-item sidebar-menu">
-                        <a href="">
+                        <a asp-action="SubscriptionChannel" asp-controller="Video">
                             <div class="row">
                                 <img class="icon-sidebar-item" alt="" src="~/Client/img/youtube_danky.png">
                                 <span class="text-sidebar-item">Kênh đăng ký</span>
@@ -261,22 +264,28 @@
                             <div class="header_content_video">@Model.Name</div>
                             <div class="funtion_contnet">
                                 <div class="funtion_contnet_left">
-                                    <div class="view_content">@Model.ViewCount.ToString("#,##0") lượt xem . @Model.CreateDate.Split(' ')[0]</div>
+                                    <div class="view_content">
+                                        <span id="viewCount">@Model.ViewCount.ToString("#,##0")</span> lượt xem . @Model.CreateDate.Split(' ')[0]
+                                    </div>
+                                    <input type="hidden" id="VideoIdView" value="@Model.Id" />
                                 </div>
                                 <div class="funtion_contnet_right">
                                     <div class="like_shares">
-                                        <a href="" class="unlike acount_share" style="border-bottom: none;">
-                                            <img class="icon-sidebar-item_content" alt="" src="~/Client/img/share.png">
+                                        <input type="hidden" id="Reaction" value="@Model.Reaction" />
+                                        <div id="Like" class="unlike hover">
+                                            <i title=" Tôi Thích video này" class="fa fa-thumbs-up likeVideo"></i>
+                                            <span id="countLike" class="text-sidebar-item_content">@Model.Like</span>
+                                        </div>
+                                        <div id="DisLike" class="unlike hover">
+                                            <i title=" Tôi không Thích video này" class="fa fa-thumbs-down dislikeVideo" style=""></i>
+                                            <span id="countDisLike" class="text-sidebar-item_content">@Model.DisLike</span>
+                                        </div>
+
+                                        <div id="Share" class="unlike acount_share hover">
+                                            <i title="Chia sẻ video này" class="icon-sidebar-item_content fa fa-share-alt"></i>
                                             <span class="text-sidebar-item_content">CHIA SẺ</span>
-                                        </a>
-                                        <a href="" class="unlike" style="border-bottom: none;">
-                                            <img style=" width: 24px; margin-top: 2px; " class="icon-sidebar-item_content" alt="" src="~/Client/img/dislike_comment.png">
-                                            <span class="text-sidebar-item_content">@Model.DisLike</span>
-                                        </a>
-                                        <a href="" class="unlike" style="border-bottom: none;">
-                                            <img class="icon-sidebar-item_content" alt="" src="~/Client/img/like.png">
-                                            <span class="text-sidebar-item_content">@Model.Like</span>
-                                        </a>
+                                        </div>
+
                                     </div>
                                 </div>
                                 <div class="cut"></div>
@@ -287,11 +296,33 @@
                                 <div class="funtion_contnets_left">
                                     <div class="detail_video">
                                         <img class="details_lerft icon-sidebar-items_video" alt="" src="@(Model.LoginExternal?Model.Avartar:"~/Client/img/"+Model.Avartar)">
-                                        <span class="details_right text-sidebar-items_video">@Model.FirtsName @Model.LastName</span>
+                                        <span class="details_right text-sidebar-items_video" >
+                                            <p id="nameChannel">@Model.FirtsName @Model.LastName</p>
+                                            <p id="countRegister">@ConvertViewCount.ConvertView(ViewBag.CountRegister) người đăng ký</p>
+                                        </span>
+                                        
                                     </div>
                                 </div>
                                 <div class="funtion_contnets_right">
-                                    <button class="registration">Đăng ký</button>
+                                    @if (ViewBag.UserLogin != null)
+                                    {
+                                        if (Model.AppUserId == ViewBag.UserLogin.Id)
+                                        {
+                                            <a class="pageEdit" asp-action="MyChannel" asp-controller="Video"><button class="editVideo  btn-primary">Chỉnh sửa video</button></a>
+                                        }
+                                        else
+                                        {
+                                            <button class="registration">Đăng ký</button>
+                                            <input type="hidden" value="@Model.AppUserId" id="userChannel" />
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <button class="registration">Đăng ký</button>
+                                        <input type="hidden" value="@Model.AppUserId" id="userChannel" />
+                                    }
+
+
                                 </div>
                             </div>
                             <div class="funtions_comment">
@@ -316,6 +347,7 @@
                                         {
                                             <input type="hidden" id="UserId" value="@(ViewBag.UserLogin.Id)" />
                                         }
+                                        <input type="hidden" id="UserLike" value="@Model.UserLike" />
                                         <input type="hidden" id="CommentId" value="0" />
                                         <input type="hidden" id="VideoId" value="@Model.Id" />
                                         <div class="text__comment_right">
@@ -364,10 +396,11 @@
                                                 </div>
                                             </div>
                                             <div class="khung_hang_3">
-                                                <div class="like_binh_luan"></div>
-                                                <div class="so_luong_like">@item.Like</div>
-                                                <div class="disklike_binh_luan"></div>
-                                                <div class="so_luong_disklike">@item.DisLike</div>
+                                                <div class="like_binh_luan" onclick="likeComment(@item.Id)"><i class="fa fa-thumbs-up like-@item.Id"></i></div>
+                                                <div class="so_luong_like countLike-@item.Id">@item.Like</div>
+                                                <div class="disklike_binh_luan" onclick="dislikeComment(@item.Id)"><i class="fa fa-thumbs-down dislike-@item.Id"></i></div>
+                                                <div class="so_luong_disklike countDis-@item.Id">@item.DisLike</div>
+                                                <input type="hidden" class="comment-@item.Id" value="@item.CommentId" />
                                                 @if (User.Identity.IsAuthenticated)
                                                 {
                                                     <div class="phan_hoi_binh_luan hover" onclick="oke(@item.Id, true,' ')">Phản hồi</div>
@@ -417,15 +450,16 @@
                                                             <div class="khung_hang_2">
 
                                                                 <div class="noi_dung_binh_luan">
-                                                                    <label  style="background:#cac9c9;">@(child.ReplyFor!="childOne"?child.ReplyFor:"")</label> @child.Content
+                                                                    <label style="background:#cac9c9;">@(child.ReplyFor!="childOne"?child.ReplyFor:"")</label> @child.Content
                                                                 </div>
                                                             </div>
 
                                                             <div class="khung_hang_3">
-                                                                <div class="like_binh_luan"></div>
-                                                                <div class="so_luong_like">@child.Like</div>
-                                                                <div class="disklike_binh_luan"></div>
-                                                                <div class="so_luong_disklike">@child.DisLike</div>
+                                                                <div class="like_binh_luan" onclick="likeComment(@child.Id)"><i class="fa fa-thumbs-up like-@child.Id"></i></div>
+                                                                <div class="so_luong_like countLike-@child.Id">@child.Like</div>
+                                                                <div class="disklike_binh_luan" onclick="dislikeComment(@child.Id)"><i class="fa fa-thumbs-down dislike-@child.Id"></i></div>
+                                                                <div class="so_luong_disklike countDis-@child.Id">@child.DisLike</div>
+                                                                <input type="hidden" class="comment-@child.Id" value="@child.CommentId" />
                                                                 @if (User.Identity.IsAuthenticated)
                                                                 {
                                                                     <div class="phan_hoi_binh_luan hover" onclick="oke(@child.Id, true,'child')">Phản hồi</div>
@@ -442,11 +476,11 @@
                                                                         {
                                                                             <img class="details_lerfts icon-sidebar-items_video" alt="" src="@(ViewBag.UserLogin.LoginExternal ? ViewBag.UserLogin.Avartar : "~/Client/img/" + ViewBag.UserLogin.Avartar)">
                                                                         }
-                                                                        </div>
+                                                                    </div>
                                                                 </div><div class="all_counts_comment_rep_right">
                                                                     <div class="floatContainer-@child.Id">
                                                                         <label class="lable label-@child.Id" for="contents"></label>
-                                                                        <input id="contents" onblur="showFrameBlur(@child.Id)" onfocus="showFrameActive(@child.Id)" type="text" class="check_comments check_comments_child Content-@child.Id" autofocus>
+                                                                        <input onblur="showFrameBlur(@child.Id)" onfocus="showFrameActive(@child.Id)" type="text" class="check_comments check_comments_child Content-@child.Id" autofocus>
                                                                         @if (User.Identity.IsAuthenticated)
                                                                         {
                                                                             <input type="hidden" class="UserId-@child.Id" value="@(ViewBag.UserLogin.Id)" />
@@ -477,33 +511,185 @@
                         </div>
                     </div>
                     <div class="content_right">
-                        @foreach (var item in ViewBag.VideoRelated)
+                        @if (ViewBag.VideoRelationShip.Count == 0)
                         {
-                            <a asp-action="DetailVideo" asp-route-id="@item.Id">
-                                <div class="content_right_all">
-                                    <div class="content_right_all_left">
-                                        <video width="261" height="95" src="~/Client/video/@item.LinkVideo" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></video>
-                                    </div>
-                                    <div class="content_right_all_right">
-                                        <div class="content_right_text_video">@item.Name</div>
-                                        <div class="content_right_texts_video">@item.FirtsName @item.LastName</div>
-                                        <div class="content_right_textss_video">@item.ViewCount.ToString("#,##0") lượt xem • @CaculatorHours.Caculator(item.CreateDate)</div>
-
-                                    </div>
-                                </div>
-                            </a>
+                            <h3 class="no_relationship">Chưa có video liên quan</h3>
                         }
+                        else
+                        {
+                            @foreach (var item in ViewBag.VideoRelationShip)
+                            {
+                                <a asp-action="DetailVideo" asp-route-id="@item.Id">
+                                    <div class="content_right_all">
+                                        <div class="content_right_all_left">
+                                            <video width="261" height="95" src="~/Client/video/@item.LinkVideo" title="YouTube video player" onmouseover="viewBefore(@item.Id)" onmouseout="clearBefore(@item.Id)" class=" nextSecond nextSecond-@item.Id"></video>
+                                        </div>
+                                        <div class="content_right_all_right">
+                                            <div class="content_right_text_video">@item.Name</div>
+                                            <div class="content_right_texts_video">@item.FirtsName @item.LastName</div>
+                                            <div class="content_right_textss_video">@item.ViewCount.ToString("#,##0") lượt xem • @CaculatorHours.Caculator(item.CreateDate)</div>
+
+                                        </div>
+                                    </div>
+                                </a>
+                            }
+                        }
+
                     </div>
                 </div>
             </div>
         </div>
     </div>
+    <!--Modal boostrap-->
+    <div class="modal fade" id="modalCancel" role="dialog">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-body">
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Hủy</button>
+                    <button type="button" id="cancelRegister" class="btn btn-primary">Hủy đăng ký</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <!---------End------->
     <script src="~/Client/js/site.js"></script>
+    <script src="https://cdn.plyr.io/3.6.2/demo.js" crossorigin="anonymous"></script>
     <script>
+        loadSecondVideo();
         function displayButton() {
             $(".text__comment_right").css('display', 'block');
         }
+       
+        $(document).ready(function () {
+
+            var userIds = $("#UserId").val();
+            var videoIds = $("#VideoId").val();
+            var toUserId = $("#userChannel").val();
+            //---------------Xử lý like comment----------------------
+            if (userIds != undefined) {
+                $.get("/LikeComment/ListJsonLikeComment", function (respone) {
+                    respone = JSON.parse(respone);
+                    for (var i of respone) {
+                        if (i.UserId == userIds && i.VideoId == videoIds) {
+                            if (i.Reaction == "Like") {
+                                $(".like-" + i.Comment).attr("style", "color:blue;");
+                                $(".countLike-" + i.Comment).css("color", "blue")
+                            }
+                            if (i.Reaction == "DisLike") {
+                                $(".dislike-" + i.Comment).attr("style", "color:blue;");
+                                $(".countDis-" + i.Comment).css("color", "blue")
+                            }
+                        }
+                    }
+                });
+            }
+            //-----------------End----------------------------
+
+            //-----------------Xử lý đăng ký-------------------
+            var checkFollow =@ViewBag.UserFollow;
+            console.log(checkFollow);
+            if (checkFollow) {
+                $(".registration").text("Đã đăng ký");
+                $(".registration").css("background", "#eee");
+            }
+            $(".registration").click(function () {
+                var text = $(this).text();
+                
+                if (userIds == undefined)
+                    alert("Vui lòng đăng để thực hiện chức năng này! ");
+                else {
+                    if (text == "Đã đăng ký") {
+                        $(".modal-body").text("Hủy đăng ký kênh " + $("#nameChannel").text());
+                        $("#modalCancel").modal('show');
+                    }
+                    else {
+                        var data = {
+                            "FromUserId": userIds,
+                            "ToUserId": toUserId
+                        };
+                        data = JSON.stringify(data);
+                        $.post("/Home/FollowChannel", { "data": data }, function (respone) {
+                            if (respone != "Error") {
+                                $("#countRegister").text(respone + " người đăng ký");
+                                $(".registration").css("background", "#eee");
+                                $(".registration").text("Đã đăng ký");
+                            }
+                        });
+                    }
+                }
+            });
+            $("#cancelRegister").click(function () {
+                
+                var data = {
+                    "FromUserId": userIds,
+                    "ToUserId": toUserId
+                };
+                data = JSON.stringify(data);
+                $.post("/Home/CancelRegister", { "data": data }, function (respone) {
+                    if (respone != "Error") {
+                        $("#countRegister").text(respone + " người đăng ký");
+                        $(".registration").css("background", "#ff2e2e");
+                        $(".registration").text("Đăng ký");
+                        $("#modalCancel").modal('hide');
+                    }
+                });
+        });
+            //----------------- Kết thúc-----------------------
+
+            //---------------Xử lý lượt xem--------------------
+            var viewCount = 0;
+            var interval = 0;
+            var videoId = $("#VideoIdView").val();
+            document.querySelector(".plyr__control").addEventListener('click', function () {
+                if (viewCount < 15)
+                playVideo(this);
+                
+            });
+           
+            document.querySelector(".plyr__control--overlaid").addEventListener('click', function () {
+                if (viewCount<15)
+                    playVideo(this);
+
+            });
+            $('[data-plyr="seek"]').click(function () {
+                var flagCheck = $(".plyr__control").attr("aria-label");
+                if (flagCheck == "Play") clearInterval(interval);
+            });
+            function playVideo(element) {
+                
+                var flag = $(element).attr("aria-label");
+              
+                if (flag == "Play") {
+                    interval = setInterval(function () {
+                        viewCount++;
+                        console.log(viewCount);
+                        if (viewCount == 15) {
+                            
+                            $.get("/Video/UpdateView/?id=" + videoId, function (respone) {
+                                if (respone != "Error") {
+                                    console.log(respone);
+                                    $("#viewCount").text(respone);
+                                    clearInterval(interval);
+                                }
+                            });
+                        }
+                      
+                    }, 1000);
+                } else {
+                    clearInterval(interval);
+                }
+            }
+            //----------------End--------------------------
+        });
+
+
+
     </script>
-    <script src="https://cdn.plyr.io/3.6.2/demo.js" crossorigin="anonymous"></script>
+
 </body>
 </html>

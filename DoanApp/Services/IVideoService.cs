@@ -15,6 +15,10 @@ namespace DoanApp.Services
         Task<int> Update(VideoRequest videoRequest);
         Task<int> Delete(int id);
         Task<Video> FinVideoAsync(int id);
-      
+        Task<int> UpdateLike(int idVideo,string reaction);
+        Task<int> UpdateLikeReverse(int idVideo, string reaction);
+        Task<int> UpdateView(int id);
+        List<Video_vm> GetVideo_Vm(List<Video> lVideo, List<AppUser> lUser);
+        Task<int> UpdateCategory(int id,int idCategory);
     }
 }

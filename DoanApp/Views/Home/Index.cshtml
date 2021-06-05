@@ -1,45 +1,32 @@
 ﻿@model IPagedList<Video_vm>
 @using X.PagedList;
-@{ 
-    int count = 1;
-    string view = "";
-    string hours = ""
-;}
-<div class="col site-layout">
+@{
+       int count = 1;
+}
+
+<div class="col site-layout ">
     @foreach (var item in Model)
     {
         <div class="container22">
             <a asp-action="DetailVideo" asp-controller="Home" asp-route-id="@item.Id">
                 <div class="container222">
-                    <video  width="261" height="165" src="~/Client/video/@item.LinkVideo" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></video>
+                    <video width="261" height="165" onmouseover="viewBefore(@item.Id)" onmouseout="clearBefore(@item.Id)" src="~/Client/video/@item.LinkVideo" title="YouTube video player" class=" nextSecond nextSecond-@item.Id">
+                    </video>
+
                 </div>
+                
                 <div class="container222_end">
                     <div class="detail_video">
                         <img class="detail_lerft icon-sidebar-item_video" alt="" src="@(item.LoginExternal ? item.Avartar : "~/Client/avartar/" + item.Avartar)">
                         <div class="detail_rights">
                             <span class="detail_right titleName text-sidebar-item_video">@item.Name </span>
                             <div class="text_color">@item.FirtsName @item.LastName</div>
-                            <div class="text_color_check">@{ 
-                                if (item.ViewCount > 1000000)
-                                {
-                                    item.ViewCount = item.ViewCount / 1000000;
-                                    view = item.ViewCount.ToString() + " Tr";
-                                }
-                                else
-                                {
-                                    if (item.ViewCount > 1000)
-                                    {
-                                        item.ViewCount = item.ViewCount / 1000;
-                                        view = item.ViewCount.ToString() + " N";
-                                    }
-                                    else view = item.ViewCount.ToString();
-                                }
-                                hours= CaculatorHours.Caculator(item.CreateDate);
-                            }
-                           @view lượt xem • @hours</div>
+                            <div class="text_color_check">
+                                @ConvertViewCount.ConvertView(item.ViewCount) lượt xem • @CaculatorHours.Caculator(item.CreateDate)
+                            </div>
                         </div>
                     </div>
-                  
+
                 </div>
             </a>
         </div>
@@ -49,5 +36,27 @@
             <br />}
     }
 
-
 </div>
+
+<script>
+    
+    $(document).ready(function () {
+        var currentPage = 2;
+        $('.site-layout').on('scroll', function () {
+            let div = $(this).get(0);
+           
+            if (div.scrollTop + div.clientHeight >= div.scrollHeight) {
+                loadData();
+                
+                currentPage += 1;
+            }
+        });
+        function loadData() {
+            $.get("/Home/Index_Partial/?page=" + currentPage , function (respone) {
+                $('.site-layout').append(respone);
+                loadSecondVideo();
+            });
+        }
+       
+    });
+</script>

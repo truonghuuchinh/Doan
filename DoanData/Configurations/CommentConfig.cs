@@ -1,4 +1,5 @@
-﻿using DoanData.Models;
+﻿using DoanData.Commons;
+using DoanData.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System;
@@ -17,6 +18,7 @@ namespace DoanData.Configurations
             builder.HasOne(x => x.video).WithMany(s => s.Commmentsss).HasForeignKey(l => l.VideoId).OnDelete(DeleteBehavior.Restrict).HasPrincipalKey(t => t.Id);
             builder.Property(x => x.CreateDate).HasDefaultValue<string>("00/00/00 00:0:00");
             builder.Property(x => x.Status).HasDefaultValue<bool>(true);
+           
         }
     }
 }
