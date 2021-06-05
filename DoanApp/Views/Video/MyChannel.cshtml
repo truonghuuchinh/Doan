@@ -1,112 +1,158 @@
 ﻿@model IPagedList<Video>
 @using X.PagedList;
-<div class="col site-layout">
-    <div class="noidung_kenh">
-        <div class="text__noidung_kenh">Nội dung của kênh</div>
-        <div class="video_tai__len">Video tải lên </div>
-    </div>
-    <div class="kengang_video_noidung"></div>
-    <table class="data-table">
-        <thead>
-            <tr class="data">
-                <th class="check">
-                    <!-- <div class="form-group">
-                        <input type="checkbox" class="custom-control-input_users" id="customCheck4" style="opacity: 0;"
-                        required="">
-                    </div> -->
-                </th>
-                <th class="video">Video</th>
-                <th></th>
-                <th class="chedohienthi">Chế độ hiển thị</th>
+@{
+    Layout = "/Views/Shared/_Layout_1.cshtml";
+}
 
-                <th class="ngay">Ngày</th>
-                <th class="soluotxem">Số lượt xem</th>
-                <th class="sobinhluan">Số bình luận</th>
-                <th class="luotthich">Lượt thích</th>
-            </tr>
-        </thead>
-        <tbody>
-            @if (Model.Count > 0)
-            {
-                foreach (var item in Model)
-                {
-                    <tr class="datas">
-                        <td class="td_check"><input class="checkbox__label-info" type="checkbox" name="name" value="" /></td>
-                        <td class="td_video">
-                            <div class="img_td_video">
-                                <img src="~/Client/imgPoster/@item.PosterImg" alt="">
-                            </div>
-                            <div class="text_td_video">
-                                <div class="name__text_video">@item.Name</div>
-                                <div class="noidung__text_video">
-                                    @item.Description
-                                </div>
-                            </div>
-                        </td>
-                        <td class="optionVideo">
-                            <div class="dropdown">
-                                <img class="icon-more" src="~/Client/img/more.png" alt="Alternate Text" />
-                                <div class="contentEdit">
-                                    <div class="option"><i class="fas fa-pencil-alt"></i>      Chỉnh sửa tiêu đề và thông tin mô tả</div>
-                                    <div class="option"><i class="fas fa-file-download"></i>      Tải xuống</div>
-                                    <div class="option"><i class="fas fa-trash"></i>      Xóa vĩnh viễn</div>
-                                </div>
-                            </div>
-                        </td>
-                        <td class="td_chedohienthi">
-                            <div class="all_td_chedohienthi" data-toggle="modal" data-target="#td_hienthi">
-                                <div class="img_td_chedohienthi">
-                                    <div class="imges_td_chedohienthi_an"></div>
-                                </div>
-                                <div class="text_td_chedohienthi">
-                                    Công khai
-                                </div>
-                                <div class="img_xungduoi_td_chedohienthi">
-                                    <div class="imges_td_chedohienthi"></div>
-                                </div>
-                            </div>
-                        </td>
-                        <td class="td_ngay">
-                            <div class="all_td_ngay">
-                                <div class="time_td_ngay">@item.CreateDate.Split('|')[0]</div>
-                            </div>
-                        </td>
-                        <td class="td_soluotxem">
-                            <div class="count_td_soluotxem">@item.ViewCount</div>
-                        </td>
-                        <td class="td_sobinhluan">
-                            <div class="count_td_sobinhluan">9</div>
-                        </td>
-                        <td class="td_aluotthich">
-                            <div class="all_td_luotthich">
-                                <div class="cout_td__luotthich">@item.Like</div>
-                                <div class="soluong_td_luotthich">lượt thích</div>
-                                <div class="kengang_td_luotthich"></div>
-                            </div>
-                        </td>
-                    </tr>
+<div class="noidung_kenh">
+    <div class="text__noidung_kenh">Nội dung của kênh</div>
 
-                }
-            }
-
-            else
-            {
-                
-                    <div class="noVideo">
-                        <img src="~/Client/img/imgUpload.PNG" alt="Alternate Text" />
-                        <p>Không có nội dung</p>
-                        <button class="btn btn-primary" data-toggle="modal" data-target="#click_video_create">Tải video Lên</button>
-                    </div>
-                
-               
-            }
-
-        </tbody>
-    </table>
 </div>
+<div class="kengang_video_noidung"></div>
+<div class="tongcaikhungnay">
+    <div class="click_chon_videos">
+        <div class="kengang_video_dachon">
+            <div class="ten_dachon">Đã chọn</div>
+            <div class="soluong_dachon countVideo">0</div>
+        </div>
+        <div class="chinhsua__video" data-toggle="modal" data-target="#chinhsuavideos">
+            <div class="chinhsua_ten">Chỉnh sửa</div>
+            <div class="khung_imges_chinhsua">
+                <img src="~/Client/img/ic_dropdown.svg" alt="" class="img_chinhsua">
+            </div>
+        </div>
+        <div class="thaotac_khac" data-toggle="modal" data-target="#thaotackhac">
+            <div class="namethaotac">Thao tác khác</div>
+            <div class="khung_imges_chinhsuas">
+                <img src="/Client/img/ic_dropdown.svg" alt="" class="img_chinhsua">
+            </div>
+        </div>
+        <div class="ketthuckhung">
+            <div class="ketthuckhungphai">
+                <div class="daudongx" onclick="dongkhungchinhsuavieo()">X</div>
+            </div>
+        </div>
+    </div>
+</div>
+<table class="data-table  table-striped">
+    <thead>
+        <tr class="data">
+            <th class="check">
+                <input type="checkbox" id="customCheckallcc" >
+            </th>
+            <th class="video">Video</th>
+            <th></th>
+            <th class="chedohienthi">Chế độ hiển thị</th>
+
+            <th class="ngay">Ngày</th>
+            <th class="soluotxem">Số lượt xem</th>
+            <th class="sobinhluan">Số bình luận</th>
+            <th class="luotthich">Lượt thích</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model.Count > 0)
+        {
+            foreach (var item in Model)
+            {
+                <tr class="datas update-@item.Id">
+                    <td class="td_check">
+                        <input type="checkbox"  onclick="repairItem(@item.Id)" class="cutomcheckboxall" id="customCheck-@item.Id" >
+                    </td>
+                    <td class="td_video">
+                        <div class="img_td_video">
+                            <img src="~/Client/imgPoster/@item.PosterImg" alt="">
+                            <a href="/Client/video/@item.LinkVideo" id="dowload-@item.Id" download hidden>Dowload Video</a>
+                        </div>
+                        <div class="text_td_video">
+                            <div class="name__text_video title-@item.Id">@item.Name</div>
+                            <div class="noidung__text_video description-@item.Id">
+                                @item.Description
+                            </div>
+                        </div>
+                    </td>
+                    <td class="optionVideo">
+                        <div class="dropdown">
+                            <img class="icon-more" src="~/Client/img/more.png" alt="Alternate Text" />
+                            <div class="contentEdit contentEdit-@item.Id">
+                                <div class="option" onclick="repairVideo(@item.Id)"><i class="fas fa-pencil-alt"></i> Chỉnh sửa Tiêu đề và Thông tin mô tả</div>
+                                <div class="option" onclick="repairImage(@item.Id)"><i class="fas fa-image"></i> Chỉnh sửa Ảnh Poster</div>
+                                <div class="option "><i class="fas fa-file-download"></i> <a style="color:#6c757d;" class="move_page" href="/Client/video/@item.LinkVideo" download="">Tải xuống</a></div>
+                                <div class="option" onclick="deleteVideo(@item.Id,false)"><i class="fas fa-trash"></i> Xóa vĩnh viễn</div>
+                            </div>
+                        </div>
+                    </td>
+                    <td class="td_chedohienthi">
+                        <div class="all_td_chedohienthi" data-toggle="modal" data-target="#td_hienthi">
+                            <div class="img_td_chedohienthi">
+                                <img class="@(item.HidenVideo?"":"eyeNone") img_display-@item.Id" src="/Client/img/@(item.HidenVideo?"Eye.svg":"visibility.png")" alt="Alternate Text" />
+                            </div>
+                            <div class="text_td_chedohienthi text_display-@item.Id">
+                                @(item.HidenVideo? "Công khai":"Riêng tư")
+                            </div>
+                            <div class="img_xungduoi_td_chedohienthi">
+                                <div class="imges_td_chedohienthi">
+                                    <img src="/Client/img/ic_dropdown.svg" alt="Alternate Text" />
+                                    <div class="choose_permission">
+                                        <h6>Lưu hoặc xuất bản</h6>
+                                        <div class="form-check">
+                                            <input class="form-check-input choose_public-@item.Id"  type="radio" @(item.HidenVideo ? "checked" : "")>
+                                           
+                                            <label class="form-check-label" onclick="choosePublic(@item.Id,true)">
+                                                Công khai
+                                            </label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input choose_private-@item.Id" type="radio" @(item.HidenVideo ? "" : "checked")>
+                                            <label class="form-check-label" onclick="choosePrivate(@item.Id,false)">
+
+                                                Riêng tư
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                            </div>
+                        </div>
+                    </td>
+                    <td class="td_ngay">
+                        <div class="all_td_ngay">
+                            <div class="time_td_ngay">@item.CreateDate.Split(' ')[0]</div>
+                        </div>
+                    </td>
+                    <td class="td_soluotxem">
+                        <div class="count_td_soluotxem">@item.ViewCount.ToString("#,##0")</div>
+                    </td>
+                    <td class="td_sobinhluan">
+                        <div class="count_td_sobinhluan">@ViewBag.CountComment</div>
+                    </td>
+                    <td class="td_aluotthich">
+                        <div class="all_td_luotthich">
+                            <div class="cout_td__luotthich">@item.Like</div>
+                            <div class="soluong_td_luotthich">lượt thích</div>
+                            <div class="kengang_td_luotthich"></div>
+                        </div>
+                    </td>
+                </tr>
+
+            }
+        }
+
+        else
+        {
+
+            <div class="noVideo">
+                <img src="~/Client/img/imgUpload.PNG" alt="Alternate Text" />
+                <p>Không có nội dung</p>
+                <button class="btn btn-primary" data-toggle="modal" data-target="#click_video_create">Tải video Lên</button>
+            </div>
 
 
+        }
 
+    </tbody>
+</table>
+@*-------------------Modal Page---------------------------*@
 <div class="modal" id="click_video_create" data-backdrop="static">
     <div class="modal-dialog_create modal-dialog-centered_create">
         <div class="modal-content_create">
@@ -164,7 +210,7 @@
                     <div class="dis_all_noidung_tieude_right">
                         <div class="khung_xuat_viedo">
                             <div class="khung_video_xuatban">
-                                <video style="height: 192px;" controls="controls" id="video-tag">
+                                <video style="height: 192px; width:100%;" controls="controls" id="video-tag">
                                     <source id="video-source" type="video/mp4" />
 
                                 </video>
@@ -174,7 +220,7 @@
                             <textarea readonly class="form-control" rows="1" placeholder="" id="data_meting_tep">
                             </textarea>
                             <div style="margin-top:64px;" class="tentep_file_video">Chủ đề Video</div>
-                            <select name="CategorysId" id="CategoryOption" class="form-control" asp-items="ViewBag.Title">
+                            <select name="CategorysId" id="CategoryOption" class="form-control" asp-items="ViewBag.Category">
                             </select>
                         </div>
 
@@ -192,7 +238,7 @@
         <div class="modal-content_create">
             <div class="modal_checkout_user">
                 <div class="name_create_video titleVideo">
-                    
+
                 </div>
                 <div class="down_create_video hover">
                     <div class="click_down_create" data-dismiss="modal">X</div>
@@ -213,7 +259,7 @@
                             <div class="khung_bao_chedo">
                                 <div class="form-check checkfrom1" style="padding-left: 0px;">
                                     <label class="label_Checks">
-                                        
+
                                         <span class="checkmark-radio-voting__txtes">
                                             Lưu hoặc xuất bản
                                             <div class="text_up_ck">Đặt video ở chết độ <b>công khai</b> hoặc <b>riêng tư</b></div>
@@ -221,22 +267,22 @@
                                     </label>
                                 </div>
                                 <div class="form-check checkfrom2">
-                                    <label class="label_Checks privateVideo" >
-                                        <input type="radio"  name="checked1" class="kich_thuoc_check privateVideo">
+                                    <label class="label_Checks privateVideo">
+                                        <input type="radio" name="checked1" class="kich_thuoc_check privateVideo">
                                         <span class="checkmark-radio-voting__txtes">
                                             Riêng tư
                                         </span>
                                         <div class="text_up_rt">Chỉ có bạn được xem video của bạn</div>
                                     </label>
-                                    <label class="label_Checks publicVideo" >
-                                        <input type="radio"  name="checked1" class="kich_thuoc_check publicVideo">
+                                    <label class="label_Checks publicVideo">
+                                        <input type="radio" name="checked1" class="kich_thuoc_check publicVideo">
                                         <span class="checkmark-radio-voting__txtes">
                                             Công khai
                                         </span>
                                         <div class="text_up_rt">Mọi người điều được xem video của bạn</div>
                                     </label>
                                 </div>
-      
+
                             </div>
 
 
@@ -245,7 +291,7 @@
                     </div>
 
                     <div class="quaylai_mottrang">
-                        <button class="btn btn-primary quaydau_right" ><div class="quaydau_right" data-dismiss="modal">QUAY LẠI</div></button>
+                        <button class="btn btn-primary quaydau_right"><div class="quaydau_right" data-dismiss="modal">QUAY LẠI</div></button>
                     </div>
                     <button class=" createVideo btn btn-primary" type="submit">Tạo</button>
                 </form>
@@ -253,36 +299,206 @@
         </div>
     </div>
 </div>
+
+<!-- chỉnh sữa -->
+<div class="modal" id="chinhsuavideos">
+    <div class="modal_chinhsuavideo">
+        <div class="khungposien_chinhsua">
+            <div class="tieude_chinhsua" data-dismiss="modal" data-toggle="modal" data-target="#chinhsuatieudevideo">
+                <div class="nametieude_chinhsua">Tiêu đề</div>
+            </div>
+            <div class="tieude_chinhsua">
+                <div class="nametieude_chinhsuamota" data-dismiss="modal" data-toggle="modal" data-target="#chinhsuamota">Mô tả</div>
+            </div>
+            <div class="tieude_chinhsua">
+                <div class="namedanhmuctieude_chinhsua" data-dismiss="modal" data-toggle="modal" data-target="#chinhsuadanhmuc">Danh mục</div>
+            </div>
+           
+        </div>
+    </div>
+</div>
+<!-- thaotackhac -->
+<div class="modal" id="thaotackhac">
+    <div class="modal_thaotackhac">
+        <div class="khung_cach_topttk">
+            <div class="tieude_chinhsua">
+                <div class="taivideoxuong">Tải xuống</div>
+            </div>
+            <div class="tieude_chinhsua">
+                <div class="xoavinhvien" data-dismiss="modal" data-toggle="modal" data-target="#xoavinhvien">Xóa vĩnh viễn</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--Chỉnh sửa tiêu đề và mô tả video-->
+<div class="modal" id="repair_Title_Description">
+    <div class="modal_repair_Title_Description">
+        <div class="header_videodau">
+            <div class="bentraiheader_videodau">
+                <div class="namedachon">Đã chọn</div>
+                <div class="soluongvideoda_chon countVideo">2</div>
+            </div>
+            <div class="benphaiheader_videodau">
+                <div class="sangphai_header_videodauu">
+                    <div type="button" class="xacnhanvi_deo confirm_repair" id="data_confirm">XÁC NHẬN</div>
+                </div>
+                <div class="sangphai_header_videodauu">
+                    <div type="button" class="huybovi_deo" data-dismiss="modal">HỦY</div>
+                </div>
+            </div>
+        </div>
+        <div class="content_videodau">
+            <div class="na_tieude">Tiêu đề <span class="errorMessage text-danger" id="errorTieude"></span></div>
+            <div class="noi_dung_teodeall">
+                <textarea id="repair_Title" class="noi_dung_teode" rows="4" placeholder="Tiêu đề thay thế" style="-webkit-appearance: none;"></textarea>
+                
+            </div>
+            <div class="na_tieude">Mô tả <span class="errorMessage text-danger" id="errorDescription"></span></div>
+            <div class="noi_dung_teodeall">
+                <textarea id="repair_Description" class="noi_dung_teode" rows="4" placeholder="Mô tả thay thế" style="-webkit-appearance: none;"></textarea>
+                
+            </div>
+        </div>
+    </div>
+</div>
+<!-- chinhsua tieu đề -->
+<div class="modal" id="chinhsuatieudevideo">
+    <div class="modal_chinhsuatiedevideo">
+        <div class="header_videodau">
+            <div class="bentraiheader_videodau">
+                <div class="namedachon">Đã chọn</div>
+                <div class="soluongvideoda_chon countVideo" ></div>
+            </div>
+            <div class="benphaiheader_videodau">
+                <div class="sangphai_header_videodauu">
+                    <div type="button" class="xacnhanvi_deo" id="confirmTitle">XÁC NHẬN</div>
+                </div>
+                <div class="sangphai_header_videodauu">
+                    <div type="button" class="huybovi_deo" data-dismiss="modal">HỦY</div>
+                </div>
+            </div>
+        </div>
+        <div class="content_videodau">
+            <div class="na_tieude">Tiêu đề  <span class="text-danger errorMessage" id="errortieude"></span></div>
+            <div class="noi_dung_teodeall">
+                <textarea class="noi_dung_teode" id="valueTitle" rows="4" placeholder="Tiêu đề thay thế" style="-webkit-appearance: none;"></textarea>
+              
+            </div>
+        </div>
+    </div>
+</div>
+<!-- chỉnh sữa mô tả -->
+<div class="modal" id="chinhsuamota">
+    <div class="modal_chinhsuatiedevideo">
+        <div class="header_videodau">
+            <div class="bentraiheader_videodau">
+                <div class="namedachon">Đã chọn</div>
+                <div class="soluongvideoda_chon countVideo">2</div>
+            </div>
+            <div class="benphaiheader_videodau">
+                <div class="sangphai_header_videodauu">
+                    <div type="button" class="xacnhanvi_deo" id="confirm_Description">XÁC NHẬN</div>
+                </div>
+                <div class="sangphai_header_videodauu">
+                    <div type="button" class="huybovi_deo" data-dismiss="modal">HỦY</div>
+                </div>
+            </div>
+        </div>
+        <div class="content_videodau">
+            <div class="na_tieude">Mô tả <span class="text-danger errorMessage" id="errormota"></span></div>
+            <div class="noi_dung_teodeall">
+                <textarea class="noi_dung_teode" id="valueDescription" rows="4" placeholder="Mô tả văn bản" style="-webkit-appearance: none;"></textarea>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- chỉnh sửa danh mục -->
+<div class="modal" id="chinhsuadanhmuc">
+    <div class="modal_chinhsuadanhmucvideo">
+        <div class="header_videodau">
+            <div class="bentraiheader_videodau">
+                <div class="namedachon">Đã chọn</div>
+                <div class="soluongvideoda_chon countVideo">2</div>
+            </div>
+            <div class="benphaiheader_videodau">
+                <div class="sangphai_header_videodauu">
+                    <div type="button" class="xacnhanvi_deo" id="confirm_category">XÁC NHẬN</div>
+                </div>
+                <div class="sangphai_header_videodauu">
+                    <div type="button" class="huybovi_deo" data-dismiss="modal">HỦY</div>
+                </div>
+            </div>
+        </div>
+        <div class="content_videodau">
+            <div class="na_tieude">Danh mục <span class="text-danger errorMessage" id="errorCategory"></span></div>
+            <div class="chua_danhmuc">
+                <select id="valueCategory" class="select_danhmuc_video" asp-items="ViewBag.Category">
+                </select>
+            </div>
+        </div>
+    </div>
+</div>
+<!--Chỉnh sửa Poster-->
+<div class="modal" id="chinhsuaPoster">
+    <div class="modal_chinhsuaposter">
+        <form asp-action="UploadPoster" id="formUpload" asp-controller="Video" method="post" enctype="multipart/form-data">
+            <div class="header_videodau">
+                <div class="bentraiheader_videodau">
+                    <div class="namedachon">Đã chọn </div>
+                    <div class="soluongvideoda_chon countVideo">1</div>
+                </div>
+                <div class="benphaiheader_videodau">
+
+                    <div class="sangphai_header_videodauu">
+                        <button type="submit" class="xacnhanvi_deo" id="confirmPoster">XÁC NHẬN</button>
+                    </div>
+                    <div class="sangphai_header_videodauu">
+                        <div type="button" class="huybovi_deo" data-dismiss="modal">HỦY</div>
+                    </div>
+                </div>
+            </div>
+            <div class="content_videodau">
+                <div class="na_tieude">Tiêu đề  <span class="text-danger errorMessage" id="errorPoster"></span></div>
+                <div class="noi_dung_teodeall">
+                    <div class="custom-file">
+                        <input type="file" class="custom-file-input" name="fileUpload" id="updatePoster">
+                        <label class="custom-file-label" >Chọn Ảnh</label>
+                        <input type="hidden" name="idVideo" id="idVideo"/>
+                    </div>
+                    <img src="~/Client/img/default_image.png" class="imgReview" id="uploadPoster"  />
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<!-- xóa vĩnh viên -->
+<div class="modal" id="xoavinhvien">
+    <div class="modal_xoavinhvien">
+        <div class="namexoavinhvien">Xoá vĩnh viễn</div>
+        <div class="khungmauxoavinhvienall">
+            <div class="namesapxoa">Sắp xóa</div>
+            <div class="soluongsapxoa countVideo">0</div>
+            <div class="namevideo">video</div>
+        </div>
+        <div class="namedaoly">Tôi hiểu rằng video sẽ bị xóa vĩnh viễn và không thể khôi phục.</div>
+        <div class="footer_video_xoavinhvien">
+            <div class="bentrai_video_xoavinhvien"></div>
+            <div class="bengiua_video_xoavinhvien">
+                <div type="button" class="bengiua_video_xoavinhvien_huy" data-dismiss="modal">HỦY</div>
+            </div>
+            <div class="benphai_video_xoavinhvien">
+                <div type="button" class="benphai_video_xoavinhvien_xvv" id="confirmDeleteAll">XÁC NHẬN</div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--------------------End------------------------------------>
 @section Scripts{
-    <script>
-
-        let button = document.getElementsByClassName("collapses");
-        for (let i = 0; i < button.length; i++) {
-
-            button[i].addEventListener("click", function () {
-
-                if (button[i].classList.contains("active")) {
-                    button[i].innerHTML = "Xem thêm";
-
-                }
-                else {
-                    button[i].innerHTML = "Ẩn bớt";
-                }
-                this.classList.toggle("active");
-                let content = document.getElementsByClassName("xohangall")[i];
-                if (!content.style.maxHeight) {
-                    content.style.maxHeight = content.scrollHeight + "px";
-                }
-                else {
-                    content.style.maxHeight = null;
-                }
-            })
-        }
-    </script>
+    
     <script>
         /*---------------Check file video hoặc ảnh có đúng dịnh dạng hay không-------------*/
-
-        function checkFormatName(event,flag) {
+        function checkFormatName(event, flag) {
             var names = event.target.files[0].name.toLowerCase().split(".");
             var name = names[names.length - 1];
             if (flag) {
@@ -298,7 +514,7 @@
                 else
                     return false;
             }
-        
+
         }
         //Post Video
         $("#inputFile").change(function (event) {
@@ -306,7 +522,7 @@
             const videoSrc = document.querySelector("#video-source");
             const videoTag = document.querySelector("#video-tag");
             var fileVideo = event.target.files[0];
-        
+
             if (event.target.files.length != 0 && fileVideo != undefined) {
                 const sizeVideo = parseInt(fileVideo.size / 1048576);
                 if (sizeVideo > 50) {
@@ -317,7 +533,7 @@
                         $("#tieude_noidung").modal("show");
                         var reader = new FileReader();
                         reader.onload = (function (e) {
-                            videoSrc.src = e.target.result
+                            videoSrc.src = e.target.result;
                             $("#data_meting_tep").text(fileVideo.name);
                             videoTag.load();
                         }).bind(fileVideo);
@@ -331,7 +547,7 @@
         });
         //Poster Video
         $("#posterVideo").change(function (event) {
-       
+
             var result = checkFormatName(event, true);
             $("#errorMessage").text("");
             $("#labelPoster").text(event.target.files[0].name);
@@ -344,7 +560,7 @@
                 }
             } else {
                 $("#errorMessage").text("Vui lòng nhập đúng định dạng!");
-                document.querySelector("#chuyentrang").setAttribute("disabled","");
+                document.querySelector("#chuyentrang").setAttribute("disabled", "");
             }
         });
         //Title Video
@@ -352,7 +568,7 @@
             $(".titleVideo").text($(this).val());
             $("#Name").val($(this).val());
             $("#errorTitle").text("");
-            if ($("#errorTitle").text() == '' &&$("#errorMessage").text() == '' && $("#posterVideo").val() != '') {
+            if ($("#errorTitle").text() == '' && $("#errorMessage").text() == '' && $("#posterVideo").val() != '') {
                 document.querySelector("#chuyentrang").removeAttribute("disabled");
             }
         });
@@ -363,14 +579,313 @@
         //Checked Private and Public
         $(".privateVideo").click(function () {
             $("#HiddenVideo").val("Private");
-            
+
         });
         $(".publicVideo").click(function () {
             $("#HiddenVideo").val("Public");
         });
         $("#CategoryOption").change(function () {
             $("#CategorysId").val($(this).val());
-            
+
         })
+    </script>
+  
+    <script>
+        //------------------------Xử lý chế độ xuất bản video----------
+       
+       //-------------------------Phân trang-----------------------
+        $(document).ready(function () {
+            var currentPage = 2;
+
+            $('.site-layout').on('scroll', function () {
+                let div = $(this).get(0);
+                if (div.scrollTop + div.clientHeight >= div.scrollHeight) {
+                    loadData();
+                    currentPage += 1;
+                }
+            });
+            function loadData() {
+                $.get("/Video/MyChannel_Partial/?page=" + currentPage, function (respone) {
+                    $('tbody').append(respone);
+                    
+                });
+            }
+        });
+        //------------------------Kết thúc-------------------------------
+
+        //-----------------------Xử lý Update Video-----------
+        var idVideoRepair = 0;
+        var idVideoRepairArrays = [];
+        var countLoop = 1;
+        
+        function repairVideo(id) {
+           
+            $("#repair_Title_Description").modal('show');
+            idVideoRepair = id;
+        }
+        $(".confirm_repair").click(function () {
+            var title = $("#repair_Title").val();
+            var description = $("#repair_Description").val();
+            
+            if (title == '' || description == '') {
+                if (title == '') 
+                    $("#errorTieude").text("(Vui lòng nhập tiêu đề)");
+                if (description == '')
+                    $("#errorDescription").text("(Vui lòng nhập Mô tả)");
+            }
+            else updateVideo(title, description, "#repair_Title_Description");
+        });
+
+        function updateVideo(title,description,modal) {
+            var data = {
+                "Name": title,
+                "Description": description,
+                "Id": idVideoRepair
+            };
+            $.post("/Video/Update", { "data": JSON.stringify(data) }, function (respone) {
+                respone = JSON.parse(respone);
+                if (respone != "Error") {
+                    $(".title-" + idVideoRepair).text(respone.Name);
+                    $(".description-" + idVideoRepair).text(respone.Description);
+                    $(modal).modal('hide');
+                    $("#errorTieude").text('');
+                    $("#errorDescription").text('');
+                    $("#repair_Title").val('');
+                    $("#repair_Description").val('');
+                }
+            });
+           
+        }
+        function updateVideoAll(title, description, modal, id, element, errorElement) {
+            var data = {
+                "Name": title,
+                "Description": description,
+                "Id": id
+            };
+            $.post("/Video/Update", { "data": JSON.stringify(data) }, function (respone) {
+                respone = JSON.parse(respone);
+                if (respone != "Error" && respone!=0) {
+                    $(".title-" + id).text(respone.Name);
+                    $(".description-" + id).text(respone.Description);
+                    $(modal).modal('hide');
+                    if (countLoop < idVideoRepairArrays.length) {
+                        updateVideoAll(title, description, modal, idVideoRepairArrays[countLoop], element, errorElement);
+                        countLoop++;
+                    } else {
+                        $(modal).modal('hide');
+                       
+                        $(element).val('');
+                        $(errorElement).text('');
+                        countLoop = 1;
+                    }
+                }
+            });
+
+        }
+
+        function deleteVideo(id, flag) {
+            if (flag == false) {
+                var confirms = confirm("Bạn chắc muốn xóa Video này?");
+                if (confirm) {
+                    $.get("/Video/Delete/?id=" + id, function (respone) {
+                        if (respone == "Success") {
+
+                            $('.update-' + id).remove();
+                        }
+                    });
+                }
+            } else {
+                $.get("/Video/Delete/?id=" + id, function (respone) {
+                    if (respone == "Success") {
+                        $('.update-' + id).remove();
+                        if (countLoop < idVideoRepairArrays.length) {
+                            deleteVideo(idVideoRepairArrays[countLoop], true);
+                        }
+                        else {
+                            idVideoRepairArrays.splice(0, idVideoRepairArrays.length);
+                            $(".cutomcheckboxall").prop("checked", false);
+                            console.log(idVideoRepairArrays);
+                        }
+                        countLoop++;
+                    } 
+                });
+            }
+        }
+        $("#confirmDeleteAll").click(function () {
+            countLoop = 1;
+            deleteVideo(idVideoRepairArrays[0], true);
+            $("#xoavinhvien").modal('hide');
+        });
+        function repairImage(id) {
+            idVideoRepair = id;
+            $("#idVideo").val(idVideoRepair);
+            $("#chinhsuaPoster").modal('show');
+        }
+
+        $("#updatePoster").change(function (event) {
+            $("#errorPoster").text("");
+            var imgReview = document.querySelector("#uploadPoster");
+            imgReview.src = URL.createObjectURL(event.target.files[0]);
+            imgReview.onload = function () {
+                URL.revokeObjectURL(imgReview.src);
+            }
+        });
+
+        $("#formUpload").submit(function (event) {
+            var uploadposter = $("#updatePoster").val();
+            if (uploadposter == '') {
+                $("#errorPoster").text("(Vui lòng chọn ảnh!)");
+                event.preventDefault();
+            }
+        });
+
+        $(".click_down_create ").click(function () {
+            $("#titleVideo").val("");
+            $("#descriptionVideo").val("");
+            $("#inputFile").val("");
+            $("#data_meting_tep").val("");
+        });
+        $("#click_video_create").modal('show');
+        function dongkhungchinhsuavieo() {
+            $(".tongcaikhungnay").css("max-height", "0px");
+        }
+        //---------------Check All Item---------------------
+        $("#customCheckallcc").change(function () {
+            var listCheck = Array.from(document.querySelectorAll(".cutomcheckboxall"));
+            var checkAll = $(this).prop("checked");
+            var id =0 ;
+            if (checkAll) {
+                $(".cutomcheckboxall").prop("checked", true);
+                for (var i of listCheck) {
+                    id = i.getAttribute("id").split('-')[1];
+                    repairItem(parseInt(id));
+                }
+                
+            } else {
+                idVideoRepairArrays = [];   
+                $(".cutomcheckboxall").prop("checked", false);
+            }
+            checkInput();
+        });
+        //-------------Check  A Item-------------------------
+        function repairItem(id) {
+            var checkedItem = $("#customCheck-" + id).prop("checked");
+            var checkItem = idVideoRepairArrays.includes(id);
+           
+            if (!checkItem && checkedItem) {
+                idVideoRepairArrays.push(id);
+            } else {
+                var index = idVideoRepairArrays.indexOf(id);
+                idVideoRepairArrays.splice(index, 1);
+            }
+            console.log(idVideoRepairArrays);
+            $(".countVideo").text(idVideoRepairArrays.length);
+            checkInput();
+        }
+
+        //----------Xử lý update Title-----------------------
+        $("#confirmTitle").click(function () {
+            var valueTitle = $("#valueTitle").val();
+            if (valueTitle == '') $("#errortieude").text("(Vui lòng nhập tiêu đề)");
+            else {
+                updateVideoAll(valueTitle, "", "#chinhsuatieudevideo", idVideoRepairArrays[0], "#valueTitle","#errortieude");
+            }
+        });
+        //----------Xử lý update mô tả--------------
+        $("#confirm_Description").click(function () {
+            var valueDescription = $("#valueDescription").val();
+            if (valueDescription == '') $("#errormota").text("(Vui lòng nhập mô tả)");
+            else {
+                updateVideoAll("", valueDescription, "#chinhsuamota", idVideoRepairArrays[0], "#valueDescription","#errormota");
+            }
+        }); 
+        //-----------Display frame repair Video--------------
+        function checkInput() {
+            var listCheck = Array.from(document.querySelectorAll(".cutomcheckboxall"));
+            var flagCheked = true;
+            let con = document.querySelector(".tongcaikhungnay");
+            if (!con.style.maxHeight) {
+                con.style.maxHeight = con.scrollHeight + "px";
+            } else {
+                for (var item of listCheck) {
+                    if (item.checked) flagCheked = false;
+                   
+                }
+                if (flagCheked) con.style.maxHeight = null;
+            }
+        }
+        //----------------Xử lý update category-------------
+        $("#confirm_category").click(function () {
+            var valueCategory = $("#valueCategory").val();
+            if (valueCategory == '') $("#errorCategory").text("(Vui lòng chọn  danh mục)");
+            else {
+                countLoop = 1;
+                updateCategory(idVideoRepairArrays[0], valueCategory);
+            }
+        });
+        function updateCategory(id,valueCategory) {
+            $.get("/Video/UpdateCategory/?id=" +id+ "&idCategory=" + valueCategory,
+                function (respone) {
+                    if (respone == "Success") {
+                      
+                        if (countLoop < idVideoRepairArrays.length) {
+                           
+                            updateCategory(idVideoRepairArrays[countLoop], valueCategory);
+                         countLoop++;
+                        }
+                        else {
+                            console.log("do");
+                            $('#chinhsuadanhmuc').modal("hide");
+                            $("#valueCategory").val('');
+                            $("#errorCategory").text('')
+                            countLoop = 1;
+                        }
+                        
+                    }
+                });
+        }
+        //---------------Xử lý dowload All-------------------
+        $(".taivideoxuong").click(function () {
+            
+            for (var id of idVideoRepairArrays) {
+                $("#dowload-" + id).get(0).click();
+            }
+            $("#thaotackhac").modal('hide');
+        });
+        //-----------------Xử lý chế độ xuất bản-------------------
+        function choosePublic(idVideo, permision) {
+           
+            UpdatePermission(idVideo, permision);
+        }
+        function choosePrivate(idVideo, permission) {
+            UpdatePermission(idVideo, permission);
+            
+        }
+        function UpdatePermission(id,permission) {
+            var data = {
+                "Id": id,
+                "HidenVideo": permission
+            };
+            $.post("/Video/Update", { "data": JSON.stringify(data) }, function (respone) {
+                if (respone != "Error") {
+                    if (permission) {
+                        $(".choose_public-"+id).prop("checked", true);
+                        $(".choose_private-"+id).prop("checked", false);
+                        $(".text_display-" + id).text("Công khai");
+                        $(".img_display-"+id).removeClass("eyeNone");
+                        $(".img_display-"+id).prop("src", "/Client/img/Eye.svg");
+                    }
+                    else {
+                        $(".choose_public-" + id).prop("checked", false);
+                        $(".choose_private-" + id).prop("checked", true);
+                        $(".text_display-" + id).text("Riêng tư");
+                        $(".img_display-" + id).addClass("eyeNone");
+                        $(".img_display-" + id).prop("src", "/Client/img/visibility.png");
+                    }
+                    
+                }
+            });
+        }
+        //-----------------------Kết thúc--------------------------------------
     </script>
 }

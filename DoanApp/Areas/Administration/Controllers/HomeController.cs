@@ -102,8 +102,8 @@ namespace DoanApp.Areas.Administration.Controllers
                     await _signInManager.SignInAsync(user, isPersistent: true);
                     ViewBag.InfoUserLogin = user;
                     //Check user authenticated
-                    var addUserAuthenticated = new UserAuthenticated();
-                    addUserAuthenticated.checkUserAuthenticated(user);
+                   
+                    UserAuthenticated.checkUserAuthenticated(user);
                     //----end
                     return RedirectToAction("Index","User");
                 }

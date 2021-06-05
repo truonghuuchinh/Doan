@@ -1,0 +1,103 @@
+﻿<div class="col site-layout">
+    @if (User.Identity.IsAuthenticated)
+    {
+        <div class="container22">
+            <a href="detail.html">
+                <div class="container222">
+                    <iframe width="261" height="165" src="~/Client/video/video1.mp4" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                </div>
+                <div class="container222_end">
+                    <div class="detail_video">
+                        <img class="detail_lerft icon-sidebar-item_video" alt="" src="~/Client/img/avatar.svg">
+                        <span class="detail_right text-sidebar-item_video">Làm nồi cháo vịt xiêm trộn gỏi bắp chuối ngày mưa bão </span>
+                    </div>
+                    <div class="detail_video2">
+                        <div class="detail_lerfts"></div>
+                        <div class="detail_rights">
+                            <div class="text_color">ẨM THỰC CHÒI LÁ</div>
+                            <div class="text_color_check">15 lượt xem . 37 phút trước</div>
+                        </div>
+                    </div>
+                </div>
+            </a>
+        </div>
+        <div class="container22">
+            <a href="detail.html">
+                <div class="container222">
+                    <iframe width="261" height="165" src="~/Client/video/video1.mp4" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                </div>
+                <div class="container222_end">
+                    <div class="detail_video">
+                        <img class="detail_lerft icon-sidebar-item_video" alt="" src="~/Client/img/avatar.svg">
+                        <span class="detail_right text-sidebar-item_video">Làm nồi cháo vịt xiêm trộn gỏi bắp chuối ngày mưa bão </span>
+                    </div>
+                    <div class="detail_video2">
+                        <div class="detail_lerfts"></div>
+                        <div class="detail_rights">
+                            <div class="text_color">ẨM THỰC CHÒI LÁ</div>
+                            <div class="text_color_check">15 lượt xem . 37 phút trước</div>
+                        </div>
+                    </div>
+                </div>
+            </a>
+        </div>
+        <div class="container22">
+            <a href="detail.html">
+                <div class="container222">
+                    <iframe width="261" height="165" src="~/Client/video/video1.mp4" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                </div>
+                <div class="container222_end">
+                    <div class="detail_video">
+                        <img class="detail_lerft icon-sidebar-item_video" alt="" src="~/Client/img/avatar.svg">
+                        <span class="detail_right text-sidebar-item_video">Làm nồi cháo vịt xiêm trộn gỏi bắp chuối ngày mưa bão </span>
+                    </div>
+                    <div class="detail_video2">
+                        <div class="detail_lerfts"></div>
+                        <div class="detail_rights">
+                            <div class="text_color">ẨM THỰC CHÒI LÁ</div>
+                            <div class="text_color_check">15 lượt xem . 37 phút trước</div>
+                        </div>
+                    </div>
+                </div>
+            </a>
+        </div>
+        <div class="container22">
+            <a href="detail.html">
+                <div class="container222">
+                    <iframe width="261" height="165" src="~/Client/video/video1.mp4" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                </div>
+                <div class="container222_end">
+                    <div class="detail_video">
+                        <img class="detail_lerft icon-sidebar-item_video" alt="" src="~/Client/img/avatar.svg">
+                        <span class="detail_right text-sidebar-item_video">Làm nồi cháo vịt xiêm trộn gỏi bắp chuối ngày mưa bão </span>
+                    </div>
+                    <div class="detail_video2">
+                        <div class="detail_lerfts"></div>
+                        <div class="detail_rights">
+                            <div class="text_color">ẨM THỰC CHÒI LÁ</div>
+                            <div class="text_color_check">15 lượt xem . 37 phút trước</div>
+                        </div>
+                    </div>
+                </div>
+            </a>
+        </div>
+    }
+    else
+    {
+        <div class="content_Nologin" style=" padding: 259px;">
+            <div class="message_nologin">
+                <h2>Chưa có video yêu thích</h2>
+                <h6>Vui lòng Đăng nhập để xem</h6>
+            </div>
+            <div id="no_Login" class="list_dangnhap_center">
+                <a asp-action="Login" asp-controller="Home">
+                    <div class="login_center">
+                        <div class="img_list_dangnhap"></div>
+                        <div class="list_dangnhap_right">ĐĂNG NHẬP</div>
+                    </div>
+                </a>
+            </div>
+        </div>
+
+    }
+</div>

@@ -9,7 +9,6 @@ namespace DoanData.Models
     {
         public int Id { get; set; }
         public string Reaction { get; set; } = "NoAction";
-        public string CreateDate { get; set; }
         public int VideoId { get; set; }
         public virtual Video video {get;set;}
         public int UserId { get; set; }

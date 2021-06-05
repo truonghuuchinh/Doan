@@ -1,4 +1,6 @@
-﻿using DoanData.Models;
+﻿using DoanApp.Models;
+using DoanApp.Services;
+using DoanData.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,8 +10,10 @@ namespace DoanApp.Commons
 {
     public class UserAuthenticated
     {
-        public static List<AppUser> ListtUser = new List<AppUser>(); 
-        public  void checkUserAuthenticated(AppUser user)
+       
+        public static List<AppUser> ListtUser = new List<AppUser>();
+        public static List<UserFollow> ListUserFollow = new List<UserFollow>();
+        public static void checkUserAuthenticated(AppUser user)
         {
             var count = 0;
             if (ListtUser.Count> 0)
@@ -38,5 +42,39 @@ namespace DoanApp.Commons
             }
             return null;
         }
+        public static  void SetUserFollow(List<AppUser> listfollow,string email)
+        {
+            var itemUser = new UserFollow();
+            if (ListUserFollow.Count == 0)
+            {
+                itemUser.Email = email;
+                itemUser.ListUser = listfollow;
+                ListUserFollow.Add(itemUser);
+            }
+            else
+            {
+                foreach (var item in ListUserFollow)
+                {
+                    if (item.Email != email)
+                    {
+                        itemUser.Email = email;
+                        itemUser.ListUser = listfollow;
+                        ListUserFollow.Add(itemUser);
+                        break;
+                    }
+                }
+            }
+            
+            
+        }
+        public static List<AppUser> GetUserFollow(string email)
+        {
+            foreach (var item in ListUserFollow)
+            {
+                if (item.Email == email) return item.ListUser;
+            }
+            return null;
+        }
+        
     }
 }

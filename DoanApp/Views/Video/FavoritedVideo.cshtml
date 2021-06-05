@@ -1,0 +1,99 @@
+﻿@model IPagedList<Video_vm>
+@using X.PagedList;
+
+<div class="site-layout">
+    @if (User.Identity.IsAuthenticated)
+    {
+        <div class="site-layout_centent ">
+            <div class="text_popular">Video đã thích</div>
+            @foreach (var item in Model)
+            {
+                <a asp-action="DetailVideo" asp-controller="Home" asp-route-id="@item.Id">
+                    <div class="popular_left">
+                        <video onmouseover="viewBefore(@item.Id)" onmouseout="clearBefore(@item.Id)" class=" nextSecond nextSecond-@item.Id"
+                               data-poster="@item.PosterImg" id="player">
+                            <source src="~/Client/video/@item.LinkVideo" type="video/mp4" size="576">
+                        </video>
+                    </div>
+                    <div class="popular_right">
+                        <div class="header__popular">@item.Name</div>
+                        <div class="all_papge">
+                            <div class="ten_kenh">@item.FirtsName @item.LastName .</div>
+                            <div class="luot_xem">
+                                @ConvertViewCount.ConvertView(item.ViewCount) lượt xem
+                            </div>
+                            <div class="dau_cham_cach">.</div>
+                            <div class="thoi_gian_cong_chieu">@CaculatorHours.Caculator(item.CreateDate)</div>
+                        </div>
+                        <div class="mota_noidung_video">@item.Description</div>
+                    </div>
+                </a>
+            }
+        </div>
+    }
+    else
+    {
+        <div class="content_Nologin" style=" padding: 259px;">
+            <div class="message_nologin">
+                <h2>Chưa có video đã thích vui lòng đăng nhập để Like</h2>
+                <h6>Vui lòng Đăng nhập để xem</h6>
+            </div>
+            <div id="no_Login" class="list_dangnhap_center">
+                <a asp-action="Login" asp-controller="Home">
+                    <div class="login_center">
+                        <div class="img_list_dangnhap"></div>
+                        <div class="list_dangnhap_right">ĐĂNG NHẬP</div>
+                    </div>
+                </a>
+            </div>
+        </div>
+    }
+
+</div>
+@section Scripts{
+    <script>
+        $(document).ready(function () {
+            var currentPage = 2;
+
+            $('.site-layout').on('scroll', function () {
+                let div = $(this).get(0);
+                if (div.scrollTop + div.clientHeight >= div.scrollHeight) {
+                    loadData();
+                    currentPage += 1;
+                }
+            });
+            function loadData() {
+                $.get("/Video/FavoritedVideo/?page=" + currentPage + "&flag=true", function (respone) {
+                    respone = JSON.parse(respone);
+                    $.each(respone, function (index, item) {
+                        $('.site-layout_centent').append(`
+                    <a href="/Home/DetailVideo/${item.Id}">
+                <div class="popular_left">
+                    <video onmouseover="viewBefore(${item.Id})" onmouseout="clearBefore(${item.Id})" class=" nextSecond nextSecond-${item.Id}"
+                           data-poster="${item.PosterImg}" id="player">
+                        <source src="/Client/video/${item.LinkVideo}" type="video/mp4" size="576">
+                    </video>
+                </div>
+                <div class="popular_right">
+                    <div class="header__popular">${item.Name}</div>
+                    <div class="all_papge">
+                        <div class="ten_kenh">${item.FirtsName} ${item.LastName} .</div>
+                        <div class="luot_xem">
+                           ${convertViewCount(item.ViewCount)} lượt xem
+                        </div>
+                        <div class="dau_cham_cach">.</div>
+                        <div class="thoi_gian_cong_chieu">${item.CreateDate}</div>
+                    </div>
+                    <div class="mota_noidung_video">${item.Description}</div>
+                </div>
+            </a>
+                        `);
+                    });
+
+                    loadSecondVideo();
+                });
+            }
+        });
+    </script>
+
+}

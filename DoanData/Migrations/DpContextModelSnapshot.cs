@@ -256,17 +256,42 @@ namespace DoanData.Migrations
                     b.ToTable("FollowChannel");
                 });
 
-            modelBuilder.Entity("DoanData.Models.LikeVideoDetail", b =>
+            modelBuilder.Entity("DoanData.Models.LikeCommentDetail", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("CreateDate")
+                    b.Property<int>("Comment")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Reaction")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("nvarchar(max)")
-                        .HasDefaultValue("00/00/00 00:00:00");
+                        .HasDefaultValue("NoAction");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("VideoId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.HasIndex("VideoId");
+
+                    b.ToTable("LikeCommentDetail");
+                });
+
+            modelBuilder.Entity("DoanData.Models.LikeVideoDetail", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Reaction")
                         .HasColumnType("nvarchar(max)");
@@ -594,6 +619,21 @@ namespace DoanData.Migrations
                     b.HasOne("DoanData.Models.AppUser", "ToUser")
                         .WithMany("ToUsers")
                         .HasForeignKey("ToUserId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("DoanData.Models.LikeCommentDetail", b =>
+                {
+                    b.HasOne("DoanData.Models.AppUser", "user")
+                        .WithMany("LikeComments")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("DoanData.Models.Video", "video")
+                        .WithMany("LikeComments")
+                        .HasForeignKey("VideoId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
                 });

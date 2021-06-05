@@ -19,5 +19,6 @@ namespace DoanApp.Services
         Task<bool> Update(AppUser userRequest);
         Task<int> UpdatLockcout(AppUser user);
         List<AppUser> GetAll();
+        List<AppUser> GetUserFollow(string email);
     }
 }
