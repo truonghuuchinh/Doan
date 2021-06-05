@@ -10418,7 +10418,7 @@ th.end_time_schedule {
   margin-top: 20px;
 }
 .height_content_user {
-  height: 666px;
+  height: auto;
 }
 .color_text_tile {
   color: #000000;
@@ -10592,4 +10592,5 @@ li .active {
   margin-left: 10px;
   cursor: pointer;
 }
+
 /* end fix button edit-delete super-admin */

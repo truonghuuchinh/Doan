@@ -25,5 +25,6 @@ namespace DoanData.Models
         public List<DetailVideo> DetailVideos { get; set; }
         public List<ReportVideo> ReportVideos { get; set; }
         public List<LikeVideoDetail> LikeVideoDetails { get; set; }
+        public List<LikeCommentDetail> LikeComments { get; set; }
     }
 }

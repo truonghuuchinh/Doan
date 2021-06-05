@@ -4,7 +4,7 @@
    
 }
 <div class="noidung_comment" id="@(Model.ReplyFor == "" ? "hello_coment" : "hello_coments")">
-    <div class="all_counts_comment_left"><div class="customs_imgs_comment"><img class="details_lerfts icon-sidebar-items_video" alt="" src="@(Model.LoginExternal ? Model.Avartar : "/Client/img/" + Model.Avartar)"></div></div>
+    <div class="all_counts_comment_left"><div class="customs_imgs_comment"><img class="details_lerfts icon-sidebar-items_video" alt="" src="@(Model.LoginExternal ? Model.Avartar : "/Client/avartar/" + Model.Avartar)"></div></div>
     <div class="all_counts_comment_right">
         <div class="khung_hang_1">
             <div class="ten_tac_gia TacGia-@Model.Id">@Model.FirtsName @Model.LastName</div>
@@ -28,10 +28,11 @@
             </div>
         </div>
         <div class="khung_hang_3">
-            <div class="like_binh_luan"></div>
-            <div class="so_luong_like">@Model.Like</div>
-            <div class="disklike_binh_luan"></div>
-            <div class="so_luong_disklike">@Model.DisLike</div>
+            <div class="like_binh_luan" onclick="likeComment(@Model.Id)"><i class="fa fa-thumbs-up like-@Model.Id"></i></div>
+            <div class="so_luong_like countLike-@Model.Id">@Model.Like</div>
+            <div class="disklike_binh_luan" onclick="dislikeComment(@Model.Id)"><i class="fa fa-thumbs-down dislike-@Model.Id"></i></div>
+            <div class="so_luong_disklike countDis-@Model.Id">@Model.DisLike</div>
+            <input type="hidden" class="comment-@Model.Id" value="@Model.CommentId" />
             @if (Model.ReplyFor == "")
             {
                 <div class="phan_hoi_binh_luan hover" onclick="oke(@Model.Id,true,' ')">Phản hồi</div>
@@ -45,7 +46,7 @@
         <div id="displayChild" class="all_counts_comment_rep-@Model.Id" style="display: none;">
             <div class="all_counts_comment_rep_left">
                 <div class="customs_imgs_rep_comment">
-                    <img class="details_lerfts icon-sidebar-items_video" alt="" src="@(Model.LoginExternal?Model.Avartar:"/Client/img/"+Model.Avartar)">
+                    <img class="details_lerfts icon-sidebar-items_video" alt="" src="@(Model.LoginExternal?Model.Avartar:"/Client/avartar/"+Model.Avartar)">
                 </div>
             </div>
             <div class="all_counts_comment_rep_right">

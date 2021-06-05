@@ -11,6 +11,7 @@ namespace DoanApp.Commons
     {
         public static string convertToUnSign(string s)
         {
+            if (s == null) s = "No result";
             Regex regex = new Regex("\\p{IsCombiningDiacriticalMarks}+");
             string temp = s.Normalize(NormalizationForm.FormD);
             return regex.Replace(temp, String.Empty).Replace('\u0111', 'd').Replace('\u0110', 'D');

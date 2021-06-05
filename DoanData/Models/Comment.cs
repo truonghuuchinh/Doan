@@ -19,7 +19,6 @@ namespace DoanData.Models
         public virtual AppUser appUser { get; set; }
         [ForeignKey("VideoId")]
         public int VideoId { get; set; }
-
         public virtual Video video { get; set; }
     }
 }

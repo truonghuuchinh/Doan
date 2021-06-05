@@ -1,0 +1,182 @@
+﻿@{ 
+    var user = UserAuthenticated.GetUser(User.Identity.Name);
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Quản lý Video</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w==" crossorigin="anonymous" />
+    <link href="~/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="~/Client/css/style.css">
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+
+    <script src="~/lib/bootstrap/dist/js/bootstrap.min.js"></script>
+</head>
+<body>
+    <div class="warpper">
+        <div class="header">
+            <div class="container-header">
+                <div class="menu">
+                    <div class="click_menu"></div>
+                </div>
+                <div class="logo"></div>
+               <form asp-action="SearchVideo" asp-controller="Home" method="post" id="formSearchVideo">
+                    <input id="nameSearch" name="nameSearch" placeholder="Tìm Kiếm" type="text" class="search" value="@ViewBag.nameSearch">
+                    <button type="button" class="search_Voice"> <i class="fas fa-microphone"></i></button>
+                    <div class="searchs">
+                        <button type="submit" class="search_sokiuty_img"><i class=" fas fa-search"></i></button>
+                    </div>
+                </form>
+
+                <div class="khoangcach"></div>
+                <div class="loginUser">
+                    @{
+                        if (User.Identity.IsAuthenticated && user != null)
+                        {
+                            <div id="completed_Login">
+                                <a asp-action="MyChannel" asp-controller="Video" class="move_page">
+                                    <div class="create click_create">
+                                            
+                                    </div>
+                                </a>
+                                <div class="notification"></div>
+                                <div class="account_information">
+                                    <div class="account_informationss" data-toggle="modal" data-target="#leave_the_check_avarta"><img src="@(user.LoginExternal ? user.Avartar : "/Client/avartar/" + user.Avartar)" alt="Alternate Text" /></div>
+                                </div>
+                            </div>
+                            @* Modal menu logout*@
+                            <div class="modal" id="leave_the_check_avarta">
+                                <div class="modal-dialog_es">
+                                    <div class="modal-content_es">
+                                        <div class="modal_check_fier_all">
+                                            <div class="modal_check__fier__all">
+                                                <div class="avartar_fier_left">
+                                                    <img src="@(user.LoginExternal ? user.Avartar : "/Client/avartar/" + user.Avartar)" alt="Alternate Text" />
+                                                </div>
+                                                <div class="avartar_fier_right">
+                                                    <div class="name__avartar_fier_right">@(user.FirtsName + " " + user.LastName)</div>
+                                                    <div class="email__avartar_fier_right">@(user.Email)</div>
+                                                </div>
+                                            </div>
+                                            <div class="ke_ngang_fier"></div>
+                                            <a href="kenhcuaban.html">
+                                                <div class="modal_check_function_fier">
+                                                    <div class="modal_check_function_fier_left">
+                                                        <div class="khung_function_fier_img">
+                                                            <div class="img_kenhdangky"></div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="modal_check_function_fier_right">
+                                                        <div class="text_modal_check_function_fier">Kênh của bạn</div>
+                                                    </div>
+                                                </div>
+                                            </a>
+                                            <div class="modal_check_function_fier">
+                                                <div class="modal_check_function_fier_left">
+                                                    <div class="khung_function_fier_img">
+                                                        <div class="img_Logout"></div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="modal_check_function_fier_right">
+                                                    <a asp-action="Logout" asp-controller="Home" class="move_page">
+                                                        <div class="text_modal_check_function_fier">Đăng xuất</div>
+                                                    </a>
+                                                </div>
+
+
+                                            </div>
+                                            <div class="ke_ngang_fier"></div>
+                                            <div class="modal_check_function_fier">
+                                                <div class="modal_check_function_fier_left">
+                                                    <div class="khung_function_fier_img">
+                                                        <div class="img_kenhdangky"></div>
+                                                    </div>
+                                                </div>
+                                                <div class="modal_check_function_fier_right">
+                                                    <div class="text_modal_check_function_fier">Giao diện: Giao diện ...</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                        else
+                        {
+                            <div id="no_Login" class="list_dangnhap_header" data-toggle="modal" data-target="#leave_the_room">
+                                <a asp-action="Login" asp-controller="Home">
+                                    <div class="list_dangnhap_left">
+                                        <div class="img_list_dangnhap"></div>
+                                    </div>
+                                    <div class="list_dangnhap_right">ĐĂNG NHẬP</div>
+                                </a>
+                            </div>
+                        }
+                    }
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <nav class="col strong_headers">
+                <li>
+                    <div class="all_img_trangcuaban">
+                        <div class="khung_imges_trangchu">
+                            <img class="img_trang__cuaban" alt="" src="@(user.LoginExternal ? user.Avartar : "/Client/avartar/" + user.Avartar)">
+                            <div class="tieudekenh_cuaban">Kênh của bạn</div>
+                            <div class="name_kenh_cuaban">@user.FirtsName @user.LastName</div>
+                        </div>
+                    </div>
+                </li>
+                <li class="text-white sidebar-item sidebar-menu">
+                    <a asp-action="OverviewPage" asp-controller="Video" style="text-decoration: none;">
+                        <div class="row">
+                            <img class="icon-sidebar-item" alt="" src="/Client/img/home_mau.png">
+                            <span class="text-sidebar-item">Trang tổng quan</span>
+                        </div>
+                    </a>
+                </li>
+                <li class="text-white sidebar-item sidebar-menu">
+                    <a asp-action="MyChannel" asp-controller="Video" style="text-decoration: none;">
+                        <div class="row">
+                            <img class="icon-sidebar-item" alt="" src="/Client/img/explore.png">
+                            <span class="text-sidebar-item">Nội dung</span>
+                        </div>
+                    </a>
+                </li>
+            </nav>
+            <div class="col site-layout site-layout_2s">
+                @RenderBody()
+            </div>
+        </div>
+    </div>
+    @RenderSection("Scripts", false)
+
+    <script>
+        let button = document.getElementsByClassName("collapses");
+        for (let i = 0; i < button.length; i++) {
+
+            button[i].addEventListener("click", function () {
+
+                if (button[i].classList.contains("active")) {
+                    button[i].innerHTML = "Xem thêm";
+
+                }
+                else {
+                    button[i].innerHTML = "Ẩn bớt";
+                }
+                this.classList.toggle("active");
+                let content = document.getElementsByClassName("xohangall")[i];
+                if (!content.style.maxHeight) {
+                    content.style.maxHeight = content.scrollHeight + "px";
+                }
+                else {
+                    content.style.maxHeight = null;
+                }
+            })
+        }
+    </script>
+
+</body>
+</html>

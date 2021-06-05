@@ -22,6 +22,7 @@ using System.Security.Claims;
 using Newtonsoft.Json;
 using DoanApp.Services;
 using X.PagedList;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace DoanApp.Controllers
 {
@@ -32,11 +33,16 @@ namespace DoanApp.Controllers
         private readonly SignInManager<AppUser> _signInManager;
         private readonly IVideoService _videoService;
         private readonly ICommentService _commentService;
+        private readonly ILikeVideoService _likeVideo;
+        private readonly IFollowChannelService _channelService;
+        private readonly ICategoryService _categoryService;
         static int countLockout = 0;
+        static string userEmail = "";
         public HomeController(UserManager<AppUser> userManager,
             SignInManager<AppUser> signInManager,
             IUserService userService,IVideoService videoService,
-            ICommentService commentService
+            ICommentService commentService, ILikeVideoService likeVideo,
+            IFollowChannelService channelService,ICategoryService categoryService
         )
         {
             _userManager = userManager;
@@ -44,79 +50,144 @@ namespace DoanApp.Controllers
             _videoService = videoService;
             _userService = userService;
             _commentService = commentService;
+            _likeVideo = likeVideo;
+            _channelService = channelService;
+            _categoryService = categoryService;
         }
-        public IActionResult Index(int? page)
+        public async Task<IActionResult> Index(int? page)
         {
+           
+            ViewBag.LinkActive = "/Home/Index";
             if (page == null) page = 1;
-            var pageSize = 20;
             var pageNumber = page ?? 1;
-            List<Video_vm> listVideo_Vm = new List<Video_vm>();
+            List<Video_vm> listVideo_Vm;
             var listVideo = _videoService.GetAll();
             var listUser = _userService.GetAll();
-            listVideo_Vm = GetVideo_Vm(listVideo, listUser);
-            return View(listVideo_Vm.ToPagedList(pageNumber,pageSize));
+            listVideo_Vm =_videoService.GetVideo_Vm(listVideo, listUser).
+                OrderByDescending(x => x.Id).Where(x => x.Status &x.HidenVideo).ToList();
+            ViewBag.Search_Video = new SelectList(listVideo, "Id", "Name");
+            return View(await listVideo_Vm.ToPagedListAsync(pageNumber, 12));
         }
-        public List<Video_vm> GetVideo_Vm(List<Video> lVideo,List<AppUser> lUser)
+        public IActionResult Index_Partial(int? page,string nameSearch=null)
         {
-            List<Video_vm> listVideo_Vm = new List<Video_vm>();
-            var listVideo = (from video in lVideo
-                             join user in lUser on video.AppUserId equals user.Id
-                             select new
-                             {
-                                 video,
-                                 user
-                             });
+            if(page == null) page = 1;
+            var pageNumber = page ?? 1;
+            var listVideo_Vm = new List<Video_vm>();
+            var listVideo = _videoService.GetAll();
+            var listUser = _userService.GetAll();
+            listVideo_Vm = _videoService.GetVideo_Vm(listVideo, listUser).
+                OrderByDescending(x => x.Id).Where(x => x.Status).ToList();
+            if (nameSearch != null) {
+                nameSearch = nameSearch.ToLower();
+                listVideo_Vm = listVideo_Vm.Where(x => x.Name.ToLower().Contains(nameSearch)).ToList();
+             }
+            return View(listVideo_Vm.ToPagedList(pageNumber, 12));
+        }
+        
+        public IActionResult Popular(int? page)
+        {
+            if (page == null) page = 1;
+            int pageNumber = page ?? 1;
+            int pageSize = 5;
+            var listVideo = _videoService.GetAll().OrderByDescending(x => x.ViewCount).
+                Where(x => x.ViewCount > 0).ToList();
+            var listUser = _userService.GetAll();
+            var listvideo_vm = _videoService.GetVideo_Vm(listVideo,listUser).ToPagedList(pageNumber,pageSize);
+            return View(listvideo_vm);
+        }
+        public IActionResult Popular_Partial(int? page)
+        {
+            if (page == null) page = 1;
+            int pageNumber = page ?? 1;
+            int pageSize = 8;
+            var listVideo = _videoService.GetAll().OrderByDescending(x => x.ViewCount).
+                Where(x => x.ViewCount > 0).ToList();
+            var listUser = _userService.GetAll();
+            var listvideo_vm = _videoService.GetVideo_Vm(listVideo, listUser).ToPagedList(pageNumber, pageSize);
+            return View(listvideo_vm);
+        }
+        public async Task<IActionResult> SearchVideo(int? page,string nameSearch)
+        {
+            ViewBag.nameSearch = nameSearch;
 
-            foreach (var item in listVideo)
+            if (page == null) page = 1;
+            var pageNumber = page ?? 1;
+            var pageSize = 12;
+            var listVideo_Vm = GetSearchVideo_vm(nameSearch);
+            return View(await listVideo_Vm.ToPagedListAsync(pageNumber, pageSize));
+        }
+        public IActionResult SearchVideo_Partial(int? page,string nameSearch=null)
+        {
+            if (page == null) page = 1;
+            var pageNumber = page ?? 1;
+            var pageSize = 12;
+            var listVideo_vm = GetSearchVideo_vm(nameSearch);
+            return View(listVideo_vm.ToPagedList(pageNumber, pageSize));
+        }
+        public List<Video_vm> GetSearchVideo_vm(string nameSearch)
+        {
+            List<Video_vm> listVideo_Vm;
+            var listVideo = _videoService.GetAll();
+            var listUser = _userService.GetAll();
+            listVideo_Vm = _videoService.GetVideo_Vm(listVideo, listUser).OrderByDescending(x => x.Id).
+                      Where(x => x.Status && x.HidenVideo).ToList();
+            if (nameSearch != null)
             {
-                var video = new Video_vm();
-                video.PosterImg = item.video.PosterImg;
-                video.Name = item.video.Name;
-                video.Id = item.video.Id;
-                video.LinkVideo = item.video.LinkVideo;
-                video.Avartar = item.user.Avartar;
-                video.FirtsName = item.user.FirtsName;
-                video.LastName = item.user.LastName;
-                video.AppUserId = item.user.Id;
-                video.ViewCount = item.video.ViewCount;
-                video.LoginExternal = item.user.LoginExternal;
-                video.CreateDate = item.video.CreateDate;
-                listVideo_Vm.Add(video);
+                nameSearch = ConvertUnSigned.convertToUnSign(nameSearch).ToLower();
+                var listCategory = _categoryService.GetAll().Result.
+                Where(x => ConvertUnSigned.convertToUnSign(x.Name).ToLower().Contains(nameSearch)).ToList(); 
+                if(listCategory.Count>0)
+                {
+                    listVideo_Vm = (from video in listVideo_Vm
+                                    join category in listCategory on video.CategorysId equals category.Id
+                                    select video).ToList();
+                }
+                else listVideo_Vm = listVideo_Vm.Where(x => ConvertUnSigned.convertToUnSign(x.Name).ToLower().Contains(nameSearch)
+                    || ConvertUnSigned.convertToUnSign(x.Description).ToLower().Contains(nameSearch)).ToList();
             }
+            else listVideo_Vm = null;
             return listVideo_Vm;
-
-        }
-        public IActionResult Popular()
-        {
-            return View();
         }
         public async Task<IActionResult> DetailVideo(int? id)
         {
-            var video =await  _videoService.FinVideoAsync((int)id);
+            var userFollow = "false";
+            var userLogin = UserAuthenticated.GetUser(User.Identity.Name);
+            ViewBag.UserLogin = userLogin == null ? null : userLogin;
+            var userIdLogin = userLogin == null ? 0 : userLogin.Id;
+            var video = await _videoService.FinVideoAsync((int)id);
             var user = await _userManager.FindByIdAsync(video.AppUserId.ToString());
+            var like = await _likeVideo.FindAsync(userIdLogin, video.Id);
             var video_Vm = new Video_vm();
             video_Vm.PosterImg = video.PosterImg;
             video_Vm.Name = video.Name;
             video_Vm.Id = video.Id;
+            video_Vm.Reaction = like == null ? " " : like.Reaction;
             video_Vm.LinkVideo = video.LinkVideo;
             video_Vm.Avartar = user.Avartar;
             video_Vm.FirtsName = user.FirtsName;
+            video_Vm.Like = video.Like;
+            video_Vm.UserLike = like == null ? 0 : like.UserId;
+            video_Vm.DisLike = video.DisLike;
             video_Vm.LastName = user.LastName;
             video_Vm.ViewCount = video.ViewCount;
             video_Vm.AppUserId = video.AppUserId;
             video_Vm.LoginExternal = user.LoginExternal;
             video_Vm.CreateDate = video.CreateDate;
-            var lVideo = _videoService.GetAll().Where(x => x.CategorysId == video.CategorysId&&x.Id!=video.Id).ToList();
+            var lVideo = _videoService.GetAll().Where(x => x.CategorysId == video.CategorysId && x.Id != video.Id).ToList();
             var lUser = _userService.GetAll();
-            ViewBag.VideoRelated = GetVideo_Vm(lVideo, lUser).ToPagedList(1, 15).ToList();
-            if (User.Identity.IsAuthenticated)
+            if (userLogin != null)
             {
-                ViewBag.UserLogin = UserAuthenticated.GetUser(User.Identity.Name);
+                if (CheckUserFollow(userLogin.Id, video_Vm.AppUserId))
+                    userFollow = "true";
             }
             var comment = _commentService.GetAll().Where(x => x.VideoId == video.Id).ToList();
+            ViewBag.VideoRelationShip =_videoService.GetVideo_Vm(lVideo, lUser).ToPagedList(1, 15).ToList();
             ViewBag.Comment = _commentService.GetAll_vm(lUser, comment).OrderByDescending(x => x.Id).ToList();
-;            return View(video_Vm);
+            ViewBag.UserFollow = userFollow;
+            ViewBag.CountRegister = _channelService.GetAll().Where(x=>x.ToUserId==video_Vm.AppUserId).Count();
+                 return View(video_Vm);
         }
+
         [HttpPost]
         public async Task<IActionResult> CreateComment_Partial(string comments)
         {
@@ -130,9 +201,39 @@ namespace DoanApp.Controllers
             }
             return Content("Error");
         }
-        public IActionResult FavoritedVideo()
+        
+      
+        [HttpPost]
+        public async Task<IActionResult> FollowChannel(string data)
         {
-            return View();
+            var flChannel = JsonConvert.DeserializeObject<FollowChannelRequest>(data);
+            var result = await _channelService.Create(flChannel);
+            var countFollow = _channelService.GetAll().Where(x => x.ToUserId == flChannel.ToUserId).Count();
+            if (result > 0)
+            {
+                return Content(ConvertViewCount.ConvertView(countFollow).ToString());
+            }
+            return Content("Error");
+        }
+        [HttpPost]
+        public async Task<IActionResult> CancelRegister(string data)
+        {
+            var flChannel = JsonConvert.DeserializeObject<FollowChannelRequest>(data);
+            var result =await  _channelService.Delete(flChannel.FromUserId, flChannel.ToUserId);
+            var countFollow = _channelService.GetAll().Where(x => x.ToUserId == flChannel.ToUserId).Count();
+            if (result > 0) return Content(ConvertViewCount.ConvertView(countFollow).ToString());
+            return Content("Error");
+        }
+        public bool CheckUserFollow(int fromUserId,int toUserId)
+        {
+            var listFollow = _channelService.GetAll();
+            foreach (var item in listFollow)
+            {
+                if (item.FromUserId == fromUserId && item.ToUserId == toUserId) 
+                    return true;
+            }
+            
+            return false;
         }
         public async Task<IActionResult> Logout()
         {
@@ -156,12 +257,18 @@ namespace DoanApp.Controllers
         [HttpPost]
         public async Task<IActionResult> Login(AppUserRequest model)
         {
-           
+            if (model.Email != userEmail)
+            {
+                countLockout = 0;
+            }
+            userEmail = model.Email;
          
             var reusult = await _userService.Login(model);
             var user = await _userManager.FindByEmailAsync(model.Email);
                 if (reusult)
                 {
+                           var listUserFollow = _userService.GetUserFollow(user.UserName);
+                         UserAuthenticated.SetUserFollow(listUserFollow,user.Email);
                           return RedirectToAction("Index", "Home");
                  }
                 else
@@ -216,9 +323,11 @@ namespace DoanApp.Controllers
             if (users!=null)
             {
                 
-                var addUserAuthenticated = new UserAuthenticated();
-                addUserAuthenticated.checkUserAuthenticated(users);
+               
+                UserAuthenticated.checkUserAuthenticated(users);
                 await _signInManager.SignInAsync(users, isPersistent: false, info.LoginProvider);
+                var listUserFollow = _userService.GetUserFollow(users.UserName);
+                UserAuthenticated.SetUserFollow(listUserFollow, users.UserName);
                 return RedirectToAction("Index");
             }
             else
@@ -289,8 +398,8 @@ namespace DoanApp.Controllers
                 if (check == 1 || check == 2)
                 {
                     //Check user authenticated
-                    var addUserAuthenticated = new UserAuthenticated();
-                    addUserAuthenticated.checkUserAuthenticated(user);
+                    
+                    UserAuthenticated.checkUserAuthenticated(user);
                     //--- end
                     ViewBag.Flag = true;
                     ViewBag.InfoUserLogin = user;
@@ -338,8 +447,8 @@ namespace DoanApp.Controllers
                         await _signInManager.SignInAsync(user, isPersistent: true);
                         ViewBag.InfoUserLogin = user;
                         //Check user authenticated
-                        var addUserAuthenticated = new UserAuthenticated();
-                        addUserAuthenticated.checkUserAuthenticated(user);
+                       
+                        UserAuthenticated.checkUserAuthenticated(user);
                         //----end
                         return Redirect("Index");
                     }

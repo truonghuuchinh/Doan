@@ -39,6 +39,9 @@ namespace DoanApp
             services.AddTransient<IUserService, UserService>();
             services.AddTransient<IVideoService, VideoService>();
             services.AddTransient<ICommentService, CommentService>();
+            services.AddTransient<ILikeVideoService, LikeVideoService>();
+            services.AddTransient<ILikeCommentService, LikeCommentService>();
+            services.AddTransient<IFollowChannelService, FollowChannelService>();
             services.AddSession(options =>
             {
                 options.IdleTimeout = TimeSpan.FromMinutes(2);

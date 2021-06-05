@@ -10,12 +10,12 @@ using System.Text;
 
 namespace DoanData.DoanContext
 {
-    public class DpContext : IdentityDbContext<AppUser,AppRole,int>
+    public class DpContext : IdentityDbContext<AppUser, AppRole, int>
     {
-       
+
         public DpContext(DbContextOptions<DpContext> options) : base(options)
         {
-           
+
         }
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -33,9 +33,10 @@ namespace DoanData.DoanContext
             builder.ApplyConfiguration(new PlaylistConfig());
             builder.ApplyConfiguration(new ReportVideoConfig());
             builder.ApplyConfiguration(new VideoConfig());
-            
+            builder.ApplyConfiguration(new LikeCommentDetailConfig());
+
         }
-         public DbSet<AppRole> AppRoles  { get; set; }
+        public DbSet<AppRole> AppRoles { get; set; }
         public DbSet<AppUser> AppUser { get; set; }
         public DbSet<Category> Category { get; set; }
         public DbSet<Comment> Comment { get; set; }
@@ -47,5 +48,6 @@ namespace DoanData.DoanContext
         public DbSet<PlayList> PlayList { get; set; }
         public DbSet<ReportVideo> ReportVideo { get; set; }
         public DbSet<Video> Video { get; set; }
+        public DbSet<LikeCommentDetail> LikeComments {get;set;}
     }
 }
