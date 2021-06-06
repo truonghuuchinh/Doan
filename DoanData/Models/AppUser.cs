@@ -9,11 +9,10 @@ namespace DoanData.Models
 
     public class AppUser:IdentityUser<int>
     {
-        public string Address { get; set; }
         public string FirtsName { get; set; }
         public string LastName { get; set; }
         public string LastLogin { get; set; }
-      
+        public bool LoginExternal { get; set; }
         public string Avartar { get; set; }
         public bool Status { get; set; } = true;
         public List<Video> Videos { get; set; }
@@ -24,7 +23,7 @@ namespace DoanData.Models
         public List<LikeVideoDetail> LikeVideoDetails { get; set; }
         public List<ListVideoFavavorite> ListVideoFavavorites { get; set; }
         public List<Notification> Notifications { get; set; }
-        public List<UserRole> UserRoles { get; set; }
         public List<ReportVideo> ReportVideos { get; set; }
+        public List<LikeCommentDetail> LikeComments { get; set; }
     }
 }

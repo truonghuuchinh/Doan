@@ -17,22 +17,7 @@
     <!-- link font Awesome -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css" />
    
-    <style>
-
-        .icon-sidebar-item {
-            margin-right: 10px;
-            margin-top: 3px;
-          @*  background: cadetblue;*@
-            padding:0px;
-        }
-        nav{
-            overflow:scroll;
-        }
-        .sidebar-menu a:hover{
-            text-decoration:none
-        }
-    </style>
-    <title>User Management</title>
+    <title>Administration</title>
 
 </head>
 
@@ -41,42 +26,30 @@
     <div class="layout">
         <div class="row">
             <nav class="col">
-                <div class="name-version text-center align-items-center">PHÒNG HỌP KHÔNG GIẤY Ver1.0</div>
                 <div class="info-card d-flex">
+                    @{ 
+                        var user = UserAuthenticated.GetUser(User.Identity.Name);
+
                     <div class="avatar">
-                        <img alt="" src="~/Administration/assets/img/avatar.svg">
+                        <img id="imgAdmin" alt="" src="@(user.LoginExternal?user.Avartar:"~/Administration/assets/img/"+user.Avartar)">
                     </div>
                     <div class="info-card-text text-white">
-                        <div class="name">Trần Văn Bình</div>
+                        <div class="name">@user.FirtsName @user.LastName</div>
                         <div class="role">Quản trị viên</div>
                     </div>
+                     }
                 </div>
                 <li class="sidebar-focus sidebar-item-first sidebar-menu">
-                    <a href="location-management.html">
+                    <a asp-action="Index" asp-controller="User">
                         <div class="row">
                             <img class="icon-sidebar-item" alt="" src="~/Administration/assets/img/users.png">
                             <span class="text-sidebar-item">Quản lý Người dùng</span>
                         </div>
                     </a>
                 </li>
+               
                 <li class="text-white sidebar-item sidebar-menu">
-                    <a asp-action="Index" asp-controller="Function">
-                        <div class="row">
-                            <img class="icon-sidebar-item" alt="" src="~/Administration/assets/img/optimization (1).png">
-                            <span class="active-sidebar-item">Quản lý Chức năng</span>
-                        </div>
-                    </a>
-                </li>
-                <li class="text-white sidebar-item sidebar-menu">
-                    <a asp-action="Index" asp-controller="Actions">
-                        <div class="row">
-                            <img class="icon-sidebar-item" alt="" src="~/Administration/assets/img/behavior (1).png">
-                            <span class="text-sidebar-item">Quản lý Hành động</span>
-                        </div>
-                    </a>
-                </li>
-                <li class="text-white sidebar-item sidebar-menu">
-                    <a href="layout_page_meeting_manager.html">
+                    <a asp-action="Index" asp-controller="Role">
                         <div class="row">
                             <img class="icon-sidebar-item" alt="" src="~/Administration/assets/img/partnership.png">
                             <span class="text-sidebar-item">Quản lý Vai trò</span>
@@ -148,7 +121,7 @@
                     </a>
                 </li>
                 <li class="text-white sidebar-item sidebar-menu">
-                    <a href="location-management.html">
+                    <a asp-action="Index" asp-controller="Category">
                         <div class="row">
                             <img class="icon-sidebar-item" alt="" src="~/Administration/assets/img/backend.png">
                             <span class="text-sidebar-item">Quản lý chủ đề</span>
@@ -168,9 +141,9 @@
                     </a>
                 </li>
                 <li class="text-white sidebar-item sidebar-menu">
-                    <a href="#">
+                    <a asp-action="Logout" asp-controller="Home">
                         <div class="row">
-                            <img class="icon-sidebar-item" alt="" src="~/Administration/assets/img/ic_logout_24px.svg">
+                            <img style="width:40px; padding-top:0px !important;" class="icon-sidebar-item" alt="" src="~/Administration/assets/img/ic_logout_24px.svg">
                             <span class="text-sidebar-item">Đăng xuất</span>
                         </div>
                     </a>

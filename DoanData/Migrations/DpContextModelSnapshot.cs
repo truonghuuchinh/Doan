@@ -15,31 +15,9 @@ namespace DoanData.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "3.1.1")
+                .HasAnnotation("ProductVersion", "3.1.15")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-            modelBuilder.Entity("DoanData.Models.Action", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("FunctionsId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(250)")
-                        .HasMaxLength(250);
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("FunctionsId");
-
-                    b.ToTable("Action");
-                });
 
             modelBuilder.Entity("DoanData.Models.AppRole", b =>
                 {
@@ -81,9 +59,6 @@ namespace DoanData.Migrations
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("int");
 
-                    b.Property<string>("Address")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("Avartar")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("nvarchar(max)")
@@ -114,6 +89,11 @@ namespace DoanData.Migrations
 
                     b.Property<DateTimeOffset?>("LockoutEnd")
                         .HasColumnType("datetimeoffset");
+
+                    b.Property<bool>("LoginExternal")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(false);
 
                     b.Property<string>("NormalizedEmail")
                         .HasColumnType("nvarchar(256)")
@@ -209,6 +189,9 @@ namespace DoanData.Migrations
                     b.Property<int>("Like")
                         .HasColumnType("int");
 
+                    b.Property<string>("ReplyFor")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<bool>("Status")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bit")
@@ -238,11 +221,6 @@ namespace DoanData.Migrations
 
                     b.Property<int>("PlayListId")
                         .HasColumnType("int");
-
-                    b.Property<bool>("Status")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bit")
-                        .HasDefaultValue(true);
 
                     b.Property<int>("VideoId")
                         .HasColumnType("int");
@@ -278,25 +256,34 @@ namespace DoanData.Migrations
                     b.ToTable("FollowChannel");
                 });
 
-            modelBuilder.Entity("DoanData.Models.Function", b =>
+            modelBuilder.Entity("DoanData.Models.LikeCommentDetail", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(250)")
-                        .HasMaxLength(250);
+                    b.Property<int>("Comment")
+                        .HasColumnType("int");
 
-                    b.Property<bool>("Status")
+                    b.Property<string>("Reaction")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("bit")
-                        .HasDefaultValue(true);
+                        .HasColumnType("nvarchar(max)")
+                        .HasDefaultValue("NoAction");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("VideoId")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Function");
+                    b.HasIndex("UserId");
+
+                    b.HasIndex("VideoId");
+
+                    b.ToTable("LikeCommentDetail");
                 });
 
             modelBuilder.Entity("DoanData.Models.LikeVideoDetail", b =>
@@ -305,11 +292,6 @@ namespace DoanData.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("CreateDate")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("nvarchar(max)")
-                        .HasDefaultValue("00/00/00 00:00:00");
 
                     b.Property<string>("Reaction")
                         .HasColumnType("nvarchar(max)");
@@ -439,36 +421,6 @@ namespace DoanData.Migrations
                     b.ToTable("ReportVideo");
                 });
 
-            modelBuilder.Entity("DoanData.Models.UserRole", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("ActionId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("CreateDate")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("nvarchar(max)")
-                        .HasDefaultValue("00/00/00 00:0:00");
-
-                    b.Property<string>("RoleName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ActionId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("UserRole");
-                });
-
             modelBuilder.Entity("DoanData.Models.Video", b =>
                 {
                     b.Property<int>("Id")
@@ -503,6 +455,9 @@ namespace DoanData.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PosterImg")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("Status")
@@ -623,15 +578,6 @@ namespace DoanData.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("DoanData.Models.Action", b =>
-                {
-                    b.HasOne("DoanData.Models.Function", "function")
-                        .WithMany("ActionList")
-                        .HasForeignKey("FunctionsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("DoanData.Models.Comment", b =>
                 {
                     b.HasOne("DoanData.Models.AppUser", "appUser")
@@ -673,6 +619,21 @@ namespace DoanData.Migrations
                     b.HasOne("DoanData.Models.AppUser", "ToUser")
                         .WithMany("ToUsers")
                         .HasForeignKey("ToUserId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("DoanData.Models.LikeCommentDetail", b =>
+                {
+                    b.HasOne("DoanData.Models.AppUser", "user")
+                        .WithMany("LikeComments")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("DoanData.Models.Video", "video")
+                        .WithMany("LikeComments")
+                        .HasForeignKey("VideoId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
                 });
@@ -731,21 +692,6 @@ namespace DoanData.Migrations
                         .WithMany("ReportVideos")
                         .HasForeignKey("VideoId")
                         .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("DoanData.Models.UserRole", b =>
-                {
-                    b.HasOne("DoanData.Models.Action", "action")
-                        .WithMany("UserRoles")
-                        .HasForeignKey("ActionId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("DoanData.Models.AppUser", "appUser")
-                        .WithMany("UserRoles")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 

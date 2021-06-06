@@ -10,6 +10,7 @@ namespace DoanData.Models
         public int Id { get; set; }
         public string Content { get; set; }
         public int CommentId { get; set; }
+        public string ReplyFor { get; set; }
         public string CreateDate { get; set; }
         public int Like { get; set; }
         public int DisLike { get; set; }
@@ -18,7 +19,6 @@ namespace DoanData.Models
         public virtual AppUser appUser { get; set; }
         [ForeignKey("VideoId")]
         public int VideoId { get; set; }
-
         public virtual Video video { get; set; }
     }
 }

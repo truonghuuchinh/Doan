@@ -21,7 +21,7 @@ body {
     -o-object-fit: cover;
        object-fit: cover; }
   .login-card .card-body {
-    padding: 85px 60px 60px; }
+    padding: 22px 60px 60px; }
     @media (max-width: 422px) {
       .login-card .card-body {
         padding: 35px 24px; } }
@@ -31,7 +31,7 @@ body {
     font-weight: normal;
     margin-bottom: 23px; }
   .login-card form {
-    max-width: 326px; }
+    max-width: 400px; }
   .login-card .form-control {
     border: 1px solid #d5dae2;
     padding: 15px 25px;
@@ -70,12 +70,117 @@ body {
   .login-card-footer-text {
     font-size: 16px;
     color: #0d2366;
-    margin-bottom: 60px; }
+     }
     @media (max-width: 767px) {
       .login-card-footer-text {
         margin-bottom: 24px; } }
   .login-card-footer-nav a {
     font-size: 14px;
     color: #919aa3; }
+/* Modal add new user */
 
+.modal-dialog {
+    max-width: 668px !important;
+}
+
+.modal-content {
+    width: 666px;
+    height: auto;
+}
+
+.modal_pasue_selete_user {
+    height: 363px;
+}
+
+.modal_pasue_selete_user_texts {
+    width: 581px;
+    height: 292px;
+}
+
+.modal_pasue_selete_user_texts_invitation {
+    width: 581px;
+    height: 273px;
+}
+
+.modal_pasue_selete {
+    height: 418px;
+}
+
+.modal_pasue_selete_two {
+    height: 350px;
+}
+
+.modal_pasue_selete_two_user {
+    height: 315px;
+}
+
+.modal-header {
+    background-color: #f0f0f0;
+    height: 50px;
+    color: #212121;
+}
+
+.modal-title {
+    font-weight: 600;
+    font-family: "Roboto";
+}
+
+.modal-footer {
+    height: 60px;
+    border: 1px dashed #d8d8d8;
+    background: white;
+    padding-left: 8px;
+}
+
+.btn-modal {
+    width: 303px;
+    height: 40px;
+}
+
+.btn-cancel-modal {
+    background-color: #f0f0f0;
+    color: #757575;
+    font-family: "Roboto";
+    line-height: 19px;
+}
+
+.btn-add-modal {
+    background-color: #0e4a8e;
+    color: #ffffff;
+    font-family: "Roboto";
+    line-height: 19px;
+}
+
+.modal-body .row {
+    margin-top: 20px;
+}
+
+    .modal-body .row div input[type="text"] {
+        height: 36px;
+    }
+
+    .modal-body .row div:first-child {
+        width: 174px;
+        font-size: 14px;
+        line-height: 16px;
+        color: #000000;
+    }
+
+    .modal-body .row div:last-child {
+        width: 460px;
+    }
+
+.magrian_tions_posive {
+    position: absolute;
+    transform: translate(50%, 0%);
+    left: 70%;
+}
+
+.input-group.date input {
+    border-right: none;
+}
+
+    .input-group.date input::placeholder {
+        color: #757575 !important;
+    }
 /*# sourceMappingURL=login.css.map */

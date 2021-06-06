@@ -1,0 +1,87 @@
+﻿@model IPagedList<Video>
+@using X.PagedList;
+@{ 
+    Layout = null;
+}
+@foreach (var item in Model)
+{
+    <tr class="datas">
+        <td class="td_check">
+            <input type="checkbox" onclick="repairItem(@item.Id)" class="cutomcheckboxall" id="customCheck-@item.Id"/>
+        </td>
+        <td class="td_video">
+            <div class="img_td_video">
+                <img src="~/Client/imgPoster/@item.PosterImg" alt="">
+            </div>
+            <div class="text_td_video">
+                <div class="name__text_video">@item.Name</div>
+                <div class="noidung__text_video">
+                    @item.Description
+                </div>
+            </div>
+        </td>
+        <td class="optionVideo">
+            <div class="dropdown">
+                <img class="icon-more" src="~/Client/img/more.png" alt="Alternate Text" />
+                <div class="contentEdit contentEdit-@item.Id">
+                    <div class="option" onclick="repairVideo(@item.Id)"><i class="fas fa-pencil-alt"></i> Chỉnh sửa Tiêu đề và Thông tin mô tả</div>
+                    <div class="option" onclick="repairImage(@item.Id)"><i class="fas fa-image"></i> Chỉnh sửa Ảnh Poster</div>
+                    <div class="option "><i class="fas fa-file-download"></i> <a style="color:#6c757d;" class="move_page" href="/Client/video/@item.LinkVideo" download="">Tải xuống</a></div>
+                    <div class="option" onclick="deleteVideo(@item.Id,false)"><i class="fas fa-trash"></i> Xóa vĩnh viễn</div>
+                </div>
+            </div>
+        </td>
+        <td class="td_chedohienthi">
+            <div class="all_td_chedohienthi" data-toggle="modal" data-target="#td_hienthi">
+                <div class="img_td_chedohienthi">
+                    <img class="@(item.HidenVideo?"":"eyeNone") img_display-@item.Id" src="/Client/img/@(item.HidenVideo?"Eye.svg":"visibility.png")" alt="Alternate Text" />
+                </div>
+                <div class="text_td_chedohienthi text_display-@item.Id">
+                    @(item.HidenVideo? "Công khai":"Riêng tư")
+                </div>
+                <div class="img_xungduoi_td_chedohienthi">
+                    <div class="imges_td_chedohienthi">
+                        <img src="/Client/img/ic_dropdown.svg" alt="Alternate Text" />
+                        <div class="choose_permission">
+                            <h6>Lưu hoặc xuất bản</h6>
+                            <div class="form-check">
+                                <input class="form-check-input choose_public-@item.Id" type="radio" @(item.HidenVideo ? "checked" : "")>
+
+                                <label class="form-check-label" onclick="choosePublic(@item.Id,true)">
+                                    Công khai
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input choose_private-@item.Id" type="radio" @(item.HidenVideo ? "" : "checked")>
+                                <label class="form-check-label" onclick="choosePrivate(@item.Id,false)">
+
+                                    Riêng tư
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </td>
+        <td class="td_ngay">
+            <div class="all_td_ngay">
+                <div class="time_td_ngay">@item.CreateDate.Split(' ')[0]</div>
+            </div>
+        </td>
+        <td class="td_soluotxem">
+            <div class="count_td_soluotxem">@item.ViewCount</div>
+        </td>
+        <td class="td_sobinhluan">
+            <div class="count_td_sobinhluan">9</div>
+        </td>
+        <td class="td_aluotthich">
+            <div class="all_td_luotthich">
+                <div class="cout_td__luotthich">@item.Like</div>
+                <div class="soluong_td_luotthich">lượt thích</div>
+                <div class="kengang_td_luotthich"></div>
+            </div>
+        </td>
+    </tr>
+
+}

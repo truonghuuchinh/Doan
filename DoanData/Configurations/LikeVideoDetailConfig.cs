@@ -15,7 +15,7 @@ namespace DoanData.Configurations
             builder.HasKey(x => x.Id);
             builder.HasOne(x => x.appuser).WithMany(l => l.LikeVideoDetails).HasForeignKey(j => j.UserId);
             builder.HasOne(x => x.video).WithMany(x => x.LikeVideoDetails).HasForeignKey(x => x.VideoId).OnDelete(DeleteBehavior.NoAction).HasPrincipalKey(t => t.Id);
-            builder.Property(x => x.CreateDate).HasDefaultValue<string>("00/00/00 00:00:00");
+          
 
         }
     }

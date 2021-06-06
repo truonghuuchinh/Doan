@@ -1,0 +1,29 @@
+﻿@model IPagedList<Video_vm>
+@using X.PagedList;
+@{ 
+    Layout = null;
+}
+
+        @foreach (var item in Model)
+        {
+            <a asp-action="DetailVideo" asp-controller="Home" asp-route-id="@item.Id">
+                <div class="popular_left">
+                    <video onmouseover="viewBefore(@item.Id)" onmouseout="clearBefore(@item.Id)" class=" nextSecond nextSecond-@item.Id"
+                           data-poster="@item.PosterImg" id="player">
+                        <source src="~/Client/video/@item.LinkVideo" type="video/mp4" size="576">
+                    </video>
+                </div>
+                <div class="popular_right">
+                    <div class="header__popular">@item.Name</div>
+                    <div class="all_papge">
+                        <div class="ten_kenh">@item.FirtsName @item.LastName .</div>
+                        <div class="luot_xem">
+                            @ConvertViewCount.ConvertView(item.ViewCount) lượt xem
+                        </div>
+                        <div class="dau_cham_cach">.</div>
+                        <div class="thoi_gian_cong_chieu">@CaculatorHours.Caculator(item.CreateDate)</div>
+                    </div>
+                    <div class="mota_noidung_video">@item.Description</div>
+                </div>
+            </a>
+        }

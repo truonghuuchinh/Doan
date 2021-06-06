@@ -1,0 +1,85 @@
+﻿@model Comment_vm
+@{
+    Layout = null;
+   
+}
+<div class="noidung_comment" id="@(Model.ReplyFor == "" ? "hello_coment" : "hello_coments")">
+    <div class="all_counts_comment_left"><div class="customs_imgs_comment"><img class="details_lerfts icon-sidebar-items_video" alt="" src="@(Model.LoginExternal ? Model.Avartar : "/Client/avartar/" + Model.Avartar)"></div></div>
+    <div class="all_counts_comment_right">
+        <div class="khung_hang_1">
+            <div class="ten_tac_gia TacGia-@Model.Id">@Model.FirtsName @Model.LastName</div>
+            <div class="thoi_gian_binh_luan">@CaculatorHours.Caculator(Model.CreateDate)</div>
+        </div>
+        <div class="khung_hang_2">
+
+            <div class="noi_dung_binh_luan">
+                @{
+                    if(Model.ReplyFor != " " && Model.ReplyFor != "childOne" )
+                    {
+                       <lable style="background:#cac9c9;">@Model.ReplyFor</lable> @Model.Content
+                    }
+                    else
+                    {
+                        @Model.Content
+                    }
+
+                }
+               
+            </div>
+        </div>
+        <div class="khung_hang_3">
+            <div class="like_binh_luan" onclick="likeComment(@Model.Id)"><i class="fa fa-thumbs-up like-@Model.Id"></i></div>
+            <div class="so_luong_like countLike-@Model.Id">@Model.Like</div>
+            <div class="disklike_binh_luan" onclick="dislikeComment(@Model.Id)"><i class="fa fa-thumbs-down dislike-@Model.Id"></i></div>
+            <div class="so_luong_disklike countDis-@Model.Id">@Model.DisLike</div>
+            <input type="hidden" class="comment-@Model.Id" value="@Model.CommentId" />
+            @if (Model.ReplyFor == "")
+            {
+                <div class="phan_hoi_binh_luan hover" onclick="oke(@Model.Id,true,' ')">Phản hồi</div>
+            }
+            else
+            {
+
+                <div class="phan_hoi_binh_luan hover" onclick="oke(@Model.Id,true,'child')">Phản hồi</div>
+            }
+        </div>
+        <div id="displayChild" class="all_counts_comment_rep-@Model.Id" style="display: none;">
+            <div class="all_counts_comment_rep_left">
+                <div class="customs_imgs_rep_comment">
+                    <img class="details_lerfts icon-sidebar-items_video" alt="" src="@(Model.LoginExternal?Model.Avartar:"/Client/avartar/"+Model.Avartar)">
+                </div>
+            </div>
+            <div class="all_counts_comment_rep_right">
+                @if (Model.ReplyFor == "")
+                {
+                    <input type="text" class="check_comments  Content-@Model.Id" placeholder="Bình Luận" autofocus>
+                    <input type="hidden" class="UserId-@Model.Id" value="@Model.UserId" />
+                    <input type="hidden" class="CommentId-@Model.Id" value="@Model.Id" />
+                    <input type="hidden" class="VideoId-@Model.Id" value="@Model.VideoId" />
+                }
+                else
+                {
+                    <div class="floatContainer-@Model.Id">
+                        <label class="lable label-@Model.Id" for="contents"></label>
+                        <input id="contents" onblur="showFrameBlur(@Model.Id)" onfocus="showFrameActive(@Model.Id)" type="text" class="check_comments check_comments_child Content-@Model.Id" autofocus>
+                        <input type="hidden" class="UserId-@Model.Id" value="@Model.UserId" />
+                        <input type="hidden" class="CommentId-@Model.Id" value="@Model.CommentId" />
+                        <input type="hidden" class="VideoId-@Model.Id" value="@Model.VideoId" />
+                    </div>
+                }
+                <div class="text__comment_rep_right">
+                    <button class="check_cancel hover" onclick="oke(@Model.Id, false,' ')">Hủy</button>
+                    @if (Model.ReplyFor == "")
+                    {
+                        <button class="check_comment hover" onclick="comment(true,@Model.Id,'childOne')">Phản hồi</button>
+                    }
+                    else
+                    {
+                        <button class="check_comment hover" onclick="comment(true,@Model.Id,'childTwo')">Phản hồi</button>
+                    }
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

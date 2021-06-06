@@ -6,9 +6,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Trang Chủ</title>
     <link rel="stylesheet" href="https://cdn.plyr.io/3.6.2/demo.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w==" crossorigin="anonymous" />
     <link href="~/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="~/Client/css/style.css">
+   
+    <link href="~/select2/css/select2.min.css" rel="stylesheet" />
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="~/select2/js/select2.min.js"></script>
 </head>
 <body>
     <div class="warpper">
@@ -18,162 +23,225 @@
                     <div class="click_menu"></div>
                 </div>
                 <div class="logo"></div>
-                <input id="name" placeholder="Tìm Kiếm" type="text" name="name" class="search">
-                <div class="searchs">
-                    <a href="" class="search_sokiuty">
-                        <div class="search_sokiuty_img"></div>
-                    </a>
-                </div>
+                <form asp-action="SearchVideo" asp-controller="Home" method="post" id="formSearchVideo">
+                    <input id="nameSearch" name="nameSearch" placeholder="Tìm Kiếm" type="text" class="search" value="@ViewBag.nameSearch">
+                    <button type="button" class="search_Voice"> <i class="fas fa-microphone" id="i_searchVoice"></i></button>
+                    <div class="searchs">
+                        <button type="submit" class="search_sokiuty_img"><i class=" fas fa-search"></i></button>
+                    </div>
+                </form>
+               
+
                 <div class="khoangcach"></div>
                 <div class="loginUser">
-                    @if (User.Identity.IsAuthenticated)
-                    {
-                        <div id="completed_Login">
-                            <div class="create">
-                            </div>
-                            <div class="notification"></div>
-                            <div class="account_information">
-                            </div>
-                        </div>
-                    }
-                    else
-                    {
-                        <div id="no_Login" class="list_dangnhap_header" data-toggle="modal" data-target="#leave_the_room">
-                            <a asp-action="Login" asp-controller="Home">
-                                <div class="list_dangnhap_left">
-                                    <div class="img_list_dangnhap"></div>
+                    @{
+                        var user = UserAuthenticated.GetUser(User.Identity.Name);
+                        if (User.Identity.IsAuthenticated && user != null)
+                        {
+                            <div id="completed_Login">
+                                <a asp-action="MyChannel" asp-controller="Video" class="move_page">
+                                    <div class="create click_create">
+
+                                    </div>
+                                </a>
+
+                                <div class="notification"></div>
+                                <div class="account_information">
+                                    <div class="account_informationss" data-toggle="modal" data-target="#leave_the_check_avarta"><img src="@(user.LoginExternal ? user.Avartar : "/Client/avartar/" + user.Avartar)" alt="Alternate Text" /></div>
                                 </div>
-                                <div class="list_dangnhap_right">ĐĂNG NHẬP</div>
-                            </a>
-                        </div>
+                            </div>
+                            @* Modal menu logout*@
+                            <div class="modal" id="leave_the_check_avarta">
+                                <div class="modal-dialog_es">
+                                    <div class="modal-content_es">
+                                        <div class="modal_check_fier_all">
+                                            <div class="modal_check__fier__all">
+                                                <div class="avartar_fier_left">
+                                                    <img src="@(user.LoginExternal ? user.Avartar : "/Client/avartar/" + user.Avartar)" alt="Alternate Text" />
+                                                </div>
+                                                <div class="avartar_fier_right">
+                                                    <div class="name__avartar_fier_right">@(user.FirtsName + " " + user.LastName)</div>
+                                                    <div class="email__avartar_fier_right">@(user.Email)</div>
+                                                </div>
+                                            </div>
+                                            <div class="ke_ngang_fier"></div>
+                                            <a href="kenhcuaban.html">
+                                                <div class="modal_check_function_fier">
+                                                    <div class="modal_check_function_fier_left">
+                                                        <div class="khung_function_fier_img">
+                                                            <div class="img_kenhdangky"></div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="modal_check_function_fier_right">
+                                                        <div class="text_modal_check_function_fier">Kênh của bạn</div>
+                                                    </div>
+                                                </div>
+                                            </a>
+                                            <div class="modal_check_function_fier">
+                                                <div class="modal_check_function_fier_left">
+                                                    <div class="khung_function_fier_img">
+                                                        <div class="img_Logout"></div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="modal_check_function_fier_right">
+                                                    <a class="move_page" asp-action="Logout" asp-controller="Home">
+                                                        <div class="text_modal_check_function_fier">Đăng xuất</div>
+                                                    </a>
+                                                </div>
+
+
+                                            </div>
+                                            <div class="ke_ngang_fier"></div>
+                                            <div class="modal_check_function_fier">
+                                                <div class="modal_check_function_fier_left">
+                                                    <div class="khung_function_fier_img">
+                                                        <div class="img_kenhdangky"></div>
+                                                    </div>
+                                                </div>
+                                                <div class="modal_check_function_fier_right">
+                                                    <div class="text_modal_check_function_fier">Giao diện: Giao diện ...</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                        else
+                        {
+                            <div id="no_Login" class="list_dangnhap_header" data-toggle="modal" data-target="#leave_the_room">
+                                <a asp-action="Login" asp-controller="Home">
+                                    <div class="list_dangnhap_left">
+                                        <div class="img_list_dangnhap"></div>
+                                    </div>
+                                    <div class="list_dangnhap_right">ĐĂNG NHẬP</div>
+                                </a>
+                            </div>
+                        }
                     }
                 </div>
             </div>
         </div>
-    <div class="row">
-        <nav class="col strong_headers">
-            <li class="sidebar-focus sidebar-item-first sidebar-menu sider_tops">
-                <a asp-action="Index" asp-controller="Home">
-                    <div class="row">
-                        <img class="icon-sidebar-item" alt="" src="~/Client/img/home_mau.png">
-                        <span class="active-sidebar-item">Trang chủ</span>
-                    </div>
-                </a>
-            </li>
-            <li class="text-white sidebar-item sidebar-menu">
-                <a asp-action="Popular" asp-controller="Home">
-                    <div class="row">
-                        <img class="icon-sidebar-item" alt="" src="~/Client/img/explore.png">
-                        <span class="text-sidebar-item">Khám phá</span>
-                    </div>
-                </a>
-            </li>
-            <li class="text-white sidebar-item sidebar-menu">
-                <a href="">
-                    <div class="row">
-                        <img class="icon-sidebar-item" alt="" src="~/Client/img/youtube_danky.png">
-                        <span class="text-sidebar-item">Kênh đăng ký</span>
-                    </div>
-                </a>
-            </li>
-            <li class="text-white sidebar-item sidebar-menu sider_colors" style="height: 0px;">
-                <div style="background-color: #0C386A; height:1px"></div>
-            </li>
-            <li class="text-white sidebar-item sidebar-menu">
-                <a href="">
-                    <div class="row">
-                        <img class="icon-sidebar-item" alt="" src="~/Client/img/youtube_thuvien.png">
-                        <span class="text-sidebar-item">Thư viện</span>
-                    </div>
-                </a>
-            </li>
-            <li class="text-white sidebar-item sidebar-menu">
-                <a href="">
-                    <div class="row">
-                        <img class="icon-sidebar-item" alt="" src="~/Client/img/future.png">
-                        <span class="text-sidebar-item">Video đã xem</span>
-                    </div>
-                </a>
-            </li>
-            <li class="text-white sidebar-item sidebar-menu">
-                <a href="">
-                    <div class="row">
-                        <img class="icon-sidebar-item" alt="" src="~/Client/img/youtube_videocuaban.png">
-                        <span class="text-sidebar-item">Video của bạn</span>
-                    </div>
-                </a>
-            </li>
-            <li class="text-white sidebar-item sidebar-menu">
-                <a href="">
-                    <div class="row">
-                        <img class="icon-sidebar-item" alt="" src="~/Client/img/clock.png">
-                        <span class="text-sidebar-item">Xem sau</span>
-                    </div>
-                </a>
-            </li>
-            <li class="text-white sidebar-item sidebar-menu">
-                <a asp-action="FavoritedVideo" asp-controller="Home">
-                    <div class="row">
-                        <img class="icon-sidebar-item" alt="" src="~/Client/img/like.png">
-                        <span class="text-sidebar-item">Video đã thích</span>
-                    </div>
-                </a>
-            </li>
-            <li class="text-white sidebar-item sidebar-menu sider_colors" style="height: 0px;">
-                <div style="background-color: #0C386A; height:1px"></div>
-            </li>
-            <div class="hearer_container_text">Kênh Đăng Ký</div>
-            <div class="xohangall">
-                <li class="text-white sidebar-item sidebar-menu fix_texts_count">
-                    <a href="">
+        <div class="row">
+            <nav class="col strong_headers">
+                <a class="move_page" asp-action="Index" asp-controller="Home">
+                    <li class="text-white sidebar-item sidebar-menu">
+
                         <div class="row">
-                            <img class="icon-sidebar-item" alt="" src="~/Client/img/avatar.svg">
-                            <span class="text-sidebar-item fix_texts">Phim hay</span>
+                            <img class="icon-sidebar-item" alt="" src="~/Client/img/home_mau.png">
+                            <span class="text-sidebar-item">Trang chủ</span>
                         </div>
-                    </a>
-                </li>
-                <li class="text-white sidebar-item sidebar-menu fix_texts_count">
-                    <a href="">
+                    </li>
+                </a>
+                <a class="move_page" asp-action="Popular" asp-controller="Home">
+                    <li class="text-white sidebar-item sidebar-menu">
+
                         <div class="row">
-                            <img class="icon-sidebar-item" alt="" src="~/Client/img/imgs.svg">
-                            <span class="text-sidebar-item fix_texts">Khoa pug</span>
+                            <img class="icon-sidebar-item" alt="" src="~/Client/img/explore.png">
+                            <span class="text-sidebar-item">Khám phá</span>
                         </div>
-                    </a>
-                </li>
-                <li class="text-white sidebar-item sidebar-menu fix_texts_count">
-                    <a href="">
+                    </li>
+                </a>
+                <a class="move_page" asp-action="SubscriptionChannel" asp-controller="Video">
+                    <li class="text-white sidebar-item sidebar-menu">
                         <div class="row">
-                            <img class="icon-sidebar-item" alt="" src="~/Client/img/avatar.svg">
-                            <span class="text-sidebar-item fix_texts">Nhật Phạm</span>
+                            <img class="icon-sidebar-item" alt="" src="~/Client/img/youtube_danky.png">
+                            <span class="text-sidebar-item">Kênh đăng ký</span>
                         </div>
-                    </a>
+                    </li>
+                </a>
+                <li class="text-white sidebar-item sidebar-menu sider_colors" style="height: 0px;">
+                    <div style="background-color: #0C386A; height:1px"></div>
                 </li>
-                <li class="text-white sidebar-item sidebar-menu fix_texts_count">
-                    <a href="">
+                <a class="move_page" asp-action="LibaryVideo" asp-controller="Video">
+                    <li class="text-white sidebar-item sidebar-menu">
                         <div class="row">
-                            <img class="icon-sidebar-item" alt="" src="~/Client/img/imgs.svg">
-                            <span class="text-sidebar-item fix_texts">Khoa pug</span>
+                            <img class="icon-sidebar-item" alt="" src="~/Client/img/youtube_thuvien.png">
+                            <span class="text-sidebar-item">Thư viện</span>
                         </div>
-                    </a>
-                </li>
-                <li class="text-white sidebar-item sidebar-menu fix_texts_count">
-                    <a href="">
+                    </li>
+                </a>
+                <a class="move_page" asp-action="VideoWatched" asp-controller="Video">
+                    <li class="text-white sidebar-item sidebar-menu">
                         <div class="row">
-                            <img class="icon-sidebar-item" alt="" src="~/Client/img/avatar.svg">
-                            <span class="text-sidebar-item fix_texts">Nhật Phạm</span>
+                            <img class="icon-sidebar-item" alt="" src="~/Client/img/future.png">
+                            <span class="text-sidebar-item">Video đã xem</span>
                         </div>
+                    </li>
+                </a>
+                @if (User.Identity.IsAuthenticated)
+                {
+                    <a class="move_page" asp-action="MyChannel" asp-controller="Video">
+                        <li class="text-white sidebar-item sidebar-menu">
+                            <div class="row">
+                                <img class="icon-sidebar-item" alt="" src="~/Client/img/youtube_videocuaban.png">
+                                <span class="text-sidebar-item">Video của bạn</span>
+                            </div>
+                        </li>
                     </a>
+                    <a class="move_page" href="">
+                        <li class="text-white sidebar-item sidebar-menu">
+                            <div class="row">
+                                <img class="icon-sidebar-item" alt="" src="~/Client/img/clock.png">
+                                <span class="text-sidebar-item">Xem sau</span>
+                            </div>
+                        </li>
+                    </a>
+                    <a class="move_page" asp-action="FavoritedVideo" asp-controller="Video">
+                        <li class="text-white sidebar-item sidebar-menu">
+                            <div class="row">
+                                <img class="icon-sidebar-item" alt="" src="~/Client/img/like.png">
+                                <span class="text-sidebar-item">Video đã thích</span>
+                            </div>
+                        </li>
+                    </a>
+
+                }
+                <li class="text-white sidebar-item sidebar-menu sider_colors" style="height: 0px;">
+                    <div style="background-color: #0C386A; height:1px"></div>
                 </li>
+
+                @if (User.Identity.IsAuthenticated)
+                {
+                    <div class="hearer_container_text">Kênh Đăng Ký</div>
+                    <div class="xohangall">
+                        @foreach (var item in UserAuthenticated.GetUserFollow(User.Identity.Name))
+                        {
+                            <a class="move_page" href="">
+                                <li class="text-white sidebar-item sidebar-menu fix_texts_count">
+                                    <div class="row">
+                                        <img class="icon-sidebar-item img_follow" alt="" src="@(item.LoginExternal?item.Avartar:"~/Client/img/"+item.Avartar)">
+                                        <span class="text-sidebar-item fix_texts">@item.FirtsName @item.LastName</span>
+                                    </div>
+                                </li>
+                            </a>
+                        }
+
+                    </div>
+                    <div class="collapses">
+                        Xem thêm
+                    </div>
+                }
+                else
+                {
+                    <div class="title_NoSignin">Đăng nhập để like,comment và subscribe</div>
+                    <div id="no_Login_Register">
+                        <a class="move_page" asp-action="Login" asp-controller="Home">
+                            <div class="list_dangnhap_left">
+                                <div class="img_list_dangnhap"></div>
+                            </div>
+                            <div class="list_dangnhap_right">ĐĂNG NHẬP</div>
+                        </a>
+                    </div>
+                }
+            </nav>
+            <div class="contentBody">
+                @RenderBody()
             </div>
-            <div class="collapses">
-                Xem thêm
-            </div>
-           
-        </nav>
-        <div class="contentBody">
-            @RenderBody()
         </div>
-    </div>
-    <script src="~/Client/js/site.js"></script>
+        <script src="~/Client/js/site.js"></script>
+        @RenderSection("Scripts", false)
+
 </body>
 </html>

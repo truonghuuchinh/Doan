@@ -1,0 +1,61 @@
+﻿@model RoleEdit
+@{ 
+    Layout = null;
+}
+
+<style>
+    .bg-info {
+        background-color: #bfc2c2 !important;
+        text-align: center;
+    }
+    .btn-primary {
+        width: 200px;
+        margin-left: 220px;
+    }
+</style>
+<div asp-validation-summary="All" class="text-danger"></div>
+
+<form method="post" asp-action="Update">
+    <input type="hidden" name="roleName" value="@Model.Role.Name" />
+    <input type="hidden" name="roleId" value="@Model.Role.Id" />
+    <h2 class="bg-info p-1 ">Thêm User vào vai trò</h2>
+    <table class="table table-bordered table-sm">
+        @if (Model.NonMembers.Count() == 0)
+        {
+            <tr><td colspan="2">Tất cả User đều là thành viên</td></tr>
+        }
+        else
+        {
+            @foreach (AppUser user in Model.NonMembers)
+            {
+                <tr>
+                    <td>@user.UserName</td>
+                    <td>
+                        <input type="checkbox" name="AddIds" value="@user.Id">
+                    </td>
+                </tr>
+            }
+        }
+    </table>
+
+    <h2 class="bg-info p-1 ">Xóa User khỏi vai trò</h2>
+    <table class="table table-bordered table-sm">
+        @if (Model.Members.Count() == 0)
+        {
+            <tr><td colspan="2">Không có user nào là thành viên</td></tr>
+        }
+        else
+        {
+            @foreach (AppUser user in Model.Members)
+            {
+                <tr>
+                    <td>@user.UserName</td>
+                    <td>
+                        <input type="checkbox" name="DeleteIds" value="@user.Id">
+                    </td>
+                </tr>
+            }
+        }
+    </table>
+    <button type="submit" class="btn btn-primary">Lưu</button>
+</form>
