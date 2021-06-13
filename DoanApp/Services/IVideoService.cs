@@ -11,7 +11,7 @@ namespace DoanApp.Services
     public interface IVideoService
     {
         List<Video> GetAll();
-        Task<int> Create(VideoRequest videoRequest,List<IFormFile> listPost);
+        Task<Video> Create(VideoRequest videoRequest,List<IFormFile> listPost);
         Task<int> Update(VideoRequest videoRequest);
         Task<int> Delete(int id);
         Task<Video> FinVideoAsync(int id);

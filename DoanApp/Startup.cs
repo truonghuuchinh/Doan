@@ -1,3 +1,4 @@
+
 using DoanApp.Services;
 using DoanData.DoanContext;
 using DoanData.Models;
@@ -29,7 +30,6 @@ namespace DoanApp
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-
             IMvcBuilder builder = services.AddRazorPages();
             builder.AddRazorRuntimeCompilation();
             services.AddControllersWithViews();
@@ -42,6 +42,10 @@ namespace DoanApp
             services.AddTransient<ILikeVideoService, LikeVideoService>();
             services.AddTransient<ILikeCommentService, LikeCommentService>();
             services.AddTransient<IFollowChannelService, FollowChannelService>();
+            services.AddTransient<IPlayListService, PlayListService>();
+            services.AddTransient<IDetailVideoService, DetailVideoService>();
+            services.AddTransient<IReportVideoService, ReportVideoService>();
+            services.AddTransient<INotificationService, NotificationService>();
             services.AddSession(options =>
             {
                 options.IdleTimeout = TimeSpan.FromMinutes(2);
@@ -80,8 +84,8 @@ namespace DoanApp
                          context.Identity.AddClaim(new Claim("picture", picture));
                          return Task.CompletedTask;
                      };
-                 })
-                 ;
+                 });
+            services.AddSignalR();
             
         }
         [Obsolete]
@@ -115,7 +119,6 @@ namespace DoanApp
                 endpoints.MapControllerRoute(
                  name: "default",
                  pattern: "{controller=Home}/{action=Index}/{id?}");
-               
             });
         }
     }

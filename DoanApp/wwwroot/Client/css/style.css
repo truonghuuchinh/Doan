@@ -8,7 +8,7 @@
 body {
     padding: 0;
     margin: 0;
-    overflow-y: scroll;
+  
     font-family: Roboto !important;
     cursor:pointer;
 }
@@ -17,8 +17,15 @@ li:hover {
     text-decoration: none;
 }
 .header {
-    position: relative;
+    top: 0;
+    left: 0;
+    width: 100%;
+    position: fixed;
     overflow-y: scroll;
+    z-index: 2021;
+}
+.fixed_menu{
+    margin-top:70px;
 }
 .container-header {
     width: 100%;
@@ -30,7 +37,7 @@ li:hover {
     background-size: 100%;
     margin-top: 20px;
     padding: 15px;
-    margin-left: 40px;
+    margin-left: 10px;
     float: left;
 }
 .click_menu {
@@ -64,13 +71,16 @@ li:hover {
     border-radius: 3px 0px 0px 3px;
     box-shadow: 1px 1px #cecece inset;
 }
-    .search:focus{
-        border:0px;
-        outline:0px;
-    }
-    .select2-container--classic {
-        width: 604px !important;
-    }
+.search:focus{
+    border:0px;
+    outline:0px;
+}
+.select2-container--classic {
+    width: 604px !important;
+}
+select2-dropdown--above{
+    width:300px !important;
+}
 .no_relationship {
     color: gray;
     margin: 45px 0px 0px 90px;
@@ -78,11 +88,16 @@ li:hover {
     font-family: serif;
 }
 .select2-selection--single {
-    width: 604px !important;
+    margin-top:-10px;
+    width: 300px !important;
     height: 39px !important;
+    border-radius: 2px 0px 0px 2px !important;
 }
-.select2-selection__arrow{
-    display:none !important;
+.select2-dropdown--below {
+    width: 300px !important;
+}
+.select2-selection__arrow {
+    display: none !important;
 }
 #select2-f1lb-container{
     padding-top:5px !important;
@@ -101,15 +116,16 @@ li:hover {
     box-shadow: 1px 1px #cecece inset;
 }
 .search_Voice {
-    height: 38px;
-    margin-top: 16px;
+    outline: 0px;
+    height: 33px;
+    margin-top: 20px;
     float: left;
     position: relative;
     border: 0px;
     background: #f3f3f3;
-    box-shadow: 1px 1px #cecece inset;
+   
     margin-left: 761px;
-    width: 35px
+    width: 30px;
 }
 
 /* .search_sokiuty {
@@ -117,7 +133,7 @@ li:hover {
     margin-left: 25px;
 } */
 .search_sokiuty_img {
-    width: 68px;
+    width: 55px;
     height: 39px;
     border: 0px;
 }
@@ -138,16 +154,7 @@ li:hover {
     background: turquoise;
     background-image: url(/Client/img/tao.JPG);
 }
-.notification {
-    float: left;
-    margin-left: 30px;
-    width: 2.5%;
-    height: 33px;
-    margin-top: 18px;
-    background: white;
-    background-image: url(/Client/img/bellheader.png); 
-    overflow: hidden;
-}
+
 .account_information {
     float: left;
     margin-left: 30px;
@@ -275,7 +282,7 @@ background: #555;
 .container22 {
     width: 261px;
     height: 276px;
-    background: royalblue;
+    background: white;
     float: left;
     margin-right: 5px;
     margin-left: 15px;
@@ -316,6 +323,7 @@ background: #555;
     margin-top: 7px;
     width: 100%;
     float: left;
+    display:flex;
     line-height: 18px;
 }
 .detail_video2 {
@@ -346,6 +354,7 @@ background: #555;
     background: white;
     width: 100%;
     height: 88vh;
+    margin-top:60px;
     overflow-y: scroll;
     position: relative;
 }
@@ -514,8 +523,10 @@ background: #555;
     outline: 0px;
 }
 .funtions_comment {
+    width:100%;
+    font-size:11px !important;
     margin-top: 10px;
-    margin-left: 75px;
+    margin-left: 60px;
     color: black;
     font-size: 16px;
     margin-right: 28px;
@@ -543,22 +554,23 @@ background: #555;
 }
 .content_right_text_video {
     color: black;
+    display:flex;
     font-family: Roboto;
     margin-left: 10px;
     font-size: 16px;
     line-height: 22px;
     font-weight: 600;
 }
-.content_right_texts_video {
-    margin-top: 5px;
-    margin-left: 10px;
-    color: gray;
-    font-family: Roboto;
-    margin-left: 10px;
-    font-size: 16px;
-    font-weight: 400;
-    margin-bottom: -2px;
-}
+    .content_right_texts_video {
+        margin-top: 5px;
+        margin-left: 10px;
+        color: gray;
+        font-family: Roboto;
+        margin-left: 10px;
+        font-size: 16px;
+        font-weight: 400;
+        margin-bottom: -2px;
+    }
 .content_right_textss_video {
     margin-left: 10px;
     color: gray;
@@ -1328,6 +1340,7 @@ background: #555;
 
 .icon-sidebar-item_heiht {
     width: 100%;
+    border-radius:50%;
 }
 
 .pass_kenhcuaban_right {
@@ -1402,7 +1415,8 @@ background: #555;
 }
 
 .chuyenphai_kenhcb {
-    margin-left: 40%
+    margin-left: 30%;
+    display:flex;
 }
 
 .search_name_video {
@@ -1413,13 +1427,15 @@ background: #555;
 }
 
 .click_search_kenhcb {
-    width: 5%;
-    width: 30px;
-    height: 30px;
+    width: 37px;
+    height: 39px;
     border: 1px solid gray;
+    border-radius:0px 6px 6px 0px;
     float: left;
+    margin-top:-10px;
+    margin-left: 213px;
     position: relative;
-    background-color: rgb(197, 179, 179);
+    background-color: rgb(219, 219, 219);
 }
 
 .imgs_search_fier {
@@ -2246,11 +2262,16 @@ tbody {
 .reply{
     text-decoration:none;
     color:black;
-
+    border:0;
 }
-#fSubmitVideo{
-    height:475px;
-}
+    .reply:hover {
+        text-decoration: none;
+        color: black;
+        border: 0;
+    }
+    #fSubmitVideo {
+        height: 475px;
+    }
 .createVideo {
     width: 109px;
     margin-top: 5px;
@@ -2277,7 +2298,7 @@ tbody {
 .titleName {
     text-overflow: ellipsis;
     overflow: hidden;
-   
+   width:80%;
     white-space: nowrap;
     height: 1.2em;
 } 
@@ -2525,6 +2546,22 @@ tbody {
     margin-left: 25%;
     position: relative;
 }
+.modal_reportvideo {
+    width: 600px;
+    height: 270px;
+    background: white;
+    margin-top: 14.5%;
+    margin-left: 25%;
+    position: relative;
+}
+.modal_upload_img {
+    width: 600px;
+    height: 500px;
+    background: white;
+    margin-top: 5.5%;
+    margin-left: 25%;
+    position: relative;
+}
 .modal_chinhsuaposter {
     width: 600px;
     height: 220px;
@@ -2576,7 +2613,8 @@ tbody {
 .sangphai_header_videodauu {
     float: right;
     padding-top: 7px;
-    padding-right: 10px;
+    padding-right: 23px;
+   /* margin-top:300px;*/
 }
 
 .xacnhanvi_deo {
@@ -2614,6 +2652,10 @@ tbody {
     margin-top: 10px;
     margin-left: 20px;
     margin-right: 20px;
+}
+.noidung_baocao {
+    width: 96%;
+    margin:10px;
 }
 
 .noi_dung_teode {
@@ -2757,6 +2799,7 @@ option {
     width: 100%;
     border-radius: 50%;
     height: 110px;
+    margin-top:30%;
 }
 
 .tieudekenh_cuaban {
@@ -3016,4 +3059,368 @@ option {
     width: 285px;
     height: 230px;
     margin: 21px 0px 0px 140px;
+}
+#formSearchVideo {
+    margin-left:200px;
+}
+.add_playlist {
+    margin: 10px 0px 0px 30px;
+    display:none;
+}
+
+.notification {
+    float: left;
+    margin-left: 30px;
+    width: 2.5%;
+    height: 33px;
+    margin-top: 18px;
+    background: white;
+}
+
+.notificationss {
+    background-image: url(/Client/img/bellheader.png);
+    width: 100%;
+    height: 100%;
+    position: relative;
+}
+
+.thongbao_do {
+    position: absolute;
+    z-index: 1;
+    top: 12px;
+}
+
+.thong_baos {
+    border-radius: 50%;
+    left: 20px;
+    cursor: pointer;
+    width: 20px;
+    height: 20px;
+    display: block;
+    position: relative;
+    z-index: 2;
+    background-color: #ff5050;
+}
+
+.soluongtb {
+    position: absolute;
+    left: 7px;
+    right: 4px;
+    top: 2px;
+    font-size: 12px;
+    color: #ffffff;
+    font-weight: 900;
+}
+.thongbao_all {
+    position: absolute;
+    width: 450px;
+    height: 100vh;
+    background: white;
+    z-index: 2021;
+    top: 0;
+    left: 57%;
+}
+
+.name_ten_thongbao {
+    margin-top: 20px;
+    margin-bottom: 20px;
+    margin-left: 20px;
+    font-size: 22px;
+    color: black;
+    z-index: 2020;
+}
+
+.kengang_thong_bao {
+    border: 1px solid gray;
+    background: gray;
+}
+
+.khung_thongbao_video {
+    display: flex;
+    flex-wrap: wrap;
+    position: relative;
+}
+
+.khung_thongbao_video_left_daucham {
+    width: 5%;
+    float: left;
+}
+
+.khung_thongbao_video_img {
+    width: 15%;
+    float: left;
+    margin-top: 10px;
+}
+
+.noidung_khungthongbaovideo_text {
+    width: 43%;
+    float: left;
+    margin-left: 10px;
+    margin-right: 10px;
+    margin-top: 10px;
+}
+
+.thoigian_daguithongbao {
+    margin-top: 10px;
+    margin-bottom: 25px;
+    color:gray;
+}
+
+.img_thongbaovideocuado {
+    width: 32%;
+    float: left;
+}
+
+.daubacham_anthongbao {
+    width: 10%;
+    float: left;
+}
+
+.img_trang__cuaban_thongbao {
+    border-radius: 50%;
+    width: 90%;
+}
+
+.img_thongbaovideocuado_video {
+    width: 100%;
+    height: 75px;
+    background: lemonchiffon;
+    margin-top: 10px;
+}
+
+.img_thong_bao_videocuado_video {
+    width: 100%;
+    height: 100%;
+}
+
+.daubacham_anthongbao_video {
+    margin-top: 15px;
+    padding-left: 17px;
+}
+
+.show_daubacham_anthongbao_video {
+    width: 70%;
+    display: none;
+}
+
+.khung_thongbao_video:hover .show_daubacham_anthongbao_video {
+    display: block;
+}
+
+.an_thongbaonay_all {
+    position: absolute;
+    top: 44px;
+    left: 38%;
+    width: 270px;
+    height: 70px;
+    display:none;
+    background: white;
+    
+}
+
+.class_nameimg_anthongbao {
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+    height: 30px;
+}
+
+.khung_img_class_nameimg_anthongbo {
+    width: 15%;
+    float: left;
+ 
+}
+
+.noidung_class_nameimg_anthongbao {
+    width: 85%;
+    float: left;
+    color:black;
+    margin-top: 3px;
+}
+
+.img_class_nameimg_anthongbo {
+    background-image: url(/Client/img/visibility.png);
+    width: 24px;
+    height: 24px;
+    margin-top: 3px;
+    margin-left: 7px;
+}
+.img_offthongbao {
+    background-image: url(/Client/img/none_thongbao.png);
+    width: 24px;
+    height: 24px;
+    margin-top: 3px;
+    margin-left: 7px;
+}
+
+    .kekhungheader {
+        width: 100%;
+        height: 5px;
+    }
+
+.class_nameimg_anthongbao:hover {
+    background: gray;
+}
+
+.nowatched {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: green;
+    text-align: center;
+    margin-left: 8px;
+    margin-top: 42px;
+}
+.watched {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: #ffb800;
+    text-align: center;
+    margin-left: 8px;
+    margin-top: 42px;
+}
+
+    .tong_khungss_thongbao_all {
+        overflow-y: scroll;
+        height: 88vh;
+        width: 100%;
+        background: rgb(236,236,236);
+    }
+
+.khung_thongbao_video:hover {
+    background: white;
+}
+
+.khung_thongbao_video:hover .an_thongbaonay_all {
+    background: rgb(214,215,206);
+}
+.playlist_option {
+    border-radius: 2px;
+    width: 204px;
+    height: 65px !important;
+    position: absolute;
+    margin: -77px;
+    margin-left: 44px;
+    background: #e6e5e5;
+    z-index: 1;
+    padding: 10px;
+    background-clip: padding-box;
+    box-shadow: 1px 1px grey;
+    display:none;
+}
+.detail_right:hover .add_playlist{
+    display:block;
+}
+.modalPlayList {
+    margin-top: 100px !important;
+    width: 240px !important;
+   background:#dee2e6;
+    margin-left: 250px !important;
+}
+.listChoose{
+    display:flex;
+}
+.chooseList {
+    margin-top: 6px;
+    margin-right: 10px;
+}
+.modalPlayList .modal-footer{
+
+    display:block !important;
+}
+.modalPlayList .modal-header {
+    border-bottom:1px solid gray;
+}
+.modalPlayList .modal-body {
+    border-bottom: 1px solid gray;
+}
+.add-playlist{
+    margin-bottom:10px;
+}
+.input_playlist{
+    border:0px;
+    outline:0px;
+    border-bottom:2px solid gray;
+}
+    .input_playlist:focus {
+        outline: 0px;
+        border: 0px;
+        border-bottom: 2px solid gray;
+    }
+.btnPlaylist {
+    margin-left: 76px;
+    margin-top: 10px;
+    border-radius:7px;
+}
+.create_playlist{
+    display:none;
+}
+.login {
+    text-decoration: none;
+    color: white;
+    border: 0;
+}
+.login:hover{
+    text-decoration:none;
+    border:0;
+    color:white;
+}
+.repair_img {
+    width: 5%;
+    height: 8%;
+    position: absolute;
+    margin-top: -110px;
+    margin-left: 91%;
+    background: #aaaaaa;
+    border-radius: 53%;
+    display:none;
+}
+.repair_img img {
+    margin-left: 13px;
+    margin-top: 7px;
+}
+.img_kenhcuaban_noidung:hover .repair_img{
+    display:block;
+}
+.content_videodau .custom-file {
+    width: 93% !important;
+    margin-left: 23px;
+}
+.errorimg {
+    font-size: 15px;
+    font-weight: 100;
+}
+.displays{
+    display:block !important;
+}
+.thongbao_all{
+    display:none;
+}
+.noidung_khungthongbao_video__text{
+    color:black;
+}
+.none_notifi {
+    font-size: 30px;
+    margin: 100px;
+    color: gray;
+}
+.linkDetail {
+    text-decoration: none;
+    outline: 0;
+    width: 90%;
+    border: 0;
+}
+    .linkDetail:hover {
+        border: 0;
+        text-decoration: none;
+        outline: 0;
+        color: #eaeaea;
+    }
+
+.miniute_video {
+    position: absolute;
+    margin-top: -146px;
+    color: white;
+    margin-left: 212px;
 }

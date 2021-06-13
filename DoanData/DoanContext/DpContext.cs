@@ -34,6 +34,7 @@ namespace DoanData.DoanContext
             builder.ApplyConfiguration(new ReportVideoConfig());
             builder.ApplyConfiguration(new VideoConfig());
             builder.ApplyConfiguration(new LikeCommentDetailConfig());
+            builder.ApplyConfiguration(new VideoWatchedConfig());
 
         }
         public DbSet<AppRole> AppRoles { get; set; }

@@ -13,20 +13,22 @@ namespace DoanApp.Commons
             DateTime dTo;
             var result = "";
             int tam = 0;
+            int week = 0;
             string sDateTo = DateTime.Now.ToString("MM-d-yyyy HH:mm:s");
             if (DateTime.TryParse(hours, out dFrom) && DateTime.TryParse(sDateTo, out dTo))
             {
                 TimeSpan TS = dTo - dFrom;
-                int hour = TS.Hours;
-                int mins = TS.Minutes;
-                int day = TS.Days;
+                int hour = Math.Abs(TS.Hours);
+                int mins = Math.Abs(TS.Minutes);
+                int day = Math.Abs(TS.Days);
                 if (day != 0)
                 {
-                    if (day == 7)
-                         return result = "1 Tuần trước";
                     if (day < 7) return result = day.ToString() + " Ngày trước";
                     if (day > 7)
                     {
+                        week = (int)Math.Floor((double)day / 7);
+                        if (week == 1) return  "1 Tuần trước";
+                        if (week > 1&&week<4) return week.ToString() + " Tuần trước";
                         tam = (int)Math.Floor((double)(day / 30));
                         if (tam == 1)
                         {
