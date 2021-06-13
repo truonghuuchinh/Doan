@@ -1,35 +1,49 @@
 ﻿@model IPagedList<Video_vm>
 @using X.PagedList;
 @{
-       int count = 1;
+    int count = 1;
 }
 
 <div class="col site-layout ">
+
     @foreach (var item in Model)
     {
-        <div class="container22">
-            <a asp-action="DetailVideo" asp-controller="Home" asp-route-id="@item.Id">
-                <div class="container222">
-                    <video width="261" height="165" onmouseover="viewBefore(@item.Id)" onmouseout="clearBefore(@item.Id)" src="~/Client/video/@item.LinkVideo" title="YouTube video player" class=" nextSecond nextSecond-@item.Id">
-                    </video>
+    <div class="container22">
+        <a id="movepage_detail-@item.Id" asp-action="DetailVideo" asp-controller="Home" asp-route-id="@item.Id">
+            <div class="container222">
+                <video width="261" height="165" onmouseover="viewBefore(@item.Id)" onmouseout="clearBefore(@item.Id)" src="~/Client/video/@item.LinkVideo" title="YouTube video player" class=" nextSecond nextSecond-@item.Id">
+                </video>
 
-                </div>
-                
-                <div class="container222_end">
-                    <div class="detail_video">
-                        <img class="detail_lerft icon-sidebar-item_video" alt="" src="@(item.LoginExternal ? item.Avartar : "~/Client/avartar/" + item.Avartar)">
-                        <div class="detail_rights">
-                            <span class="detail_right titleName text-sidebar-item_video">@item.Name </span>
-                            <div class="text_color">@item.FirtsName @item.LastName</div>
-                            <div class="text_color_check">
-                                @ConvertViewCount.ConvertView(item.ViewCount) lượt xem • @CaculatorHours.Caculator(item.CreateDate)
-                            </div>
+            </div>
+
+            <div class="container222_end">
+                <div class="detail_video">
+                    <img class="detail_lerft icon-sidebar-item_video" alt="" src="@(item.LoginExternal ? item.Avartar : "~/Client/avartar/" + item.Avartar)">
+                    <div class="detail_rights">
+                        <span class="detail_right  text-sidebar-item_video">
+                            <p class="titleName">@item.Name </p>
+                            <img id="addplaylist-@item.Id" onclick="addPlayList(@item.Id)" class="icon-more add_playlist" src="/Client/img/more.png" alt="Alternate Text" />
+                        </span>
+                        <div class="text_color">@item.FirtsName @item.LastName</div>
+                        <div class="text_color_check">
+                            @ConvertViewCount.ConvertView(item.ViewCount) lượt xem • @CaculatorHours.Caculator(item.CreateDate)
                         </div>
+
                     </div>
 
                 </div>
-            </a>
+            </div>
+        </a>
+        <!--<span class="miniute_video miniute-@item.Id">0</span>-->
+        <div class="playlist_option playlist-@item.Id">
+            <div class="option_playlist into_playlist-@item.Id" onclick="showPlayList(@item.Id)">
+                <i class="fa fa-list-alt"></i> Thêm vào danh sách phát
+            </div>
+            <div class="option_playlist report_video" onclick="reportVideo(@item.Id)">
+                <i class="fa fa-flag"></i> Báo cáo vi phạm
+            </div>
         </div>
+    </div>
         if (count > 4)
         {
             count = 1;
@@ -37,26 +51,77 @@
     }
 
 </div>
+<div class="modal" tabindex="-1" id="modalPlayList" data-backdrop="static">
+    <div class="modal-dialog">
+        <div class="modal-content modalPlayList">
+            <div class="modal-header">
+                <h5 class="modal-title">Lưu vào danh sách</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true"><i class="fa fa-times"></i></span>
+                </button>
+            </div>
 
+            <div class="modal-body">
+                @if (ViewBag.PlayList != null)
+                {
+                    if (ViewBag.PlayList.Count == 0)
+                    {
+                        <div class="listChoose">
+                            Chưa có danh sách, tạo ngay...
+                        </div>
+                    }
+                    else
+                    {
+                        @foreach (var item in ViewBag.PlayList)
+                        {
+                            <div class="listChoose">
+                                <input  type="checkbox" id="chooseList-@item.Id" data-id="@item.Id" class="chooseList chooseList-@item.Id" />
+                                <label class="hover" onclick="addItem(@item.Id)" for="chooseList-@item.Id"><span>@item.Name</span></label>
+                            </div>
+                        }
+                    }
+                }
+            </div>
+            <div class="modal-footer">
+                <div class="add-playlist"><i class=" fa fa-plus"></i> Tạo danh sách mới</div>
+                <div class="create_playlist">
+                    <form asp-action="Create" asp-controller="PlayListVideo">
+                        <span>Tên</span>
+                        <input class="input_playlist" type="text" id="namePlayList" name="Name" />
+                        <input type="hidden" value="@ViewBag.IdUser" id="idUser" name="UserId" />
+                        <button type="submit" class="btn-primary btnPlaylist">Tạo</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal" id="reportvideo">
+    <div class="modal_reportvideo">
+        <div class="header_videodau">
+            <div class="benphaiheader_videodau">
+               
+            </div>
+        </div>
+        <div class="content_videodau">
+            <div class="na_tieude">Vui lòng nhập nôi dung báo cáo</div>
+            <span class="text-danger errorReport" id="errorReport"></span>
+            <textarea class="noidung_baocao" id="valueReport" rows="4" placeholder="Mô tả văn bản" style="-webkit-appearance: none;"></textarea>
+            <div class="sangphai_header_videodauu">
+                <div type="button" class="xacnhanvi_deo" id="confirm_report">Báo cáo</div>
+            </div>
+            <div class="sangphai_header_videodauu">
+                <div type="button" class="huybovi_deo" data-dismiss="modal">Hủy</div>
+            </div>
+        </div>
+          
+    </div>
+</div>
 <script>
-    
+   
     $(document).ready(function () {
-        var currentPage = 2;
-        $('.site-layout').on('scroll', function () {
-            let div = $(this).get(0);
-           
-            if (div.scrollTop + div.clientHeight >= div.scrollHeight) {
-                loadData();
-                
-                currentPage += 1;
-            }
-        });
-        function loadData() {
-            $.get("/Home/Index_Partial/?page=" + currentPage , function (respone) {
-                $('.site-layout').append(respone);
-                loadSecondVideo();
-            });
-        }
-       
+        Phantrang("/Home/Index_Partial/?page=");
+
     });
+
 </script>

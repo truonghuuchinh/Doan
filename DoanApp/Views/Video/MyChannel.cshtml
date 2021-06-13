@@ -38,7 +38,7 @@
     <thead>
         <tr class="data">
             <th class="check">
-                <input type="checkbox" id="customCheckallcc" >
+                <input type="checkbox" id="customCheckallcc">
             </th>
             <th class="video">Video</th>
             <th></th>
@@ -57,7 +57,7 @@
             {
                 <tr class="datas update-@item.Id">
                     <td class="td_check">
-                        <input type="checkbox"  onclick="repairItem(@item.Id)" class="cutomcheckboxall" id="customCheck-@item.Id" >
+                        <input type="checkbox" onclick="repairItem(@item.Id)" class="cutomcheckboxall" id="customCheck-@item.Id">
                     </td>
                     <td class="td_video">
                         <div class="img_td_video">
@@ -96,8 +96,8 @@
                                     <div class="choose_permission">
                                         <h6>Lưu hoặc xuất bản</h6>
                                         <div class="form-check">
-                                            <input class="form-check-input choose_public-@item.Id"  type="radio" @(item.HidenVideo ? "checked" : "")>
-                                           
+                                            <input class="form-check-input choose_public-@item.Id" type="radio" @(item.HidenVideo ? "checked" : "")>
+
                                             <label class="form-check-label" onclick="choosePublic(@item.Id,true)">
                                                 Công khai
                                             </label>
@@ -111,7 +111,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                
+
                             </div>
                         </div>
                     </td>
@@ -313,7 +313,7 @@
             <div class="tieude_chinhsua">
                 <div class="namedanhmuctieude_chinhsua" data-dismiss="modal" data-toggle="modal" data-target="#chinhsuadanhmuc">Danh mục</div>
             </div>
-           
+
         </div>
     </div>
 </div>
@@ -352,12 +352,12 @@
             <div class="na_tieude">Tiêu đề <span class="errorMessage text-danger" id="errorTieude"></span></div>
             <div class="noi_dung_teodeall">
                 <textarea id="repair_Title" class="noi_dung_teode" rows="4" placeholder="Tiêu đề thay thế" style="-webkit-appearance: none;"></textarea>
-                
+
             </div>
             <div class="na_tieude">Mô tả <span class="errorMessage text-danger" id="errorDescription"></span></div>
             <div class="noi_dung_teodeall">
                 <textarea id="repair_Description" class="noi_dung_teode" rows="4" placeholder="Mô tả thay thế" style="-webkit-appearance: none;"></textarea>
-                
+
             </div>
         </div>
     </div>
@@ -368,7 +368,7 @@
         <div class="header_videodau">
             <div class="bentraiheader_videodau">
                 <div class="namedachon">Đã chọn</div>
-                <div class="soluongvideoda_chon countVideo" ></div>
+                <div class="soluongvideoda_chon countVideo"></div>
             </div>
             <div class="benphaiheader_videodau">
                 <div class="sangphai_header_videodauu">
@@ -383,7 +383,7 @@
             <div class="na_tieude">Tiêu đề  <span class="text-danger errorMessage" id="errortieude"></span></div>
             <div class="noi_dung_teodeall">
                 <textarea class="noi_dung_teode" id="valueTitle" rows="4" placeholder="Tiêu đề thay thế" style="-webkit-appearance: none;"></textarea>
-              
+
             </div>
         </div>
     </div>
@@ -463,10 +463,10 @@
                 <div class="noi_dung_teodeall">
                     <div class="custom-file">
                         <input type="file" class="custom-file-input" name="fileUpload" id="updatePoster">
-                        <label class="custom-file-label" >Chọn Ảnh</label>
-                        <input type="hidden" name="idVideo" id="idVideo"/>
+                        <label class="custom-file-label">Chọn Ảnh</label>
+                        <input type="hidden" name="idVideo" id="idVideo" />
                     </div>
-                    <img src="~/Client/img/default_image.png" class="imgReview" id="uploadPoster"  />
+                    <img src="~/Client/img/default_image.png" class="imgReview" id="uploadPoster" />
                 </div>
             </div>
         </form>
@@ -495,7 +495,7 @@
 </div>
 <!--------------------End------------------------------------>
 @section Scripts{
-    
+
     <script>
         /*---------------Check file video hoặc ảnh có đúng dịnh dạng hay không-------------*/
         function checkFormatName(event, flag) {
@@ -589,11 +589,11 @@
 
         })
     </script>
-  
+
     <script>
         //------------------------Xử lý chế độ xuất bản video----------
-       
-       //-------------------------Phân trang-----------------------
+
+        //-------------------------Phân trang-----------------------
         $(document).ready(function () {
             var currentPage = 2;
 
@@ -607,7 +607,7 @@
             function loadData() {
                 $.get("/Video/MyChannel_Partial/?page=" + currentPage, function (respone) {
                     $('tbody').append(respone);
-                    
+
                 });
             }
         });
@@ -617,18 +617,18 @@
         var idVideoRepair = 0;
         var idVideoRepairArrays = [];
         var countLoop = 1;
-        
+
         function repairVideo(id) {
-           
+
             $("#repair_Title_Description").modal('show');
             idVideoRepair = id;
         }
         $(".confirm_repair").click(function () {
             var title = $("#repair_Title").val();
             var description = $("#repair_Description").val();
-            
+
             if (title == '' || description == '') {
-                if (title == '') 
+                if (title == '')
                     $("#errorTieude").text("(Vui lòng nhập tiêu đề)");
                 if (description == '')
                     $("#errorDescription").text("(Vui lòng nhập Mô tả)");
@@ -636,7 +636,7 @@
             else updateVideo(title, description, "#repair_Title_Description");
         });
 
-        function updateVideo(title,description,modal) {
+        function updateVideo(title, description, modal) {
             var data = {
                 "Name": title,
                 "Description": description,
@@ -652,9 +652,14 @@
                     $("#errorDescription").text('');
                     $("#repair_Title").val('');
                     $("#repair_Description").val('');
+                        toast('Cập nhật thành công', '/Client', {
+                       type: 'success',
+                       animation: 'zoom',
+                       position: 'bottom-left'
+                        });
                 }
             });
-           
+
         }
         function updateVideoAll(title, description, modal, id, element, errorElement) {
             var data = {
@@ -664,7 +669,7 @@
             };
             $.post("/Video/Update", { "data": JSON.stringify(data) }, function (respone) {
                 respone = JSON.parse(respone);
-                if (respone != "Error" && respone!=0) {
+                if (respone != "Error" && respone != 0) {
                     $(".title-" + id).text(respone.Name);
                     $(".description-" + id).text(respone.Description);
                     $(modal).modal('hide');
@@ -673,11 +678,16 @@
                         countLoop++;
                     } else {
                         $(modal).modal('hide');
-                       
+
                         $(element).val('');
                         $(errorElement).text('');
                         countLoop = 1;
                     }
+                    toast('Cập nhật thành công', '/Client', {
+                        type: 'success',
+                        animation: 'zoom',
+                        position: 'bottom-left'
+                    });
                 }
             });
 
@@ -691,6 +701,11 @@
                         if (respone == "Success") {
 
                             $('.update-' + id).remove();
+                            toast('Đã xóa', '/Client', {
+                                type: 'success',
+                                animation: 'zoom',
+                                position: 'bottom-left'
+                            });
                         }
                     });
                 }
@@ -707,7 +722,7 @@
                             console.log(idVideoRepairArrays);
                         }
                         countLoop++;
-                    } 
+                    }
                 });
             }
         }
@@ -753,16 +768,16 @@
         $("#customCheckallcc").change(function () {
             var listCheck = Array.from(document.querySelectorAll(".cutomcheckboxall"));
             var checkAll = $(this).prop("checked");
-            var id =0 ;
+            var id = 0;
             if (checkAll) {
                 $(".cutomcheckboxall").prop("checked", true);
                 for (var i of listCheck) {
                     id = i.getAttribute("id").split('-')[1];
                     repairItem(parseInt(id));
                 }
-                
+
             } else {
-                idVideoRepairArrays = [];   
+                idVideoRepairArrays = [];
                 $(".cutomcheckboxall").prop("checked", false);
             }
             checkInput();
@@ -771,7 +786,7 @@
         function repairItem(id) {
             var checkedItem = $("#customCheck-" + id).prop("checked");
             var checkItem = idVideoRepairArrays.includes(id);
-           
+
             if (!checkItem && checkedItem) {
                 idVideoRepairArrays.push(id);
             } else {
@@ -788,7 +803,7 @@
             var valueTitle = $("#valueTitle").val();
             if (valueTitle == '') $("#errortieude").text("(Vui lòng nhập tiêu đề)");
             else {
-                updateVideoAll(valueTitle, "", "#chinhsuatieudevideo", idVideoRepairArrays[0], "#valueTitle","#errortieude");
+                updateVideoAll(valueTitle, "", "#chinhsuatieudevideo", idVideoRepairArrays[0], "#valueTitle", "#errortieude");
             }
         });
         //----------Xử lý update mô tả--------------
@@ -796,9 +811,9 @@
             var valueDescription = $("#valueDescription").val();
             if (valueDescription == '') $("#errormota").text("(Vui lòng nhập mô tả)");
             else {
-                updateVideoAll("", valueDescription, "#chinhsuamota", idVideoRepairArrays[0], "#valueDescription","#errormota");
+                updateVideoAll("", valueDescription, "#chinhsuamota", idVideoRepairArrays[0], "#valueDescription", "#errormota");
             }
-        }); 
+        });
         //-----------Display frame repair Video--------------
         function checkInput() {
             var listCheck = Array.from(document.querySelectorAll(".cutomcheckboxall"));
@@ -809,7 +824,7 @@
             } else {
                 for (var item of listCheck) {
                     if (item.checked) flagCheked = false;
-                   
+
                 }
                 if (flagCheked) con.style.maxHeight = null;
             }
@@ -823,15 +838,15 @@
                 updateCategory(idVideoRepairArrays[0], valueCategory);
             }
         });
-        function updateCategory(id,valueCategory) {
-            $.get("/Video/UpdateCategory/?id=" +id+ "&idCategory=" + valueCategory,
+        function updateCategory(id, valueCategory) {
+            $.get("/Video/UpdateCategory/?id=" + id + "&idCategory=" + valueCategory,
                 function (respone) {
                     if (respone == "Success") {
-                      
+
                         if (countLoop < idVideoRepairArrays.length) {
-                           
+
                             updateCategory(idVideoRepairArrays[countLoop], valueCategory);
-                         countLoop++;
+                            countLoop++;
                         }
                         else {
                             console.log("do");
@@ -840,13 +855,13 @@
                             $("#errorCategory").text('')
                             countLoop = 1;
                         }
-                        
+
                     }
                 });
         }
         //---------------Xử lý dowload All-------------------
         $(".taivideoxuong").click(function () {
-            
+
             for (var id of idVideoRepairArrays) {
                 $("#dowload-" + id).get(0).click();
             }
@@ -854,14 +869,14 @@
         });
         //-----------------Xử lý chế độ xuất bản-------------------
         function choosePublic(idVideo, permision) {
-           
+
             UpdatePermission(idVideo, permision);
         }
         function choosePrivate(idVideo, permission) {
             UpdatePermission(idVideo, permission);
-            
+
         }
-        function UpdatePermission(id,permission) {
+        function UpdatePermission(id, permission) {
             var data = {
                 "Id": id,
                 "HidenVideo": permission
@@ -869,11 +884,11 @@
             $.post("/Video/Update", { "data": JSON.stringify(data) }, function (respone) {
                 if (respone != "Error") {
                     if (permission) {
-                        $(".choose_public-"+id).prop("checked", true);
-                        $(".choose_private-"+id).prop("checked", false);
+                        $(".choose_public-" + id).prop("checked", true);
+                        $(".choose_private-" + id).prop("checked", false);
                         $(".text_display-" + id).text("Công khai");
-                        $(".img_display-"+id).removeClass("eyeNone");
-                        $(".img_display-"+id).prop("src", "/Client/img/Eye.svg");
+                        $(".img_display-" + id).removeClass("eyeNone");
+                        $(".img_display-" + id).prop("src", "/Client/img/Eye.svg");
                     }
                     else {
                         $(".choose_public-" + id).prop("checked", false);
@@ -882,10 +897,10 @@
                         $(".img_display-" + id).addClass("eyeNone");
                         $(".img_display-" + id).prop("src", "/Client/img/visibility.png");
                     }
-                    
+
                 }
             });
         }
-        //-----------------------Kết thúc--------------------------------------
+            //-----------------------Kết thúc--------------------------------------
     </script>
 }

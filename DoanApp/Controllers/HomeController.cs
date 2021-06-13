@@ -36,13 +36,18 @@ namespace DoanApp.Controllers
         private readonly ILikeVideoService _likeVideo;
         private readonly IFollowChannelService _channelService;
         private readonly ICategoryService _categoryService;
+        private readonly IPlayListService _playListService;
+        private readonly IDetailVideoService _detaivideo;
+        private readonly INotificationService _notificationService;
         static int countLockout = 0;
         static string userEmail = "";
         public HomeController(UserManager<AppUser> userManager,
             SignInManager<AppUser> signInManager,
             IUserService userService,IVideoService videoService,
             ICommentService commentService, ILikeVideoService likeVideo,
-            IFollowChannelService channelService,ICategoryService categoryService
+            IFollowChannelService channelService,ICategoryService categoryService,
+            IPlayListService playListService,IDetailVideoService detailVideo,
+            INotificationService notificationService
         )
         {
             _userManager = userManager;
@@ -53,10 +58,30 @@ namespace DoanApp.Controllers
             _likeVideo = likeVideo;
             _channelService = channelService;
             _categoryService = categoryService;
+            _playListService = playListService;
+            _detaivideo = detailVideo;
+            _notificationService = notificationService;
+
         }
         public async Task<IActionResult> Index(int? page)
         {
            
+            if (User.Identity.IsAuthenticated)
+            {
+
+                var user = UserAuthenticated.GetUser(User.Identity.Name);
+                GetNotificationHome();
+                ViewBag.IdUser = user.Id;
+                ViewBag.PlayList = _playListService.GetAll().Where(x => x.UserId == ViewBag.IdUser).ToList();
+            }
+            else
+            {
+                ViewBag.IdUser = 0;
+                ViewBag.PlayList = null;
+                ViewBag.ListNotification = null;
+                ViewBag.ListNotification = null;
+                ViewBag.CountNotifi = 0;
+            }
             ViewBag.LinkActive = "/Home/Index";
             if (page == null) page = 1;
             var pageNumber = page ?? 1;
@@ -68,13 +93,28 @@ namespace DoanApp.Controllers
             ViewBag.Search_Video = new SelectList(listVideo, "Id", "Name");
             return View(await listVideo_Vm.ToPagedListAsync(pageNumber, 12));
         }
+       public void GetNotificationHome()
+        {
+            var userss = UserAuthenticated.GetUser(User.Identity.Name);
+            if (userss != null)
+            {
+                ViewBag.ListNotification = _notificationService.GetNotification(userss);
+                ViewBag.CountNotifi = _notificationService.GetNotification(userss).Where(x => x.Watched).Count();
+            }
+            else
+            {
+                ViewBag.ListNotification = null;
+                ViewBag.CountNotifi = 0;
+            }
+           
+        }
         public IActionResult Index_Partial(int? page,string nameSearch=null)
         {
             if(page == null) page = 1;
             var pageNumber = page ?? 1;
             var listVideo_Vm = new List<Video_vm>();
             var listVideo = _videoService.GetAll();
-            var listUser = _userService.GetAll();
+            var listUser = _userService.GetAll();            
             listVideo_Vm = _videoService.GetVideo_Vm(listVideo, listUser).
                 OrderByDescending(x => x.Id).Where(x => x.Status).ToList();
             if (nameSearch != null) {
@@ -86,6 +126,7 @@ namespace DoanApp.Controllers
         
         public IActionResult Popular(int? page)
         {
+            GetNotificationHome();
             if (page == null) page = 1;
             int pageNumber = page ?? 1;
             int pageSize = 5;
@@ -150,6 +191,7 @@ namespace DoanApp.Controllers
         }
         public async Task<IActionResult> DetailVideo(int? id)
         {
+            GetNotificationHome();
             var userFollow = "false";
             var userLogin = UserAuthenticated.GetUser(User.Identity.Name);
             ViewBag.UserLogin = userLogin == null ? null : userLogin;
@@ -171,6 +213,7 @@ namespace DoanApp.Controllers
             video_Vm.LastName = user.LastName;
             video_Vm.ViewCount = video.ViewCount;
             video_Vm.AppUserId = video.AppUserId;
+            video_Vm.Description = video.Description;
             video_Vm.LoginExternal = user.LoginExternal;
             video_Vm.CreateDate = video.CreateDate;
             var lVideo = _videoService.GetAll().Where(x => x.CategorysId == video.CategorysId && x.Id != video.Id).ToList();
@@ -195,7 +238,7 @@ namespace DoanApp.Controllers
             var result = await _commentService.Create(comment);
             if(result>0)
             {
-                var getComment = _commentService.GetCm_Vm(comment);
+                var getComment = _commentService.GetCm_Vm(comment);//userid
                 ViewBag.User = await _userService.FindUser(User.Identity.Name);
                 return View(getComment);
             }

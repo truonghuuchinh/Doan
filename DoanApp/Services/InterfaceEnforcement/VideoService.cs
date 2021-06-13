@@ -1,4 +1,5 @@
-﻿using DoanApp.Models;
+﻿using DoanApp.Commons;
+using DoanApp.Models;
 using DoanData.Commons;
 using DoanData.DoanContext;
 using DoanData.Models;
@@ -21,7 +22,7 @@ namespace DoanApp.Services
         {
             _context = context;
         }
-        public  async Task<int> Create(VideoRequest videoRequest,List<IFormFile> listPost)
+        public  async Task<Video> Create(VideoRequest videoRequest,List<IFormFile> listPost)
         {
             var video = new Video();
             if (videoRequest != null)
@@ -29,12 +30,12 @@ namespace DoanApp.Services
                 video.Name = videoRequest.Name;
                 video.Description = videoRequest.Description;
                 video.AppUserId = videoRequest.AppUserId;
-                video.CreateDate = DateTime.Now.ToString("MM-d-yyyy H:mm:ss");
+                video.CreateDate = new GetDateNow().DateNow;
                 video.HidenVideo = videoRequest.HidenVideo;
                 video.CategorysId = videoRequest.CategorysId;
                 _context.Video.Add(video);
                   _context.SaveChanges();
-                var findVideo = _context.Video.FirstOrDefault(x => x.Name.Contains(videoRequest.Name));
+                var findVideo = _context.Video.OrderByDescending(x=>x.Id).FirstOrDefault(x => x.Name.Contains(videoRequest.Name));
                 if (listPost.Count > 0)
                 {
                     var paths = "";
@@ -62,10 +63,11 @@ namespace DoanApp.Services
                         }
                     }
                     _context.Update(findVideo);
-                    return await _context.SaveChangesAsync();
+                    await _context.SaveChangesAsync();
+                    return findVideo;
                 }
             }
-            return 0;
+            return null;
         }
 
         public async Task<int> Delete(int id)
