@@ -1,74 +1,205 @@
-﻿//----------------Xử lý kiềm tiếm Giọng nói--------------
+﻿
+
+//----------------Xử lý báo cáo video vipham------------
+var idVideoReport = 0;
+function reportVideo(id) {
+    idVideoReport = id;
+    $("#reportvideo").modal("show");
+}
+$("#confirm_report").click(function () {
+    var userId = $("#idUser").val();
+    var inputReport = $("#valueReport").val();
+    if (inputReport == '') $("#errorReport").text("Vui lòng nhập nội dung");
+    else {
+        $("#reportvideo").modal("hide");
+        var datas = {
+            "UserId": userId,
+            "Content": inputReport,
+            "VideoId": idvideo
+        };
+        $.post("/ReportVideo/Create", { "data": JSON.stringify(datas) }, function (respone) {
+            if (respone == "Success") {
+                toast('Báo cáo thành công', '/Client', {
+                    type: 'success',
+                    animation: 'zoom',
+                    position: 'bottom-right'
+                });
+                $("valueReport").val('');
+            }
+        });
+    }
+});
+//----------------Kết thúc------------------------------
+//----------------Xử lý add video into playList----------
+//---Variable global
+var idvideo = 0;
+function addItem(id) {
+    var data = {
+        "PlayListId": id,
+        "VideoId": idvideo
+    };
+   
+    if ($(".chooseList-" + id).prop("checked") == false) {
+        $.post("/DetailVideo/Create", { "data": JSON.stringify  (data) }, function (respone) {
+            if (respone != "Error") {
+                toast('Đã thêm', '/Client', {
+                    type: 'success',
+                    animation: 'zoom',
+                    position: 'bottom-left'
+                });
+            }
+        });
+    } else {
+        $.post("/DetailVideo/Delete", { "data": JSON.stringify(data) }, function (respone) {
+            if (respone != "Error") {
+                toast('Đã xóa', '/Client', {
+                    type: 'warn',
+                    animation: 'zoom',
+                    position: 'bottom-left'
+                });
+            }
+        });
+    
+    }
+    
+}
+$(".add-playlist").click(function () {
+    $(this).css("display", "none");
+    $(".create_playlist").css("display", "block");
+});
+$(".close").click(function () {
+    $(".add-playlist").css("display", "block");
+    $(".create_playlist").css("display", "none");
+    document.querySelectorAll(".chooseList").forEach(item => {
+        item.checked = false;
+    });
+});
+function showPlayList(id) {
+   
+        $("#modalPlayList").modal('show');
+  
+}
+function addPlayList(id) {
+    idvideo = id;
+    $("#movepage_detail-" + id).click(function (e) {
+        e.preventDefault();
+        $(this).unbind(e);
+    });
+    if ($("#idUser").val() == '0') {
+        cuteAlert({
+            type: "question",
+            title: "Đăng nhập",
+            message: "Vui lòng đăng nhập để thực hiện chức năng",
+            confirmText: "Đăng nhập",
+            cancelText: "Hủy",
+            srcImg: "/Client"
+        });
+    }
+    else {
+        $.get("/DetailVideo/ListId/?id=" + id, function (respone) {
+            if (respone != 'OK') {
+                respone = JSON.parse(respone);
+                document.querySelectorAll(".chooseList").forEach(item => {
+                    for (var i of respone) {
+                        if (i == item.getAttribute("data-id"))
+                            item.checked = true;
+                    }
+                });
+            }
+        });
+        if ($(".playlist-" + id).css('display') == 'none') {
+            $("#addplaylist-" + id).css("display", "block");
+            $(".playlist-" + id).css("display", "block");
+        } else {
+            $("#addplaylist-" + id).css("display", "");
+            $(".playlist-" + id).css("display", "");
+        }
+    }
+}
+LoadEventMoseLeave();
+function LoadEventMoseLeave() {
+    document.querySelectorAll(".container22").forEach(item => {
+        item.addEventListener('mouseleave', function () {
+            document.querySelectorAll(".playlist_option").forEach(item => {
+                var itemNone = window.getComputedStyle(item).getPropertyValue("display");
+                if (itemNone == 'block') {
+                    item.style.display = "";
+                }
+            });
+            document.querySelectorAll(".add_playlist").forEach(item => {
+                var itemNone = window.getComputedStyle(item).getPropertyValue("display");
+                if (itemNone == 'block') {
+                    item.style.display = "";
+                }
+            });
+
+        });
+    });
+}
+
+//---------------Kết thúc-------------------------
+
+//----------------Xử lý kiềm tiếm Giọng nói--------------
     var searchForm = $("#formSearchVideo").get(0);
     var searchInput = $("#nameSearch").get(0);
     var i = $("#i_searchVoice").get(0);
     const SpeechRecognitions = window.SpeechRecognition || window.webkitSpeechRecognition;
     if (SpeechRecognitions) {
-        const recognition = new webkitSpeechRecognition();
-        recognition.lang = "vi";
-        recognition.continuous = true;
-        $(".search_Voice").click(function () {
-            if (i.classList.contains("fa-microphone")) {
-                recognition.start();
+    const recognition = new webkitSpeechRecognition();
+    recognition.lang = "vi";
+    recognition.continuous = true;
+    $(".search_Voice").click(function () {
+        i.classList.contains("fa-microphone") ? (recognition.start()) : (recognition.stop());
+    });
+    recognition.addEventListener("start", function (event) {
+        i.classList.remove("fa-microphone");
+        i.classList.add("fa-microphone-slash")
+        searchInput.focus();
+    });
+    recognition.addEventListener("end", function (event) {
+        i.classList.remove("fa-microphone-slash");
+        i.classList.add("fa-microphone");
+        searchInput.focus();
+    });
+    recognition.onresult = function (event) {
+    var transcript = event.results[event.resultIndex][0].transcript.toLowerCase().trim();
+        if (transcript === "stop") {
+            recognition.stop();
+        } else {
+            if (transcript === "go") {
+                if (searchInput.value != '') searchForm.submit();
             } else {
-                recognition.stop();
+                searchInput.value = transcript == "reset" ? '' : transcript;
             }
-        })
-        recognition.addEventListener("start", function (event) {
-            i.classList.remove("fa-microphone");
-            i.classList.add("fa-microphone-slash")
-            searchInput.focus();
-        });
-        recognition.addEventListener("end", function (event) {
-
-            i.classList.remove("fa-microphone-slash");
-            i.classList.add("fa-microphone");
-            searchInput.focus();
-        });
-        recognition.onresult = function (event) {
-            var currentIndex = event.resultIndex;
-            var transcript = event.results[currentIndex][0].transcript;
-            if (transcript.toLowerCase().trim() === "stop") {
-                recognition.stop();
-            } else {
-                if (!searchInput.value) {
-                    searchInput.value = transcript;
-                }
-                else {
-                    if (transcript.toLowerCase().trim() === "go") {
-                        searchForm.submit();
-                    }
-                    else {
-                        if (transcript.toLowerCase().trim() === "reset")
-                            searchInput.value = '';
-                        else {
-                            searchInput.value = transcript;
-                        }
-                    }
-
-                }
-            }
-
         }
+    }
+
     } else {
-        alert("Browser no support voice!")
+        alert("Browser no support Voice Search!");
     }
 //------------------Kết thúc-----------------------------
 
 //----------------Xử lý chuyển động Video----------------
-loadSecondVideo();
+$(document).ready(function () {
+    loadSecondVideo();
+});
+
 var flagSecond = 0;
 function loadSecondVideo() {
     var listVideo = Array.from(document.querySelectorAll(".nextSecond"));
-  
-    for (var i of listVideo) {
-        i.currentTime = 10;
+    //var listminiute = Array.from(document.querySelectorAll(".miniute_video"));
+    for (var i = 0; i < listVideo.length; i++) {
+        listVideo[i].currentTime = 10;
+        /*var mininute = (listVideo[i].duration / 60).toFixed(2).split('.');
+        console.log(mininute);*/
+        //listminiute[i].textContent = mininute[0] + ":" + mininute[1];
     }
 }
 function viewBefore(id) {
 
     var nextTime = 30;
     var totalMiniute = document.querySelector(".nextSecond-" + id).duration;
+  
     flagSecond = setInterval(function () {
         if (nextTime > parseInt(totalMiniute)) {
             nextTime = 30;
@@ -103,7 +234,7 @@ function convertViewCount(view) {
 }
 //------------------Kết thúc--------------------------
 
-$(document).ready(function () {
+
 
  //------------ Xử lý Like video---------
     //Global variable
@@ -123,8 +254,6 @@ $(document).ready(function () {
         }
           
     }
- //---------------End-----------------
-});
 $("#Like").click(function () {
     if ($(".likeVideo").css("color") == "rgb(0, 0, 255)")
         reaction("DontLike", ".likeVideo", "#countLike"," "," ");
@@ -177,7 +306,14 @@ function reaction(value,element,count,revertReaction,countRevert) {
         "Reaction": value
     };
     if (userId == undefined) {
-        alert("Vui lòng đăng nhập để thực hiện chức năng này");
+        cuteAlert({
+            type: "question",
+            title: "Đăng nhập",
+            message: "Vui lòng đăng nhập để thực hiện chức năng",
+            confirmText: "Đăng nhập",
+            cancelText: "Hủy",
+            srcImg: "/Client"
+        });
     } else {
         var JsonData = JSON.stringify(data);
         $.ajax({
@@ -189,17 +325,33 @@ function reaction(value,element,count,revertReaction,countRevert) {
                 if (value == "DontDisLike" || value == "DontLike") {
                     $(count).text(respone);
                     $(element).attr("style", "color:gray;");
-                    $(count).css("color", "gray")
+                    $(count).css("color", "gray");
+                   
+                   /* toast(' Đã bỏ thích', '/Client', {
+                        type: 'warn',
+                        animation: 'zoom',
+                        position: 'top-right'
+                    });*/
                 } else {
                     if (revertReaction != " ") {
                         traiNguocPhanUng(revertReaction, countRevert);
                     }
                     $(count).text(respone);
                     $(element).attr("style", "color:blue;");
-                    $(count).css("color", "blue")
+                    $(count).css("color", "blue");
+                    
+                   /* toast('Đã thích', '/Client', {
+                        type: 'success',
+                        animation: 'zoom',
+                        position:'top-right'
+                    });*/
                 }
             } else {
-                alert("Like không thành công");
+               /* toast('Like không thành công', '/Client', {
+                    type: 'error',
+                    animation: 'zoom',
+                    position: 'top-right'
+                });*/
             }
         });
         
@@ -214,7 +366,14 @@ $("#Share").click(function () {
         "Reaction": value
     };
     if (userId == undefined) {
-        alert("Vui lòng đăng nhập để thực hiện chức năng này");
+        cuteAlert({
+            type: "question",
+            title: "Đăng nhập",
+            message: "Vui lòng đăng nhập để thực hiện chức năng",
+            confirmText: "Đăng nhập",
+            cancelText: "Hủy",
+            srcImg: "/Client"
+        });
     }
 });
 
@@ -262,7 +421,14 @@ function reactionComment(reaction, element, count, reactionRevert, countRevert,i
     };
     
     if (userId == undefined) {
-        alert("Vui lòng đăng nhập để thực hiện chức năng này");
+        cuteAlert({
+            type: "question",
+            title: "Đăng nhập",
+            message: "Vui lòng đăng nhập để thực hiện chức năng",
+            confirmText: "Đăng nhập",
+            cancelText: "Hủy",
+            srcImg: "/Client"
+        });
     } else {
         var JsonData = JSON.stringify(data);
         $.ajax({
@@ -281,10 +447,10 @@ function reactionComment(reaction, element, count, reactionRevert, countRevert,i
                     }
                     $(count).text(respone);
                     $(element).attr("style", "color:blue;");
-                    $(count).css("color", "blue")
+                    $(count).css("color", "blue");
                 }
             } else {
-                alert("Like không thành công");
+              
             }
         });
 
@@ -355,12 +521,20 @@ function comment(checkComment, id,level) {
                     else {
                         $("#Content").val('');
                         document.getElementById("hello_coment").insertAdjacentHTML("beforeBegin", respone);
-
                     }
                 }
                 var view = parseInt($(".count_comment").text()) + 1;
                 $(".count_comment").text(view.toString() + " Bình luận");
-            } else alert("Bình luận không thành công vui lòng thử lại");
+            } else {
+                cuteAlert({
+                    type: "error",
+                    title: "Có lỗi",
+                    message: "Vui lòng thử lại",
+                    confirmText: "Ok",
+                    cancelText: "Hủy",
+                    srcImg: "/Client"
+                });
+            }
             $(".Content-" + Id).val('');
             $("#Content").val('');
         });
@@ -464,33 +638,137 @@ for (let i = 0; i < but.length; i++) {
 //----------------------------End-------------------------------
 //-------------------------Xử lý tìm kiếm----------------------
 
-/*function searchSelect2(urls) {
-    $(".search_Video").select2({
-        placeholder: "Tìm kiếm...........",
-        theme: "classic",
-        allowClear: true
-    });
-    var dataUse = [];
-    $.ajax({
-        url: "/Home/ListJsonVideo",
-        type: "GET",
-        dataTye: "json"
-    }).done(function (datas) {
-        for (var item of datas) {
-            dataUse.push(item.name);
-        }
-        console.log(dataUse);
-        $(".search_Video").select2({
-            placeholder: "Tìm kiếm...........",
-            theme: "classic",
-            allowClear: true,
-            data:dataUse
-        });
-    });
-   
-  
-}*/
 $("#formSearchVideo").submit(function (event) {
     if ($("#nameSearch").val() != '') return;
     event.preventDefault();
 });
+//-----Variable globale-----
+var currentPage = 2;
+function Phantrang(link) {
+    $('.site-layout').on('scroll', function () {
+        let div = $(this).get(0);
+
+        if (div.scrollTop + div.clientHeight >= div.scrollHeight) {
+            loadData(link);
+
+            currentPage += 1;
+        }
+    });
+}
+function loadData(link) {
+    $.get(link + currentPage, function (respone) {
+        $('.site-layout').append(respone);
+        loadSecondVideo();
+        LoadEventMoseLeave();
+    });
+}
+//---------------------Xử lý Notification----------------------------
+
+var checkCount = parseInt($(".soluongtb").text());
+
+var slTb = $('.soluongtb').text();
+if (parseInt(slTb) <= 0) $(".thongbao_do").css('display', 'none');
+var idNotifi = 0;
+function revertWatched(arrayId) {
+    $.ajax({
+        type: "POST",
+        url: "/Notification/UpdateWatched",
+        data: {
+            IdNotifi: arrayId
+        },
+        datatype: "html",
+        contentType: 'application/x-www-form-urlencoded'
+    });
+}
+$(".notification").click(function (event) {
+    checkCount = 0;
+    var arrayIdNotifi = [];
+    document.querySelectorAll(".getIdNotifi").forEach(item => {
+        arrayIdNotifi.push(parseInt(item.value));
+    });
+    revertWatched(arrayIdNotifi);
+    event.stopPropagation();
+    $(".soluongtb").text('0');
+    $(".thongbao_do").css('display', 'none');
+    var checknoneNotifi = document.querySelector('.option_notifi-' + idNotifi);
+    if (checknoneNotifi != null && checknoneNotifi.classList.contains('displays')) {
+        document.querySelector('.option_notifi-' + idNotifi).classList.remove('displays');
+    }
+    document.querySelector(".thongbao_all").classList.toggle('displays');
+    console.log(idNotifi);
+});
+
+$(".thongbao_all").click(function (e) {
+    e.stopPropagation();
+    if ($('.option_notifi-' + idNotifi).hasClass('displays'))
+     $('.option_notifi-' + idNotifi).toggleClass('displays');
+});
+$(document).click(function () {
+    if ($(".displays").css('display') == 'block') {
+        document.querySelector(".thongbao_all").classList.toggle('displays');
+        if ($('.option_notifi-' + idNotifi).hasClass('displays'))
+            $('.option_notifi-' + idNotifi).toggleClass('displays');
+    }
+});
+
+function optionNotifi(event, id) {
+    idNotifi = id;
+    $('.option_notifi-' + id).toggleClass('displays');
+    event.stopPropagation();
+}
+
+var realTimeNotification = setInterval(function () {
+    if ($("#user_authenticated").val() != '' && $("#user_authenticated").val() != null) {
+        $.get("/Notification/GetCountNotifi", function (responeCount) {
+            if (parseInt(responeCount) > parseInt(checkCount)) {
+                $.get("/Notification/Notification_Partial", function (respone) {
+                    var userId = $('#user_authenticated').val();
+                    $(".content_notifi-" + userId).html(respone);
+                    $(".soluongtb").text(responeCount);
+                    $(".thongbao_do").css('display', 'block');
+                });
+            }
+            checkCount = parseInt(responeCount);
+           
+        });
+    }
+}, 5000);
+function revertStatus(event, id) {
+   
+    event.stopPropagation();
+    $.get("/Notification/UpdateStatus/?id=" + id, function (respone) {
+        if (respone != "Error") {
+            $(".item_notifi-" + id).remove();
+            toast('Đã xóa thông báo', '/Client', {
+                type: 'success',
+                animation: 'zoom',
+                position: 'bottom-right'
+            });
+        }
+    });
+}
+function revertFollow(event, id) {
+    
+    var data = {
+        "FromUserId": $("#user_authenticated").val(),
+        "ToUserId": $(".userid-" + id).val()
+    };
+    $.ajax({
+        type: "POST",
+        url: "/Notification/UpdateFollow",
+        data: {
+            follow: data
+        },
+        datatype: "html",
+        contentType: 'application/x-www-form-urlencoded'
+    }).done(function (respone) {
+        if (respone != "Error") {
+            toast('Đã tắt thông báo', '/Client', {
+                type: 'success',
+                animation: 'zoom',
+                position: 'bottom-right'
+            });
+        }
+    });
+}
+//-------------------------End----------------------------------

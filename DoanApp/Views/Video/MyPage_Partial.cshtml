@@ -1,0 +1,40 @@
+﻿@model IPagedList<Video_vm>
+@using X.PagedList;
+@{
+    int count = 1;
+    Layout = null;
+}
+@foreach (var item in Model)
+{
+    <div class="container22">
+        <a id="movepage_detail-@item.Id" asp-action="DetailVideo" asp-controller="Home" asp-route-id="@item.Id">
+            <div class="container222">
+                <video width="261" height="165" onmouseover="viewBefore(@item.Id)" onmouseout="clearBefore(@item.Id)" src="~/Client/video/@item.LinkVideo" title="YouTube video player" class=" nextSecond nextSecond-@item.Id">
+                </video>
+
+            </div>
+
+            <div class="container222_end">
+                <div class="detail_video">
+                    <img class="detail_lerft icon-sidebar-item_video" alt="" src="@(item.LoginExternal ? item.Avartar : "~/Client/avartar/" + item.Avartar)">
+                    <div class="detail_rights">
+                        <span class="detail_right  text-sidebar-item_video">
+                            <p class="titleName">@item.Name </p>
+                        </span>
+                        <div class="text_color">@item.FirtsName @item.LastName</div>
+                        <div class="text_color_check">
+                            @ConvertViewCount.ConvertView(item.ViewCount) lượt xem • @CaculatorHours.Caculator(item.CreateDate)
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+        </a>
+    </div>
+    if (count > 4)
+    {
+        count = 1;
+        <br />
+    }
+}

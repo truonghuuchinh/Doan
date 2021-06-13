@@ -25,9 +25,11 @@ namespace DoanApp.Controllers
         private readonly ILikeVideoService _likeService;
         private readonly IFollowChannelService _followChannel;
         private readonly ICommentService _commentService;
+        private readonly INotificationService _notificationService;
         public VideoController(IVideoService videoService, IUserService userService,
             ICategoryService category,IFollowChannelService channelService,ILikeVideoService likeservice,
-            IFollowChannelService followChannel,ICommentService commentService)
+            IFollowChannelService followChannel,ICommentService commentService,
+            INotificationService notification)
         {
             _videoService = videoService;
             _userService = userService;
@@ -36,6 +38,7 @@ namespace DoanApp.Controllers
             _likeService = likeservice;
             _followChannel = followChannel;
             _commentService = commentService;
+            _notificationService = notification;
         }
         // GET: VideoController
         public ActionResult Index()
@@ -43,12 +46,58 @@ namespace DoanApp.Controllers
 
             return View();
         }
+        public ActionResult MyPage(int? page)
+        {
+            GetNotificationHome();
+            var user = UserAuthenticated.GetUser(User.Identity.Name);
+            if (page == null) page = 1;
+            var pageNumber = page ?? 1;
+            List<Video_vm> listVideo_Vm;
+            var listVideo = _videoService.GetAll().Where(x=>x.AppUserId==user.Id).ToList();
+            var listUser = _userService.GetAll();
+            listVideo_Vm = _videoService.GetVideo_Vm(listVideo, listUser).
+                OrderByDescending(x => x.Id).Where(x => x.Status & x.HidenVideo).ToList();
+            
+            ViewBag.CountUserFollow = _followChannel.GetAll().Where(x => x.FromUserId == user.Id).Count();
+            ViewBag.UserMyPage = user;
+            return View(listVideo_Vm.ToPagedList(pageNumber, 8));
+        }
+        public ActionResult MyPage_Partial(int? page,string nameSearch=null)
+        {
+            var user = UserAuthenticated.GetUser(User.Identity.Name);
+            if (page == null) page = 1;
+            var pageNumber = page ?? 1;
+            List<Video_vm> listVideo_Vm;
+            var listVideo = _videoService.GetAll().Where(x => x.AppUserId == user.Id).ToList();
+            if (nameSearch != null) 
+                listVideo = listVideo.Where(x => x.Name.Contains(nameSearch)).ToList();
+             var listUser = _userService.GetAll();
+            listVideo_Vm = _videoService.GetVideo_Vm(listVideo, listUser).
+                OrderByDescending(x => x.Id).Where(x => x.Status & x.HidenVideo).ToList();
+          
+            ViewBag.CountUserFollow = _followChannel.GetAll().Where(x => x.FromUserId == user.Id).Count();
+            ViewBag.UserMyPage = user;
+            return View(listVideo_Vm.ToPagedList(pageNumber, 8));
+        }
+        public string ListVideoJson()
+        {
+            var listName = new List<string>();
+            var user = UserAuthenticated.GetUser(User.Identity.Name);
+            var listVideo = _videoService.GetAll().Where(x => x.AppUserId == user.Id).ToList();
+            foreach (var item in listVideo)
+            {
+                listName.Add(item.Name);
+            }
+            return JsonConvert.SerializeObject(listName);
+        }
         public IActionResult FavoritedVideo(int? page,bool flag=false)
         {
+
             if (page == null) page = 1;
             var pageNumber = page ?? 1;
             var pageSize = 6;
             IPagedList<Video_vm> listVideo_Vm;
+            GetNotificationHome();
             if (User.Identity.IsAuthenticated)
             {
                 var userLogin = UserAuthenticated.GetUser(User.Identity.Name);
@@ -74,10 +123,12 @@ namespace DoanApp.Controllers
         }
         public IActionResult LibaryVideo()
         {
+            GetNotificationHome();
             return View();
         }
         public IActionResult SubscriptionChannel(int? page,bool flag=false)
         {
+            GetNotificationHome();
             if (page == null) page = 1;
             var pageNumber = page ?? 1;
             var pageSize = 12;
@@ -107,11 +158,13 @@ namespace DoanApp.Controllers
         }
         public IActionResult VideoWatched()
         {
+            GetNotificationHome();
             return View();
         }
         public IActionResult OverviewPage()
         {
-            var user = _userService.FindUser(User.Identity.Name).Result;
+            GetNotificationHome();
+            var user = UserAuthenticated.GetUser(User.Identity.Name);
             ViewBag.CountUserFollow = _followChannel.GetAll().Where(x => x.FromUserId == user.Id).Count();
             ViewBag.CountView = _videoService.GetAll().Where(x => x.AppUserId == user.Id).Sum(x => x.ViewCount);
             ViewBag.CountVideo = _videoService.GetAll().Where(x => x.AppUserId == user.Id).Count();
@@ -126,6 +179,7 @@ namespace DoanApp.Controllers
         }
         public IActionResult MyChannel(int? page)
         {
+            GetNotificationHome();
             ViewData["Category"] = new SelectList(_categoryService.GetAll().Result, "Id", "Name");
            
             if (page == null) page = 1;
@@ -133,11 +187,26 @@ namespace DoanApp.Controllers
             var pageNumber = page ?? 1;
             var user = _userService.FindUser(User.Identity.Name).Result;
             var list = _videoService.GetAll().
-                Where(x=>x.AppUserId==user.Id).OrderBy(x=>x.Id).ToPagedList(pageNumber,pageSize);
+                Where(x=>x.AppUserId==user.Id).OrderByDescending(x=>x.Id).ToPagedList(pageNumber,pageSize);
             ViewBag.CountComment = (from video in _videoService.GetAll().Where(x => x.AppUserId == user.Id)
                                     join comment in _commentService.GetAll() on video.Id equals comment.VideoId
                                     select comment).Count();
             return View(list);
+        }
+        public void GetNotificationHome()
+        {
+            var userss = UserAuthenticated.GetUser(User.Identity.Name);
+            if (userss != null)
+            {
+                ViewBag.ListNotification = _notificationService.GetNotification(userss);
+                ViewBag.CountNotifi = _notificationService.GetNotification(userss).Where(x => x.Watched).Count();
+            }
+            else
+            {
+                ViewBag.ListNotification = null;
+                ViewBag.CountNotifi = 0;
+            }
+
         }
         public IActionResult MyChannel_Partial(int? page)
         {
@@ -169,12 +238,20 @@ namespace DoanApp.Controllers
                     videoRequest.AppUserId = user.Id;
                     videoRequest.HidenVideo = HiddenVideo.Contains("Public") ? true : false;
                     var result = await _videoService.Create(videoRequest,listPost);
-                    if (result > 0)
+                    if (result!=null)
                     {
-                        return Redirect("MyChannel");
+                        var notifi = new NotificationRequest();
+                        notifi.AvartarUser = user.Avartar;
+                        notifi.Content = videoRequest.Name;
+                        notifi.PoterImg = result.PosterImg;
+                        notifi.UserId = user.Id;
+                        notifi.VideoId = result.Id;
+                        notifi.LoginExternal = user.LoginExternal;
+                        notifi.UserName = user.FirtsName + " " + user.LastName;
+                        var resultsNoti = await _notificationService.Create(notifi,user.Id);
+                        if(resultsNoti>0) return Redirect("MyChannel");
                     }
                 }
-              
             }
             return Redirect("MyChannel");
         }
@@ -244,6 +321,26 @@ namespace DoanApp.Controllers
                 return Content("Success");
             return Content("Error");
         }
-       
+       [HttpPost]
+       public async Task<IActionResult> UpdateImgChannel(string emailUser,IFormFile fileUpload)
+        {
+            if (emailUser != null && fileUpload != null)
+            {
+                var user = await _userService.FindUser(emailUser);
+               if(user.ImgChannel!=null) 
+                    System.IO.File.Delete("wwwroot/Client/imgChannel/" + user.ImgChannel);
+                var filename = fileUpload.FileName.Split('.');
+                var name = user.Id.ToString() + "." + filename[filename.Length - 1].ToLower();
+                user.ImgChannel = name;
+                using (var fileStream = new FileStream(Path.Combine("wwwroot/Client/imgChannel", name),
+                           FileMode.Create, FileAccess.Write))
+                {
+                    fileUpload.CopyTo(fileStream);
+                }
+                var result =await _userService.UpdateImgChannel(user.Id, name);
+                if(result>0) return RedirectToAction("MyPage", "Video");
+            }
+            return RedirectToAction("MyPage", "Video");
+        }
     }
 }

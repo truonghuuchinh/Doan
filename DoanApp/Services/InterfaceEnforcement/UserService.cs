@@ -108,7 +108,9 @@ namespace DoanApp.Services
             };
             using (var client = new SmtpClient())
             {
-                client.Connect("smtp.gmail.com", 465, true);
+                //587 hoặc 465
+                client.Connect("smtp.gmail.com", 465,true);
+                client.Timeout = 100000;
                 client.Authenticate("khleson79929@gmail.com", "phlakkmxjeceukbu");
                 client.Send(message);
                 client.Disconnect(true);
@@ -160,6 +162,18 @@ namespace DoanApp.Services
             }
             return false;
          }
+
+        public async Task<int> UpdateImgChannel(int idUser,string ImgChannel)
+        {
+            var user = _context.AppUser.FirstOrDefault(X => X.Id == idUser);
+            if (user != null&&ImgChannel!=null)
+            {
+                user.ImgChannel = ImgChannel;
+                _context.Update(user);
+                return await _context.SaveChangesAsync();
+            }
+            return -1;
+        }
 
         public async Task<int> UpdatLockcout(AppUser user)
         {

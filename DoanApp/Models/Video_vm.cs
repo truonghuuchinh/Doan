@@ -23,6 +23,7 @@ namespace DoanApp.Models
         public string Avartar { get; set; }
         public string FirtsName { get; set; }
         public int UserLike { get; set; }
+        public string ImgChannel { get; set; }
         public bool LoginExternal { get; set; }
         public string LastName { get; set; }
         public string Reaction { get; set; } = Reactions.NoAction.ToString();

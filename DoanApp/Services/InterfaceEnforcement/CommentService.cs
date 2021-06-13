@@ -1,4 +1,5 @@
 ﻿
+using DoanApp.Commons;
 using DoanApp.Models;
 using DoanData.Commons;
 using DoanData.DoanContext;
@@ -23,7 +24,7 @@ namespace DoanApp.Services
             if (cmRequest != null)
             {
                 comment.Content=cmRequest.Content;
-                comment.CreateDate = DateTime.Now.ToString("MM-d-yyyy H:mm:s");
+                comment.CreateDate = new GetDateNow().DateNow;
                 comment.UserId = cmRequest.UserId;
                 comment.CommentId = cmRequest.CommentId;
                 comment.VideoId = cmRequest.VideoId;

@@ -11,5 +11,6 @@ namespace DoanApp.Models
         public string Content { get; set; }
 
         public int UserId { get; set; }
+        public int VideoId { get; set; }
     }
 }

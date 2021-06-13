@@ -84,7 +84,7 @@ body {
 }
 
 .modal-content {
-    width: 666px;
+    width: 80% !important;
     height: auto;
 }
 

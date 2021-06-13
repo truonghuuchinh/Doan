@@ -12,5 +12,6 @@ namespace DoanApp.Services
         List<FollowChannel> GetAll();
         Task<int> Create(FollowChannelRequest request);
         Task<int> Delete(int fromUser,int toUserId);
+        Task<int> UpdateNotifi(FollowChannelRequest request);
     }
 }
