@@ -96,8 +96,12 @@ namespace DoanApp.Services
 
         public List<Notification> GetNotification(AppUser user)
         {
-            var listNotification = GetAll().Where(x=>x.Status&&x.FromUserId==user.Id).OrderByDescending(x => x.Id).ToList();
-            return listNotification;
+            if (user != null)
+            {
+                var listNotification = GetAll().Where(x => x.Status && x.FromUserId == user.Id).OrderByDescending(x => x.Id).ToList();
+                return listNotification;
+            }
+            return null;
         }
 
         public async Task<int> UpdateStatus(int id)

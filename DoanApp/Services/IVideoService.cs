@@ -20,5 +20,9 @@ namespace DoanApp.Services
         Task<int> UpdateView(int id);
         List<Video_vm> GetVideo_Vm(List<Video> lVideo, List<AppUser> lUser);
         Task<int> UpdateCategory(int id,int idCategory);
+        Task<int> UpdatePermission(VideoRequest request);
+        Task<int> DeleteVideoFavorite(int id);
+        List<Video_vm> GetAllVideoPlayList(List<Video> video, AppUser user);
+        
     }
 }

@@ -65,22 +65,22 @@ namespace DoanApp.Controllers
         }
         public async Task<IActionResult> Index(int? page)
         {
-           
+            ViewBag.ForCus = 0;
             if (User.Identity.IsAuthenticated)
             {
-
-                var user = UserAuthenticated.GetUser(User.Identity.Name);
                 GetNotificationHome();
+                var user = UserAuthenticated.GetUser(User.Identity.Name);
                 ViewBag.IdUser = user.Id;
                 ViewBag.PlayList = _playListService.GetAll().Where(x => x.UserId == ViewBag.IdUser).ToList();
+                ViewBag.UserFollow=_userService.GetUserFollow(user.UserName);
             }
             else
             {
                 ViewBag.IdUser = 0;
                 ViewBag.PlayList = null;
                 ViewBag.ListNotification = null;
-                ViewBag.ListNotification = null;
                 ViewBag.CountNotifi = 0;
+                ViewBag.UserFollow = null;
             }
             ViewBag.LinkActive = "/Home/Index";
             if (page == null) page = 1;
@@ -126,6 +126,18 @@ namespace DoanApp.Controllers
         
         public IActionResult Popular(int? page)
         {
+            var user = UserAuthenticated.GetUser(User.Identity.Name);
+            if (user != null)
+            {
+                ViewBag.UserFollow = _userService.GetUserFollow(user.UserName);
+                ViewBag.IdUser = user.Id;
+                ViewBag.PlayList = _playListService.GetAll().Where(x => x.UserId == ViewBag.IdUser).ToList();
+            }
+            else
+            {
+                ViewBag.UserFollow = null;
+            }
+            ViewBag.ForCus = 1;
             GetNotificationHome();
             if (page == null) page = 1;
             int pageNumber = page ?? 1;
@@ -149,21 +161,45 @@ namespace DoanApp.Controllers
         }
         public async Task<IActionResult> SearchVideo(int? page,string nameSearch)
         {
-            ViewBag.nameSearch = nameSearch;
 
+            ViewBag.nameSearch = nameSearch;
+            var user = UserAuthenticated.GetUser(User.Identity.Name);
+            if (user != null)
+            {
+                ViewBag.IdUser = user.Id;
+                ViewBag.PlayList = _playListService.GetAll().Where(x => x.UserId == ViewBag.IdUser).ToList();
+                ViewBag.UserFollow = _userService.GetUserFollow(user.UserName);
+            }
+            else ViewBag.UserFollow = null;
+            
+            GetNotificationHome();
             if (page == null) page = 1;
             var pageNumber = page ?? 1;
-            var pageSize = 12;
+            var pageSize = 5;
             var listVideo_Vm = GetSearchVideo_vm(nameSearch);
             return View(await listVideo_Vm.ToPagedListAsync(pageNumber, pageSize));
         }
         public IActionResult SearchVideo_Partial(int? page,string nameSearch=null)
         {
+            
             if (page == null) page = 1;
             var pageNumber = page ?? 1;
-            var pageSize = 12;
+            var pageSize = 5;
             var listVideo_vm = GetSearchVideo_vm(nameSearch);
             return View(listVideo_vm.ToPagedList(pageNumber, pageSize));
+        }
+        public async Task<IActionResult> UpdateDescription(AppUserRequest request)
+        {
+            if (request != null)
+            {
+                var result = await _userService.UpdateDescription(request);
+                if (result > 0)
+                {
+                    new UserAuthenticated().UpdateImgChannel(request.Id, null, request.DescriptionChannel);
+                    return Content("Success");
+                }
+            }
+            return Content("Error");
         }
         public List<Video_vm> GetSearchVideo_vm(string nameSearch)
         {
@@ -191,9 +227,22 @@ namespace DoanApp.Controllers
         }
         public async Task<IActionResult> DetailVideo(int? id)
         {
+            
+           
             GetNotificationHome();
             var userFollow = "false";
             var userLogin = UserAuthenticated.GetUser(User.Identity.Name);
+            if (userLogin != null)
+            {
+                ViewBag.UserFollow = _userService.GetUserFollow(userLogin.UserName);
+                ViewBag.IdUser = userLogin.Id;
+                ViewBag.PlayList = _playListService.GetAll().Where(x => x.UserId == ViewBag.IdUser).ToList();
+            }
+            else
+            {
+                ViewBag.UserFollow=null;
+                ViewBag.PlayList = null;
+            }
             ViewBag.UserLogin = userLogin == null ? null : userLogin;
             var userIdLogin = userLogin == null ? 0 : userLogin.Id;
             var video = await _videoService.FinVideoAsync((int)id);
@@ -224,9 +273,9 @@ namespace DoanApp.Controllers
                     userFollow = "true";
             }
             var comment = _commentService.GetAll().Where(x => x.VideoId == video.Id).ToList();
-            ViewBag.VideoRelationShip =_videoService.GetVideo_Vm(lVideo, lUser).ToPagedList(1, 15).ToList();
+            ViewBag.VideoRelationShip =_videoService.GetVideo_Vm(lVideo, lUser).OrderByDescending(x=>x.Id).ToPagedList(1, 8).ToList();
             ViewBag.Comment = _commentService.GetAll_vm(lUser, comment).OrderByDescending(x => x.Id).ToList();
-            ViewBag.UserFollow = userFollow;
+            ViewBag.CheckUserFollow = userFollow;
             ViewBag.CountRegister = _channelService.GetAll().Where(x=>x.ToUserId==video_Vm.AppUserId).Count();
                  return View(video_Vm);
         }
@@ -310,8 +359,6 @@ namespace DoanApp.Controllers
             var user = await _userManager.FindByEmailAsync(model.Email);
                 if (reusult)
                 {
-                           var listUserFollow = _userService.GetUserFollow(user.UserName);
-                         UserAuthenticated.SetUserFollow(listUserFollow,user.Email);
                           return RedirectToAction("Index", "Home");
                  }
                 else
@@ -369,8 +416,6 @@ namespace DoanApp.Controllers
                
                 UserAuthenticated.checkUserAuthenticated(users);
                 await _signInManager.SignInAsync(users, isPersistent: false, info.LoginProvider);
-                var listUserFollow = _userService.GetUserFollow(users.UserName);
-                UserAuthenticated.SetUserFollow(listUserFollow, users.UserName);
                 return RedirectToAction("Index");
             }
             else

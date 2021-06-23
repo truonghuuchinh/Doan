@@ -4,9 +4,10 @@ body {
   min-height: 100vh; }
 
 .brand-wrapper {
+    margin-top:11px;
   margin-bottom: 19px; }
   .brand-wrapper .logo {
-    height: 37px; }
+    height: 60px; }
 
 .login-card {
   border: 0;
@@ -26,7 +27,7 @@ body {
       .login-card .card-body {
         padding: 35px 24px; } }
   .login-card-description {
-    font-size: 25px;
+    font-size: 28px;
     color: #000;
     font-weight: normal;
     margin-bottom: 23px; }
@@ -86,6 +87,7 @@ body {
 .modal-content {
     width: 80% !important;
     height: auto;
+    margin-left:85px;
 }
 
 .modal_pasue_selete_user {
@@ -184,3 +186,13 @@ body {
         color: #757575 !important;
     }
 /*# sourceMappingURL=login.css.map */
+
+
+
+.container {
+    margin-top: -40px;
+}
+
+#external-account{
+    margin-top:-35px;
+}
