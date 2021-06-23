@@ -20,5 +20,8 @@ namespace DoanApp.Services
         Task<int> UpdatLockcout(AppUser user);
         List<AppUser> GetAll();
         List<AppUser> GetUserFollow(string email);
+        Task<int> UpdateImgChannel(int idUser,string ImgChannel);
+        Task<AppUser> FindUserId(int id);
+        Task<int> UpdateDescription(AppUserRequest request);
     }
 }

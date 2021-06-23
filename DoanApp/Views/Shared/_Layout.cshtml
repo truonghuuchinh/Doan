@@ -6,14 +6,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Trang Chủ</title>
     <link rel="stylesheet" href="https://cdn.plyr.io/3.6.2/demo.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w==" crossorigin="anonymous" />
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link href="~/Client/fonts/fontawesome/css/all.min.css" rel="stylesheet" />
     <link href="~/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="~/Client/css/style.css">
-   
     <link href="~/select2/css/select2.min.css" rel="stylesheet" />
+    <link href="~/css/alert_css.css" rel="stylesheet" />
+    <link href="~/css/toastifier.min.css" rel="stylesheet" />
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.min.js"></script>
-    <script src="~/select2/js/select2.min.js"></script>
 </head>
 <body>
     <div class="warpper">
@@ -24,20 +25,23 @@
                 </div>
                 <div class="logo"></div>
                 <form asp-action="SearchVideo" asp-controller="Home" method="post" id="formSearchVideo">
-                    <input id="nameSearch" name="nameSearch" placeholder="Tìm Kiếm" type="text" class="search" value="@ViewBag.nameSearch">
-                    <button type="button" class="search_Voice"> <i class="fas fa-microphone" id="i_searchVoice"></i></button>
+                    <input id="nameSearch" name="nameSearch" placeholder="Tìm Kiếm" type="search" class="search" value="@ViewBag.nameSearch">
+                    <button type="button" title="Tìm kiếm giọng nói" class="search_Voice"> <i class="fas fa-microphone" id="i_searchVoice"></i></button>
                     <div class="searchs">
-                        <button type="submit" class="search_sokiuty_img"><i class=" fas fa-search"></i></button>
+                        <button type="submit" title="Tìm kiếm" class="search_sokiuty_img"><i class=" fas fa-search"></i></button>
                     </div>
                 </form>
-               
+
 
                 <div class="khoangcach"></div>
                 <div class="loginUser">
                     @{
+                        var userId = 0;
                         var user = UserAuthenticated.GetUser(User.Identity.Name);
                         if (User.Identity.IsAuthenticated && user != null)
                         {
+                            userId = user.Id;
+                            <input type="hidden" value="@user.Id" id="user_authenticated" />
                             <div id="completed_Login">
                                 <a asp-action="MyChannel" asp-controller="Video" class="move_page">
                                     <div class="create click_create">
@@ -45,9 +49,16 @@
                                     </div>
                                 </a>
 
-                                <div class="notification"></div>
+                                <div class="notification">
+                                    <div class="notificationss hover"></div>
+                                    <div class="thongbao_do">
+                                        <div class="thong_baos">
+                                            <div class="soluongtb">@ViewBag.CountNotifi</div>
+                                        </div>
+                                    </div>
+                                </div>
                                 <div class="account_information">
-                                    <div class="account_informationss" data-toggle="modal" data-target="#leave_the_check_avarta"><img src="@(user.LoginExternal ? user.Avartar : "/Client/avartar/" + user.Avartar)" alt="Alternate Text" /></div>
+                                    <div class="account_informationss" data-toggle="modal" data-target="#leave_the_check_avarta"><img class="hover" src="@(user.LoginExternal ? user.Avartar : "/Client/avartar/" + user.Avartar)" alt="Alternate Text" /></div>
                                 </div>
                             </div>
                             @* Modal menu logout*@
@@ -57,7 +68,7 @@
                                         <div class="modal_check_fier_all">
                                             <div class="modal_check__fier__all">
                                                 <div class="avartar_fier_left">
-                                                    <img src="@(user.LoginExternal ? user.Avartar : "/Client/avartar/" + user.Avartar)" alt="Alternate Text" />
+                                                    <img class="hover" src="@(user.LoginExternal ? user.Avartar : "/Client/avartar/" + user.Avartar)" alt="Alternate Text" />
                                                 </div>
                                                 <div class="avartar_fier_right">
                                                     <div class="name__avartar_fier_right">@(user.FirtsName + " " + user.LastName)</div>
@@ -65,7 +76,7 @@
                                                 </div>
                                             </div>
                                             <div class="ke_ngang_fier"></div>
-                                            <a href="kenhcuaban.html">
+                                            <a asp-action="MyPage" asp-controller="Video">
                                                 <div class="modal_check_function_fier">
                                                     <div class="modal_check_function_fier_left">
                                                         <div class="khung_function_fier_img">
@@ -123,10 +134,85 @@
                 </div>
             </div>
         </div>
-        <div class="row">
+        <div class="thongbao_all">
+            <div class="name_ten_thongbao">Thông báo</div>
+            <div class="kengang_thong_bao"></div>
+
+            <div class="content_notifi-@userId">
+                <div class="tong_khungss_thongbao_all">
+                    @if (ViewBag.ListNotification == null || ViewBag.ListNotification.Count == 0)
+                    {
+                        <div class="khung_thongbao_video">
+                            <div class="none_notifi">Không có thông báo</div>
+                        </div>
+                    }
+                    else
+                    {
+                        @foreach (var item in ViewBag.ListNotification)
+                        {
+                            <div class="item_notifi-@item.Id">
+                                <input type="hidden" class="getIdNotifi" value="@item.Id" />
+                                <input type="hidden" class="userid-@item.Id" value="@item.UserId" />
+                                <div class="khung_thongbao_video">
+                                    <a class="link_detail-@item.Id linkDetail" asp-action="DetailVideo" asp-controller="Home" asp-route-id="@item.VideoId">
+                                        <div class="khung_thongbao_video_left_daucham">
+                                            @if (item.Watched)
+                                            {
+                                                <div class="nowatched"></div>
+                                            }
+                                            else
+                                            {
+                                                <div class="watched"></div>
+                                            }
+                                        </div>
+                                        <div class="khung_thongbao_video_img">
+                                            <img class="img_trang__cuaban_thongbao" alt="" src="@(item.LoginExternal?item.AvartarUser:"/Client/img/"+item.AvartarUser)">
+                                        </div>
+                                        <div class="noidung_khungthongbaovideo_text">
+                                            <div class="noidung_khungthongbao_video__text"><strong>@item.UserName</strong> @item.Content</div>
+                                            <div class="thoigian_daguithongbao">@CaculatorHours.Caculator(item.CreateDate)</div>
+                                        </div>
+                                        <div class="img_thongbaovideocuado">
+                                            <div class="img_thongbaovideocuado_video">
+                                                <img src="/Client/imgPoster/@item.PoterImg" alt="" class="img_thong_bao_videocuado_video">
+                                            </div>
+                                        </div>
+                                    </a>
+                                    <div class="daubacham_anthongbao" onclick="optionNotifi(event,@item.Id)">
+                                        <div class=" hover daubacham_anthongbao_video">
+                                            <img src="/Client/img/more.png" alt="" class="show_daubacham_anthongbao_video more-@item.Id">
+                                        </div>
+                                    </div>
+                                    <div class="an_thongbaonay_all option_notifi-@item.Id">
+                                        <div class="kekhungheader"></div>
+                                        <div class=" hover class_nameimg_anthongbao">
+                                            <div class="khung_img_class_nameimg_anthongbo">
+                                                <div class="img_class_nameimg_anthongbo"></div>
+                                            </div>
+                                            <div onclick="revertStatus(event,@item.Id)" class="noidung_class_nameimg_anthongbao">Ẩn thông báo này</div>
+                                        </div>
+                                        <div class=" hover class_nameimg_anthongbao">
+                                            <div class="khung_img_class_nameimg_anthongbo">
+                                                <div class="img_offthongbao"></div>
+                                            </div>
+                                            <div onclick="revertFollow(event,@item.Id)" class="noidung_class_nameimg_anthongbao">Tắt thông báo từ kênh </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+
+                        }
+                    }
+                </div>
+            </div>
+
+        </div>
+        <div class="row fixed_menu">
             <nav class="col strong_headers">
                 <a class="move_page" asp-action="Index" asp-controller="Home">
-                    <li class="text-white sidebar-item sidebar-menu">
+                    <li class="text-white sidebar-item sidebar-menu @(ViewBag.ForCus ==0?"forcus__item":"")">
 
                         <div class="row">
                             <img class="icon-sidebar-item" alt="" src="~/Client/img/home_mau.png">
@@ -135,7 +221,7 @@
                     </li>
                 </a>
                 <a class="move_page" asp-action="Popular" asp-controller="Home">
-                    <li class="text-white sidebar-item sidebar-menu">
+                    <li class="text-white sidebar-item sidebar-menu @(ViewBag.ForCus ==1?"forcus__item":"")">
 
                         <div class="row">
                             <img class="icon-sidebar-item" alt="" src="~/Client/img/explore.png">
@@ -144,26 +230,26 @@
                     </li>
                 </a>
                 <a class="move_page" asp-action="SubscriptionChannel" asp-controller="Video">
-                    <li class="text-white sidebar-item sidebar-menu">
+                    <li class="text-white sidebar-item sidebar-menu @(ViewBag.ForCus ==2?"forcus__item":"")">
                         <div class="row">
                             <img class="icon-sidebar-item" alt="" src="~/Client/img/youtube_danky.png">
                             <span class="text-sidebar-item">Kênh đăng ký</span>
                         </div>
                     </li>
                 </a>
-                <li class="text-white sidebar-item sidebar-menu sider_colors" style="height: 0px;">
+                <li class="text-white sidebar-item sidebar-menu sider_colors " style="height: 0px;">
                     <div style="background-color: #0C386A; height:1px"></div>
                 </li>
                 <a class="move_page" asp-action="LibaryVideo" asp-controller="Video">
-                    <li class="text-white sidebar-item sidebar-menu">
+                    <li class="text-white sidebar-item sidebar-menu @(ViewBag.ForCus ==3?"forcus__item":"")">
                         <div class="row">
                             <img class="icon-sidebar-item" alt="" src="~/Client/img/youtube_thuvien.png">
                             <span class="text-sidebar-item">Thư viện</span>
                         </div>
                     </li>
                 </a>
-                <a class="move_page" asp-action="VideoWatched" asp-controller="Video">
-                    <li class="text-white sidebar-item sidebar-menu">
+                <a class="move_page" asp-action="@(user!=null?"Index":"Login")" asp-controller="@(user!=null?"VideoWatched":"Home")">
+                    <li class="text-white sidebar-item sidebar-menu @(ViewBag.ForCus ==4?"forcus__item":"")">
                         <div class="row">
                             <img class="icon-sidebar-item" alt="" src="~/Client/img/future.png">
                             <span class="text-sidebar-item">Video đã xem</span>
@@ -173,25 +259,18 @@
                 @if (User.Identity.IsAuthenticated)
                 {
                     <a class="move_page" asp-action="MyChannel" asp-controller="Video">
-                        <li class="text-white sidebar-item sidebar-menu">
+                        <li class="text-white sidebar-item sidebar-menu @(ViewBag.ForCus ==5?"forcus__item":"")">
                             <div class="row">
                                 <img class="icon-sidebar-item" alt="" src="~/Client/img/youtube_videocuaban.png">
                                 <span class="text-sidebar-item">Video của bạn</span>
                             </div>
                         </li>
                     </a>
-                    <a class="move_page" href="">
-                        <li class="text-white sidebar-item sidebar-menu">
-                            <div class="row">
-                                <img class="icon-sidebar-item" alt="" src="~/Client/img/clock.png">
-                                <span class="text-sidebar-item">Xem sau</span>
-                            </div>
-                        </li>
-                    </a>
+
                     <a class="move_page" asp-action="FavoritedVideo" asp-controller="Video">
-                        <li class="text-white sidebar-item sidebar-menu">
+                        <li class="text-white sidebar-item sidebar-menu @(ViewBag.ForCus ==6?"forcus__item":"")">
                             <div class="row">
-                                <img class="icon-sidebar-item" alt="" src="~/Client/img/like.png">
+                                <img class="icon-sidebar-item" alt="" src="/Client/img/like.png">
                                 <span class="text-sidebar-item">Video đã thích</span>
                             </div>
                         </li>
@@ -205,27 +284,30 @@
                 @if (User.Identity.IsAuthenticated)
                 {
                     <div class="hearer_container_text">Kênh Đăng Ký</div>
-                    <div class="xohangall">
-                        @foreach (var item in UserAuthenticated.GetUserFollow(User.Identity.Name))
-                        {
-                            <a class="move_page" href="">
-                                <li class="text-white sidebar-item sidebar-menu fix_texts_count">
-                                    <div class="row">
-                                        <img class="icon-sidebar-item img_follow" alt="" src="@(item.LoginExternal?item.Avartar:"~/Client/img/"+item.Avartar)">
-                                        <span class="text-sidebar-item fix_texts">@item.FirtsName @item.LastName</span>
-                                    </div>
-                                </li>
-                            </a>
-                        }
+                    @if (ViewBag.UserFollow != null)
+                    {
+                        <div class="xohangall">
 
-                    </div>
-                    <div class="collapses">
-                        Xem thêm
-                    </div>
+                            @foreach (var item in ViewBag.UserFollow)
+                            {
+                                <a class="move_page" asp-action="MyPage" asp-controller="Video" asp-route-idUser="@item.Id">
+                                    <li class="text-white sidebar-item sidebar-menu fix_texts_count">
+                                        <div class="row">
+                                            <img class="icon-sidebar-item img_follow" alt="" src="@(item.LoginExternal ? item.Avartar : "~/Client/img/" + item.Avartar)">
+                                            <span class="text-sidebar-item fix_texts">@item.FirtsName @item.LastName</span>
+                                        </div>
+                                    </li>
+                                </a>
+                            }
+                        </div>
+                        <div class="collapses">
+                            Xem thêm
+                        </div>
+                    }
                 }
                 else
                 {
-                    <div class="title_NoSignin">Đăng nhập để like,comment và subscribe</div>
+                    <div class="title_NoSignin">Đăng nhập để like, comment và subscribe</div>
                     <div id="no_Login_Register">
                         <a class="move_page" asp-action="Login" asp-controller="Home">
                             <div class="list_dangnhap_left">
@@ -240,6 +322,77 @@
                 @RenderBody()
             </div>
         </div>
+        <!--Modal reportvideo and add playlist-->
+        <div class="modal" tabindex="-1" id="modalPlayList" data-backdrop="static">
+            <div class="modal-dialog">
+                <div class="modal-content modalPlayList">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Lưu vào danh sách</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true"><i class="fa fa-times"></i></span>
+                        </button>
+                    </div>
+
+                    <div class="modal-body">
+                        @if (ViewBag.PlayList != null)
+                        {
+                            if (ViewBag.PlayList.Count == 0)
+                            {
+                                <div class="listChoose">
+                                    Chưa có danh sách, tạo ngay...
+                                </div>
+                            }
+                            else
+                            {
+                                @foreach (var item in ViewBag.PlayList)
+                                {
+                                    <div class="listChoose">
+                                        <input type="checkbox" id="chooseList-@item.Id" data-id="@item.Id" class="chooseList chooseList-@item.Id" />
+                                        <label class="hover" onclick="addItem(@item.Id)" for="chooseList-@item.Id"><span>@item.Name</span></label>
+                                    </div>
+                                }
+                            }
+                        }
+                    </div>
+                    <div class="modal-footer">
+                        <div class="add-playlist hover"><i class=" fa fa-plus"></i> Tạo danh sách mới</div>
+                        <div class="create_playlist">
+                            <form asp-action="Create" asp-controller="PlayListVideo" asp-route-normal="true">
+                                <span>Tên</span>
+                                <input class="input_playlist" type="text" id="namePlayList" name="Name" />
+                                <input type="hidden" value="@ViewBag.IdUser" id="idUser" name="UserId" />
+                                <button type="submit" class="btn-primary btnPlaylist">Tạo</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal" id="reportvideo">
+            <div class="modal_reportvideo">
+                <div class="header_videodau">
+                    <div class="benphaiheader_videodau">
+                        <div class="na_tieude">Vui lòng nhập nôi dung báo cáo</div>
+                    </div>
+                </div>
+                <div class="content_videodau">
+                    <span class="text-danger errorReport" id="errorReport"></span>
+                    <textarea class="noidung_baocao" id="valueReport" rows="4" placeholder="Mô tả văn bản" style="-webkit-appearance: none;"></textarea>
+                    <div class="sangphai_header_videodauu">
+                        <div type="button" class="btn btn-primary" id="confirm_report">Báo cáo</div>
+                    </div>
+                    <div class="sangphai_header_videodauu">
+                        <div type="button" class="btn btn-danger" data-dismiss="modal">Hủy</div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <!--Kết thúc-->
+        <script src="~/js/site.js"></script>
+
+        <script src="~/select2/js/select2.min.js"></script>
+        <script src="~/js/signalr/signalr.min.js"></script>
         <script src="~/Client/js/site.js"></script>
         @RenderSection("Scripts", false)
 

@@ -1,4 +1,5 @@
 ﻿
+using DoanApp.Commons;
 using DoanApp.Models;
 using DoanData.Commons;
 using DoanData.DoanContext;
@@ -23,8 +24,9 @@ namespace DoanApp.Services
             if (cmRequest != null)
             {
                 comment.Content=cmRequest.Content;
-                comment.CreateDate = DateTime.Now.ToString("MM-d-yyyy H:mm:s");
+                comment.CreateDate = new GetDateNow().DateNow;
                 comment.UserId = cmRequest.UserId;
+                comment.ReplyForId = cmRequest.ReplyForId;
                 comment.CommentId = cmRequest.CommentId;
                 comment.VideoId = cmRequest.VideoId;
                 comment.ReplyFor = cmRequest.ReplyFor;
@@ -34,21 +36,49 @@ namespace DoanApp.Services
             return 0;
         }
 
-        public async Task<int> Delete(int id)
+        public async Task<List<int>> Delete(int id)
         {
+            var listId = new List<int>();
             var comment = _context.Comment.FirstOrDefault(X => X.Id == id);
-            _context.Remove(comment);
-            return await _context.SaveChangesAsync();
+            if (comment != null)
+            {
+               
+                foreach (var like in _context.LikeComments.ToList())
+                {
+                    if (like.Comment == comment.Id)
+                        _context.Remove(like);
+                }
+
+                foreach (var item in GetAll())
+                {
+                    if (item.CommentId == comment.Id || item.ReplyForId == comment.Id)
+                    {
+                        listId.Add(item.Id);
+                        _context.Remove(item);
+                    }
+                }
+                listId.Add(comment.Id);
+                _context.Remove(comment);
+                 await _context.SaveChangesAsync();
+                return listId;
+            }
+            return null;
         }
 
         public async Task<Comment> Find(int id)
         {
-            return await _context.Comment.FindAsync(id);
+            var comment= await _context.Comment.FindAsync(id);
+            if (comment != null)
+            {
+                return comment;
+            }
+            return null;
         }
 
         public List<Comment> GetAll()
         {
-            return _context.Comment.ToList();
+            var list = _context.Comment.ToList();
+            return list;
         }
 
         public List<Comment_vm> GetAll_vm(List<AppUser> user, List<Comment> comments)
@@ -126,6 +156,18 @@ namespace DoanApp.Services
                 return await _context.SaveChangesAsync();
             }
             return 0;
+        }
+
+        public async Task<int> UpdateContent(CommentRequest cmRequest)
+        {
+            var cm = _context.Comment.FirstOrDefault(X => X.Id == cmRequest.Id);
+            if (cm != null)
+            {
+                cm.Content = cmRequest.Content;
+                _context.Update(cm);
+                return await _context.SaveChangesAsync();
+            }
+            return -1;
         }
 
         public async Task<int> UpdateLike(int id,string reaction)

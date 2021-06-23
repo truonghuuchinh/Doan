@@ -1,8 +1,10 @@
 ﻿@model IPagedList<Video>
 @using X.PagedList;
 @{
+    var countComment = 0;
     Layout = "/Views/Shared/_Layout_1.cshtml";
 }
+
 
 <div class="noidung_kenh">
     <div class="text__noidung_kenh">Nội dung của kênh</div>
@@ -18,18 +20,18 @@
         <div class="chinhsua__video" data-toggle="modal" data-target="#chinhsuavideos">
             <div class="chinhsua_ten">Chỉnh sửa</div>
             <div class="khung_imges_chinhsua">
-                <img src="~/Client/img/ic_dropdown.svg" alt="" class="img_chinhsua">
+                <img src="~/Client/img/ic_dropdown.svg" alt="" class="img_chinhsua hover">
             </div>
         </div>
         <div class="thaotac_khac" data-toggle="modal" data-target="#thaotackhac">
             <div class="namethaotac">Thao tác khác</div>
             <div class="khung_imges_chinhsuas">
-                <img src="/Client/img/ic_dropdown.svg" alt="" class="img_chinhsua">
+                <img src="/Client/img/ic_dropdown.svg" alt="" class="img_chinhsua hover">
             </div>
         </div>
         <div class="ketthuckhung">
             <div class="ketthuckhungphai">
-                <div class="daudongx" onclick="dongkhungchinhsuavieo()">X</div>
+                <div class="daudongx hover" onclick="dongkhungchinhsuavieo()">X</div>
             </div>
         </div>
     </div>
@@ -38,7 +40,7 @@
     <thead>
         <tr class="data">
             <th class="check">
-                <input type="checkbox" id="customCheckallcc" >
+                <input type="checkbox" id="customCheckallcc" class="hover">
             </th>
             <th class="video">Video</th>
             <th></th>
@@ -57,7 +59,7 @@
             {
                 <tr class="datas update-@item.Id">
                     <td class="td_check">
-                        <input type="checkbox"  onclick="repairItem(@item.Id)" class="cutomcheckboxall" id="customCheck-@item.Id" >
+                        <input type="checkbox" onclick="repairItem(@item.Id)" class="cutomcheckboxall hover" id="customCheck-@item.Id">
                     </td>
                     <td class="td_video">
                         <div class="img_td_video">
@@ -73,12 +75,12 @@
                     </td>
                     <td class="optionVideo">
                         <div class="dropdown">
-                            <img class="icon-more" src="~/Client/img/more.png" alt="Alternate Text" />
+                            <img class="icon-more hover" src="~/Client/img/more.png" alt="Alternate Text" />
                             <div class="contentEdit contentEdit-@item.Id">
-                                <div class="option" onclick="repairVideo(@item.Id)"><i class="fas fa-pencil-alt"></i> Chỉnh sửa Tiêu đề và Thông tin mô tả</div>
-                                <div class="option" onclick="repairImage(@item.Id)"><i class="fas fa-image"></i> Chỉnh sửa Ảnh Poster</div>
-                                <div class="option "><i class="fas fa-file-download"></i> <a style="color:#6c757d;" class="move_page" href="/Client/video/@item.LinkVideo" download="">Tải xuống</a></div>
-                                <div class="option" onclick="deleteVideo(@item.Id,false)"><i class="fas fa-trash"></i> Xóa vĩnh viễn</div>
+                                <div class="option hover" onclick="repairVideo(@item.Id)"><i class="fas fa-pencil-alt"></i> Chỉnh sửa Tiêu đề và Thông tin mô tả</div>
+                                <div class="option hover" onclick="repairImage(@item.Id)"><i class="fas fa-image"></i> Chỉnh sửa Ảnh Poster</div>
+                                <div class="option hover"><i class="fas fa-file-download"></i> <a style="color:#6c757d;" class="move_page" href="/Client/video/@item.LinkVideo" download="">Tải xuống</a></div>
+                                <div class="option hover" onclick="deleteVideo(@item.Id,false)"><i class="fas fa-trash"></i> Xóa vĩnh viễn</div>
                             </div>
                         </div>
                     </td>
@@ -92,26 +94,26 @@
                             </div>
                             <div class="img_xungduoi_td_chedohienthi">
                                 <div class="imges_td_chedohienthi">
-                                    <img src="/Client/img/ic_dropdown.svg" alt="Alternate Text" />
-                                    <div class="choose_permission">
+                                    <img class="hover" src="/Client/img/ic_dropdown.svg" alt="Alternate Text" />
+                                    <div class="choose_permission ">
                                         <h6>Lưu hoặc xuất bản</h6>
                                         <div class="form-check">
-                                            <input class="form-check-input choose_public-@item.Id"  type="radio" @(item.HidenVideo ? "checked" : "")>
-                                           
-                                            <label class="form-check-label" onclick="choosePublic(@item.Id,true)">
+                                            <input class="form-check-input  choose_public-@item.Id" type="radio" @(item.HidenVideo ? "checked" : "")>
+
+                                            <label class="form-check-label hover" onclick="choosePublic(@item.Id,true)">
                                                 Công khai
                                             </label>
                                         </div>
                                         <div class="form-check">
                                             <input class="form-check-input choose_private-@item.Id" type="radio" @(item.HidenVideo ? "" : "checked")>
-                                            <label class="form-check-label" onclick="choosePrivate(@item.Id,false)">
+                                            <label class="form-check-label hover" onclick="choosePrivate(@item.Id,false)">
 
                                                 Riêng tư
                                             </label>
                                         </div>
                                     </div>
                                 </div>
-                                
+
                             </div>
                         </div>
                     </td>
@@ -124,7 +126,16 @@
                         <div class="count_td_soluotxem">@item.ViewCount.ToString("#,##0")</div>
                     </td>
                     <td class="td_sobinhluan">
-                        <div class="count_td_sobinhluan">@ViewBag.CountComment</div>
+                        <div class="count_td_sobinhluan">
+                            @foreach (var i in ViewBag.CountComment)
+                            {
+                                if (i.Id == item.Id)
+                                {
+                                    countComment = i.Count;
+                                }
+                            }
+                            @countComment
+                        </div>
                     </td>
                     <td class="td_aluotthich">
                         <div class="all_td_luotthich">
@@ -134,7 +145,7 @@
                         </div>
                     </td>
                 </tr>
-
+                countComment = 0;
             }
         }
 
@@ -303,17 +314,17 @@
 <!-- chỉnh sữa -->
 <div class="modal" id="chinhsuavideos">
     <div class="modal_chinhsuavideo">
-        <div class="khungposien_chinhsua">
+        <div class="khungposien_chinhsua hover">
             <div class="tieude_chinhsua" data-dismiss="modal" data-toggle="modal" data-target="#chinhsuatieudevideo">
                 <div class="nametieude_chinhsua">Tiêu đề</div>
             </div>
-            <div class="tieude_chinhsua">
+            <div class="tieude_chinhsua hover">
                 <div class="nametieude_chinhsuamota" data-dismiss="modal" data-toggle="modal" data-target="#chinhsuamota">Mô tả</div>
             </div>
-            <div class="tieude_chinhsua">
+            <div class="tieude_chinhsua hover">
                 <div class="namedanhmuctieude_chinhsua" data-dismiss="modal" data-toggle="modal" data-target="#chinhsuadanhmuc">Danh mục</div>
             </div>
-           
+
         </div>
     </div>
 </div>
@@ -322,10 +333,10 @@
     <div class="modal_thaotackhac">
         <div class="khung_cach_topttk">
             <div class="tieude_chinhsua">
-                <div class="taivideoxuong">Tải xuống</div>
+                <div class="taivideoxuong hover">Tải xuống</div>
             </div>
             <div class="tieude_chinhsua">
-                <div class="xoavinhvien" data-dismiss="modal" data-toggle="modal" data-target="#xoavinhvien">Xóa vĩnh viễn</div>
+                <div class="xoavinhvien hover" data-dismiss="modal" data-toggle="modal" data-target="#xoavinhvien">Xóa vĩnh viễn</div>
             </div>
         </div>
     </div>
@@ -341,10 +352,10 @@
             </div>
             <div class="benphaiheader_videodau">
                 <div class="sangphai_header_videodauu">
-                    <div type="button" class="xacnhanvi_deo confirm_repair" id="data_confirm">XÁC NHẬN</div>
+                    <div type="button" class=" btn btn-primary confirm_repair" id="data_confirm">XÁC NHẬN</div>
                 </div>
                 <div class="sangphai_header_videodauu">
-                    <div type="button" class="huybovi_deo" data-dismiss="modal">HỦY</div>
+                    <div type="button" class=" btn btn-danger" data-dismiss="modal">HỦY</div>
                 </div>
             </div>
         </div>
@@ -352,12 +363,12 @@
             <div class="na_tieude">Tiêu đề <span class="errorMessage text-danger" id="errorTieude"></span></div>
             <div class="noi_dung_teodeall">
                 <textarea id="repair_Title" class="noi_dung_teode" rows="4" placeholder="Tiêu đề thay thế" style="-webkit-appearance: none;"></textarea>
-                
+
             </div>
             <div class="na_tieude">Mô tả <span class="errorMessage text-danger" id="errorDescription"></span></div>
             <div class="noi_dung_teodeall">
                 <textarea id="repair_Description" class="noi_dung_teode" rows="4" placeholder="Mô tả thay thế" style="-webkit-appearance: none;"></textarea>
-                
+
             </div>
         </div>
     </div>
@@ -368,14 +379,14 @@
         <div class="header_videodau">
             <div class="bentraiheader_videodau">
                 <div class="namedachon">Đã chọn</div>
-                <div class="soluongvideoda_chon countVideo" ></div>
+                <div class="soluongvideoda_chon countVideo"></div>
             </div>
             <div class="benphaiheader_videodau">
                 <div class="sangphai_header_videodauu">
-                    <div type="button" class="xacnhanvi_deo" id="confirmTitle">XÁC NHẬN</div>
+                    <div type="button" class=" btn btn-primary" id="confirmTitle">XÁC NHẬN</div>
                 </div>
                 <div class="sangphai_header_videodauu">
-                    <div type="button" class="huybovi_deo" data-dismiss="modal">HỦY</div>
+                    <div type="button" class=" btn btn-danger" data-dismiss="modal">HỦY</div>
                 </div>
             </div>
         </div>
@@ -383,7 +394,7 @@
             <div class="na_tieude">Tiêu đề  <span class="text-danger errorMessage" id="errortieude"></span></div>
             <div class="noi_dung_teodeall">
                 <textarea class="noi_dung_teode" id="valueTitle" rows="4" placeholder="Tiêu đề thay thế" style="-webkit-appearance: none;"></textarea>
-              
+
             </div>
         </div>
     </div>
@@ -398,10 +409,10 @@
             </div>
             <div class="benphaiheader_videodau">
                 <div class="sangphai_header_videodauu">
-                    <div type="button" class="xacnhanvi_deo" id="confirm_Description">XÁC NHẬN</div>
+                    <div type="button" class=" btn btn-primary" id="confirm_Description">XÁC NHẬN</div>
                 </div>
                 <div class="sangphai_header_videodauu">
-                    <div type="button" class="huybovi_deo" data-dismiss="modal">HỦY</div>
+                    <div type="button" class=" btn btn-danger" data-dismiss="modal">HỦY</div>
                 </div>
             </div>
         </div>
@@ -423,10 +434,10 @@
             </div>
             <div class="benphaiheader_videodau">
                 <div class="sangphai_header_videodauu">
-                    <div type="button" class="xacnhanvi_deo" id="confirm_category">XÁC NHẬN</div>
+                    <div type="button" class=" btn btn-primary" id="confirm_category">XÁC NHẬN</div>
                 </div>
                 <div class="sangphai_header_videodauu">
-                    <div type="button" class="huybovi_deo" data-dismiss="modal">HỦY</div>
+                    <div type="button" class=" btn btn-danger" data-dismiss="modal">HỦY</div>
                 </div>
             </div>
         </div>
@@ -451,10 +462,10 @@
                 <div class="benphaiheader_videodau">
 
                     <div class="sangphai_header_videodauu">
-                        <button type="submit" class="xacnhanvi_deo" id="confirmPoster">XÁC NHẬN</button>
+                        <button type="submit" class=" btn btn-primary" id="confirmPoster">XÁC NHẬN</button>
                     </div>
                     <div class="sangphai_header_videodauu">
-                        <div type="button" class="huybovi_deo" data-dismiss="modal">HỦY</div>
+                        <div type="button" class=" btn btn-danger" data-dismiss="modal">HỦY</div>
                     </div>
                 </div>
             </div>
@@ -463,10 +474,10 @@
                 <div class="noi_dung_teodeall">
                     <div class="custom-file">
                         <input type="file" class="custom-file-input" name="fileUpload" id="updatePoster">
-                        <label class="custom-file-label" >Chọn Ảnh</label>
-                        <input type="hidden" name="idVideo" id="idVideo"/>
+                        <label class="custom-file-label">Chọn Ảnh</label>
+                        <input type="hidden" name="idVideo" id="idVideo" />
                     </div>
-                    <img src="~/Client/img/default_image.png" class="imgReview" id="uploadPoster"  />
+                    <img src="~/Client/img/default_image.png" class="imgReview" id="uploadPoster" />
                 </div>
             </div>
         </form>
@@ -485,17 +496,17 @@
         <div class="footer_video_xoavinhvien">
             <div class="bentrai_video_xoavinhvien"></div>
             <div class="bengiua_video_xoavinhvien">
-                <div type="button" class="bengiua_video_xoavinhvien_huy" data-dismiss="modal">HỦY</div>
+                <div type="button" class="btn btn-danger" data-dismiss="modal">HỦY</div>
             </div>
             <div class="benphai_video_xoavinhvien">
-                <div type="button" class="benphai_video_xoavinhvien_xvv" id="confirmDeleteAll">XÁC NHẬN</div>
+                <div type="button" class="btn btn-primary" id="confirmDeleteAll">XÁC NHẬN</div>
             </div>
         </div>
     </div>
 </div>
 <!--------------------End------------------------------------>
 @section Scripts{
-    
+
     <script>
         /*---------------Check file video hoặc ảnh có đúng dịnh dạng hay không-------------*/
         function checkFormatName(event, flag) {
@@ -526,7 +537,11 @@
             if (event.target.files.length != 0 && fileVideo != undefined) {
                 const sizeVideo = parseInt(fileVideo.size / 1048576);
                 if (sizeVideo > 50) {
-                    alert("Dung lượng file không được vượt quá 50MB")
+                    toast("Dung lượng File không quá 50MB", "/Client", {
+                        type: 'warn',
+                        animation: 'zoom',
+                        position: 'bottom-right'
+                    });
                 } else {
                     if (name) {
                         document.querySelector("#LinkVideo").files = event.target.files;
@@ -539,7 +554,13 @@
                         }).bind(fileVideo);
                         reader.readAsDataURL(event.target.files[0]);
                     }
-                    else alert("Vui lòng chọn đúng dịnh dạng MP4");
+                    else {
+                        toast("Vui lòng chọn đúng dịnh dạng MP4", "/Client", {
+                            type: 'warn',
+                            animation: 'zoom',
+                            position: 'bottom-right'
+                        });
+                    }
                 }
 
             }
@@ -589,11 +610,11 @@
 
         })
     </script>
-  
+
     <script>
         //------------------------Xử lý chế độ xuất bản video----------
-       
-       //-------------------------Phân trang-----------------------
+
+        //-------------------------Phân trang-----------------------
         $(document).ready(function () {
             var currentPage = 2;
 
@@ -607,7 +628,7 @@
             function loadData() {
                 $.get("/Video/MyChannel_Partial/?page=" + currentPage, function (respone) {
                     $('tbody').append(respone);
-                    
+
                 });
             }
         });
@@ -617,18 +638,18 @@
         var idVideoRepair = 0;
         var idVideoRepairArrays = [];
         var countLoop = 1;
-        
+
         function repairVideo(id) {
-           
+
             $("#repair_Title_Description").modal('show');
             idVideoRepair = id;
         }
         $(".confirm_repair").click(function () {
             var title = $("#repair_Title").val();
             var description = $("#repair_Description").val();
-            
+
             if (title == '' || description == '') {
-                if (title == '') 
+                if (title == '')
                     $("#errorTieude").text("(Vui lòng nhập tiêu đề)");
                 if (description == '')
                     $("#errorDescription").text("(Vui lòng nhập Mô tả)");
@@ -636,7 +657,7 @@
             else updateVideo(title, description, "#repair_Title_Description");
         });
 
-        function updateVideo(title,description,modal) {
+        function updateVideo(title, description, modal) {
             var data = {
                 "Name": title,
                 "Description": description,
@@ -652,9 +673,14 @@
                     $("#errorDescription").text('');
                     $("#repair_Title").val('');
                     $("#repair_Description").val('');
+                        toast('Cập nhật thành công', '/Client', {
+                       type: 'success',
+                       animation: 'zoom',
+                       position: 'bottom-left'
+                        });
                 }
             });
-           
+
         }
         function updateVideoAll(title, description, modal, id, element, errorElement) {
             var data = {
@@ -664,7 +690,7 @@
             };
             $.post("/Video/Update", { "data": JSON.stringify(data) }, function (respone) {
                 respone = JSON.parse(respone);
-                if (respone != "Error" && respone!=0) {
+                if (respone != "Error" && respone != 0) {
                     $(".title-" + id).text(respone.Name);
                     $(".description-" + id).text(respone.Description);
                     $(modal).modal('hide');
@@ -673,11 +699,16 @@
                         countLoop++;
                     } else {
                         $(modal).modal('hide');
-                       
+
                         $(element).val('');
                         $(errorElement).text('');
                         countLoop = 1;
                     }
+                    toast('Cập nhật thành công', '/Client', {
+                        type: 'success',
+                        animation: 'zoom',
+                        position: 'bottom-left'
+                    });
                 }
             });
 
@@ -686,11 +717,17 @@
         function deleteVideo(id, flag) {
             if (flag == false) {
                 var confirms = confirm("Bạn chắc muốn xóa Video này?");
-                if (confirm) {
+                if (confirms) {
                     $.get("/Video/Delete/?id=" + id, function (respone) {
                         if (respone == "Success") {
-
+                            $(".tongcaikhungnay").css('max-height','');
+                            toast('Đã xóa', '/Client', {
+                                type: 'success',
+                                animation: 'zoom',
+                                position: 'bottom-left'
+                            });
                             $('.update-' + id).remove();
+                            $(".countVideo").text('0');
                         }
                     });
                 }
@@ -704,10 +741,17 @@
                         else {
                             idVideoRepairArrays.splice(0, idVideoRepairArrays.length);
                             $(".cutomcheckboxall").prop("checked", false);
-                            console.log(idVideoRepairArrays);
+                           
                         }
                         countLoop++;
-                    } 
+                        $(".tongcaikhungnay").css('max-height', '');
+                        toast('Đã xóa', '/Client', {
+                            type: 'success',
+                            animation: 'zoom',
+                            position: 'bottom-left'
+                        });
+                        $(".countVideo").text('0');
+                    }
                 });
             }
         }
@@ -753,17 +797,20 @@
         $("#customCheckallcc").change(function () {
             var listCheck = Array.from(document.querySelectorAll(".cutomcheckboxall"));
             var checkAll = $(this).prop("checked");
-            var id =0 ;
+            var id = 0;
+           
             if (checkAll) {
                 $(".cutomcheckboxall").prop("checked", true);
                 for (var i of listCheck) {
                     id = i.getAttribute("id").split('-')[1];
                     repairItem(parseInt(id));
                 }
-                
+                $(".countVideo").text(listCheck.length);
+
             } else {
-                idVideoRepairArrays = [];   
+                idVideoRepairArrays = [];
                 $(".cutomcheckboxall").prop("checked", false);
+                $(".countVideo").text(0);
             }
             checkInput();
         });
@@ -771,14 +818,13 @@
         function repairItem(id) {
             var checkedItem = $("#customCheck-" + id).prop("checked");
             var checkItem = idVideoRepairArrays.includes(id);
-           
+
             if (!checkItem && checkedItem) {
                 idVideoRepairArrays.push(id);
             } else {
                 var index = idVideoRepairArrays.indexOf(id);
                 idVideoRepairArrays.splice(index, 1);
             }
-            console.log(idVideoRepairArrays);
             $(".countVideo").text(idVideoRepairArrays.length);
             checkInput();
         }
@@ -788,7 +834,7 @@
             var valueTitle = $("#valueTitle").val();
             if (valueTitle == '') $("#errortieude").text("(Vui lòng nhập tiêu đề)");
             else {
-                updateVideoAll(valueTitle, "", "#chinhsuatieudevideo", idVideoRepairArrays[0], "#valueTitle","#errortieude");
+                updateVideoAll(valueTitle, "", "#chinhsuatieudevideo", idVideoRepairArrays[0], "#valueTitle", "#errortieude");
             }
         });
         //----------Xử lý update mô tả--------------
@@ -796,9 +842,9 @@
             var valueDescription = $("#valueDescription").val();
             if (valueDescription == '') $("#errormota").text("(Vui lòng nhập mô tả)");
             else {
-                updateVideoAll("", valueDescription, "#chinhsuamota", idVideoRepairArrays[0], "#valueDescription","#errormota");
+                updateVideoAll("", valueDescription, "#chinhsuamota", idVideoRepairArrays[0], "#valueDescription", "#errormota");
             }
-        }); 
+        });
         //-----------Display frame repair Video--------------
         function checkInput() {
             var listCheck = Array.from(document.querySelectorAll(".cutomcheckboxall"));
@@ -809,7 +855,7 @@
             } else {
                 for (var item of listCheck) {
                     if (item.checked) flagCheked = false;
-                   
+
                 }
                 if (flagCheked) con.style.maxHeight = null;
             }
@@ -823,15 +869,15 @@
                 updateCategory(idVideoRepairArrays[0], valueCategory);
             }
         });
-        function updateCategory(id,valueCategory) {
-            $.get("/Video/UpdateCategory/?id=" +id+ "&idCategory=" + valueCategory,
+        function updateCategory(id, valueCategory) {
+            $.get("/Video/UpdateCategory/?id=" + id + "&idCategory=" + valueCategory,
                 function (respone) {
                     if (respone == "Success") {
-                      
+
                         if (countLoop < idVideoRepairArrays.length) {
-                           
+
                             updateCategory(idVideoRepairArrays[countLoop], valueCategory);
-                         countLoop++;
+                            countLoop++;
                         }
                         else {
                             console.log("do");
@@ -840,13 +886,13 @@
                             $("#errorCategory").text('')
                             countLoop = 1;
                         }
-                        
+
                     }
                 });
         }
         //---------------Xử lý dowload All-------------------
         $(".taivideoxuong").click(function () {
-            
+
             for (var id of idVideoRepairArrays) {
                 $("#dowload-" + id).get(0).click();
             }
@@ -854,26 +900,26 @@
         });
         //-----------------Xử lý chế độ xuất bản-------------------
         function choosePublic(idVideo, permision) {
-           
+
             UpdatePermission(idVideo, permision);
         }
         function choosePrivate(idVideo, permission) {
             UpdatePermission(idVideo, permission);
-            
+
         }
-        function UpdatePermission(id,permission) {
+        function UpdatePermission(id, permission) {
             var data = {
                 "Id": id,
                 "HidenVideo": permission
             };
-            $.post("/Video/Update", { "data": JSON.stringify(data) }, function (respone) {
+            $.post("/Video/UpdatePermission", { "data": JSON.stringify(data) }, function (respone) {
                 if (respone != "Error") {
                     if (permission) {
-                        $(".choose_public-"+id).prop("checked", true);
-                        $(".choose_private-"+id).prop("checked", false);
+                        $(".choose_public-" + id).prop("checked", true);
+                        $(".choose_private-" + id).prop("checked", false);
                         $(".text_display-" + id).text("Công khai");
-                        $(".img_display-"+id).removeClass("eyeNone");
-                        $(".img_display-"+id).prop("src", "/Client/img/Eye.svg");
+                        $(".img_display-" + id).removeClass("eyeNone");
+                        $(".img_display-" + id).prop("src", "/Client/img/Eye.svg");
                     }
                     else {
                         $(".choose_public-" + id).prop("checked", false);
@@ -882,10 +928,10 @@
                         $(".img_display-" + id).addClass("eyeNone");
                         $(".img_display-" + id).prop("src", "/Client/img/visibility.png");
                     }
-                    
+
                 }
             });
         }
-        //-----------------------Kết thúc--------------------------------------
+            //-----------------------Kết thúc--------------------------------------
     </script>
 }

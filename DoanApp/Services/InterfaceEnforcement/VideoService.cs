@@ -1,4 +1,5 @@
-﻿using DoanApp.Models;
+﻿using DoanApp.Commons;
+using DoanApp.Models;
 using DoanData.Commons;
 using DoanData.DoanContext;
 using DoanData.Models;
@@ -21,7 +22,7 @@ namespace DoanApp.Services
         {
             _context = context;
         }
-        public  async Task<int> Create(VideoRequest videoRequest,List<IFormFile> listPost)
+        public  async Task<Video> Create(VideoRequest videoRequest,List<IFormFile> listPost)
         {
             var video = new Video();
             if (videoRequest != null)
@@ -29,12 +30,12 @@ namespace DoanApp.Services
                 video.Name = videoRequest.Name;
                 video.Description = videoRequest.Description;
                 video.AppUserId = videoRequest.AppUserId;
-                video.CreateDate = DateTime.Now.ToString("MM-d-yyyy H:mm:ss");
+                video.CreateDate = new GetDateNow().DateNow;
                 video.HidenVideo = videoRequest.HidenVideo;
                 video.CategorysId = videoRequest.CategorysId;
                 _context.Video.Add(video);
                   _context.SaveChanges();
-                var findVideo = _context.Video.FirstOrDefault(x => x.Name.Contains(videoRequest.Name));
+                var findVideo = _context.Video.OrderByDescending(x=>x.Id).FirstOrDefault(x => x.Name.Contains(videoRequest.Name));
                 if (listPost.Count > 0)
                 {
                     var paths = "";
@@ -62,10 +63,11 @@ namespace DoanApp.Services
                         }
                     }
                     _context.Update(findVideo);
-                    return await _context.SaveChangesAsync();
+                    await _context.SaveChangesAsync();
+                    return findVideo;
                 }
             }
-            return 0;
+            return null;
         }
 
         public async Task<int> Delete(int id)
@@ -76,6 +78,17 @@ namespace DoanApp.Services
             return await _context.SaveChangesAsync();
         }
 
+        public async Task<int> DeleteVideoFavorite(int id)
+        {
+            var Watched = _context.LikeVideoDetail.FirstOrDefault(X => X.Id == id);
+            if (Watched != null)
+            {
+                _context.Remove(Watched);
+                return await _context.SaveChangesAsync();
+            }
+            return -1;
+        }
+
         public async Task<Video> FinVideoAsync(int id)
         {
             return await _context.Video.FirstOrDefaultAsync(x => x.Id == id&x.Status);
@@ -84,6 +97,37 @@ namespace DoanApp.Services
         public List<Video> GetAll()
         {
             return  _context.Video.Where(x=>x.Status).ToList();
+        }
+
+        public List<Video_vm> GetAllVideoPlayList(List<Video> videos, AppUser user)
+        {
+            var listvm = new List<Video_vm>()
+;            if (videos.Count > 0)
+            {
+                foreach (var item in videos)
+                {
+                    var video = new Video_vm();
+                    video.PosterImg = item.PosterImg;
+                    video.Name = item.Name;
+                    video.Id = item.Id;
+                    video.CategorysId = item.CategorysId;
+                    video.LinkVideo = item.LinkVideo;
+                    video.Avartar = user.Avartar;
+                    video.HidenVideo = item.HidenVideo;
+                    video.FirtsName = user.FirtsName;
+                    video.Description = item.Description;
+                    video.LastName = user.LastName;
+                    video.AppUserId = user.Id;
+                    video.Name = item.Name;
+                    video.Status = item.Status;
+                    video.ViewCount = item.ViewCount;
+                    video.LoginExternal = user.LoginExternal;
+                    video.CreateDate = item.CreateDate;
+                    listvm.Add(video);
+                }
+                return listvm;
+            }
+            return null;
         }
 
         public List<Video_vm> GetVideo_Vm(List<Video> lVideo, List<AppUser> lUser)
@@ -179,6 +223,19 @@ namespace DoanApp.Services
             return await _context.SaveChangesAsync();
         }
 
+        public async Task<int> UpdatePermission(VideoRequest request)
+        {
+            var video = _context.Video.FirstOrDefault(x => x.Id == request.Id);
+            if (video != null)
+            {
+                if (request.HidenVideo) video.HidenVideo = true;
+                else video.HidenVideo = false;
+                _context.Update(video);
+                return await _context.SaveChangesAsync();
+            }
+            return -1;
+        }
+
         public async Task<int> UpdateView(int id)
         {
             var video = await _context.Video.FirstOrDefaultAsync(x => x.Id == id);
@@ -186,5 +243,6 @@ namespace DoanApp.Services
             _context.Update(video);
             return await _context.SaveChangesAsync();
         }
+        
     }
 }

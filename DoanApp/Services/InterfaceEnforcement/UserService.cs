@@ -34,6 +34,11 @@ namespace DoanApp.Services
             return await _userManager.FindByEmailAsync(email);
         }
 
+        public async Task<AppUser> FindUserId(int id)
+        {
+            return await _context.AppUser.FindAsync(id);
+        }
+
         public  List<AppUser> GetAll()
         {
             return  _context.AppUser.ToList();
@@ -72,7 +77,8 @@ namespace DoanApp.Services
                 Email = model.Email,
                 FirtsName = model.FirtsName,
                 LastName = model.LastName,
-                LockoutEnabled=false
+                LockoutEnabled = false,
+                CreateDate = new GetDateNow().DateNow
             };
             var result = await _userManager.CreateAsync(user, model.PasswordHash);
             if (result.Succeeded)
@@ -108,7 +114,9 @@ namespace DoanApp.Services
             };
             using (var client = new SmtpClient())
             {
-                client.Connect("smtp.gmail.com", 465, true);
+                //587 hoặc 465
+                client.Connect("smtp.gmail.com", 465,true);
+                client.Timeout = 100000;
                 client.Authenticate("khleson79929@gmail.com", "phlakkmxjeceukbu");
                 client.Send(message);
                 client.Disconnect(true);
@@ -160,6 +168,30 @@ namespace DoanApp.Services
             }
             return false;
          }
+
+        public async Task<int> UpdateDescription(AppUserRequest request)
+        {
+            var user = await FindUserId(request.Id);
+            if (user != null)
+            {
+                user.DescriptionChannel = request.DescriptionChannel;
+                _context.Update(user);
+                return await _context.SaveChangesAsync();
+            }
+            return -1;
+        }
+
+        public async Task<int> UpdateImgChannel(int idUser,string ImgChannel)
+        {
+            var user = _context.AppUser.FirstOrDefault(X => X.Id == idUser);
+            if (user != null&&ImgChannel!=null)
+            {
+                user.ImgChannel = ImgChannel;
+                _context.Update(user);
+                return await _context.SaveChangesAsync();
+            }
+            return -1;
+        }
 
         public async Task<int> UpdatLockcout(AppUser user)
         {

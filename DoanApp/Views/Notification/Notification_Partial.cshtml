@@ -1,0 +1,70 @@
+﻿@model IEnumerable<Notification>
+@{
+    Layout = null;
+
+}
+
+    <div class="tong_khungss_thongbao_all">
+        @if (Model == null || Model.Count() == 0)
+        {
+            <div class="khung_thongbao_video">
+                <div class="none_notifi">Không có thông báo</div>
+            </div>
+        }
+        else
+        {
+            @foreach (var item in Model)
+            {
+                <input type="hidden" class="getIdNotifi" value="@item.Id" />
+
+                <div class="khung_thongbao_video">
+                    <a class="link_detail-@item.Id linkDetail"  asp-action="DetailVideo" asp-controller="Home" asp-route-id="@item.VideoId">
+                        <div class="khung_thongbao_video_left_daucham">
+                            @if (item.Watched)
+                            {
+                                <div class="nowatched"></div>
+                            }
+                            else
+                            {
+                                <div class="watched"></div>
+                            }
+                        </div>
+                        <div class="khung_thongbao_video_img">
+                            <img class="img_trang__cuaban_thongbao" alt="" src="@(item.LoginExternal?item.AvartarUser:"/Client/img/"+item.AvartarUser)">
+                        </div>
+                        <div class="noidung_khungthongbaovideo_text">
+                            <div class="noidung_khungthongbao_video__text"><strong>@item.UserName</strong> @item.Content</div>
+                            <div class="thoigian_daguithongbao">@CaculatorHours.Caculator(item.CreateDate)</div>
+                        </div>
+                        <div class="img_thongbaovideocuado">
+                            <div class="img_thongbaovideocuado_video">
+                                <img src="/Client/imgPoster/@item.PoterImg" alt="" class="img_thong_bao_videocuado_video">
+                            </div>
+                        </div>
+                    </a>
+                    <div class="daubacham_anthongbao" onclick="optionNotifi(event,@item.Id)">
+                        <div class="daubacham_anthongbao_video">
+                            <img src="/Client/img/more.png" alt="" class="show_daubacham_anthongbao_video more-@item.Id">
+                        </div>
+                    </div>
+                    <div class="an_thongbaonay_all option_notifi-@item.Id">
+                        <div class="kekhungheader"></div>
+                        <div class="class_nameimg_anthongbao">
+                            <div class="khung_img_class_nameimg_anthongbo">
+                                <div class="img_class_nameimg_anthongbo"></div>
+                            </div>
+                            <div class="noidung_class_nameimg_anthongbao">Ẩn thông báo này</div>
+                        </div>
+                        <div class="class_nameimg_anthongbao">
+                            <div class="khung_img_class_nameimg_anthongbo">
+                                <div class="img_offthongbao"></div>
+                            </div>
+                            <div class="noidung_class_nameimg_anthongbao">Tắt thông báo từ kênh </div>
+                        </div>
+                    </div>
+                </div>
+
+
+            }
+        }
+    </div>

@@ -5,37 +5,64 @@
 }
 
 <div class="col site-layout">
+    <div class="title_watched"> Video Kênh đăng ký</div>
     @if (User.Identity.IsAuthenticated)
     {
-        @foreach (var item in Model)
+        if (Model.Count != 0 && Model != null)
         {
-            <div class="container22">
-                <a asp-action="DetailVideo" asp-controller="Home" asp-route-id="@item.Id">
-                    <div class="container222">
-                        <video width="261" height="165" onmouseover="viewBefore(@item.Id)" onmouseout="clearBefore(@item.Id)" src="~/Client/video/@item.LinkVideo" title="YouTube video player" class=" nextSecond nextSecond-@item.Id"></video>
-                    </div>
-                    <div class="container222_end">
-                        <div class="detail_video">
-                            <img class="detail_lerft icon-sidebar-item_video" alt="" src="@(item.LoginExternal ? item.Avartar : "~/Client/avartar/" + item.Avartar)">
-                            <div class="detail_rights">
-                                <span class="detail_right titleName text-sidebar-item_video">@item.Name </span>
-                                <div class="text_color">@item.FirtsName @item.LastName</div>
-                                <div class="text_color_check">
-                                    @ConvertViewCount.ConvertView(item.ViewCount) lượt xem • @CaculatorHours.Caculator(item.CreateDate)
-                                </div>
-                            </div>
+            @foreach (var item in Model)
+            {
+                <div class="container22">
+                    <a class="hover" id="movepage_detail-@item.Id" onclick="addWatched(@item.Id)" asp-action="DetailVideo" asp-controller="Home" asp-route-id="@item.Id">
+                        <div class="container222">
+                            <video width="261" height="165" onmouseover="viewBefore(@item.Id)" onmouseout="clearBefore(@item.Id)" src="~/Client/video/@item.LinkVideo" title="@item.Name" class=" nextSecond nextSecond-@item.Id">
+                            </video>
+
                         </div>
 
+                        <div class="container222_end">
+                            <div class="detail_video">
+                                <img class="detail_lerft icon-sidebar-item_video" alt="" src="@(item.LoginExternal ? item.Avartar : "~/Client/avartar/" + item.Avartar)">
+                                <div class="detail_rights">
+                                    <span class="detail_right  text-sidebar-item_video">
+                                        <p class="titleName">@item.Name </p>
+                                        <img id="addplaylist-@item.Id" onclick="addPlayList(@item.Id)" class="icon-more hover add_playlist" src="/Client/img/more.png" alt="Alternate Text" />
+                                    </span>
+                                    <div class="text_color">@item.FirtsName @item.LastName</div>
+                                    <div class="text_color_check">
+                                        @ConvertViewCount.ConvertView(item.ViewCount) lượt xem • @CaculatorHours.Caculator(item.CreateDate)
+                                    </div>
+
+                                </div>
+
+                            </div>
+                        </div>
+                    </a>
+
+                    <div class="playlist_option playlist-@item.Id">
+                        <div class="option_playlist hover into_playlist-@item.Id" onclick="showPlayList(@item.Id)">
+                            <i class="fa fa-list-alt"></i> Thêm vào danh sách phát
+                        </div>
+                        <div class="option_playlist hover report_video" onclick="reportVideo(@item.Id)">
+                            <i class="fa fa-flag"></i> Báo cáo vi phạm
+                        </div>
                     </div>
-                </a>
-            </div>
-            if (count > 4)
-            {
-                count = 1;
-                <br />
+                </div>
+                if (count > 4)
+                {
+                    count = 1;
+                    <br />}
             }
         }
-
+        else
+        {
+              <div class="content_Nologin" style=" padding: 150px;">
+                <div class="message_nologin">
+                    <h2>Chưa có danh sách video đăng ký</h2>
+                    <a class="move_page" asp-action="Index" asp-controller="Home"><h6>Xem video để đăng ký ngay</h6></a> 
+                </div>
+            </div>
+        }
     }
     else
     {
@@ -75,28 +102,45 @@
                 $.each(respone, function (index, item) {
                     $('.site-layout').append(`
                         <div class="container22">
-                <a href="/Home/DetailVideo/${item.Id}">
-                    <div class="container222">
-                        <video width="261" height="165" onmouseover="viewBefore(${item.Id})" onmouseout="clearBefore(${item.Id})" src="/Client/video/${item.LinkVideo}" title="YouTube video player" class=" nextSecond nextSecond-${item.Id}"></video>
-                    </div>
-                    <div class="container222_end">
-                        <div class="detail_video">
-                            <img class="detail_lerft icon-sidebar-item_video" alt="" src="${item.LoginExternal ? item.Avartar : "/Client/avartar/" + item.Avartar}">
-                            <div class="detail_rights">
-                                <span class="detail_right titleName text-sidebar-item_video">${item.Name} </span>
-                                <div class="text_color">${item.FirtsName} ${item.LastName}</div>
-                                <div class="text_color_check">
-                                    ${convertViewCount(item.ViewCount)} lượt xem • ${item.CreateDate}
-                                </div>
-                            </div>
+                    <a class="hover" id="movepage_detail-${item.Id}" onclick="addWatched(${item.Id})" href="/Home/DetailVideo/${item.Id}">
+                        <div class="container222">
+                            <video width="261" height="165" onmouseover="viewBefore(${item.Id})" onmouseout="clearBefore(${item.Id})" src="/Client/video/${item.LinkVideo}" title="${item.Name}" class=" nextSecond nextSecond-${item.Id}">
+                            </video>
+
                         </div>
 
+                        <div class="container222_end">
+                            <div class="detail_video">
+                                <img class="detail_lerft icon-sidebar-item_video" alt="" src="${(item.LoginExternal ? item.Avartar : "~/Client/avartar/" + item.Avartar)}">
+                                <div class="detail_rights">
+                                    <span class="detail_right  text-sidebar-item_video">
+                                        <p class="titleName">${item.Name} </p>
+                                        <img id="addplaylist-${item.Id}" onclick="addPlayList(${item.Id})" class="icon-more hover add_playlist" src="/Client/img/more.png" alt="Alternate Text" />
+                                    </span>
+                                    <div class="text_color">${item.FirtsName} ${item.LastName}</div>
+                                    <div class="text_color_check">
+                                        ${convertViewCount(item.ViewCount)} lượt xem • ${item.CreateDate}
+                                    </div>
+
+                                </div>
+
+                            </div>
+                        </div>
+                    </a>
+
+                    <div class="playlist_option hover playlist-${item.Id}">
+                        <div class="option_playlist into_playlist-${item.Id}" onclick="showPlayList(${item.Id})">
+                            <i class="fa fa-list-alt"></i> Thêm vào danh sách phát
+                        </div>
+                        <div class="option_playlist hover report_video" onclick="reportVideo(${item.Id})">
+                            <i class="fa fa-flag"></i> Báo cáo vi phạm
+                        </div>
                     </div>
-                </a>
-            </div>
+                </div>
                     `);
                 });
                 loadSecondVideo();
+                LoadEventMoseLeave();
             });
         }
     });

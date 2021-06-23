@@ -10,6 +10,10 @@
         "css/select2.css",
         "css/select2.min.css"
       ]
+    },
+    {
+      "library": "aspnet-signalr@1.0.27",
+      "destination": "wwwroot/js/signalr/"
     }
   ]
 }
