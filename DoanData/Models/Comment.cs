@@ -15,6 +15,7 @@ namespace DoanData.Models
         public int Like { get; set; }
         public int DisLike { get; set; }
         public bool Status { get; set; } = true;
+        public int ReplyForId { get; set; }
         public int UserId { get; set; }
         public virtual AppUser appUser { get; set; }
         [ForeignKey("VideoId")]

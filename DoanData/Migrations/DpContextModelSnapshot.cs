@@ -68,6 +68,12 @@ namespace DoanData.Migrations
                         .IsConcurrencyToken()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("CreateDate")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("DescriptionChannel")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Email")
                         .HasColumnType("nvarchar(256)")
                         .HasMaxLength(256);
@@ -195,6 +201,9 @@ namespace DoanData.Migrations
                     b.Property<string>("ReplyFor")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("ReplyForId")
+                        .HasColumnType("int");
+
                     b.Property<bool>("Status")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bit")
@@ -246,6 +255,9 @@ namespace DoanData.Migrations
 
                     b.Property<int>("FromUserId")
                         .HasColumnType("int");
+
+                    b.Property<bool>("Notifications")
+                        .HasColumnType("bit");
 
                     b.Property<int>("ToUserId")
                         .HasColumnType("int");
@@ -352,7 +364,7 @@ namespace DoanData.Migrations
                     b.Property<string>("CreateDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("nvarchar(max)")
-                        .HasDefaultValue("10-06-2021 20:46:33");
+                        .HasDefaultValue("20-06-2021 9:56:58");
 
                     b.Property<int>("FromUserId")
                         .HasColumnType("int");

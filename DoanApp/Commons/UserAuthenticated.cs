@@ -10,9 +10,8 @@ namespace DoanApp.Commons
 {
     public class UserAuthenticated
     {
-       
+        
         public static List<AppUser> ListtUser = new List<AppUser>();
-        public static List<UserFollow> ListUserFollow = new List<UserFollow>();
         public static void checkUserAuthenticated(AppUser user)
         {
             var count = 0;
@@ -42,39 +41,21 @@ namespace DoanApp.Commons
             }
             return null;
         }
-        public static  void SetUserFollow(List<AppUser> listfollow,string email)
+        public void UpdateImgChannel(int id,string imgChannel,string desription)
         {
-            var itemUser = new UserFollow();
-            if (ListUserFollow.Count == 0)
+            var user = new AppUser();
+            foreach (var item in ListtUser)
             {
-                itemUser.Email = email;
-                itemUser.ListUser = listfollow;
-                ListUserFollow.Add(itemUser);
-            }
-            else
-            {
-                foreach (var item in ListUserFollow)
+                if (item.Id==id)
                 {
-                    if (item.Email != email)
-                    {
-                        itemUser.Email = email;
-                        itemUser.ListUser = listfollow;
-                        ListUserFollow.Add(itemUser);
-                        break;
-                    }
+                    user = item;
+                    user.ImgChannel = imgChannel!=null?imgChannel:item.ImgChannel;
+                    user.DescriptionChannel = desription != null ? desription : item.DescriptionChannel;
+                    ListtUser.Add(user);
+                    ListtUser.Remove(item);
+                    break;
                 }
             }
-            
-            
         }
-        public static List<AppUser> GetUserFollow(string email)
-        {
-            foreach (var item in ListUserFollow)
-            {
-                if (item.Email == email) return item.ListUser;
-            }
-            return null;
-        }
-        
     }
 }

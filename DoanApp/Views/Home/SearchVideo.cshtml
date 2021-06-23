@@ -1,32 +1,36 @@
 ﻿@model IPagedList<Video_vm>
 @using X.PagedList;
+<style>
+    .add_playlist {
+        position: absolute !important;
+        display: none;
+        margin-left: 700px !important;
+        margin-top: 35px !important;
+    }
 
+    .playlist_option {
+        margin: 51px !important;
+        margin-left: 482px !important;
+    }
+</style>
 <div class="site-layout">
     <div class="site-layout_centent ">
-        <div class="text_popular">Tìm kiếm Video</div>
-        @if (Model.Count==0||Model==null)
+        <div class="text_popular">Tìm kiếm video</div>
+        @foreach (var item in Model)
         {
-            <div class="content_Nologin" >
-                <div class="message_nologin">
-                    <h3 class="no_relationship">Video bạn tìm không có </h3>
-                    <h6 style="margin-left:80px;">Vui lòng  thử lại</h6>
-                </div>
-                
-            </div>
-        }
-        else
-        {
-            @foreach (var item in Model)
-            {
-                <a asp-action="DetailVideo" asp-controller="Home" asp-route-id="@item.Id">
+            <div class="parent">
+                <a onclick="addWatched(@item.Id)" asp-action="DetailVideo" asp-controller="Home" asp-route-id="@item.Id">
                     <div class="popular_left">
-                        <video onmouseover="viewBefore(@item.Id)" onmouseout="clearBefore(@item.Id)" class=" nextSecond nextSecond-@item.Id"
+                        <video width="261" height="165" onmouseover="viewBefore(@item.Id)" onmouseout="clearBefore(@item.Id)" class=" nextSecond nextSecond-@item.Id"
                                data-poster="@item.PosterImg" id="player">
                             <source src="~/Client/video/@item.LinkVideo" type="video/mp4" size="576">
                         </video>
                     </div>
                     <div class="popular_right">
-                        <div class="header__popular">@item.Name</div>
+                        <div class="header__popular">
+                            @item.Name
+
+                        </div>
                         <div class="all_papge">
                             <div class="ten_kenh">@item.FirtsName @item.LastName .</div>
                             <div class="luot_xem">
@@ -38,9 +42,19 @@
                         <div class="mota_noidung_video">@item.Description</div>
                     </div>
                 </a>
-            }
-        }
+                <img id="addplaylist-@item.Id" onclick="addPlayList(@item.Id)" class="icon-more hover add_playlist" src="/Client/img/more.png" alt="Alternate Text" />
+                <div class="playlist_option playlist-@item.Id">
+                    <div class="option_playlist hover into_playlist-@item.Id" onclick="showPlayList(@item.Id)">
+                        <i class="fa fa-list-alt"></i> Thêm vào danh sách phát
+                    </div>
+                    <div class="option_playlist hover report_video" onclick="reportVideo(@item.Id)">
+                        <i class="fa fa-flag"></i> Báo cáo vi phạm
+                    </div>
+                </div>
+            </div>
 
+
+        }
     </div>
 </div>
 @section Scripts{
@@ -52,14 +66,16 @@
                 let div = $(this).get(0);
                 if (div.scrollTop + div.clientHeight >= div.scrollHeight) {
                     loadData();
+                  
                     currentPage += 1;
                 }
             });
             function loadData() {
                 var inputSearch = $("#nameSearch").val();
-                $.get("/Home/SearchVideo_Partial/?page=" + currentPage + "&nameSearch=" + inputSearch, function (respone) {
+                $.get("/Home/Popular_Partial/?page=" + currentPage + "&nameSearch=" + inputSearch, function (respone) {
                     $('.site-layout_centent').append(respone);
                     loadSecondVideo();
+                    LoadEventMoseLeave();
                 });
             }
         });

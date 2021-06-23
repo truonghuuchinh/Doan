@@ -15,6 +15,8 @@ namespace DoanData.Models
         public bool LoginExternal { get; set; }
         public string ImgChannel { get; set; }
         public string Avartar { get; set; }
+        public string CreateDate { get; set; }
+        public string DescriptionChannel { get; set; }
         public bool Status { get; set; } = true;
         public List<Video> Videos { get; set; }
         public List<Comment> Comments { get; set; }

@@ -545,7 +545,6 @@ E:\HK5\Prepare Project Last Semester\DoanTotNghiep\DoanApp\obj\Debug\netcoreapp3
 E:\HK5\Prepare Project Last Semester\DoanTotNghiep\DoanApp\obj\Debug\netcoreapp3.1\Razor\Areas\Administration\Views\Home\VerifyEmail.cshtml.g.cs
 E:\HK5\Prepare Project Last Semester\DoanTotNghiep\DoanApp\obj\Debug\netcoreapp3.1\Razor\Areas\Administration\Views\User\Index.cshtml.g.cs
 E:\HK5\Prepare Project Last Semester\DoanTotNghiep\DoanApp\obj\Debug\netcoreapp3.1\Razor\Areas\Administration\Views\User\InforUser.cshtml.g.cs
-E:\HK5\Prepare Project Last Semester\DoanTotNghiep\DoanApp\obj\Debug\netcoreapp3.1\Razor\Views\Video\Index.cshtml.g.cs
 E:\HK5\Prepare Project Last Semester\DoanTotNghiep\DoanApp\obj\Debug\netcoreapp3.1\Razor\Views\Video\MyChannel.cshtml.g.cs
 E:\HK5\Prepare Project Last Semester\DoanTotNghiep\DoanApp\obj\Debug\netcoreapp3.1\Razor\Views\Home\CreateComment_Partial.cshtml.g.cs
 E:\HK5\Prepare Project Last Semester\DoanTotNghiep\DoanApp\obj\Debug\netcoreapp3.1\Razor\Views\Home\Index_Partial.cshtml.g.cs
@@ -554,7 +553,6 @@ E:\HK5\Prepare Project Last Semester\DoanTotNghiep\DoanApp\obj\Debug\netcoreapp3
 E:\HK5\Prepare Project Last Semester\DoanTotNghiep\DoanApp\obj\Debug\netcoreapp3.1\Razor\Views\Shared\_Layout_Login.cshtml.g.cs
 E:\HK5\Prepare Project Last Semester\DoanTotNghiep\DoanApp\obj\Debug\netcoreapp3.1\Razor\Views\Video\LibaryVideo.cshtml.g.cs
 E:\HK5\Prepare Project Last Semester\DoanTotNghiep\DoanApp\obj\Debug\netcoreapp3.1\Razor\Views\Video\SubscriptionChannel.cshtml.g.cs
-E:\HK5\Prepare Project Last Semester\DoanTotNghiep\DoanApp\obj\Debug\netcoreapp3.1\Razor\Views\Video\VideoWatched.cshtml.g.cs
 E:\HK5\Prepare Project Last Semester\DoanTotNghiep\DoanApp\obj\Debug\netcoreapp3.1\Razor\Views\Video\FavoritedVideo.cshtml.g.cs
 E:\HK5\Prepare Project Last Semester\DoanTotNghiep\DoanApp\obj\Debug\netcoreapp3.1\Razor\Views\Video\MyChannel_Partial.cshtml.g.cs
 E:\HK5\Prepare Project Last Semester\DoanTotNghiep\DoanApp\obj\Debug\netcoreapp3.1\Razor\Views\Video\OverviewPage.cshtml.g.cs
@@ -565,3 +563,7 @@ E:\HK5\Prepare Project Last Semester\DoanTotNghiep\DoanApp\obj\Debug\netcoreapp3
 E:\HK5\Prepare Project Last Semester\DoanTotNghiep\DoanApp\obj\Debug\netcoreapp3.1\Razor\Views\Video\MyPage_Partial.cshtml.g.cs
 E:\HK5\Prepare Project Last Semester\DoanTotNghiep\DoanApp\obj\Debug\netcoreapp3.1\DoanApp.MvcApplicationPartsAssemblyInfo.cs
 E:\HK5\Prepare Project Last Semester\DoanTotNghiep\DoanApp\obj\Debug\netcoreapp3.1\Razor\Views\Notification\Notification_Partial.cshtml.g.cs
+E:\HK5\Prepare Project Last Semester\DoanTotNghiep\DoanApp\obj\Debug\netcoreapp3.1\Razor\Views\VideoWatched\Index.cshtml.g.cs
+E:\HK5\Prepare Project Last Semester\DoanTotNghiep\DoanApp\obj\Debug\netcoreapp3.1\Razor\Views\VideoWatched\VideoWatched_Partial.cshtml.g.cs
+E:\HK5\Prepare Project Last Semester\DoanTotNghiep\DoanApp\obj\Debug\netcoreapp3.1\Razor\Views\Video\MyIntroduction.cshtml.g.cs
+E:\HK5\Prepare Project Last Semester\DoanTotNghiep\DoanApp\obj\Debug\netcoreapp3.1\Razor\Views\Video\MyPlayList.cshtml.g.cs
