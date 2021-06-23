@@ -46,6 +46,7 @@ namespace DoanApp
             services.AddTransient<IDetailVideoService, DetailVideoService>();
             services.AddTransient<IReportVideoService, ReportVideoService>();
             services.AddTransient<INotificationService, NotificationService>();
+            services.AddTransient<IVideoWatchedService, VideoWatchedService>();
             services.AddSession(options =>
             {
                 options.IdleTimeout = TimeSpan.FromMinutes(2);

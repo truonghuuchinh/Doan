@@ -1,4 +1,5 @@
-﻿using DoanApp.Models;
+﻿using DoanApp.Commons;
+using DoanApp.Models;
 using DoanData.DoanContext;
 using DoanData.Models;
 using Microsoft.EntityFrameworkCore;
@@ -16,7 +17,7 @@ namespace DoanApp.Services
         {
             _context = context;
         }
-        public async Task<int> Create(PlaylistRequest plRequest)
+        public async Task<PlayList> Create(PlaylistRequest plRequest)
         {
             var playlist = new PlayList();
             if (plRequest != null)
@@ -24,18 +25,29 @@ namespace DoanApp.Services
                 playlist.Name = plRequest.Name;
                 playlist.Status = plRequest.Status;
                 playlist.UserId = plRequest.UserId;
-                playlist.CreateDate = DateTime.Now.ToString("d-M-yyyy H:mm:ss");
+                playlist.CreateDate = new GetDateNow().DateNow;
                 _context.PlayList.Add(playlist);
-                return await _context.SaveChangesAsync();
+                 await _context.SaveChangesAsync();
+                var getPlaylist = _context.PlayList.OrderByDescending(x => x.Id).
+                    FirstOrDefault(x => x.Name == plRequest.Name && x.UserId == plRequest.UserId);
+                return getPlaylist;
             }
-            return -1;  
+            return null;  
         }
 
         public async Task<int> Delete(int id)
         {
             var playlist = _context.PlayList.FirstOrDefault(X => X.Id == id);
-            _context.Remove(playlist);
-            return await _context.SaveChangesAsync();
+            if (playlist != null)
+            {
+                foreach (var item in _context.DetailVideo.Where(x => x.PlayListId == playlist.Id))
+                {
+                    _context.Remove(item);
+                }
+                _context.Remove(playlist);
+                return await _context.SaveChangesAsync();
+            }
+            return -1;
         }
 
         public async Task<PlayList> FindAsync(int id)
@@ -54,10 +66,7 @@ namespace DoanApp.Services
             if (playlist != null)
             {
                 playlist.Name = plRequest.Name;
-                playlist.Status = plRequest.Status;
-                playlist.UserId = plRequest.UserId;
-                playlist.CreateDate = plRequest.CreateDate;
-                _context.PlayList.Add(playlist);
+                _context.Update(playlist);
                 return await _context.SaveChangesAsync();
             }
             return -1;

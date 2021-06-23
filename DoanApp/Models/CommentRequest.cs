@@ -16,5 +16,6 @@ namespace DoanApp.Models
         public int UserId { get; set; }
         public string ReplyFor { get; set; }
         public int VideoId { get; set; }
+        public int ReplyForId { get; set; }
     }
 }

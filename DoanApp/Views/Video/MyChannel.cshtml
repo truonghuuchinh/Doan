@@ -1,8 +1,10 @@
 ﻿@model IPagedList<Video>
 @using X.PagedList;
 @{
+    var countComment = 0;
     Layout = "/Views/Shared/_Layout_1.cshtml";
 }
+
 
 <div class="noidung_kenh">
     <div class="text__noidung_kenh">Nội dung của kênh</div>
@@ -18,18 +20,18 @@
         <div class="chinhsua__video" data-toggle="modal" data-target="#chinhsuavideos">
             <div class="chinhsua_ten">Chỉnh sửa</div>
             <div class="khung_imges_chinhsua">
-                <img src="~/Client/img/ic_dropdown.svg" alt="" class="img_chinhsua">
+                <img src="~/Client/img/ic_dropdown.svg" alt="" class="img_chinhsua hover">
             </div>
         </div>
         <div class="thaotac_khac" data-toggle="modal" data-target="#thaotackhac">
             <div class="namethaotac">Thao tác khác</div>
             <div class="khung_imges_chinhsuas">
-                <img src="/Client/img/ic_dropdown.svg" alt="" class="img_chinhsua">
+                <img src="/Client/img/ic_dropdown.svg" alt="" class="img_chinhsua hover">
             </div>
         </div>
         <div class="ketthuckhung">
             <div class="ketthuckhungphai">
-                <div class="daudongx" onclick="dongkhungchinhsuavieo()">X</div>
+                <div class="daudongx hover" onclick="dongkhungchinhsuavieo()">X</div>
             </div>
         </div>
     </div>
@@ -38,7 +40,7 @@
     <thead>
         <tr class="data">
             <th class="check">
-                <input type="checkbox" id="customCheckallcc">
+                <input type="checkbox" id="customCheckallcc" class="hover">
             </th>
             <th class="video">Video</th>
             <th></th>
@@ -57,7 +59,7 @@
             {
                 <tr class="datas update-@item.Id">
                     <td class="td_check">
-                        <input type="checkbox" onclick="repairItem(@item.Id)" class="cutomcheckboxall" id="customCheck-@item.Id">
+                        <input type="checkbox" onclick="repairItem(@item.Id)" class="cutomcheckboxall hover" id="customCheck-@item.Id">
                     </td>
                     <td class="td_video">
                         <div class="img_td_video">
@@ -73,12 +75,12 @@
                     </td>
                     <td class="optionVideo">
                         <div class="dropdown">
-                            <img class="icon-more" src="~/Client/img/more.png" alt="Alternate Text" />
+                            <img class="icon-more hover" src="~/Client/img/more.png" alt="Alternate Text" />
                             <div class="contentEdit contentEdit-@item.Id">
-                                <div class="option" onclick="repairVideo(@item.Id)"><i class="fas fa-pencil-alt"></i> Chỉnh sửa Tiêu đề và Thông tin mô tả</div>
-                                <div class="option" onclick="repairImage(@item.Id)"><i class="fas fa-image"></i> Chỉnh sửa Ảnh Poster</div>
-                                <div class="option "><i class="fas fa-file-download"></i> <a style="color:#6c757d;" class="move_page" href="/Client/video/@item.LinkVideo" download="">Tải xuống</a></div>
-                                <div class="option" onclick="deleteVideo(@item.Id,false)"><i class="fas fa-trash"></i> Xóa vĩnh viễn</div>
+                                <div class="option hover" onclick="repairVideo(@item.Id)"><i class="fas fa-pencil-alt"></i> Chỉnh sửa Tiêu đề và Thông tin mô tả</div>
+                                <div class="option hover" onclick="repairImage(@item.Id)"><i class="fas fa-image"></i> Chỉnh sửa Ảnh Poster</div>
+                                <div class="option hover"><i class="fas fa-file-download"></i> <a style="color:#6c757d;" class="move_page" href="/Client/video/@item.LinkVideo" download="">Tải xuống</a></div>
+                                <div class="option hover" onclick="deleteVideo(@item.Id,false)"><i class="fas fa-trash"></i> Xóa vĩnh viễn</div>
                             </div>
                         </div>
                     </td>
@@ -92,19 +94,19 @@
                             </div>
                             <div class="img_xungduoi_td_chedohienthi">
                                 <div class="imges_td_chedohienthi">
-                                    <img src="/Client/img/ic_dropdown.svg" alt="Alternate Text" />
-                                    <div class="choose_permission">
+                                    <img class="hover" src="/Client/img/ic_dropdown.svg" alt="Alternate Text" />
+                                    <div class="choose_permission ">
                                         <h6>Lưu hoặc xuất bản</h6>
                                         <div class="form-check">
-                                            <input class="form-check-input choose_public-@item.Id" type="radio" @(item.HidenVideo ? "checked" : "")>
+                                            <input class="form-check-input  choose_public-@item.Id" type="radio" @(item.HidenVideo ? "checked" : "")>
 
-                                            <label class="form-check-label" onclick="choosePublic(@item.Id,true)">
+                                            <label class="form-check-label hover" onclick="choosePublic(@item.Id,true)">
                                                 Công khai
                                             </label>
                                         </div>
                                         <div class="form-check">
                                             <input class="form-check-input choose_private-@item.Id" type="radio" @(item.HidenVideo ? "" : "checked")>
-                                            <label class="form-check-label" onclick="choosePrivate(@item.Id,false)">
+                                            <label class="form-check-label hover" onclick="choosePrivate(@item.Id,false)">
 
                                                 Riêng tư
                                             </label>
@@ -124,7 +126,16 @@
                         <div class="count_td_soluotxem">@item.ViewCount.ToString("#,##0")</div>
                     </td>
                     <td class="td_sobinhluan">
-                        <div class="count_td_sobinhluan">@ViewBag.CountComment</div>
+                        <div class="count_td_sobinhluan">
+                            @foreach (var i in ViewBag.CountComment)
+                            {
+                                if (i.Id == item.Id)
+                                {
+                                    countComment = i.Count;
+                                }
+                            }
+                            @countComment
+                        </div>
                     </td>
                     <td class="td_aluotthich">
                         <div class="all_td_luotthich">
@@ -134,7 +145,7 @@
                         </div>
                     </td>
                 </tr>
-
+                countComment = 0;
             }
         }
 
@@ -303,14 +314,14 @@
 <!-- chỉnh sữa -->
 <div class="modal" id="chinhsuavideos">
     <div class="modal_chinhsuavideo">
-        <div class="khungposien_chinhsua">
+        <div class="khungposien_chinhsua hover">
             <div class="tieude_chinhsua" data-dismiss="modal" data-toggle="modal" data-target="#chinhsuatieudevideo">
                 <div class="nametieude_chinhsua">Tiêu đề</div>
             </div>
-            <div class="tieude_chinhsua">
+            <div class="tieude_chinhsua hover">
                 <div class="nametieude_chinhsuamota" data-dismiss="modal" data-toggle="modal" data-target="#chinhsuamota">Mô tả</div>
             </div>
-            <div class="tieude_chinhsua">
+            <div class="tieude_chinhsua hover">
                 <div class="namedanhmuctieude_chinhsua" data-dismiss="modal" data-toggle="modal" data-target="#chinhsuadanhmuc">Danh mục</div>
             </div>
 
@@ -322,10 +333,10 @@
     <div class="modal_thaotackhac">
         <div class="khung_cach_topttk">
             <div class="tieude_chinhsua">
-                <div class="taivideoxuong">Tải xuống</div>
+                <div class="taivideoxuong hover">Tải xuống</div>
             </div>
             <div class="tieude_chinhsua">
-                <div class="xoavinhvien" data-dismiss="modal" data-toggle="modal" data-target="#xoavinhvien">Xóa vĩnh viễn</div>
+                <div class="xoavinhvien hover" data-dismiss="modal" data-toggle="modal" data-target="#xoavinhvien">Xóa vĩnh viễn</div>
             </div>
         </div>
     </div>
@@ -341,10 +352,10 @@
             </div>
             <div class="benphaiheader_videodau">
                 <div class="sangphai_header_videodauu">
-                    <div type="button" class="xacnhanvi_deo confirm_repair" id="data_confirm">XÁC NHẬN</div>
+                    <div type="button" class=" btn btn-primary confirm_repair" id="data_confirm">XÁC NHẬN</div>
                 </div>
                 <div class="sangphai_header_videodauu">
-                    <div type="button" class="huybovi_deo" data-dismiss="modal">HỦY</div>
+                    <div type="button" class=" btn btn-danger" data-dismiss="modal">HỦY</div>
                 </div>
             </div>
         </div>
@@ -372,10 +383,10 @@
             </div>
             <div class="benphaiheader_videodau">
                 <div class="sangphai_header_videodauu">
-                    <div type="button" class="xacnhanvi_deo" id="confirmTitle">XÁC NHẬN</div>
+                    <div type="button" class=" btn btn-primary" id="confirmTitle">XÁC NHẬN</div>
                 </div>
                 <div class="sangphai_header_videodauu">
-                    <div type="button" class="huybovi_deo" data-dismiss="modal">HỦY</div>
+                    <div type="button" class=" btn btn-danger" data-dismiss="modal">HỦY</div>
                 </div>
             </div>
         </div>
@@ -398,10 +409,10 @@
             </div>
             <div class="benphaiheader_videodau">
                 <div class="sangphai_header_videodauu">
-                    <div type="button" class="xacnhanvi_deo" id="confirm_Description">XÁC NHẬN</div>
+                    <div type="button" class=" btn btn-primary" id="confirm_Description">XÁC NHẬN</div>
                 </div>
                 <div class="sangphai_header_videodauu">
-                    <div type="button" class="huybovi_deo" data-dismiss="modal">HỦY</div>
+                    <div type="button" class=" btn btn-danger" data-dismiss="modal">HỦY</div>
                 </div>
             </div>
         </div>
@@ -423,10 +434,10 @@
             </div>
             <div class="benphaiheader_videodau">
                 <div class="sangphai_header_videodauu">
-                    <div type="button" class="xacnhanvi_deo" id="confirm_category">XÁC NHẬN</div>
+                    <div type="button" class=" btn btn-primary" id="confirm_category">XÁC NHẬN</div>
                 </div>
                 <div class="sangphai_header_videodauu">
-                    <div type="button" class="huybovi_deo" data-dismiss="modal">HỦY</div>
+                    <div type="button" class=" btn btn-danger" data-dismiss="modal">HỦY</div>
                 </div>
             </div>
         </div>
@@ -451,10 +462,10 @@
                 <div class="benphaiheader_videodau">
 
                     <div class="sangphai_header_videodauu">
-                        <button type="submit" class="xacnhanvi_deo" id="confirmPoster">XÁC NHẬN</button>
+                        <button type="submit" class=" btn btn-primary" id="confirmPoster">XÁC NHẬN</button>
                     </div>
                     <div class="sangphai_header_videodauu">
-                        <div type="button" class="huybovi_deo" data-dismiss="modal">HỦY</div>
+                        <div type="button" class=" btn btn-danger" data-dismiss="modal">HỦY</div>
                     </div>
                 </div>
             </div>
@@ -485,10 +496,10 @@
         <div class="footer_video_xoavinhvien">
             <div class="bentrai_video_xoavinhvien"></div>
             <div class="bengiua_video_xoavinhvien">
-                <div type="button" class="bengiua_video_xoavinhvien_huy" data-dismiss="modal">HỦY</div>
+                <div type="button" class="btn btn-danger" data-dismiss="modal">HỦY</div>
             </div>
             <div class="benphai_video_xoavinhvien">
-                <div type="button" class="benphai_video_xoavinhvien_xvv" id="confirmDeleteAll">XÁC NHẬN</div>
+                <div type="button" class="btn btn-primary" id="confirmDeleteAll">XÁC NHẬN</div>
             </div>
         </div>
     </div>
@@ -526,7 +537,11 @@
             if (event.target.files.length != 0 && fileVideo != undefined) {
                 const sizeVideo = parseInt(fileVideo.size / 1048576);
                 if (sizeVideo > 50) {
-                    alert("Dung lượng file không được vượt quá 50MB")
+                    toast("Dung lượng File không quá 50MB", "/Client", {
+                        type: 'warn',
+                        animation: 'zoom',
+                        position: 'bottom-right'
+                    });
                 } else {
                     if (name) {
                         document.querySelector("#LinkVideo").files = event.target.files;
@@ -539,7 +554,13 @@
                         }).bind(fileVideo);
                         reader.readAsDataURL(event.target.files[0]);
                     }
-                    else alert("Vui lòng chọn đúng dịnh dạng MP4");
+                    else {
+                        toast("Vui lòng chọn đúng dịnh dạng MP4", "/Client", {
+                            type: 'warn',
+                            animation: 'zoom',
+                            position: 'bottom-right'
+                        });
+                    }
                 }
 
             }
@@ -696,16 +717,17 @@
         function deleteVideo(id, flag) {
             if (flag == false) {
                 var confirms = confirm("Bạn chắc muốn xóa Video này?");
-                if (confirm) {
+                if (confirms) {
                     $.get("/Video/Delete/?id=" + id, function (respone) {
                         if (respone == "Success") {
-
-                            $('.update-' + id).remove();
+                            $(".tongcaikhungnay").css('max-height','');
                             toast('Đã xóa', '/Client', {
                                 type: 'success',
                                 animation: 'zoom',
                                 position: 'bottom-left'
                             });
+                            $('.update-' + id).remove();
+                            $(".countVideo").text('0');
                         }
                     });
                 }
@@ -719,9 +741,16 @@
                         else {
                             idVideoRepairArrays.splice(0, idVideoRepairArrays.length);
                             $(".cutomcheckboxall").prop("checked", false);
-                            console.log(idVideoRepairArrays);
+                           
                         }
                         countLoop++;
+                        $(".tongcaikhungnay").css('max-height', '');
+                        toast('Đã xóa', '/Client', {
+                            type: 'success',
+                            animation: 'zoom',
+                            position: 'bottom-left'
+                        });
+                        $(".countVideo").text('0');
                     }
                 });
             }
@@ -769,16 +798,19 @@
             var listCheck = Array.from(document.querySelectorAll(".cutomcheckboxall"));
             var checkAll = $(this).prop("checked");
             var id = 0;
+           
             if (checkAll) {
                 $(".cutomcheckboxall").prop("checked", true);
                 for (var i of listCheck) {
                     id = i.getAttribute("id").split('-')[1];
                     repairItem(parseInt(id));
                 }
+                $(".countVideo").text(listCheck.length);
 
             } else {
                 idVideoRepairArrays = [];
                 $(".cutomcheckboxall").prop("checked", false);
+                $(".countVideo").text(0);
             }
             checkInput();
         });
@@ -793,7 +825,6 @@
                 var index = idVideoRepairArrays.indexOf(id);
                 idVideoRepairArrays.splice(index, 1);
             }
-            console.log(idVideoRepairArrays);
             $(".countVideo").text(idVideoRepairArrays.length);
             checkInput();
         }
@@ -881,7 +912,7 @@
                 "Id": id,
                 "HidenVideo": permission
             };
-            $.post("/Video/Update", { "data": JSON.stringify(data) }, function (respone) {
+            $.post("/Video/UpdatePermission", { "data": JSON.stringify(data) }, function (respone) {
                 if (respone != "Error") {
                     if (permission) {
                         $(".choose_public-" + id).prop("checked", true);

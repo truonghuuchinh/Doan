@@ -49,8 +49,12 @@ namespace DoanApp.Controllers
         public string GetCountNotifi()
         {
             var userss = UserAuthenticated.GetUser(User.Identity.Name);
-            var countnoti = _notifiService.GetNotification(userss).Where(x => x.Watched).Count();
-            return countnoti.ToString();
+            if (User != null)
+            {
+                var countnoti = _notifiService.GetNotification(userss).Where(x => x.Watched).Count();
+                return countnoti.ToString();
+            }
+            return null;
         }
         public async Task<IActionResult> UpdateStatus(int id)
         {

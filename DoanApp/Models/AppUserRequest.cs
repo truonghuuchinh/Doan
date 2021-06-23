@@ -21,7 +21,8 @@ namespace DoanApp.Models
         public bool LoginExternal { get; set; } = false;
         [Required(ErrorMessage = "Vui lòng nhập trường này!")]
         public string LastName { get; set; }
-       
+        public string CreateDate { get; set; }
+        public string DescriptionChannel { get; set; }
         public string Avartar { get; set; }
         public string SecurityStamp { get; set; }
         public bool RememberMe { get; set; }

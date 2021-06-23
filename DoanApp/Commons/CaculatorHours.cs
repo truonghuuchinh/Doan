@@ -24,7 +24,7 @@ namespace DoanApp.Commons
                 if (day != 0)
                 {
                     if (day < 7) return result = day.ToString() + " Ngày trước";
-                    if (day > 7)
+                    if (day >= 7)
                     {
                         week = (int)Math.Floor((double)day / 7);
                         if (week == 1) return  "1 Tuần trước";
