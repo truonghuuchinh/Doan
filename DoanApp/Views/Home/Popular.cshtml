@@ -20,12 +20,13 @@
         @foreach (var item in Model)
         {
             <div class="parent">
-                    <a onclick="addWatched(@item.Id)" asp-action="DetailVideo" asp-controller="Home" asp-route-id="@item.Id">
+                    <a asp-action="DetailVideo" asp-controller="Home" asp-route-id="@item.Id">
                         <div class="popular_left">
                             <video width="261" height="165" onmouseover="viewBefore(@item.Id)" onmouseout="clearBefore(@item.Id)" class=" nextSecond nextSecond-@item.Id"
                                    data-poster="@item.PosterImg" id="player">
                                 <source src="~/Client/video/@item.LinkVideo" type="video/mp4" size="576">
                             </video>
+                            <span class="time__duration time__duration2"></span>
                         </div>
                         <div class="popular_right">
                             <div class="header__popular">
@@ -43,6 +44,7 @@
                             <div class="mota_noidung_video">@item.Description</div>
                         </div>
                     </a>
+                    
                     <img id="addplaylist-@item.Id" onclick="addPlayList(@item.Id)" class="icon-more hover add_playlist" src="/Client/img/more.png" alt="Alternate Text" />
                     <div class="playlist_option playlist-@item.Id">
                         <div class="option_playlist hover into_playlist-@item.Id" onclick="showPlayList(@item.Id)">
@@ -62,7 +64,10 @@
     <script>
         $(document).ready(function () {
             var currentPage = 2;
-
+            
+            setTimeout(function () {
+                loadDurationTime();
+            }, 2000);
             $('.site-layout').on('scroll', function () {
                 let div = $(this).get(0);
                 if (div.scrollTop + div.clientHeight >= div.scrollHeight) {
@@ -75,6 +80,9 @@
                     $('.site-layout_centent').append(respone);
                     loadSecondVideo();
                     LoadEventMoseLeave();
+                    setTimeout(function () {
+                        loadDurationTime();
+                    }, 1000);
                 });
             }
         });

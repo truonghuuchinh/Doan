@@ -14,6 +14,7 @@ namespace DoanApp.Services
         Task<int> Update(DetailVideoRequest request);
         Task<int> Delete(DetailVideoRequest request);
         Task<DetailVideo> FindAsync(int id);
+        List<DetailPlayListVideo> GetDetailPlayList(AppUser user,string nameSearch);
 
     }
 }

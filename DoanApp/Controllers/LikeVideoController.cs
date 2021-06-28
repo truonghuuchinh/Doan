@@ -2,6 +2,7 @@
 using DoanApp.Services;
 using DoanData.Commons;
 using DoanData.DoanContext;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
@@ -11,6 +12,7 @@ using System.Threading.Tasks;
 
 namespace DoanApp.Controllers
 {
+    [Authorize]
     public class LikeVideoController : Controller
     {
 

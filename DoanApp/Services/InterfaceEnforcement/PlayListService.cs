@@ -57,7 +57,7 @@ namespace DoanApp.Services
 
         public List<PlayList> GetAll()
         {
-            return _context.PlayList.ToList();
+            return _context.PlayList.OrderByDescending(x=>x.Id).ToList();
         }
 
         public async Task<int> Update(PlaylistRequest plRequest)

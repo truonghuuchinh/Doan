@@ -21,10 +21,10 @@
         {
             <div class="content_Nologin">
                 <div class="message_nologin">
-                    <h3 class="no_relationship">Chưa có video đã xem </h3>
-                    <a class="linkWatched" asp-action="Index" asp-controller="Home">
-                        <h6 style="margin-left: 80px; color: #742ce8;">
-                            Xem video ngay
+                    <h5 class="no_relationship">Danh sách này chưa có video </h5>
+                    <a class="linkWatched" href="/">
+                        <h6 style=" color: #742ce8;">
+                            Xem ngay tại đây.
                         </h6>
                     </a>
                 </div>
@@ -36,12 +36,13 @@
             @foreach (var item in Model)
             {
                 <div class="parent" id="remove-@item.Id">
-                    <a onclick="addWatched(@item.Id)" asp-action="DetailVideo" asp-controller="Home" asp-route-id="@item.Id">
+                    <a  asp-action="DetailVideo" asp-controller="Home" asp-route-id="@item.Id">
                         <div class="popular_left">
                             <video width="261" height="165" onmouseover="viewBefore(@item.Id)" onmouseout="clearBefore(@item.Id)" class=" nextSecond nextSecond-@item.Id"
                                    data-poster="@item.PosterImg" id="player">
                                 <source src="~/Client/video/@item.LinkVideo" type="video/mp4" size="576">
                             </video>
+                            <span class="time__duration time__duration2"></span>
                         </div>
                         <div class="popular_right">
                             <div class="header__popular">
@@ -83,6 +84,9 @@
 @section Scripts{
     <script>
         $(document).ready(function () {
+            setTimeout(function () {
+                loadDurationTime();
+            }, 2000);
             var currentPage = 2;
 
             $('.site-layout').on('scroll', function () {
@@ -97,6 +101,9 @@
                     $('.site-layout_centent').append(respone);
                     loadSecondVideo();
                     LoadEventMoseLeave();
+                    setTimeout(function () {
+                        loadDurationTime();
+                    }, 1000);
                 });
             }
         });

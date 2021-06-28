@@ -23,5 +23,6 @@ namespace DoanApp.Services
         Task<int> UpdateImgChannel(int idUser,string ImgChannel);
         Task<AppUser> FindUserId(int id);
         Task<int> UpdateDescription(AppUserRequest request);
+        Task<int> UpdateAvartar(int id,string avartar);
     }
 }

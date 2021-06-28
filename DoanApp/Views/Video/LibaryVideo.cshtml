@@ -7,98 +7,169 @@
     .detail_rights{
         width:100%;
     }
+    .table__playlist__item1 {
+        width: 195px;
+        height: 105px;
+    }
+    .table__playlist__item2 {
+        margin: -105px 0px 0px 126px;
+        height: 105px;
+        width:70px;
+    }
+    .table__playlist{
+        margin-right:15px;
+    }
+    .item2__count{
+        margin-top:15px;
+    }
+
 </style>
 <div class="col site-layout " style="display:flex;">
     <div class="libary_right">
-        <div class="title_watched">Video đã xem <a asp-action="Index" asp-controller="VideoWatched" class="move_page"><div class="span_xemall">XEM TẤT CẢ @ViewBag.CountWatched</div></a></div>
-        @foreach (var item in Model)
-        {
-            <div class="container22">
-                <a id="movepage_detail-@item.Id" onclick="addWatched(@item.Id)" asp-action="DetailVideo" asp-controller="Home" asp-route-id="@item.Id">
-                    <div class="container222">
-                        <video width="261" height="165" onmouseover="viewBefore(@item.Id)" onmouseout="clearBefore(@item.Id)" src="~/Client/video/@item.LinkVideo" title="YouTube video player" class=" nextSecond nextSecond-@item.Id">
-                        </video>
-
-                    </div>
-
-                    <div class="container222_end">
-                        <div class="detail_video">
-                            <div class="detail_rights">
-                                <span class="detail_right  text-sidebar-item_video">
-                                    <p class="titleName">@item.Name </p>
-                                    <img id="addplaylist-@item.Id" onclick="addPlayList(@item.Id)" class="icon-more add_playlist" src="/Client/img/more.png" alt="Alternate Text" />
-                                </span>
-                                <div class="text_color">@item.FirtsName @item.LastName</div>
-                                <div class="text_color_check">
-                                    @ConvertViewCount.ConvertView(item.ViewCount) lượt xem • @CaculatorHours.Caculator(item.CreateDate)
-                                </div>
+        <div class="content__Watched">
+            <div class="title_watched" style="display:inline-flex">
+                <div>Video đã xem</div>
+                <span class="span_xemall"><a asp-action="Index" asp-controller="VideoWatched" class="move_page alibary a__playlist"><span style="color:dodgerblue;">XEM TẤT CẢ @ViewBag.CountWatched</span></a></span>
+            </div>
+            @if (Model.Count > 0)
+            {
+                @foreach (var item in Model)
+                {
+                    <div class="container22">
+                        <a id="movepage_detail-@item.Id"  asp-action="DetailVideo" asp-controller="Home" asp-route-id="@item.Id">
+                            <div class="container222">
+                                <video width="261" height="165" onmouseover="viewBefore(@item.Id)" onmouseout="clearBefore(@item.Id)" src="~/Client/video/@item.LinkVideo" title="YouTube video player" class=" nextSecond nextSecond-@item.Id">
+                                </video>
 
                             </div>
 
+                            <div class="container222_end">
+                                <div class="detail_video">
+                                    <div class="detail_rights">
+                                        <span class="detail_right  text-sidebar-item_video">
+                                            <p class="titleName">@item.Name </p>
+                                            <img id="addplaylist-@item.Id" onclick="addPlayList(@item.Id)" class="icon-more add_playlist" src="/Client/img/more.png" alt="Alternate Text" />
+                                        </span>
+                                        <div class="text_color">@item.FirtsName @item.LastName</div>
+                                        <div class="text_color_check">
+                                            @ConvertViewCount.ConvertView(item.ViewCount) lượt xem • @CaculatorHours.Caculator(item.CreateDate)
+                                        </div>
+
+                                    </div>
+
+                                </div>
+                            </div>
+                        </a>
+                        <span class="time__duration"></span>
+                        <div class="playlist_option playlist-@item.Id">
+                            <div class="option_playlist hover into_playlist-@item.Id" onclick="showPlayList(@item.Id)">
+                                <i class="fa fa-list-alt"></i> Thêm vào danh sách phát
+                            </div>
+                            <div class="option_playlist hover report_video" onclick="reportVideo(@item.Id)">
+                                <i class="fa fa-flag"></i> Báo cáo vi phạm
+                            </div>
                         </div>
                     </div>
-                </a>
-
-                <div class="playlist_option playlist-@item.Id">
-                    <div class="option_playlist hover into_playlist-@item.Id" onclick="showPlayList(@item.Id)">
-                        <i class="fa fa-list-alt"></i> Thêm vào danh sách phát
-                    </div>
-                    <div class="option_playlist hover report_video" onclick="reportVideo(@item.Id)">
-                        <i class="fa fa-flag"></i> Báo cáo vi phạm
-                    </div>
-                </div>
-            </div>
-            if (count > 4)
+                    if (count > 4)
+                    {
+                        count = 1;
+                        <br />}
+                }
+            }
+            else
             {
-                count = 1;
-                <br />}
-        }
-        <div class="title_favorited">Video đã thích <a asp-action="FavoritedVideo" asp-controller="Video" class="move_page"><div class="span_xemall" style="margin-right:-80px;">XEM TẤT CẢ @ViewBag.CountFovarited</div></a></div>
-        @foreach (var item in ViewBag.ListFovarited)
-        {
+                <h6 class="novideo__watched">Các video bạn đã xem sẽ xuất hiện ở đây.<a class="move_page alibary" href="/">Xem qua các video</a></h6>
+            }
+        </div>
+        <div class="content__Favorite">
+            <div class="title_favorited">
+                <div>Video đã thích</div>
+                <span class="span_xemall"> <a  asp-action="FavoritedVideo" asp-controller="Video" class="move_page alibary a__playlist"><span style="color:dodgerblue;">XEM TẤT CẢ @ViewBag.CountFovarited</span></a></span>
+            </div>
+            @if (ViewBag.ListFovarited.Count > 0)
+            {
+                @foreach (var item in ViewBag.ListFovarited)
+                {
 
-            <div class="container22">
-                <a id="movepage_detail-@item.Id" onclick="addWatched(@item.Id)" asp-action="DetailVideo" asp-controller="Home" asp-route-id="@item.Id">
-                    <div class="container222">
-                        <video width="261" height="165" onmouseover="viewBefore(@item.Id)" onmouseout="clearBefore(@item.Id)" src="~/Client/video/@item.LinkVideo" title="YouTube video player" class=" nextSecond nextSecond-@item.Id">
-                        </video>
-
-                    </div>
-
-                    <div class="container222_end">
-                        <div class="detail_video">
-
-                            <div class="detail_rights">
-                                <span class="detail_right  text-sidebar-item_video">
-                                    <p class="titleName">@item.Name </p>
-                                    <img id="addplaylist-@item.Id" onclick="addPlayList(@item.Id)" class="icon-more add_playlist" src="/Client/img/more.png" alt="Alternate Text" />
-                                </span>
-                                <div class="text_color">@item.FirtsName @item.LastName</div>
-                                <div class="text_color_check">
-                                    @ConvertViewCount.ConvertView(item.ViewCount) lượt xem • @CaculatorHours.Caculator(item.CreateDate)
-                                </div>
+                    <div class="container22">
+                        <a id="movepage_detail-@item.Id" onclick="addWatched(@item.Id)" asp-action="DetailVideo" asp-controller="Home" asp-route-id="@item.Id">
+                            <div class="container222">
+                                <video width="261" height="165" onmouseover="viewBefore(@item.Id)" onmouseout="clearBefore(@item.Id)" src="~/Client/video/@item.LinkVideo" title="YouTube video player" class=" nextSecond nextSecond-@item.Id">
+                                </video>
 
                             </div>
 
+                            <div class="container222_end">
+                                <div class="detail_video">
+
+                                    <div class="detail_rights">
+                                        <span class="detail_right  text-sidebar-item_video">
+                                            <p class="titleName">@item.Name </p>
+                                            <img id="addplaylist-@item.Id" onclick="addPlayList(@item.Id)" class="icon-more add_playlist" src="/Client/img/more.png" alt="Alternate Text" />
+                                        </span>
+                                        <div class="text_color">@item.FirtsName @item.LastName</div>
+                                        <div class="text_color_check">
+                                            @ConvertViewCount.ConvertView(item.ViewCount) lượt xem • @CaculatorHours.Caculator(item.CreateDate)
+                                        </div>
+
+                                    </div>
+
+                                </div>
+                            </div>
+                        </a>
+                        <span class="time__duration"></span>
+                        <div class="playlist_option playlist-@item.Id">
+                            <div class="option_playlist into_playlist-@item.Id" onclick="showPlayList(@item.Id)">
+                                <i class="fa fa-list-alt"></i> Thêm vào danh sách phát
+                            </div>
+                            <div class="option_playlist report_video" onclick="reportVideo(@item.Id)">
+                                <i class="fa fa-flag"></i> Báo cáo vi phạm
+                            </div>
                         </div>
                     </div>
-                </a>
-
-                <div class="playlist_option playlist-@item.Id">
-                    <div class="option_playlist into_playlist-@item.Id" onclick="showPlayList(@item.Id)">
-                        <i class="fa fa-list-alt"></i> Thêm vào danh sách phát
-                    </div>
-                    <div class="option_playlist report_video" onclick="reportVideo(@item.Id)">
-                        <i class="fa fa-flag"></i> Báo cáo vi phạm
-                    </div>
-                </div>
-            </div>
-            if (count > 4)
+                    if (count > 4)
+                    {
+                        count = 1;
+                        <br />}
+                }
+            }else
             {
-                count = 1;
-                <br />}
-        }
-        <div class="title_favorited">Danh sách phát <a asp-action="FavoritedVideo" asp-controller="Video" class="move_page"><div class="span_xemall" style="margin-right:-80px;">XEM TẤT CẢ @ViewBag.CountWatched</div></a></div>
+                <h6 class="novideo__watched">Các video bạn thích sẽ xuất hiện ở đây</h6>
+            }
+
+        </div>
+        <div class="content__danhsachphat">
+            <div class="title_favorited">
+                <div>Danh sách phát</div>
+                <span class="span_xemall"><a  asp-action="MyPlayList" asp-controller="Video" class="move_page alibary a__playlist"><span style="color:dodgerblue;">XEM TẤT CẢ @ViewBag.DetailPlayList.Count</span></a></span>
+            </div>
+            @if (ViewBag.DetailPlayList.Count > 0)
+            {
+                <div style="display:flex; margin:10px;">
+                    @foreach (var item in ViewBag.DetailPlayList)
+                    {
+
+                        <div class="table__playlist hover" onclick="showAllPlayList(@item.Id)">
+                            <img class="table__playlist__item1 table__playlist__item1-@item.Id" src="@(item.PosterVideo!=null?"/Client/imgPoster/"+item.PosterVideo:"/Client/img/no_playlist.PNG")" alt="Alternate Text" />
+                            <div class="table__playlist__item2">
+                                <div class="item2__count item2__count-@item.Id">@item.CountItem</div>
+                                <img class="item2__playlist" src="/Client/img/add_playlist.png" alt="Alternate Text" />
+                            </div>
+                            <h6 style="margin-top:10px;">@item.Name</h6>
+                            <div class="ifor__libary">@item.FirtsName @item.LastName</div>
+                            <span class="ifor__libary">Cập nhật @CaculatorHours.Caculator(item.CreateDate)</span>
+                        </div>
+                       
+                    }
+                </div>
+               
+            }
+            else
+            {
+                <h6 class="novideo__watched">Các danh sách của bạn sẽ xuất hiện ở đây</h6>
+            }
+        </div>
+       
     </div>
     <div class="libary_left">
         <img class="img_libary" src="@(ViewBag.UserLibary.LoginExternal?ViewBag.UserLibary.Avartar:"/Client/avartar/"+ViewBag.UserLibary.Avartar)" alt="Alternate Text" />
@@ -111,3 +182,12 @@
     </div>
 
 </div>
+@section Scripts{ 
+    <script>
+        $(document).ready(function () {
+            setTimeout(function () {
+                loadDurationTime();
+            }, 2000);
+        });
+    </script>
+}
