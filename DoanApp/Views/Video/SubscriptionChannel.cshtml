@@ -13,7 +13,7 @@
             @foreach (var item in Model)
             {
                 <div class="container22">
-                    <a class="hover" id="movepage_detail-@item.Id" onclick="addWatched(@item.Id)" asp-action="DetailVideo" asp-controller="Home" asp-route-id="@item.Id">
+                    <a class="hover" id="movepage_detail-@item.Id"  asp-action="DetailVideo" asp-controller="Home" asp-route-id="@item.Id">
                         <div class="container222">
                             <video width="261" height="165" onmouseover="viewBefore(@item.Id)" onmouseout="clearBefore(@item.Id)" src="~/Client/video/@item.LinkVideo" title="@item.Name" class=" nextSecond nextSecond-@item.Id">
                             </video>
@@ -22,7 +22,7 @@
 
                         <div class="container222_end">
                             <div class="detail_video">
-                                <img class="detail_lerft icon-sidebar-item_video" alt="" src="@(item.LoginExternal ? item.Avartar : "~/Client/avartar/" + item.Avartar)">
+                                <img class="detail_lerft icon-sidebar-item_video" alt="" src="@(item.LoginExternal ? item.Avartar : "/Client/avartar/" + item.Avartar)">
                                 <div class="detail_rights">
                                     <span class="detail_right  text-sidebar-item_video">
                                         <p class="titleName">@item.Name </p>
@@ -38,7 +38,7 @@
                             </div>
                         </div>
                     </a>
-
+                    <span class="time__duration"></span>
                     <div class="playlist_option playlist-@item.Id">
                         <div class="option_playlist hover into_playlist-@item.Id" onclick="showPlayList(@item.Id)">
                             <i class="fa fa-list-alt"></i> Thêm vào danh sách phát
@@ -58,8 +58,8 @@
         {
               <div class="content_Nologin" style=" padding: 150px;">
                 <div class="message_nologin">
-                    <h2>Chưa có danh sách video đăng ký</h2>
-                    <a class="move_page" asp-action="Index" asp-controller="Home"><h6>Xem video để đăng ký ngay</h6></a> 
+                    <h2>Danh sách này không có video hãy Theo dõi kênh bạn thích</h2>
+                    <a class="move_page" asp-action="Index" asp-controller="Home"><h6>Xem tại đây</h6></a> 
                 </div>
             </div>
         }
@@ -86,6 +86,9 @@
 <script>
 
     $(document).ready(function () {
+        setTimeout(function () {
+            loadDurationTime();
+        }, 2000);
         var currentPage = 2;
         $('.site-layout').on('scroll', function () {
             let div = $(this).get(0);
@@ -102,7 +105,7 @@
                 $.each(respone, function (index, item) {
                     $('.site-layout').append(`
                         <div class="container22">
-                    <a class="hover" id="movepage_detail-${item.Id}" onclick="addWatched(${item.Id})" href="/Home/DetailVideo/${item.Id}">
+                    <a class="hover" id="movepage_detail-${item.Id}" href="/Home/DetailVideo/${item.Id}">
                         <div class="container222">
                             <video width="261" height="165" onmouseover="viewBefore(${item.Id})" onmouseout="clearBefore(${item.Id})" src="/Client/video/${item.LinkVideo}" title="${item.Name}" class=" nextSecond nextSecond-${item.Id}">
                             </video>
@@ -111,7 +114,7 @@
 
                         <div class="container222_end">
                             <div class="detail_video">
-                                <img class="detail_lerft icon-sidebar-item_video" alt="" src="${(item.LoginExternal ? item.Avartar : "~/Client/avartar/" + item.Avartar)}">
+                                <img class="detail_lerft icon-sidebar-item_video" alt="" src="${(item.LoginExternal ? item.Avartar : "/Client/avartar/" + item.Avartar)}">
                                 <div class="detail_rights">
                                     <span class="detail_right  text-sidebar-item_video">
                                         <p class="titleName">${item.Name} </p>
@@ -127,7 +130,7 @@
                             </div>
                         </div>
                     </a>
-
+                    <span class="time__duration" ></span>
                     <div class="playlist_option hover playlist-${item.Id}">
                         <div class="option_playlist into_playlist-${item.Id}" onclick="showPlayList(${item.Id})">
                             <i class="fa fa-list-alt"></i> Thêm vào danh sách phát
@@ -141,6 +144,10 @@
                 });
                 loadSecondVideo();
                 LoadEventMoseLeave();
+                setTimeout(function () {
+                    loadDurationTime();
+                }, 500);
+                
             });
         }
     });

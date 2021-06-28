@@ -1,4 +1,170 @@
-﻿
+﻿//-------------------Variable global-------------
+var idPlaylist = 0;
+var idvideo = 0;
+var userId = $("#UserId").val();
+var videoId = $("#VideoId").val();
+var currentPage = 2;
+var idVideoReport = 0;
+var arrayNoLoaded = [];
+//----------------Xử lý tạo danh sách phát------------
+$(".btnPlaylist").click(function () {
+    var inputname = $("#namePlayList").val();
+    var data = {
+        "Name": inputname,
+        "UserId": $("#idUser").val()
+    };
+    $.post("/PlayListVideo/Create", { request: data}, function (respone) {
+        respone = JSON.parse(respone);
+        if (respone != null) {
+            $(".list__playlist").prepend(`
+                <div class="listChoose">
+                    <input type="checkbox" id="chooseList-${respone.Id}" data-id="${respone.Id}" class="chooseList chooseList-${respone.Id}" />
+                    <label class="hover" onclick="addItem(${respone.Id})" for="chooseList-${respone.Id}"><span>${respone.Name}</span></label>
+                </div>
+            `);
+        }
+    });
+    $("#namePlayList").val('');
+    $(".create_playlist").css("display", "");
+    $(".add-playlist").css("display", "");
+});
+$("#namePlayList").keyup(function () {
+    if ($(this).val()=='')
+        $(".btnPlaylist").prop("disabled", true);
+    else $(".btnPlaylist").prop("disabled", false);
+});
+//----------------Kết thúc---------------------------
+//----------------Xử lý cập nhật avartar---------------
+$(".repair_avartar").click(function () {
+    $("#upload_avartar").modal('show');
+    $("#updateImgAvartar").val('');
+    $("#erroravartar").text('');
+});
+$("#updateImgAvartar").change(function (event) {
+    $("#erroravartar").text('');
+    var imgReview = document.querySelector("#img_review__avartar");
+    imgReview.src = URL.createObjectURL(event.target.files[0]);
+    imgReview.onload = function () {
+        URL.revokeObjectURL(imgReview.src);
+    }
+});
+$("#fUploadAvartar").submit(function (e) {
+    $("#emailUser").val($("#email_authenticated").val());
+    if ($("#updateImgAvartar").val() != '') return;
+    $("#erroravartar").text('(Vui lòng chọn ảnh)');
+    e.preventDefault();
+});
+//----------------Kết thúc-----------------------------
+//----------------Xử lý show item in playlist-----------
+$("#timkiem__video").keyup(function () {
+    loadDataList(idPlaylist, '<h4>Không có video bạn tìm......................................</h4>', $(this).val());
+});
+function deleteInPlayList(id) {
+    if (id != 0) {
+        var data = {
+            "PlayListId": idPlaylist,
+            "VideoId": id
+        };
+        $.post("/DetailVideo/Delete", { data: JSON.stringify(data) }, function (respone) {
+            if (respone == "Success") {
+                $(".bodyContent-" + id).remove();
+                $(".removeHr-" + id).remove();
+                var countItem1 = parseInt($(".item2__count-" + idPlaylist).text()) - 1;
+                var countItem2 = parseInt($(".modifier__td-" + idPlaylist).text()) - 1;
+                if (countItem1 == 0) {
+                    $(".table__playlist__item1-" + idPlaylist).prop('src', '/Client/img/no_playlist.PNG');
+                }
+                $(".item2__count-" + idPlaylist).text(countItem1);
+                $(".modifier__td-" + idPlaylist).text(countItem2);
+                toast('Đã xóa', '/Client', {
+                    type: 'success',
+                    animation: 'zoom',
+                    position: 'bottom-right'
+                });
+            }
+        });
+    }
+}
+function showAllPlayList(id) {
+    idPlaylist = id;
+    if (id != 0) {
+        loadDataList(id, `<h4>Chưa có video trong danh sách phát</h4>`, '');
+    }
+    $("#modalShowPlayList").modal('show');
+    $("#timkiem__video").val('');
+    setTimeout(function () {
+        $(".searchAllList").focus();
+    }, 500);
+}
+function loadDataList(id, message, search) {
+    $.get("/Video/GetAllPlayList/?id=" + id + "&nameSearch=" + search, function (respone) {
+        console.log(respone);
+        if (respone != 'null') {
+            
+            respone = JSON.parse(respone);
+            var getdata = '';
+            $.each(respone, function (index, item) {
+                getdata += `
+                            <div class="bodyContent bodyContent-${item.Id}">
+                                <div class="bodyContent__left hover">
+                                    <a href="/Home/DetailVideo/${item.Id}"><img src="/Client/imgPoster/${item.PosterImg}" alt="Alternate Text" /></a>
+                                </div>
+                                <div class="bodyContent__center">
+                                    <div class="bodyContent__center--name">${item.Name}</div>
+                                    <div class="bodyContent__center--mota">${item.Description}</div>
+                                    <div class="bodyContent__center--kenh">${item.FirtsName} ${item.LastName} </div>
+                                </div>
+                                <div class="bodyContent__createdate">
+                                    <div class="bodyContent__createdate--noidung">${item.CreateDate.split(" ")[0]}</div>
+                                </div>
+                                <div class="bodyContent__right">
+                                   <a class="a__playlist" href="/Home/DetailVideo/${item.Id}"><i style="color:#5252fc;" class="far fa-play-circle hover" title="Phát video"></i></a>
+                                    <i class="fas fa-trash hover" onclick="deleteInPlayList(${item.Id})" title="Xóa khỏi danh sách"></i>
+                                </div>
+                            </div>
+                        <hr class="removeHr-${item.Id}" />
+                            `;
+            });
+            $(".tbodyOfPlayList").html(getdata);
+        } else {
+            $(".tbodyOfPlayList").html(message);
+        }
+    });
+}
+//---------------End--------------------------------
+//----------------Xử lý load giây-----------------------
+function loadDurationTime() {
+    var array_video = new Array();
+    var array_textDuration = new Array();
+    array_video = Array.from(document.querySelectorAll(".nextSecond"));
+    array_textDuration = Array.from(document.querySelectorAll(".time__duration"));
+    excuteDuration(array_video, array_textDuration);
+    if (arrayNoLoaded.length > 0) {
+        setTimeout(function () {
+            excuteDuration(array_video, array_textDuration);
+        }, 5000);
+    }
+
+}
+function excuteDuration(array_video, array_textDuration) {
+   
+    for (var i = 0; i < array_video.length; i++) {
+        var tam = Math.floor(array_video[i].duration);
+        var miniute = Math.floor(array_video[i].duration / 60);
+        var seccond = 0;
+        for (var j = 0; j < miniute; j++) {
+            tam -= 60;
+        }
+        seccond = Math.abs(tam);
+        if (Math.abs(tam) < 10)
+            seccond = "0" + Math.abs(tam).toString();
+        if (array_video[i].readyState >= 3)
+            array_textDuration[i].innerHTML = miniute + ":" + seccond;
+        else arrayNoLoaded.push(array_video[i]);
+    }
+}
+
+//----------------Kết thúc----------------------------
 //----------------Xử lý hiển  thị thêm bình luận--------
 function displayComment(id) {
     var listChild = document.querySelector(".listchild-" + id).scrollHeight;
@@ -59,7 +225,6 @@ function changeContent(id) {
     if (input != content)
         $(".repaircomment__primary-" + id).prop('disabled', false);
     else {
-        console.log(content + " " + input);
         $(".repaircomment__primary-" + id).prop('disabled', true);
     }
 }
@@ -123,13 +288,15 @@ function deleteComment(Id,commentId) {
 }
 //----------------Kết thúc-------------------------------
 //----------------Xử lý báo cáo video vi phạm------------
-var idVideoReport = 0;
+
 function reportVideo(id) {
     idVideoReport = id;
     var userId = $("#idUser").val();
     if (userId != '' && userId != 0) {
         $("#reportvideo").modal("show");
         $("#valueReport").focus();
+        $("#errorReport").text('');
+        $("#valueReport").val('');
     } else {
         cuteAlert({
             type: "question",
@@ -143,10 +310,9 @@ function reportVideo(id) {
 
 }
 $("#confirm_report").click(function () {
-
     var userId = $("#idUser").val();
     var inputReport = $("#valueReport").val();
-    if (inputReport == '') $("#errorReport").text("Vui lòng nhập nội dung");
+    if (inputReport == '') $("#errorReport").text("(*Vui lòng nhập nội dung*)");
     else {
         $("#reportvideo").modal("hide");
         var datas = {
@@ -168,8 +334,7 @@ $("#confirm_report").click(function () {
 });
 //----------------Kết thúc------------------------------
 //----------------Xử lý add video into playList----------
-//---Variable global
-var idvideo = 0;
+
 function addItem(id) {
     var data = {
         "PlayListId": id,
@@ -178,9 +343,15 @@ function addItem(id) {
 
     if ($(".chooseList-" + id).prop("checked") == false) {
         $.post("/DetailVideo/Create", { "data": JSON.stringify(data) }, function (respone) {
-            if (respone != "Error") {
+            if (respone == "Success") {
                 toast('Đã thêm', '/Client', {
                     type: 'success',
+                    animation: 'zoom',
+                    position: 'bottom-right'
+                });
+            } else {
+                toast('Có lỗi vui lòng thử lại', '/Client', {
+                    type: 'warn',
                     animation: 'zoom',
                     position: 'bottom-right'
                 });
@@ -232,7 +403,7 @@ function addPlayList(id) {
         e.preventDefault();
         $(this).unbind(e);
     });
-    if ($("#idUser").val() == '0' && $("#idUser").val() == '') {
+    if ($("#idUser").val() == '0' ||$("#idUser").val() == '') {
         cuteAlert({
             type: "question",
             title: "Đăng nhập",
@@ -317,6 +488,16 @@ function LoadEventMoseLeave() {
 
         });
     });
+    document.querySelectorAll(".khung_thongbao_video").forEach(item => {
+        item.addEventListener('mouseleave', function () {
+            document.querySelectorAll(".an_thongbaonay_all").forEach(item => {
+
+                if (item.classList.contains("displays")) {
+                    item.classList.remove("displays");
+                }
+            });
+        });
+    });
 }
 
 //---------------Kết thúc-------------------------
@@ -362,18 +543,17 @@ if (SpeechRecognitions) {
 
 //----------------Xử lý chuyển động Video----------------
 $(document).ready(function () {
-    loadSecondVideo();
+    setTimeout(function () {
+        loadSecondVideo();
+    }, 1000);
 });
 
 var flagSecond = 0;
 function loadSecondVideo() {
     var listVideo = Array.from(document.querySelectorAll(".nextSecond"));
-    //var listminiute = Array.from(document.querySelectorAll(".miniute_video"));
     for (var i = 0; i < listVideo.length; i++) {
         listVideo[i].currentTime = 10;
-        /*var mininute = (listVideo[i].duration / 60).toFixed(2).split('.');
-        console.log(mininute);*/
-        //listminiute[i].textContent = mininute[0] + ":" + mininute[1];
+       
     }
 }
 function viewBefore(id) {
@@ -421,10 +601,7 @@ function convertViewCount(view) {
 
 
 //------------ Xử lý Like video---------
-//Global variable
-var userId = $("#UserId").val();
-var videoId = $("#VideoId").val();
-//end
+
 var userLike = $("#UserLike").val();
 var reaction = $("#Reaction").val();
 if (userId != undefined && userLike == userId) {
@@ -709,6 +886,7 @@ function comment(checkComment, id, level,commentId) {
                     }
                 }
                 var view = parseInt($(".count_comment").text()) + 1;
+                $(".text__comment_right").css("display", "");
                 $(".count_comment").text(view.toString() + " Bình luận");
                 $(".all_counts_comment_rep-" + id).addClass("displayNone");
                 if (commentId != 0) {
@@ -765,20 +943,18 @@ function oke(id, type, child) {
 
 //---------------------End-------------------
 //Phần menu
-var flags = 0;
 let menu = document.getElementsByClassName("click_menu")[0];
 let container = document.getElementsByClassName("all_nav_menus_as")[0];
 menu.addEventListener("click", function (event) {
     event.stopPropagation();
     container.classList.toggle("hien");
-    flags++;
 });
 
 let button = document.getElementsByClassName("collapses");
 for (let i = 0; i < button.length; i++) {
 
-    button[i].addEventListener("click", function () {
-
+    button[i].addEventListener("click", function (event) {
+        event.stopPropagation();
         if (button[i].classList.contains("active")) {
             button[i].innerHTML = "Xem thêm";
 
@@ -828,13 +1004,13 @@ $("#formSearchVideo").submit(function (event) {
     if ($("#nameSearch").val() != '') return;
     event.preventDefault();
 });
-//-----Variable globale-----
-var currentPage = 2;
+
 function Phantrang(link) {
     $('.site-layout').on('scroll', function () {
         let div = $(this).get(0);
 
         if (div.scrollTop + div.clientHeight >= div.scrollHeight) {
+            $(".loading").addClass("displayBlock");
             loadData(link);
 
             currentPage += 1;
@@ -846,6 +1022,10 @@ function loadData(link) {
         $('.site-layout').append(respone);
         loadSecondVideo();
         LoadEventMoseLeave();
+        setTimeout(function () {
+            loadDurationTime();
+        }, 1000);
+        $(".loading").removeClass("displayBlock");
     });
 }
 //---------------------Xử lý Notification----------------------------
@@ -881,7 +1061,6 @@ $(".notification").click(function (event) {
         document.querySelector('.option_notifi-' + idNotifi).classList.remove('displays');
     }
     document.querySelector(".thongbao_all").classList.toggle('displays');
-    console.log(idNotifi);
 });
 
 $(".thongbao_all").click(function (e) {
@@ -920,7 +1099,7 @@ var realTimeNotification = setInterval(function () {
 
         });
     }
-}, 5000);
+}, 3000);
 function revertStatus(event, id) {
 
     event.stopPropagation();

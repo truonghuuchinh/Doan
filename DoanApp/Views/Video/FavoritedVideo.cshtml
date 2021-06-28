@@ -11,56 +11,69 @@
     .playlist_option {
         margin: 51px !important;
         margin-left: 482px !important;
-       
     }
 </style>
 <div class="site-layout">
     @if (User.Identity.IsAuthenticated)
     {
+
         <div class="site-layout_centent ">
             <div class="text_popular">Video đã thích</div>
-            @foreach (var item in Model)
+            @if (Model.Count > 0 && Model != null)
             {
-                <div class="parent" id="remove-@item.Id">
-                    <a onclick="addWatched(@item.Id)" asp-action="DetailVideo" asp-controller="Home" asp-route-id="@item.Id">
-                        <div class="popular_left">
-                            <video width="261" height="165" onmouseover="viewBefore(@item.Id)" onmouseout="clearBefore(@item.Id)" class=" nextSecond nextSecond-@item.Id"
-                                   data-poster="@item.PosterImg" id="player">
-                                <source src="~/Client/video/@item.LinkVideo" type="video/mp4" size="576">
-                            </video>
-                        </div>
-                        <div class="popular_right">
-                            <div class="header__popular">
-                                @item.Name
+                @foreach (var item in Model)
+                {
+                    <div class="parent" id="remove-@item.Id">
+                        <a asp-action="DetailVideo" asp-controller="Home" asp-route-id="@item.Id">
+                            <div class="popular_left">
+                                <video width="261" height="165" onmouseover="viewBefore(@item.Id)" onmouseout="clearBefore(@item.Id)" class=" nextSecond nextSecond-@item.Id"
+                                       data-poster="@item.PosterImg" id="player">
+                                    <source src="~/Client/video/@item.LinkVideo" type="video/mp4" size="576">
+                                </video>
+                                <span class="time__duration time__duration2"></span>
+                            </div>
+                            <div class="popular_right">
+                                <div class="header__popular">
+                                    @item.Name
 
-                            </div>
-                            <div class="all_papge">
-                                <div class="ten_kenh">@item.FirtsName @item.LastName .</div>
-                                <div class="luot_xem">
-                                    @ConvertViewCount.ConvertView(item.ViewCount) lượt xem
                                 </div>
-                                <div class="dau_cham_cach">.</div>
-                                <div class="thoi_gian_cong_chieu">@CaculatorHours.Caculator(item.CreateDate)</div>
+                                <div class="all_papge">
+                                    <div class="ten_kenh">@item.FirtsName @item.LastName .</div>
+                                    <div class="luot_xem">
+                                        @ConvertViewCount.ConvertView(item.ViewCount) lượt xem
+                                    </div>
+                                    <div class="dau_cham_cach">.</div>
+                                    <div class="thoi_gian_cong_chieu">@CaculatorHours.Caculator(item.CreateDate)</div>
+                                </div>
+                                <div class="mota_noidung_video">@item.Description</div>
                             </div>
-                            <div class="mota_noidung_video">@item.Description</div>
+                        </a>
+                        <img id="addplaylist-@item.Id" onclick="addPlayList(@item.Id)" class="icon-more hover add_playlist" src="/Client/img/more.png" alt="Alternate Text" />
+                        <div class="playlist_option playlist-@item.Id">
+                            <div class="option_playlist hover into_playlist-@item.Id" onclick="showPlayList(@item.Id)">
+                                <i class="fa fa-list-alt"></i> Thêm vào danh sách phát
+                            </div>
+                            <div class="option_playlist hover report_video" onclick="reportVideo(@item.Id)">
+                                <i class="fa fa-flag"></i> Báo cáo vi phạm
+                            </div>
+                            <div class="option_playlist hover report_video" onclick="removeWatched('/VideoWatched/DeleteFavorite',@item.Id)">
+                                <i class="fas fa-trash-alt"></i> Xóa khỏi danh sách
+                            </div>
+
                         </div>
-                    </a>
-                    <img id="addplaylist-@item.Id" onclick="addPlayList(@item.Id)" class="icon-more hover add_playlist" src="/Client/img/more.png" alt="Alternate Text" />
-                    <div class="playlist_option playlist-@item.Id">
-                        <div class="option_playlist hover into_playlist-@item.Id" onclick="showPlayList(@item.Id)">
-                            <i class="fa fa-list-alt"></i> Thêm vào danh sách phát
-                        </div>
-                        <div class="option_playlist hover report_video" onclick="reportVideo(@item.Id)">
-                            <i class="fa fa-flag"></i> Báo cáo vi phạm
-                        </div>
-                        <div class="option_playlist hover report_video" onclick="removeWatched('/VideoWatched/DeleteFavorite',@item.Id)">
-                            <i class="fas fa-trash-alt"></i> Xóa khỏi danh sách
-                        </div>
-                        
+                    </div>
+
+
+                }
+            }
+            else
+            {
+                <div class="content_Nologin" style=" padding: 150px;">
+                    <div class="message_nologin">
+                        <h5 style="font-style:italic; opacity:0.2">Danh sách này không có video hãy Like video bạn thích</h5>
+                        <a class="move_page" asp-action="Index" asp-controller="Home"><h6>Xem tại đây</h6></a>
                     </div>
                 </div>
-
-
             }
         </div>
     }
@@ -68,7 +81,7 @@
     {
         <div class="content_Nologin" style=" padding: 259px;">
             <div class="message_nologin">
-                <h2>Chưa có video đã thích vui lòng đăng nhập để Like</h2>
+                <h2>Danh sách này không có video</h2>
                 <h6>Vui lòng Đăng nhập để xem</h6>
             </div>
             <div id="no_Login" class="list_dangnhap_center">
@@ -85,9 +98,12 @@
 </div>
 @section Scripts{
     <script>
+
         $(document).ready(function () {
             var currentPage = 2;
-
+            setTimeout(function () {
+                loadDurationTime();
+            }, 2000);
             $('.site-layout').on('scroll', function () {
                 let div = $(this).get(0);
                 if (div.scrollTop + div.clientHeight >= div.scrollHeight) {
@@ -100,46 +116,50 @@
                     respone = JSON.parse(respone);
                     $.each(respone, function (index, item) {
                         $('.site-layout_centent').append(`
-            <div class="parent" id="remove-${item.Id}">
-                    <a onclick="addWatched(${item.Id})" href="/Home/DetailVideo/${item.Id}">
-                <div class="popular_left">
-                    <video onmouseover="viewBefore(${item.Id})" onmouseout="clearBefore(${item.Id})" class=" nextSecond nextSecond-${item.Id}"
-                           data-poster="${item.PosterImg}" id="player">
-                        <source src="/Client/video/${item.LinkVideo}" type="video/mp4" size="576">
-                    </video>
-                </div>
-                <div class="popular_right">
-                    <div class="header__popular">${item.Name}</div>
-                    <div class="all_papge">
-                        <div class="ten_kenh">${item.FirtsName} ${item.LastName} .</div>
-                        <div class="luot_xem">
-                           ${convertViewCount(item.ViewCount)} lượt xem
-                        </div>
-                        <div class="dau_cham_cach">.</div>
-                        <div class="thoi_gian_cong_chieu">${item.CreateDate}</div>
+                <div class="parent" id="remove-${item.Id}">
+                        <a onclick="addWatched(${item.Id})" href="/Home/DetailVideo/${item.Id}">
+                    <div class="popular_left">
+                        <video onmouseover="viewBefore(${item.Id})" onmouseout="clearBefore(${item.Id})" class=" nextSecond nextSecond-${item.Id}"
+                               data-poster="${item.PosterImg}" id="player">
+                            <source src="/Client/video/${item.LinkVideo}" type="video/mp4" size="576">
+                        </video>
+                        <span class="time__duration time__duration2"></span>
                     </div>
-                    <div class="mota_noidung_video">${item.Description}</div>
-                </div>
-            </a>
-            <img id="addplaylist-${item.Id}" onclick="addPlayList(${item.Id})" class="icon-more hover add_playlist" src="/Client/img/more.png" alt="Alternate Text" />
-                    <div class="playlist_option playlist-${item.Id}">
-                        <div class="option_playlist hover into_playlist-${item.Id}" onclick="showPlayList(${item.Id})">
-                            <i class="fa fa-list-alt"></i> Thêm vào danh sách phát
+                    <div class="popular_right">
+                        <div class="header__popular">${item.Name}</div>
+                        <div class="all_papge">
+                            <div class="ten_kenh">${item.FirtsName} ${item.LastName} .</div>
+                            <div class="luot_xem">
+                               ${convertViewCount(item.ViewCount)} lượt xem
+                            </div>
+                            <div class="dau_cham_cach">.</div>
+                            <div class="thoi_gian_cong_chieu">${item.CreateDate}</div>
                         </div>
-                        <div class="option_playlist hover report_video" onclick="reportVideo(${item.Id})">
-                            <i class="fa fa-flag"></i> Báo cáo vi phạm
-                        </div>
-                        <div class="option_playlist hover report_video" onclick="removeWatched('/VideoWatched/DeleteFavorite',${item.Id})">
-                            <i class="fas fa-trash-alt"></i> Xóa khỏi danh sách
-                        </div>
+                        <div class="mota_noidung_video">${item.Description}</div>
+                    </div>
+                </a>
+                <img id="addplaylist-${item.Id}" onclick="addPlayList(${item.Id})" class="icon-more hover add_playlist" src="/Client/img/more.png" alt="Alternate Text" />
+                        <div class="playlist_option playlist-${item.Id}">
+                            <div class="option_playlist hover into_playlist-${item.Id}" onclick="showPlayList(${item.Id})">
+                                <i class="fa fa-list-alt"></i> Thêm vào danh sách phát
+                            </div>
+                            <div class="option_playlist hover report_video" onclick="reportVideo(${item.Id})">
+                                <i class="fa fa-flag"></i> Báo cáo vi phạm
+                            </div>
+                            <div class="option_playlist hover report_video" onclick="removeWatched('/VideoWatched/DeleteFavorite',${item.Id})">
+                                <i class="fas fa-trash-alt"></i> Xóa khỏi danh sách
+                            </div>
 
-                    </div>
-            </div>
-                        `);
+                        </div>
+                </div>
+                            `);
                     });
 
                     loadSecondVideo();
                     LoadEventMoseLeave();
+                    setTimeout(function () {
+                        loadDurationTime();
+                    }, 1000);
                 });
             }
         });

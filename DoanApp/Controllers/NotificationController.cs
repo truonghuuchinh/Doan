@@ -1,6 +1,7 @@
 ﻿using DoanApp.Commons;
 using DoanApp.Models;
 using DoanApp.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -9,6 +10,7 @@ using System.Threading.Tasks;
 
 namespace DoanApp.Controllers
 {
+    [Authorize]
     public class NotificationController : Controller
     {
         private readonly INotificationService _notifiService;

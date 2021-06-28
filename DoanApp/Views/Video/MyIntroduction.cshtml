@@ -29,7 +29,14 @@
 
     <div class="pass_kenhcuaban">
         <div class="pass_kenhcuaban_left">
-            <img class="icon-sidebar-item_heiht" alt="" src="@(ViewBag.UserMyPage.LoginExternal?ViewBag.UserMyPage.Avartar:"/Client/img/"+ViewBag.UserMyPage.Avartar)">
+            <img class="icon-sidebar-item_heiht" alt="" src="@(ViewBag.UserMyPage.LoginExternal?ViewBag.UserMyPage.Avartar:"/Client/avartar/"+ViewBag.UserMyPage.Avartar)">
+            @if (ViewBag.FollowUser == false)
+            {
+                <div class="repair_avartar hover">
+                    <img src="/Client/img/camera.png" alt="Alternate Text" />
+                </div>
+            }
+
         </div>
         <div class="pass_kenhcuaban_right">
             <div class="pass_kenhcuaban_rights">@ViewBag.UserMyPage.FirtsName @ViewBag.UserMyPage.LastName</div>
@@ -71,8 +78,8 @@
                             <div>Nhập mô tả kênh  <span class="card__input--error text-danger"></span></div>
 
                             <textarea class="cards__textarea"></textarea>
-                            <div id="cards_cancel" class="btn btn-danger">Hủy</div>
-                            <div id="cards_success" class="btn btn-primary">Cập nhật</div>
+                            <div id="cards_cancel" class="btn btn-danger hover">Hủy</div>
+                            <div id="cards_success" class="btn btn-primary hover">Cập nhật</div>
                         </div>
                     </div>
                     <pre class="card__content">
@@ -110,10 +117,10 @@
                     <input type="hidden" name="emailUser" value="@ViewBag.UserMyPage.Email" />
 
                 </div>
-                <img src="~/Client/img/default_image.png" class="imgReview" id="img_review" />
-                <div class="sangphai_header_videodauu" style="margin-top:300px;">
+                <div><img src="~/Client/img/default_image.png" class="imgReview" id="img_review" /></div>
+                <div class="sangphai_header_videodauu" style="margin-top:50px;">
                     <div type="button" class="btn btn-danger" data-dismiss="modal">Hủy</div>
-                    <button type="submit" class="btn btn-primary" id="confirm_report">Xác nhận</button>
+                    <button type="submit" class="btn btn-primary" >Xác nhận</button>
                 </div>
 
             </form>
@@ -122,8 +129,10 @@
 
     </div>
 </div>
+
 <script>
     $(document).ready(function () {
+    
         //-------Pagination-------------------------
         $('.site-layout').on('scroll', function () {
             let div = $(this).get(0);
@@ -142,12 +151,18 @@
                     $('.content_video').append(respone);
                     loadSecondVideo();
                     LoadEventMoseLeave();
+                    setTimeout(function () {
+                        loadDurationTime();
+                    }, 2000);
                 });
         }
         //------Kết thúc--------------------------
         //-------Process update image of page-------
         $(".repair_img").click(function () {
             $("#upload_img").modal('show');
+            $("#errorimg").text('');
+            $("#updateImgChannel").val('');
+
         });
         $("#updateImgChannel").change(function (event) {
             $("#errorimg").text('');
@@ -166,7 +181,6 @@
         //-------Process search Video----
         $(".click_search_kenhcb").click(function () {
             var nameSearch = $("#select2-search_name_video-container").text();
-            console.log("name: " + $('#idUser').val());
             $.get("/Video/MyPage_Partial/?nameSearch=" + nameSearch + "&id=" + $('#idUser').val(), function (respone) {
                 $(".content_video").html(respone);
             });

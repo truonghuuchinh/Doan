@@ -567,3 +567,4 @@ E:\HK5\Prepare Project Last Semester\DoanTotNghiep\DoanApp\obj\Debug\netcoreapp3
 E:\HK5\Prepare Project Last Semester\DoanTotNghiep\DoanApp\obj\Debug\netcoreapp3.1\Razor\Views\VideoWatched\VideoWatched_Partial.cshtml.g.cs
 E:\HK5\Prepare Project Last Semester\DoanTotNghiep\DoanApp\obj\Debug\netcoreapp3.1\Razor\Views\Video\MyIntroduction.cshtml.g.cs
 E:\HK5\Prepare Project Last Semester\DoanTotNghiep\DoanApp\obj\Debug\netcoreapp3.1\Razor\Views\Video\MyPlayList.cshtml.g.cs
+E:\HK5\Prepare Project Last Semester\DoanTotNghiep\DoanApp\obj\Debug\netcoreapp3.1\Razor\Views\Home\VideoRelationship_Partial.cshtml.g.cs

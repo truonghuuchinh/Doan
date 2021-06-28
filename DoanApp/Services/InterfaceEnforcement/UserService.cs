@@ -62,7 +62,6 @@ namespace DoanApp.Services
             var result = await _signInManager.PasswordSignInAsync(model.Email, model.PasswordHash, model.RememberMe, lockoutOnFailure: false);
             if (result.Succeeded)
             {
-
                 UserAuthenticated.checkUserAuthenticated(user);
                  return result.Succeeded;
             }
@@ -149,7 +148,8 @@ namespace DoanApp.Services
                 FirtsName = userLogin.FirtsName,
                 LastName = userLogin.LastName,
                 Avartar = userLogin.Avartar,
-                LoginExternal = true
+                LoginExternal = true,
+                CreateDate=new GetDateNow().DateNow
             };
             return user;
         }
@@ -168,6 +168,19 @@ namespace DoanApp.Services
             }
             return false;
          }
+
+        public async Task<int> UpdateAvartar(int id,string avartar)
+        {
+            var user = await FindUserId(id);
+            if(user!=null)
+            {
+                user.Avartar = avartar;
+                user.LoginExternal = false;
+                _context.Update(user);
+                return await _context.SaveChangesAsync();
+            }
+            return -1;
+        }
 
         public async Task<int> UpdateDescription(AppUserRequest request)
         {

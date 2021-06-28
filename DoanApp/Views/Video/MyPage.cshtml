@@ -28,7 +28,14 @@
 
     <div class="pass_kenhcuaban">
         <div class="pass_kenhcuaban_left">
-            <img class="icon-sidebar-item_heiht" alt="" src="@(ViewBag.UserMyPage.LoginExternal?ViewBag.UserMyPage.Avartar:"/Client/img/"+ViewBag.UserMyPage.Avartar)">
+            <img class="icon-sidebar-item_heiht" alt="" src="@(ViewBag.UserMyPage.LoginExternal?ViewBag.UserMyPage.Avartar:"/Client/avartar/"+ViewBag.UserMyPage.Avartar)">
+            @if (ViewBag.FollowUser == false)
+            {
+                <div class="repair_avartar hover">
+                    <img src="/Client/img/camera.png" alt="Alternate Text" />
+                </div>
+            }
+
         </div>
         <div class="pass_kenhcuaban_right">
             <div class="pass_kenhcuaban_rights">@ViewBag.UserMyPage.FirtsName @ViewBag.UserMyPage.LastName</div>
@@ -63,11 +70,10 @@
                 @foreach (var item in Model)
                 {
                     <div class="container22">
-                        <a id="movepage_detail-@item.Id" onclick="addWatched(@item.Id)" asp-action="DetailVideo" asp-controller="Home" asp-route-id="@item.Id">
+                        <a id="movepage_detail-@item.Id" asp-action="DetailVideo" asp-controller="Home" asp-route-id="@item.Id">
                             <div class="container222">
                                 <video width="261" height="165" onmouseover="viewBefore(@item.Id)" onmouseout="clearBefore(@item.Id)" src="~/Client/video/@item.LinkVideo" title="YouTube video player" class=" nextSecond nextSecond-@item.Id">
                                 </video>
-
                             </div>
 
                             <div class="container222_end">
@@ -87,7 +93,7 @@
                                 </div>
                             </div>
                         </a>
-
+                        <span class="time__duration"></span>
                         <div class="playlist_option playlist-@item.Id">
                             <div class="option_playlist hover into_playlist-@item.Id" onclick="showPlayList(@item.Id)">
                                 <i class="fa fa-list-alt"></i> Thêm vào danh sách phát
@@ -108,7 +114,7 @@
                 if (ViewBag.FollowUser == false)
                 {
                     <div class="noneVideo">
-                        <h3 style="color: darkolivegreen;">Kênh chưa có video</h3>
+                        <h3 style="color: darkolivegreen; margin-left:17px;">Kênh chưa có video</h3>
                         <a asp-action="MyChannel" asp-controller="Video"><h6 class="btn btn-primary">Tải lên ngay</h6></a>
                     </div>
                 }
@@ -136,8 +142,8 @@
                     <input type="hidden" name="emailUser" value="@ViewBag.UserMyPage.Email" />
 
                 </div>
-                <img src="~/Client/img/default_image.png" class="imgReview" id="img_review" />
-                <div class="sangphai_header_videodauu" style="margin-top:300px;">
+                <div><img src="~/Client/img/default_image.png" class="imgReview" id="img_review" /></div>
+                <div class="sangphai_header_videodauu" style="margin-top:50px;">
                     <div type="button" class="btn btn-danger" data-dismiss="modal">Hủy</div>
                     <button type="submit" class="btn btn-primary">Xác nhận</button>
                 </div>
@@ -152,9 +158,14 @@
 
    
     $(document).ready(function () {
+        setTimeout(function () {
+            loadDurationTime();
+        }, 2000);
         //-------Process update image of page-------
         $(".repair_img").click(function () {
             $("#upload_img").modal('show');
+            $("#updateImgChannel").val('');
+            $("#errorimg").text('');
         });
         $("#updateImgChannel").change(function (event) {
             $("#errorimg").text('');
@@ -173,9 +184,11 @@
         //-------Process search Video----
         $(".click_search_kenhcb").click(function () {
             var nameSearch = $("#select2-search_name_video-container").text();
-            console.log("name: " + $('#idUser').val());
             $.get("/Video/MyPage_Partial/?nameSearch=" + nameSearch + "&id=" + $('#idUser').val(), function (respone) {
                 $(".content_video").html(respone);
+                setTimeout(function () {
+                    loadDurationTime();
+                }, 2000);
             });
         });
         //-------End-----------------

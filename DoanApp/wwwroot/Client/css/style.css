@@ -13,7 +13,7 @@ body {
 }
 
 li:hover {
-    background: rgb(206, 201, 201);
+    background: rgb(197,197,197);
     text-decoration: none;
 }
 
@@ -93,9 +93,11 @@ li:hover {
 
 .no_relationship {
     color: gray;
-    margin: 45px 0px 0px 90px;
+    margin: 45px 0px 0px 0px;
     font-weight: 700;
     font-family: serif;
+   
+    font-style: italic;
 }
 
 .select2-selection--single {
@@ -174,20 +176,23 @@ li:hover {
     width: 2.5%;
     height: 30px;
     margin-top: 20px;
-    background: turquoise;
-    background-image: url(/Client/img/tao.JPG);
 }
+    .create i {
+        font-size: 39px ;
+        margin-top: -5px ;
+        color: #aaaaaa;
+    }
 
-.account_information {
-    float: left;
-    margin-left: 30px;
-    width: 3%;
-    height: 40px;
-    margin-top: 15px;
-    background: turquoise;
-    border-radius: 50%;
-    overflow: hidden;
-}
+    .account_information {
+        float: left;
+        margin-left: 30px;
+        width: 3%;
+        height: 40px;
+        margin-top: 15px;
+        background: turquoise;
+        border-radius: 50%;
+        overflow: hidden;
+    }
 /* ở dưới */
 nav {
     background: white;
@@ -311,10 +316,10 @@ a {
 }
 /* bên phải */
 .site-layout {
-    height: 88vh;
+    height: 90vh;
     background-color: #f3f3f3;
     margin-left: 237px;
-    overflow-y: auto;
+    overflow-y: scroll;
     width: 1155px;
 }
 
@@ -326,7 +331,9 @@ a {
     margin-right: 5px;
     margin-left: 15px;
     margin-top: 20px;
+    position:relative;
 }
+
 
 .container222 {
     background-color: #f3f3f3;
@@ -402,7 +409,7 @@ a {
 .contentes {
     background: white;
     width: 100%;
-    height: 88vh;
+    height: 90vh;
     margin-top: 60px;
     overflow-y: scroll;
     position: relative;
@@ -530,7 +537,8 @@ a {
 }
 
 .details_lerft {
-    width: 12%;
+    width: 65px;
+    height: 75px;
     float: left;
 }
 
@@ -585,7 +593,8 @@ a {
 
 .img_follow {
     border-radius: 50%;
-    width: 45px;
+    width: 50px;
+    height:60px;
 }
 
 .editVideo:focus {
@@ -686,6 +695,8 @@ a {
     font-size: 20px;
     color: black;
     margin-bottom: 20px;
+    font-style:italic;
+   
 }
 
 .popular_left {
@@ -868,6 +879,10 @@ a {
 .message_nologin {
     text-align: center;
 }
+.message_nologin h2{
+    font-style:italic;
+    opacity:0.2;
+}
 
 .list_dangnhap_center {
     width: 165px;
@@ -881,9 +896,9 @@ a {
     margin-left: 221px;
 }
 
-    .list_dangnhap_center:hover {
-        cursor: pointer;
-    }
+.list_dangnhap_center:hover {
+    cursor: pointer;
+}
 
 .list_dangnhap_header {
     width: 170px;
@@ -1110,7 +1125,6 @@ a {
 .all_counts_comment {
     flex-wrap: wrap;
     display: flex;
-    background: #0c386a;
     width: 100%;
     height: 100px;
     margin-top: 10px;
@@ -1129,14 +1143,16 @@ a {
 }
 
 .details_lerfts {
-    width: 80%;
+    width: 56px;
     float: left;
+    height: 66px;
 }
 
 .all_counts_comment_right {
+    margin-right:5px;
     float: left;
     background: white;
-    width: 90%;
+    width: 89%;
 }
 
 .check_comments {
@@ -1282,9 +1298,10 @@ a {
 }
 
 .all_counts_comment_rep_right {
+    margin-left:5px;
     float: left;
     background: white;
-    width: 90%;
+    width:88%;
 }
 
 .customs_imgs_rep_comment {
@@ -1339,8 +1356,9 @@ a {
     max-width: 500px !important;
     background: white;
     float: right;
-    margin-right: 70px;
+    margin-right: 85px;
     position: relative;
+    border-radius:85px;
 }
 
 .modal-content_es {
@@ -1358,7 +1376,8 @@ a {
 .modal_check__fier__all {
     display: flex;
     flex-wrap: wrap;
-    background: #aeaeae;
+    background: white;
+    opacity:0.9;
     width: 100%;
     padding: 10px;
 }
@@ -1393,7 +1412,7 @@ a {
 .name__avartar_fier_right {
     font-size: 18px;
     font-weight: 600;
-    color: white;
+   
     margin-top: 8px;
     margin-left: 10px;
 }
@@ -1405,7 +1424,6 @@ a {
 .email__avartar_fier_right {
     margin-left: 10px;
     font-size: 14px;
-    color: white;
     margin-top: -3px;
 }
 
@@ -1420,7 +1438,7 @@ a {
 .modal_check_function_fier {
     display: flex;
     flex-wrap: wrap;
-    background: #fafafa;
+    background: white;
     width: 100%;
     padding: 0px 16px 0 16px;
     margin-bottom: 10px;
@@ -1464,12 +1482,11 @@ a {
 .text_modal_check_function_fier {
     margin-left: 20px;
     margin-top: 7px;
-    color: 16px;
     color: rgb(39, 36, 36);
 }
 
 .modal_check_function_fier:hover {
-    background: gray;
+    background: #f2f2f2;
 }
 
 .text_modal_check_function_fier_all {
@@ -1506,10 +1523,12 @@ a {
     width: 8%;
     float: left;
     margin-top: 10px;
+    position:relative;
 }
 
 .icon-sidebar-item_heiht {
-    width: 100%;
+    height:80px;
+    width: 80px;
     border-radius: 50%;
 }
 
@@ -1861,9 +1880,9 @@ td .td_aluotthich {
 .choose_permission {
     display: none;
     width: 200px;
-    background: #B9B9B5;
+    background: #5e5e5e;
     margin-left: -190px;
-    color: #010101;
+    color: white;
     border-radius: 5px;
     padding: 10px;
     position: relative;
@@ -2090,7 +2109,7 @@ tbody {
 .modal-content_create {
     width: 900px;
     height: 595px;
-    background: white;
+    background: #e3e3e3;
     position: relative;
 }
 
@@ -2280,6 +2299,7 @@ tbody {
     margin-left: 10px;
     color: blue;
     margin-bottom: 5px;
+
 }
 
 .form-control_users_secrearys_mota {
@@ -2319,7 +2339,7 @@ tbody {
 .tieptuc_chuyentrang {
     float: right;
     margin-right: 10px;
-    margin-top: 10px;
+    margin-top: 5px;
     width: 70px;
     height: 40px;
     text-align: center;
@@ -2364,7 +2384,9 @@ tbody {
 }
 
 #chuyentrang {
-    background: #6c757d;
+    background: #047eea;
+    color: white;
+    margin-top: -4px
 }
 
 .quaylai_mottrang {
@@ -2387,10 +2409,9 @@ tbody {
 
 .quaydau_right {
     float: right;
-    background: red;
-    font-size: 18px;
+    font-size: 15px;
     color: white;
-    font-weight: 600;
+    font-weight: 500;
     margin-top: 5px;
     margin-right: 5px;
     text-align: center;
@@ -2411,12 +2432,12 @@ tbody {
     padding: 20px;
     position: absolute;
     width: 350px;
-    background: #e5e5e5;
+    background: #5c5c5c;
     display: none;
     border: 1px solid lightgrey;
     border-radius: 5px;
     box-shadow: 1px 1px #cecece inset;
-    color: #6c757d;
+    color: white;
 }
 
 .dropdown:hover .contentEdit {
@@ -2448,22 +2469,24 @@ tbody {
 }
 
 .createVideo {
-    width: 109px;
+    width: 107px;
     margin-top: 5px;
-    height: 46px;
-    font-size: 18px;
-    font-weight: 600;
+    height: 41px;
+    font-size: 15px;
+    font-weight: 500;
 }
 
 .noVideo img {
-    width: 125px;
-    height: 115px;
-}
+    width: 230px;
 
+}
+.noVideo div{
+    margin-left:58px;
+}
 .noVideo {
     position: absolute;
     margin-top: 140px;
-    margin-left: 530px;
+    margin-left: 470px;
 }
 
     .noVideo p {
@@ -2740,7 +2763,7 @@ tbody {
     height: 220px;
     background: white;
     margin-top: 14.5%;
-    margin-left: 25%;
+    margin-left: 32%;
     position: relative;
 }
 
@@ -2749,7 +2772,7 @@ tbody {
     height: 270px;
     background: white;
     margin-top: 14.5%;
-    margin-left: 31%;
+    margin-left: 32%;
     position: relative;
     border-radius: 10px;
 }
@@ -2759,17 +2782,24 @@ tbody {
     height: 500px;
     background: white;
     margin-top: 5.5%;
+    margin-left: 32%;
+    position: relative;
+}
+.upload_avartar {
+    width: 600px;
+    height: 500px;
+    background: white;
+    margin-top: 5.5%;
     margin-left: 31%;
     position: relative;
 }
-
 .modal_chinhsuaposter {
     width: 600px;
     height: 220px;
     height: 411px;
     background: white;
     margin-top: 90px;
-    margin-left: 30%;
+    margin-left: 31%;
     position: relative;
 }
 
@@ -2778,7 +2808,7 @@ tbody {
     height: 400px;
     background: white;
     margin-top: 14.5%;
-    margin-left: 25%;
+    margin-left: 32%;
     position: relative;
 }
 
@@ -2819,7 +2849,7 @@ tbody {
     float: right;
     padding-top: 7px;
     padding-right: 23px;
-    /* margin-top:300px;*/
+    
 }
 
 .xacnhanvi_deo {
@@ -3217,14 +3247,14 @@ option {
     height: 150px !important;
     background: white !important;
     margin-top: 210px;
-    margin-left: 210px;
+    margin-left: 37%;
 }
 #modalChangeName .modal-content {
     width: 400px !important;
     height: 170px !important;
     background: white !important;
     margin-top: 210px;
-    margin-left: 210px;
+    margin-left: 25%;
     display:flex;
     padding:5px;
     
@@ -3299,7 +3329,7 @@ option {
 .imgReview {
     width: 285px;
     height: 230px;
-    margin: 21px 0px 0px 140px;
+    margin: 21px 0px 0px 160px;
 }
 
 #formSearchVideo {
@@ -3397,7 +3427,8 @@ option {
 }
 
 .noidung_khungthongbaovideo_text {
-    width: 43%;
+    font-size:15px;
+    width: 50%;
     float: left;
     margin-left: 10px;
     margin-right: 10px;
@@ -3411,7 +3442,7 @@ option {
 }
 
 .img_thongbaovideocuado {
-    width: 32%;
+    width: 25%;
     float: left;
 }
 
@@ -3422,12 +3453,13 @@ option {
 
 .img_trang__cuaban_thongbao {
     border-radius: 50%;
-    width: 90%;
+    width: 80px;
+    height:60px;
 }
 
 .img_thongbaovideocuado_video {
-    width: 100%;
-    height: 75px;
+    width: 88%;
+    height: 52px;
     background: lemonchiffon;
     margin-top: 10px;
 }
@@ -3489,7 +3521,7 @@ option {
 }
 
 .img_offthongbao {
-    background-image: url(/Client/img/none_thongbao.png);
+  
     width: 24px;
     height: 24px;
     margin-top: 3px;
@@ -3500,7 +3532,10 @@ option {
     width: 100%;
     height: 5px;
 }
-
+.img_offthongbao i {
+    font-size: 29px;
+    color: #919191;
+}
 .class_nameimg_anthongbao:hover {
     background: gray;
 }
@@ -3529,7 +3564,8 @@ option {
     overflow-y: scroll;
     height: 88vh;
     width: 100%;
-    background: rgb(236,236,236);
+    background: rgb(255,255,255);
+    opacity:0.9;
 }
 
 .khung_thongbao_video:hover {
@@ -3634,11 +3670,26 @@ option {
     border-radius: 53%;
     display: none;
 }
+.repair_avartar {
+    text-align: center;
+    width: 49%;
+    height: 41%;
+    position: absolute;
+    background: #aaaaaa;
+    opacity: 0.8;
+    border-radius: 53%;
+    margin-top: -60px;
+    margin-left: 21px;
+    display: none;
+}
+.pass_kenhcuaban_left:hover .repair_avartar{
+    display:block;
+}
 
-    .repair_img img {
-        margin-left: 13px;
-        margin-top: 7px;
-    }
+.repair_img img {
+    margin-left: 13px;
+    margin-top: 7px;
+}
 
 .img_kenhcuaban_noidung:hover .repair_img {
     display: block;
@@ -3650,6 +3701,10 @@ option {
 }
 
 .errorimg {
+    font-size: 15px;
+    font-weight: 100;
+}
+#erroravartar {
     font-size: 15px;
     font-weight: 100;
 }
@@ -3667,9 +3722,7 @@ option {
 }
 
 .none_notifi {
-    font-size: 30px;
-    margin: 100px;
-    color: gray;
+   width:100%;
 }
 
 .linkDetail {
@@ -3731,6 +3784,7 @@ option {
     color: black;
     margin-top: 20px;
     margin-left: 15px;
+ 
 }
 
 .libary_right {
@@ -3742,9 +3796,9 @@ option {
 }
 
 .img_libary {
-    width: 110px;
-    margin-left: 40px;
-    height: 111px;
+    width: 114px;
+    margin-left: 29px;
+    height: 114px;
     margin-top: 78px;
     border-radius: 50%;
 }
@@ -3760,9 +3814,10 @@ option {
 }
 
 .span_xemall {
+    margin-left: 570px;
+    width: 120px;
     float: right;
     font-size: 17px;
-    margin-right: 85px;
     color: blue;
     font-weight: 500;
     display: flex;
@@ -3774,19 +3829,20 @@ option {
     color: black;
     margin-top: 20px;
     margin-left: 15px;
-    width: 80%;
+    display:inline-flex;
+ 
 }
 
 .noneVideo {
     background-image: url(/Client/img/unavailableVideo.png);
     background-repeat: no-repeat;
-    width: 510px;
+    width: 726px;
     height: 440px;
-    margin-left: 327px;
+    margin-left: 219px;
     margin-top: 50px;
     text-align: center;
-    border-radius: 50%;
-    padding-top: 378px;
+   
+    padding-top: 395px;
 }
 
 .cards {
@@ -3854,7 +3910,7 @@ option {
 }
 
 .contentEdit .option:hover {
-    background: #d9d9d9;
+    background: #7b7b7b;
 }
 
 .option_playlist:hover {
@@ -3968,12 +4024,14 @@ option {
     }
 .content_right--item--a{
     width:445px;
-    
+    border:0;
+    color:white;
 }
 .content_right--item--a:hover {
     color: white;
     text-decoration: none;
     border-bottom-color:white;
+    border:0;
 }
 .content_right--item .playlist_option{
     margin-top:35px;
@@ -3989,7 +4047,7 @@ option {
 }
 .mainplaylist {
     overflow-y: scroll;
-    height:88vh;
+    height:90vh;
 }
 .listChild {
     overflow: hidden;
@@ -4177,4 +4235,45 @@ option {
     text-overflow: ellipsis;
     white-space: nowrap;
     width:90%;
+}
+.time__duration {
+    color: white;
+    position: absolute;
+    margin-top: -156px;
+    margin-left: 226px;
+    font-size:14px;
+}
+
+.content__Favorite, .content__Watched, .content__danhsachphat {
+    display: inline-block;
+}
+.alibary{
+    border:0;
+    margin-left:5px;
+}
+
+.novideo__watched {
+    margin-left: 10%;
+    margin-top: 4%;
+    margin-bottom: 2%;
+    opacity: 0.5;
+    color: #949494; font-style: italic;
+}
+.time__duration2 {
+    margin-left: -40px !important;
+    margin-top: 129px !important;
+}
+.comment__overal:hover{
+    color:white !important;
+}
+.a__playlist {
+    border: 0;
+}
+
+    .a__playlist:hover {
+        color: #f4f4f4;
+    }
+.ifor__libary {
+    font-size: 14px;
+    color: gray;
 }
