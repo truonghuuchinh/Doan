@@ -5,13 +5,14 @@
     
 }
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" style="background:white;">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>Chi tiết</title>
     <link rel="stylesheet" href="https://cdn.plyr.io/3.6.2/demo.css">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link href="~/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
     <link href="~/Client/fonts/fontawesome/css/all.min.css" rel="stylesheet" />
     <link href="~/css/toastifier.min.css" rel="stylesheet" />
@@ -49,12 +50,11 @@
                             userId = user.Id;
                             <input type="hidden" value="@user.Id" id="user_authenticated" />
                             <div id="completed_Login">
-                                <a asp-action="MyChannel" asp-controller="Video" class="move_page">
+                                <a target="_blank" asp-action="MyChannel" asp-controller="Video" class="move_page">
                                     <div class="create click_create">
-
+                                        <i class="material-icons">&#xe070;</i>
                                     </div>
                                 </a>
-
                                 <div class="notification">
                                     <div class="notificationss hover"></div>
                                     <div class="thongbao_do">
@@ -82,7 +82,7 @@
                                                 </div>
                                             </div>
                                             <div class="ke_ngang_fier"></div>
-                                            <a asp-action="MyPage" asp-controller="Video">
+                                            <a asp-action="MyPage" asp-controller="Video" >
                                                 <div class="modal_check_function_fier">
                                                     <div class="modal_check_function_fier_left">
                                                         <div class="khung_function_fier_img">
@@ -148,9 +148,9 @@
                 <div class="tong_khungss_thongbao_all">
                     @if (ViewBag.ListNotification == null || ViewBag.ListNotification.Count == 0)
                     {
-                        <div class="khung_thongbao_video">
-                            <div class="none_notifi">Không có thông báo</div>
-                        </div>
+                    <div class="khung_thongbao_video">
+                        <img class="none_notifi" src="/Client/img/No__Notification.PNG" alt="Alternate Text" />
+                    </div>
                     }
                     else
                     {
@@ -172,7 +172,7 @@
                                             }
                                         </div>
                                         <div class="khung_thongbao_video_img">
-                                            <img class="img_trang__cuaban_thongbao" alt="" src="@(item.LoginExternal?item.AvartarUser:"/Client/img/"+item.AvartarUser)">
+                                            <img class="img_trang__cuaban_thongbao" alt="" src="@(item.LoginExternal?item.AvartarUser:"/Client/avartar/"+item.AvartarUser)">
                                         </div>
                                         <div class="noidung_khungthongbaovideo_text">
                                             <div class="noidung_khungthongbao_video__text"><strong>@item.UserName</strong> @item.Content</div>
@@ -199,7 +199,9 @@
                                         </div>
                                         <div class=" hover class_nameimg_anthongbao">
                                             <div class="khung_img_class_nameimg_anthongbo">
-                                                <div class="img_offthongbao"></div>
+                                                <div class="img_offthongbao">
+                                                    <i class="material-icons">&#xe7f6;</i>
+                                                </div>
                                             </div>
                                             <div onclick="revertFollow(event,@item.Id)" class="noidung_class_nameimg_anthongbao">Tắt thông báo từ kênh </div>
                                         </div>
@@ -223,7 +225,7 @@
                         <div class="contents_video">
                             <video controls playsinline
                                    id="player">
-
+                                
                                 <source src="~/Client/video/@Model.LinkVideo"
                                         type="video/mp4" />
                             </video>
@@ -263,7 +265,7 @@
                             <div class="funtion_contnets">
                                 <div class="funtion_contnets_left">
                                     <div class="detail_video">
-                                        <img class="details_lerft icon-sidebar-items_video" alt="" src="@(Model.LoginExternal?Model.Avartar:"~/Client/img/"+Model.Avartar)">
+                                        <img class="details_lerft icon-sidebar-items_video" alt="" src="@(Model.LoginExternal?Model.Avartar:"/Client/avartar/"+Model.Avartar)">
                                         <span class="details_right text-sidebar-items_video">
                                             <p id="nameChannel">@Model.FirtsName @Model.LastName</p>
                                             <p id="countRegister">@ConvertViewCount.ConvertView(ViewBag.CountRegister) người đăng ký</p>
@@ -306,7 +308,7 @@
                                 {
                                     <div class="all_counts_comment_left">
                                         <div class="customs_imgs_comment">
-                                            <img class="details_lerfts icon-sidebar-items_video" alt="" src="@(ViewBag.UserLogin.LoginExternal?ViewBag.UserLogin.Avartar:"~/Client/img/"+ViewBag.UserLogin.Avartar)">
+                                            <img class="details_lerfts icon-sidebar-items_video" alt="" src="@(ViewBag.UserLogin.LoginExternal?ViewBag.UserLogin.Avartar:"/Client/avartar/"+ViewBag.UserLogin.Avartar)">
                                         </div>
                                     </div>
                                     <div class="all_counts_comment_right">
@@ -319,7 +321,7 @@
                                         <input type="hidden" id="CommentId" value="0" />
                                         <input type="hidden" id="VideoId" value="@Model.Id" />
                                         <div class="text__comment_right">
-                                            <button class="check_cancel">Hủy</button>
+                                            <button class="check_cancel checkCancel__All">Hủy</button>
                                             <button class="check_comment" onclick="comment(false,' ','',0)">Bình luận</button>
                                         </div>
                                     </div>
@@ -332,7 +334,7 @@
                                         </div>
                                     </div>
                                     <div class="all_counts_comment_right">
-                                        <a asp-action="Login" class="hover" asp-controller="Home">
+                                        <a style="color:white;" asp-action="Login" class="hover comment__overal" asp-controller="Home">
                                             <input type="text" class="check_comments hover" placeholder="Bình Luận" required>
                                         </a>
                                     </div>
@@ -340,206 +342,208 @@
 
 
                             </div>
-
-                            @*//Phần comment*@
-                            @foreach (var item in ViewBag.Comment)
-                            {
-
-                                if (item.CommentId == 0)
+                            <div class="content__commentAll">
+                                @*//Phần comment*@
+                                @foreach (var item in ViewBag.Comment)
                                 {
-                                    <div class="noidung_comment removeComment-@item.Id" id="hello_coment">
-                                        <div class="all_counts_comment_left">
-                                            <div class="customs_imgs_comment">
-                                                <img class="details_lerfts icon-sidebar-items_video" alt="" src="@(item.LoginExternal?item.Avartar:"~/Client/img/"+item.Avartar)">
-                                            </div>
-                                        </div>
-                                        <div class="all_counts_comment_right">
-                                            <div class="noidung_comment--parent" onmouseleave="closeOption(@item.Id)">
-                                                @if (user != null && user.Id == item.UserId)
-                                                {
-                                                    <img onclick="showOptionComment(@item.Id)" class="noidung_comment--img hover noidung_comment--img-@item.Id" src="/Client/img/more.png" />
-                                                    <div class="noidung_comment--option optionId-@item.Id">
-                                                        <div onclick="repairComment(@item.Id)" class="option--item hover"><i class="fas fa-pencil-alt"></i> Chỉnh sửa</div>
-                                                        <div onclick="deleteComment(@item.Id,0)" class="option--item hover"><i class="fas fa-trash"></i> Xóa</div>
-                                                    </div>
-                                                }
-                                                <div class="khung_hang_1">
-                                                    <div class="ten_tac_gia">@item.FirtsName @item.LastName</div>
-                                                    <div class="thoi_gian_binh_luan">@CaculatorHours.Caculator(item.CreateDate)</div>
-                                                </div>
-                                                <div class="khung_hang_2">
 
-                                                    <div class="noi_dung_binh_luan">
-                                                        <div class="content__Comment ">
-                                                            <div class="content__Comment-@item.Id">
-                                                                @item.Content
+                                    if (item.CommentId == 0)
+                                    {
+                                        <div class="noidung_comment removeComment-@item.Id" id="hello_coment">
+                                            <div class="all_counts_comment_left">
+                                                <div class="customs_imgs_comment">
+                                                    <img class="details_lerfts icon-sidebar-items_video" alt="" src="@(item.LoginExternal?item.Avartar:"/Client/avartar/"+item.Avartar)">
+                                                </div>
+                                            </div>
+                                            <div class="all_counts_comment_right">
+                                                <div class="noidung_comment--parent" onmouseleave="closeOption(@item.Id)">
+                                                    @if (user != null && user.Id == item.UserId)
+                                                    {
+                                                        <img onclick="showOptionComment(@item.Id)" class="noidung_comment--img hover noidung_comment--img-@item.Id" src="/Client/img/more.png" />
+                                                        <div class="noidung_comment--option optionId-@item.Id">
+                                                            <div onclick="repairComment(@item.Id)" class="option--item hover"><i class="fas fa-pencil-alt"></i> Chỉnh sửa</div>
+                                                            <div onclick="deleteComment(@item.Id,0)" class="option--item hover"><i class="fas fa-trash"></i> Xóa</div>
+                                                        </div>
+                                                    }
+                                                    <div class="khung_hang_1">
+                                                        <div class="ten_tac_gia">@item.FirtsName @item.LastName</div>
+                                                        <div class="thoi_gian_binh_luan">@CaculatorHours.Caculator(item.CreateDate)</div>
+                                                    </div>
+                                                    <div class="khung_hang_2">
+
+                                                        <div class="noi_dung_binh_luan">
+                                                            <div class="content__Comment ">
+                                                                <div class="content__Comment-@item.Id">
+                                                                    @item.Content
+                                                                </div>
+                                                                <input type="hidden" name="name" value=" @item.Content" class="inputContent-@item.Id" />
                                                             </div>
-                                                            <input type="hidden" name="name" value=" @item.Content" class="inputContent-@item.Id" />
-                                                        </div>
-                                                        <div class="repaircomment repaircomment-@item.Id">
-                                                            <input onkeyup="changeContent(@item.Id)" type="text" value="@item.Content" class="repaircomment__input repaircomment__input-@item.Id" />
-                                                            <button onclick="cancelRepairComment(@item.Id,true)" class="btn btn-danger repaircomment__danger hover">Hủy</button>
-                                                            <button onclick="confirmRepairComment(@item.Id)" class="btn btn-primary repaircomment__primary repaircomment__primary-@item.Id hover">Xác nhận</button>
-                                                        </div>
+                                                            <div class="repaircomment repaircomment-@item.Id">
+                                                                <input onkeyup="changeContent(@item.Id)" type="text" value="@item.Content" class="repaircomment__input repaircomment__input-@item.Id" />
+                                                                <button onclick="cancelRepairComment(@item.Id,true)" class="btn btn-danger repaircomment__danger hover">Hủy</button>
+                                                                <button onclick="confirmRepairComment(@item.Id)" class="btn btn-primary repaircomment__primary repaircomment__primary-@item.Id hover">Xác nhận</button>
+                                                            </div>
 
+                                                        </div>
                                                     </div>
-                                                </div>
-                                                <div class="khung_hang_3">
-                                                    <div class="like_binh_luan hover" onclick="likeComment(@item.Id)"><i class="fa fa-thumbs-up like-@item.Id"></i></div>
-                                                    <div class="so_luong_like countLike-@item.Id">@item.Like</div>
-                                                    <div class="disklike_binh_luan hover" onclick="dislikeComment(@item.Id)"><i class="fa fa-thumbs-down dislike-@item.Id"></i></div>
-                                                    <div class="so_luong_disklike countDis-@item.Id">@item.DisLike</div>
-                                                    <input type="hidden" class="comment-@item.Id" value="@item.CommentId" />
-                                                    @if (User.Identity.IsAuthenticated)
-                                                    {
-                                                        <div class="phan_hoi_binh_luan hover" onclick="oke(@item.Id, true,' ')">Phản hồi</div>
-                                                    }
-                                                    else
-                                                    {
-                                                        <a asp-action="Login" class="reply hover" asp-controller="Home"><div class="phan_hoi_binh_luan">Phản hồi</div></a>
-                                                    }
-                                                </div>
-
-                                            </div>
-
-                                            <div id="displayChild" class="all_counts_comment_rep-@item.Id" style="display: none;">
-                                                <div class="all_counts_comment_rep_left">
-                                                    <div class="customs_imgs_rep_comment">
+                                                    <div class="khung_hang_3">
+                                                        <div class="like_binh_luan hover" onclick="likeComment(@item.Id)"><i class="fa fa-thumbs-up like-@item.Id"></i></div>
+                                                        <div class="so_luong_like countLike-@item.Id">@item.Like</div>
+                                                        <div class="disklike_binh_luan hover" onclick="dislikeComment(@item.Id)"><i class="fa fa-thumbs-down dislike-@item.Id"></i></div>
+                                                        <div class="so_luong_disklike countDis-@item.Id">@item.DisLike</div>
+                                                        <input type="hidden" class="comment-@item.Id" value="@item.CommentId" />
                                                         @if (User.Identity.IsAuthenticated)
                                                         {
-                                                            <img class="details_lerfts icon-sidebar-items_video" alt="" src="@(ViewBag.UserLogin.LoginExternal?ViewBag.UserLogin.Avartar:"~/Client/img/"+ViewBag.UserLogin.Avartar)">
+                                                            <div class="phan_hoi_binh_luan hover" onclick="oke(@item.Id, true,' ')">Phản hồi</div>
+                                                        }
+                                                        else
+                                                        {
+                                                            <a asp-action="Login" class="reply hover" asp-controller="Home"><div class="phan_hoi_binh_luan">Phản hồi</div></a>
                                                         }
                                                     </div>
-                                                </div><div class="all_counts_comment_rep_right">
-                                                    <input type="text" class="check_comments  Content-@item.Id" placeholder="Bình Luận" autofocus>
-                                                    @if (User.Identity.IsAuthenticated)
-                                                    {
-                                                        <input type="hidden" class="UserId-@item.Id" value="@(ViewBag.UserLogin.Id)" />
-                                                    }
-                                                    <input type="hidden" class="CommentId-@item.Id" value="@item.Id" />
-                                                    <input type="hidden" class="VideoId-@item.Id" value="@Model.Id" />
-                                                    <div class="text__comment_rep_right">
-                                                        <button class="check_cancel" onclick="oke(@item.Id, false,' ')">Hủy</button>
-                                                        <button class="check_comment" onclick="comment(true,@item.Id,'childOne',@item.Id)">Phản hồi</button>
+
+                                                </div>
+
+                                                <div id="displayChild" class="all_counts_comment_rep-@item.Id" style="display: none;">
+                                                    <div class="all_counts_comment_rep_left">
+                                                        <div class="customs_imgs_rep_comment">
+                                                            @if (User.Identity.IsAuthenticated)
+                                                            {
+                                                                <img class="details_lerfts icon-sidebar-items_video" alt="" src="@(ViewBag.UserLogin.LoginExternal?ViewBag.UserLogin.Avartar:"/Client/avartar/"+ViewBag.UserLogin.Avartar)">
+                                                            }
+                                                        </div>
+                                                    </div><div class="all_counts_comment_rep_right">
+                                                        <input type="text" class="check_comments  Content-@item.Id" placeholder="Bình Luận" autofocus>
+                                                        @if (User.Identity.IsAuthenticated)
+                                                        {
+                                                            <input type="hidden" class="UserId-@item.Id" value="@(ViewBag.UserLogin.Id)" />
+                                                        }
+                                                        <input type="hidden" class="CommentId-@item.Id" value="@item.Id" />
+                                                        <input type="hidden" class="VideoId-@item.Id" value="@Model.Id" />
+                                                        <div class="text__comment_rep_right">
+                                                            <button class="check_cancel" onclick="oke(@item.Id, false,' ')">Hủy</button>
+                                                            <button class="check_comment" onclick="comment(true,@item.Id,'childOne',@item.Id)">Phản hồi</button>
+                                                        </div>
                                                     </div>
                                                 </div>
-                                            </div>
 
-                                            <div class="listChild listchild-@item.Id">
+                                                <div class="listChild listchild-@item.Id">
 
-                                                @foreach (var child in ViewBag.Comment)
-                                                {
-                                                    if (child.CommentId == item.Id)
+                                                    @foreach (var child in ViewBag.Comment)
                                                     {
-                                                        if (countFlag == 0)
+                                                        if (child.CommentId == item.Id)
                                                         {
-                                                            <div class="listchild__display listchild__display-@item.Id hover" onclick="displayComment(@item.Id)">
-                                                                <i class="fas fa-caret-down"></i> 
-                                                                <div class="listChild__text-@item.Id"></div>
-                                                            </div>
-                                                        }
-                                                        <div class="noidung_comment removeComment-@child.Id" id="hello_coments">
-                                                            <div class="all_counts_comment_left">
-                                                                <div class="customs_imgs_comment">
-                                                                    <img class="details_lerfts icon-sidebar-items_video" alt="" src="@(child.LoginExternal?child.Avartar:"~/Client/img/"+child.Avartar)">
+                                                            if (countFlag == 0)
+                                                            {
+                                                                <div class="listchild__display listchild__display-@item.Id hover" onclick="displayComment(@item.Id)">
+                                                                    <i class="fas fa-caret-down"></i>
+                                                                    <div class="listChild__text-@item.Id"></div>
                                                                 </div>
-                                                            </div>
-                                                            <div class="all_counts_comment_right">
-                                                                <div class="noidung_comment--parent" onmouseleave="closeOption(@child.Id)">
-                                                                    @if (user != null && user.Id == child.UserId)
-                                                                    {
-                                                                        <img onclick="showOptionComment(@child.Id)" class="noidung_comment--img  noidung_comment--img-@child.Id hover" src="/Client/img/more.png" />
-                                                                        <div class="noidung_comment--option optionId-@child.Id" style="left:68%;">
-                                                                            <div onclick="repairComment(@child.Id)" class="option--item hover"><i class="fas fa-pencil-alt"></i> Chỉnh sửa</div>
-                                                                            <div onclick="deleteComment(@child.Id,@item.Id)" class="option--item hover"><i class="fas fa-trash"></i> Xóa</div>
-                                                                        </div>
-                                                                    }
-                                                                    <div class="khung_hang_1">
-                                                                        <div class="ten_tac_gia TacGia-@child.Id">@child.FirtsName @child.LastName</div>
-                                                                        <div class="thoi_gian_binh_luan">@CaculatorHours.Caculator(child.CreateDate)</div>
+                                                            }
+                                                            <div class="noidung_comment removeComment-@child.Id" id="hello_coments">
+                                                                <div class="all_counts_comment_left">
+                                                                    <div class="customs_imgs_comment">
+                                                                        <img class="details_lerfts icon-sidebar-items_video" alt="" src="@(child.LoginExternal?child.Avartar:"/Client/avartar/"+child.Avartar)">
                                                                     </div>
-                                                                    <div class="khung_hang_2">
-                                                                        <div class="noi_dung_binh_luan">
-                                                                            <div class="content__Comment">
-                                                                                <label style="background:#cac9c9;">@(child.ReplyFor!="childOne"?child.ReplyFor:"")</label>
-                                                                                <div class="content__Comment-@child.Id">
-                                                                                    @child.Content
+                                                                </div>
+                                                                <div class="all_counts_comment_right">
+                                                                    <div class="noidung_comment--parent" onmouseleave="closeOption(@child.Id)">
+                                                                        @if (user != null && user.Id == child.UserId)
+                                                                        {
+                                                                            <img onclick="showOptionComment(@child.Id)" class="noidung_comment--img  noidung_comment--img-@child.Id hover" src="/Client/img/more.png" />
+                                                                            <div class="noidung_comment--option optionId-@child.Id" style="left:68%;">
+                                                                                <div onclick="repairComment(@child.Id)" class="option--item hover"><i class="fas fa-pencil-alt"></i> Chỉnh sửa</div>
+                                                                                <div onclick="deleteComment(@child.Id,@item.Id)" class="option--item hover"><i class="fas fa-trash"></i> Xóa</div>
+                                                                            </div>
+                                                                        }
+                                                                        <div class="khung_hang_1">
+                                                                            <div class="ten_tac_gia TacGia-@child.Id">@child.FirtsName @child.LastName</div>
+                                                                            <div class="thoi_gian_binh_luan">@CaculatorHours.Caculator(child.CreateDate)</div>
+                                                                        </div>
+                                                                        <div class="khung_hang_2">
+                                                                            <div class="noi_dung_binh_luan">
+                                                                                <div class="content__Comment">
+                                                                                    <label style="background:#cac9c9;">@(child.ReplyFor!="childOne"?child.ReplyFor:"")</label>
+                                                                                    <div class="content__Comment-@child.Id">
+                                                                                        @child.Content
+                                                                                    </div>
+                                                                                    <input type="hidden" name="name" value=" @child.Content" class="inputContent-@child.Id" />
                                                                                 </div>
-                                                                                <input type="hidden" name="name" value=" @child.Content" class="inputContent-@child.Id" />
-                                                                            </div>
-                                                                            <div class="repaircomment repaircomment-@child.Id">
-                                                                                <input onkeyup="changeContent(@child.Id)" type="text" value="@child.Content" class="repaircomment__input repaircomment__input-@child.Id" />
-                                                                                <button onclick="cancelRepairComment(@child.Id,true)" class="btn btn-danger repaircomment__danger hover">Hủy</button>
-                                                                                <button onclick="confirmRepairComment(@child.Id)" class="btn btn-primary repaircomment__primary hover repaircomment__primary-@child.Id">Xác nhận</button>
+                                                                                <div class="repaircomment repaircomment-@child.Id">
+                                                                                    <input onkeyup="changeContent(@child.Id)" type="text" value="@child.Content" class="repaircomment__input repaircomment__input-@child.Id" />
+                                                                                    <button onclick="cancelRepairComment(@child.Id,true)" class="btn btn-danger repaircomment__danger hover">Hủy</button>
+                                                                                    <button onclick="confirmRepairComment(@child.Id)" class="btn btn-primary repaircomment__primary hover repaircomment__primary-@child.Id">Xác nhận</button>
+                                                                                </div>
                                                                             </div>
                                                                         </div>
-                                                                    </div>
 
-                                                                    <div class="khung_hang_3">
-                                                                        <div class="like_binh_luan hover" onclick="likeComment(@child.Id)"><i class="fa fa-thumbs-up like-@child.Id"></i></div>
-                                                                        <div class="so_luong_like countLike-@child.Id">@child.Like</div>
-                                                                        <div class="disklike_binh_luan hover" onclick="dislikeComment(@child.Id)"><i class="fa fa-thumbs-down dislike-@child.Id"></i></div>
-                                                                        <div class="so_luong_disklike countDis-@child.Id">@child.DisLike</div>
-                                                                        <input type="hidden" class="comment-@child.Id" value="@child.CommentId" />
-                                                                        @if (User.Identity.IsAuthenticated)
-                                                                        {
-                                                                            <div class="phan_hoi_binh_luan hover" onclick="oke(@child.Id, true,'child')">Phản hồi</div>
-                                                                        }
-                                                                        else
-                                                                        {
-                                                                            <a asp-action="Login" class="reply hover" asp-controller="Home"><div class="phan_hoi_binh_luan">Phản hồi</div></a>
-                                                                        }
-                                                                    </div>
-                                                                </div>
-
-
-                                                                <div class="all_counts_comment_rep-@child.Id" style="display: none;">
-                                                                    <div class="all_counts_comment_rep_left">
-                                                                        <div class="customs_imgs_rep_comment">
+                                                                        <div class="khung_hang_3">
+                                                                            <div class="like_binh_luan hover" onclick="likeComment(@child.Id)"><i class="fa fa-thumbs-up like-@child.Id"></i></div>
+                                                                            <div class="so_luong_like countLike-@child.Id">@child.Like</div>
+                                                                            <div class="disklike_binh_luan hover" onclick="dislikeComment(@child.Id)"><i class="fa fa-thumbs-down dislike-@child.Id"></i></div>
+                                                                            <div class="so_luong_disklike countDis-@child.Id">@child.DisLike</div>
+                                                                            <input type="hidden" class="comment-@child.Id" value="@child.CommentId" />
                                                                             @if (User.Identity.IsAuthenticated)
                                                                             {
-                                                                                <img class="details_lerfts icon-sidebar-items_video" alt="" src="@(ViewBag.UserLogin.LoginExternal ? ViewBag.UserLogin.Avartar : "~/Client/img/" + ViewBag.UserLogin.Avartar)">
+                                                                                <div class="phan_hoi_binh_luan hover" onclick="oke(@child.Id, true,'child')">Phản hồi</div>
+                                                                            }
+                                                                            else
+                                                                            {
+                                                                                <a asp-action="Login" class="reply hover" asp-controller="Home"><div class="phan_hoi_binh_luan">Phản hồi</div></a>
                                                                             }
                                                                         </div>
                                                                     </div>
-                                                                    <div class="all_counts_comment_rep_right">
-                                                                        <div class="floatContainer-@child.Id">
-                                                                            <label class="lable label-@child.Id" for="contents"></label>
-                                                                            <input onblur="showFrameBlur(@child.Id)" onfocus="showFrameActive(@child.Id)" type="text" class="check_comments check_comments_child Content-@child.Id" autofocus>
-                                                                            @if (User.Identity.IsAuthenticated)
-                                                                            {
-                                                                                <input type="hidden" class="UserId-@child.Id" value="@(ViewBag.UserLogin.Id)" />
-                                                                            }
-                                                                            <input type="hidden" class="CommentId-@child.Id" value="@item.Id" />
 
-                                                                            <input type="hidden" class="VideoId-@child.Id" value="@Model.Id" />
+
+                                                                    <div class="all_counts_comment_rep-@child.Id" style="display: none;">
+                                                                        <div class="all_counts_comment_rep_left">
+                                                                            <div class="customs_imgs_rep_comment">
+                                                                                @if (User.Identity.IsAuthenticated)
+                                                                                {
+                                                                                    <img class="details_lerfts icon-sidebar-items_video" alt="" src="@(ViewBag.UserLogin.LoginExternal ? ViewBag.UserLogin.Avartar : "/Client/avartar/" + ViewBag.UserLogin.Avartar)">
+                                                                                }
+                                                                            </div>
                                                                         </div>
+                                                                        <div class="all_counts_comment_rep_right">
+                                                                            <div class="floatContainer-@child.Id">
+                                                                                <label class="lable label-@child.Id" for="contents"></label>
+                                                                                <input onblur="showFrameBlur(@child.Id)" onfocus="showFrameActive(@child.Id)" type="text" class="check_comments check_comments_child Content-@child.Id" autofocus>
+                                                                                @if (User.Identity.IsAuthenticated)
+                                                                                {
+                                                                                    <input type="hidden" class="UserId-@child.Id" value="@(ViewBag.UserLogin.Id)" />
+                                                                                }
+                                                                                <input type="hidden" class="CommentId-@child.Id" value="@item.Id" />
 
-                                                                        <div class="text__comment_rep_right">
-                                                                            <button class="check_cancel" onclick="oke(@child.Id, false,' ')">Hủy</button>
-                                                                            <button class="check_comment" onclick="comment(true,@child.Id,'childTwo',@item.Id)">Phản hồi</button>
-                                                                            <input type="hidden" id="idChild-@child.Id" value="@child.Id" />
+                                                                                <input type="hidden" class="VideoId-@child.Id" value="@Model.Id" />
+                                                                            </div>
+
+                                                                            <div class="text__comment_rep_right">
+                                                                                <button class="check_cancel" onclick="oke(@child.Id, false,' ')">Hủy</button>
+                                                                                <button class="check_comment" onclick="comment(true,@child.Id,'childTwo',@item.Id)">Phản hồi</button>
+                                                                                <input type="hidden" id="idChild-@child.Id" value="@child.Id" />
+                                                                            </div>
                                                                         </div>
                                                                     </div>
                                                                 </div>
                                                             </div>
-                                                        </div>
-                                                        countFlag++;
+                                                            countFlag++;
+                                                        }
+
                                                     }
-
-                                                }
+                                                </div>
                                             </div>
-                                        </div>
-                                         <input type="hidden" class="countChildComment-@item.Id" value="@countFlag" />
-                                        <script>
+                                            <input type="hidden" class="countChildComment-@item.Id" value="@countFlag" />
+                                            <script>
                                             $(".listChild__text-@item.Id").text("Xem thêm "+$(".countChildComment-@item.Id").val());
-                                        </script>
-                                    </div>
-                                   
-                                    countFlag = 0;
-                                }
+                                            </script>
+                                        </div>
 
-                            }
+                                        countFlag = 0;
+                                    }
+
+                                }
+                            </div>
+                        
 
                         </div>
                     </div>
@@ -553,10 +557,11 @@
                             @foreach (var item in ViewBag.VideoRelationShip)
                             {
                                 <div class="content_right--item">
-                                    <a class="content_right--item--a" onclick="addWatched(@item.Id)" id="movepage_detail-@item.Id" asp-action="DetailVideo" asp-route-id="@item.Id">
+                                    <a class="content_right--item--a"  id="movepage_detail-@item.Id" asp-action="DetailVideo" asp-route-id="@item.Id">
                                         <div class="content_right_all">
                                             <div class="content_right_all_left">
                                                 <video width="261" height="95" src="~/Client/video/@item.LinkVideo" title="YouTube video player" onmouseover="viewBefore(@item.Id)" onmouseout="clearBefore(@item.Id)" class=" nextSecond nextSecond-@item.Id"></video>
+                                                <span style="margin-top:67px !important;" class="time__duration time__duration2"></span>
                                             </div>
                                             <div class="content_right_all_right">
                                                 <div class="content_right_text_video">
@@ -636,7 +641,7 @@
                     </a>
                     @if (User.Identity.IsAuthenticated)
                     {
-                        <a class="move_page" asp-action="MyChannel" asp-controller="Video">
+                        <a class="move_page" asp-action="MyChannel" asp-controller="Video" target="_blank">
                             <li class="text-white sidebar-item sidebar-menu">
                                 <div class="row">
                                     <img class="icon-sidebar-item" alt="" src="~/Client/img/youtube_videocuaban.png">
@@ -671,14 +676,14 @@
                                     <a class="move_page" asp-action="MyPage" asp-controller="Video" asp-route-idUser="@item.Id">
                                         <li class="text-white sidebar-item sidebar-menu fix_texts_count">
                                             <div class="row">
-                                                <img class="icon-sidebar-item img_follow" alt="" src="@(item.LoginExternal ? item.Avartar : "~/Client/img/" + item.Avartar)">
+                                                <img class="icon-sidebar-item img_follow" alt="" src="@(item.LoginExternal ? item.Avartar : "/Client/avartar/" + item.Avartar)">
                                                 <span class="text-sidebar-item fix_texts">@item.FirtsName @item.LastName</span>
                                             </div>
                                         </li>
                                     </a>
                                 }
                             </div>
-                            <div class="collapses">
+                            <div class="collapses hover">
                                 Xem thêm
                             </div>
                         }
@@ -732,35 +737,35 @@
                 </div>
 
                 <div class="modal-body">
-                    @if (ViewBag.PlayList != null)
-                    {
-                        if (ViewBag.PlayList.Count == 0)
+                    <div class="list__playlist">
+                        @if (ViewBag.PlayList != null)
                         {
-                            <div class="listChoose">
-                                Chưa có danh sách, tạo ngay...
-                            </div>
-                        }
-                        else
-                        {
-                            @foreach (var item in ViewBag.PlayList)
+                            if (ViewBag.PlayList.Count == 0)
                             {
                                 <div class="listChoose">
-                                    <input type="checkbox" id="chooseList-@item.Id" data-id="@item.Id" class="chooseList chooseList-@item.Id" />
-                                    <label class="hover" onclick="addItem(@item.Id)" for="chooseList-@item.Id"><span>@item.Name</span></label>
+                                    Chưa có danh sách, tạo ngay...
                                 </div>
                             }
+                            else
+                            {
+                                @foreach (var item in ViewBag.PlayList)
+                                {
+                                    <div class="listChoose">
+                                        <input type="checkbox" id="chooseList-@item.Id" data-id="@item.Id" class="chooseList chooseList-@item.Id" />
+                                        <label class="hover" onclick="addItem(@item.Id)" for="chooseList-@item.Id"><span>@item.Name</span></label>
+                                    </div>
+                                }
+                            }
                         }
-                    }
+                    </div>
                 </div>
                 <div class="modal-footer">
-                    <div class="add-playlist"><i class=" fa fa-plus"></i> Tạo danh sách mới</div>
+                    <div class="add-playlist hover"><i class=" fa fa-plus"></i> Tạo danh sách mới</div>
                     <div class="create_playlist">
-                        <form asp-action="Create" asp-controller="PlayListVideo">
-                            <span>Tên</span>
-                            <input class="input_playlist" type="text" id="namePlayList" name="Name" />
-                            <input type="hidden" value="@ViewBag.IdUser" id="idUser" name="UserId" />
-                            <button type="submit" class="btn-primary btnPlaylist">Tạo</button>
-                        </form>
+                        <span>Tên</span>
+                        <input class="input_playlist" type="text" id="namePlayList" name="Name" />
+                        <input type="hidden" value="@ViewBag.IdUser" id="idUser" name="UserId" />
+                        <button type="submit" class="btn-primary btnPlaylist" disabled>Tạo</button>
                     </div>
                 </div>
             </div>
@@ -774,7 +779,7 @@
                 </div>
             </div>
             <div class="content_videodau">
-                <span class="text-danger errorReport" id="errorReport"></span>
+                <span class="text-danger errorReport" style="margin-left:10px; display:block;" id="errorReport"></span>
                 <textarea class="noidung_baocao" id="valueReport" rows="4" placeholder="Mô tả văn bản" style="-webkit-appearance: none;"></textarea>
                 <div class="sangphai_header_videodauu">
                     <div type="button" class="btn btn-primary" id="confirm_report">Báo cáo</div>
@@ -793,13 +798,22 @@
         loadSecondVideo();
         function displayButton() {
             $(".text__comment_right").css('display', 'block');
+            $("#Content").focus();
         }
-
+        $(".checkCancel__All").click(function () {
+            $(".text__comment_right").css('display', '');
+            $("#Content").val('');
+        });
         $(document).ready(function () {
-
+           
+            setTimeout(function () {
+                loadDurationTime();
+            }, 2000);
             var userIds = $("#UserId").val();
             var videoIds = $("#VideoId").val();
             var toUserId = $("#userChannel").val();
+            //-------Gọi hàm thêm vào danh sách video đã xem
+            addWatched(videoIds);
             //---------------Xử lý like comment----------------------
 
             if (userIds != undefined) {
@@ -859,6 +873,11 @@
                                 $("#countRegister").text(respone + " người đăng ký");
                                 $(".registration").css("background", "#eee");
                                 $(".registration").text("Đã đăng ký");
+                                toast('Đã đăng ký', '/Client', {
+                                    type: 'success',
+                                    animation: 'zoom',
+                                    position: 'bottom-right'
+                                });
                             }
                         });
                     }
@@ -877,6 +896,11 @@
                         $(".registration").css("background", "#ff2e2e");
                         $(".registration").text("Đăng ký");
                         $("#modalCancel").modal('hide');
+                        toast('Đã hủy', '/Client', {
+                            type: 'success',
+                            animation: 'zoom',
+                            position: 'bottom-right'
+                        });
                     }
                 });
         });
@@ -926,6 +950,28 @@
                 }
             }
             //----------------End--------------------------
+            //----------------Xử lý phân  trang-----------
+            $('.contentes').on('scroll', function () {
+                let div = $(this).get(0);
+                if (div.scrollTop + div.clientHeight >= div.scrollHeight) {
+                  
+                    LoadDataDetail();
+                    currentPage += 1;
+                }
+            });
+            function LoadDataDetail() {
+                $.get("/Home/VideoRelationship_Partial/?page=" + currentPage + "&id=" + $("#VideoIdView").val(), function (respone) {
+                    if (respone != null) {
+                        $(".content_right").append(respone);
+                    }
+                });
+                LoadEventMoseLeave();
+                loadSecondVideo();
+                setTimeout(function () {
+                    loadDurationTime();
+                }, 2000);
+            }
+            //----------------Kết thúc--------------------
         });
 
 

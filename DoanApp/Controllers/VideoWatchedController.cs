@@ -1,6 +1,7 @@
 ﻿using DoanApp.Commons;
 using DoanApp.Models;
 using DoanApp.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -10,6 +11,7 @@ using X.PagedList;
 
 namespace DoanApp.Controllers
 {
+    [Authorize]
     public class VideoWatchedController : Controller
     {
         private readonly IVideoWatchedService _videoWatched;

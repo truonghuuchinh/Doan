@@ -10,12 +10,13 @@
     @foreach (var item in Model)
     {
         <div class="parent">
-            <a onclick="addWatched(@item.Id)" asp-action="DetailVideo" asp-controller="Home" asp-route-id="@item.Id">
+            <a  asp-action="DetailVideo" asp-controller="Home" asp-route-id="@item.Id">
                 <div class="popular_left">
                     <video width="261" height="165" onmouseover="viewBefore(@item.Id)" onmouseout="clearBefore(@item.Id)" class=" nextSecond nextSecond-@item.Id"
                            data-poster="@item.PosterImg" id="player">
                         <source src="~/Client/video/@item.LinkVideo" type="video/mp4" size="576">
                     </video>
+                    <span class="time__duration time__duration2"></span>
                 </div>
                 <div class="popular_right">
                     <div class="header__popular">

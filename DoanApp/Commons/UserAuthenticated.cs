@@ -57,5 +57,21 @@ namespace DoanApp.Commons
                 }
             }
         }
+        public void UpdateAvartar(int id, string avartar)
+        {
+            var user = new AppUser();
+            foreach (var item in ListtUser)
+            {
+                if (item.Id == id)
+                {
+                    user = item;
+                    user.Avartar = avartar;
+                    user.LoginExternal = false;
+                    ListtUser.Add(user);
+                    ListtUser.Remove(item);
+                    break;
+                }
+            }
+        }
     }
 }
