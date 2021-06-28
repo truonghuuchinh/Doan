@@ -1,5 +1,6 @@
 ﻿using DoanApp.Models;
 using DoanApp.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
@@ -10,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace DoanApp.Controllers
 {
-
+    [Authorize]
     public class DetailVideoController : Controller
     {
         private readonly IDetailVideoService _detailVideo;

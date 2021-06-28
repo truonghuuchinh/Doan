@@ -176,7 +176,7 @@ namespace DoanApp.Controllers
             if (page == null) page = 1;
             var pageNumber = page ?? 1;
             var pageSize = 5;
-            var listVideo_Vm = GetSearchVideo_vm(nameSearch);
+            var listVideo_Vm = GetSearchVideo_vm(nameSearch).OrderByDescending(x=>x.Id).ToList();
             return View(await listVideo_Vm.ToPagedListAsync(pageNumber, pageSize));
         }
         public IActionResult SearchVideo_Partial(int? page,string nameSearch=null)
@@ -185,7 +185,7 @@ namespace DoanApp.Controllers
             if (page == null) page = 1;
             var pageNumber = page ?? 1;
             var pageSize = 5;
-            var listVideo_vm = GetSearchVideo_vm(nameSearch);
+            var listVideo_vm = GetSearchVideo_vm(nameSearch).OrderByDescending(x=>x.Id).ToList();
             return View(listVideo_vm.ToPagedList(pageNumber, pageSize));
         }
         public async Task<IActionResult> UpdateDescription(AppUserRequest request)
@@ -226,10 +226,8 @@ namespace DoanApp.Controllers
             return listVideo_Vm;
         }
         public async Task<IActionResult> DetailVideo(int? id)
-        {
-            
-           
-            GetNotificationHome();
+            {
+                GetNotificationHome();
             var userFollow = "false";
             var userLogin = UserAuthenticated.GetUser(User.Identity.Name);
             if (userLogin != null)
@@ -279,7 +277,23 @@ namespace DoanApp.Controllers
             ViewBag.CountRegister = _channelService.GetAll().Where(x=>x.ToUserId==video_Vm.AppUserId).Count();
                  return View(video_Vm);
         }
-
+        public IActionResult VideoRelationship_Partial(int? page,int id)
+        {
+            if (page == null) page = 1;
+            if (id != 0 && id > 0)
+            {
+                var video = _videoService.FinVideoAsync(id).Result;
+                var lVideo = _videoService.GetAll().Where(x => x.CategorysId == video.CategorysId && x.Id != video.Id).ToList();
+                var lUser = _userService.GetAll();
+                var list_vm= _videoService.GetVideo_Vm(lVideo, lUser).OrderByDescending(x => x.Id).ToPagedList((int)page, 8);
+                foreach (var item in list_vm)
+                {
+                    item.CreateDate = CaculatorHours.Caculator(item.CreateDate);
+                }
+                return View(list_vm);
+            }
+            return View(null);
+        }
         [HttpPost]
         public async Task<IActionResult> CreateComment_Partial(string comments)
         {

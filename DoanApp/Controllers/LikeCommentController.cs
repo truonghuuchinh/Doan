@@ -3,6 +3,7 @@ using DoanApp.Models;
 using DoanApp.Services;
 using DoanData.Commons;
 using DoanData.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
@@ -13,6 +14,7 @@ using System.Threading.Tasks;
 
 namespace DoanApp.Controllers
 {
+    [Authorize]
     public class LikeCommentController : Controller
     {
         private readonly ILikeCommentService _likeService;

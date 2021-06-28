@@ -16,5 +16,7 @@ namespace DoanApp.Models
         public string PosterVideo { get; set; }
         public int CountItem { get; set; }
         public string CreateDate { get; set; }
+        public string FirtsName { get; set; }
+        public string LastName { get; set; }
     }
 }

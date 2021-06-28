@@ -8,6 +8,7 @@
     <title>Quản lý Video</title>
     <link href="~/Client/fonts/fontawesome/css/all.min.css" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link href="~/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="~/Client/css/style.css">
     <link href="~/css/alert_css.css" rel="stylesheet" />
@@ -19,7 +20,7 @@
         <div class="header">
             <div class="container-header">
                 <div class="menu">
-                    <div class="click_menu"></div>
+                    <div class="click_menu hover"></div>
                 </div>
                 <div class="logo"></div>
                 <form asp-action="SearchVideo" asp-controller="Home" method="post" id="formSearchVideo">
@@ -43,7 +44,7 @@
                             <div id="completed_Login">
                                 <a asp-action="MyChannel" asp-controller="Video" class="move_page">
                                     <div class="create click_create">
-
+                                        <i class="material-icons">&#xe070;</i>
                                     </div>
                                 </a>
 
@@ -74,7 +75,7 @@
                                                 </div>
                                             </div>
                                             <div class="ke_ngang_fier"></div>
-                                            <a asp-action="MyPage" asp-controller="Video">
+                                            <a asp-action="MyPage" asp-controller="Video" target="_blank">
                                                 <div class="modal_check_function_fier">
                                                     <div class="modal_check_function_fier_left">
                                                         <div class="khung_function_fier_img">
@@ -141,7 +142,7 @@
                     @if (ViewBag.ListNotification == null || ViewBag.ListNotification.Count == 0)
                     {
                         <div class="khung_thongbao_video">
-                            <div class="none_notifi">Không có thông báo</div>
+                            <img class="none_notifi" src="/Client/img/No__Notification.PNG" alt="Alternate Text" />
                         </div>
                     }
                     else
@@ -164,7 +165,7 @@
                                             }
                                         </div>
                                         <div class="khung_thongbao_video_img">
-                                            <img class="img_trang__cuaban_thongbao" alt="" src="@(item.LoginExternal?item.AvartarUser:"/Client/img/"+item.AvartarUser)">
+                                            <img class="img_trang__cuaban_thongbao" alt="" src="@(item.LoginExternal?item.AvartarUser:"/Client/avartar/"+item.AvartarUser)">
                                         </div>
                                         <div class="noidung_khungthongbaovideo_text">
                                             <div class="noidung_khungthongbao_video__text"><strong>@item.UserName</strong> @item.Content</div>
@@ -191,7 +192,9 @@
                                         </div>
                                         <div class="hover class_nameimg_anthongbao">
                                             <div class="khung_img_class_nameimg_anthongbo">
-                                                <div class="img_offthongbao"></div>
+                                                <div class="img_offthongbao">
+                                                    <i class="material-icons">&#xe7f6;</i>
+                                                </div>
                                             </div>
                                             <div onclick="revertFollow(event,@item.Id)" class="noidung_class_nameimg_anthongbao">Tắt thông báo từ kênh </div>
                                         </div>
@@ -257,8 +260,28 @@
             </div>
         </div>
     </div>
+    <!--Modal show danh sách phát-->
+    <div class="modal" id="modalShowPlayList" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <div class="body__search">
+                        <i class="fas fa-search"></i>
+                        <input placeholder="Tìm trên kênh của bạn" id="timkiem__video" type="search" class="name__Create searchAllList" value="" />
+                    </div>
+                    <hr style="margin-top:35px;" />
+                    <div>Tất cả video</div>
+                    <hr />
+                    <div class="tbodyOfPlayList">
 
-    
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--Kết thúc-->
+
     <script src="~/js/site.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.min.js"></script>
     <script src="~/Client/js/site.js"></script>

@@ -7,7 +7,7 @@
 @foreach (var item in Model)
 {
     <div class="container22">
-        <a id="movepage_detail-@item.Id" onclick="addWatched(@item.Id)" asp-action="DetailVideo" asp-controller="Home" asp-route-id="@item.Id">
+        <a id="movepage_detail-@item.Id"  asp-action="DetailVideo" asp-controller="Home" asp-route-id="@item.Id">
             <div class="container222">
                 <video width="261" height="165" onmouseover="viewBefore(@item.Id)" onmouseout="clearBefore(@item.Id)" src="~/Client/video/@item.LinkVideo" title="YouTube video player" class=" nextSecond nextSecond-@item.Id">
                 </video>
@@ -31,7 +31,7 @@
                 </div>
             </div>
         </a>
-
+        <span class="time__duration"></span>
         <div class="playlist_option playlist-@item.Id">
             <div class="option_playlist hover into_playlist-@item.Id" onclick="showPlayList(@item.Id)">
                 <i class="fa fa-list-alt"></i> Thêm vào danh sách phát
@@ -45,5 +45,5 @@
     {
         count = 1;
         <br />
-}
+    }
 }
