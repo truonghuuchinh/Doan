@@ -12,8 +12,29 @@
         position: absolute;
         margin-left: 240px;
     }
+
+    .container22 {
+        height: 260px;
+    }
+
+    .container222, .container222_end {
+        background: white;
+    }
+
+    .time__duration {
+        margin-top: -135px;
+    }
+
+    .site-layout {
+        background: white;
+    }
+
+    .contentBody {
+        background: white;
+    }
 </style>
-<input type="hidden" id="idUser" value="@ViewBag.UserMyPage.Id" />
+<input type="hidden" id="idChannel" value="@ViewBag.UserMyPage.Id" />
+<input type="hidden" id="idUser" value="@ViewBag.IdUser" />
 <div class="col site-layout">
 
     <div class="img_kenhcuaban_noidung">
@@ -120,7 +141,7 @@
                 <div><img src="~/Client/img/default_image.png" class="imgReview" id="img_review" /></div>
                 <div class="sangphai_header_videodauu" style="margin-top:50px;">
                     <div type="button" class="btn btn-danger" data-dismiss="modal">Hủy</div>
-                    <button type="submit" class="btn btn-primary" >Xác nhận</button>
+                    <button type="submit" class="btn btn-primary">Xác nhận</button>
                 </div>
 
             </form>
@@ -132,31 +153,7 @@
 
 <script>
     $(document).ready(function () {
-    
-        //-------Pagination-------------------------
-        $('.site-layout').on('scroll', function () {
-            let div = $(this).get(0);
-            if (div.scrollTop + div.clientHeight >= div.scrollHeight) {
-                loadData();
 
-                currentPage += 1;
-            }
-        });
-        function loadData() {
-            var inputSearch = $("#select2-search_name_video-container").text();
-            if (inputSearch == "Tìm kiếm")
-                inputSearch = null;
-            $.get("/Video/MyPage_Partial/?id=" + $("#idUser").val() + "&page=" + currentPage + "&nameSearch=" + inputSearch,
-                function (respone) {
-                    $('.content_video').append(respone);
-                    loadSecondVideo();
-                    LoadEventMoseLeave();
-                    setTimeout(function () {
-                        loadDurationTime();
-                    }, 2000);
-                });
-        }
-        //------Kết thúc--------------------------
         //-------Process update image of page-------
         $(".repair_img").click(function () {
             $("#upload_img").modal('show');
@@ -181,14 +178,18 @@
         //-------Process search Video----
         $(".click_search_kenhcb").click(function () {
             var nameSearch = $("#select2-search_name_video-container").text();
-            $.get("/Video/MyPage_Partial/?nameSearch=" + nameSearch + "&id=" + $('#idUser').val(), function (respone) {
+            $.get("/Video/MyPage_Partial/?nameSearch=" + nameSearch + "&id=" + $('#idChannel').val(), function (respone) {
                 $(".content_video").html(respone);
+                loadSecondVideo();
+                setTimeout(function () {
+                    loadDurationTime();
+                }, 1000);
             });
         });
         //-------End-----------------
 
         //-------Load list search--------
-        $.get("/Video/ListVideoJson/?id=" + $('#idUser').val(), function (respone) {
+        $.get("/Video/ListVideoJson/?id=" + $('#idChannel').val(), function (respone) {
             respone = JSON.parse(respone);
 
             $("#search_name_video").select2({
@@ -209,7 +210,7 @@
             $(".cards__input").toggleClass("cards--display");
         });
         $("#cards_success").click(function () {
-            var idUser = $("#idUser").val();
+            var idUser = $("#idChannel").val();
             var mota = $(".cards__textarea").val();
             if (idUser != '' && mota != null && mota != '') {
                 var data = {

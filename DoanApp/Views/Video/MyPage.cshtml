@@ -12,9 +12,25 @@
         position:absolute;
         margin-left:240px;
     }
+    .container22{
+        height:260px;
+    }
+    .container222, .container222_end{
+        background:white;
+    }
+    .time__duration{
+        margin-top:-135px;
+    }
+    .site-layout{
+        background:white;
+    }
+    .contentBody {
+        background: white;
+    }
 </style>
 <div class="col site-layout">
-    <input type="hidden" id="idUser" value="@ViewBag.UserMyPage.Id" />
+    <input type="hidden" id="idChannel"  value="@ViewBag.UserMyPage.Id" />
+    <input type="hidden" id="idUser" value=" @ViewBag.IdUser" />
     <div class="img_kenhcuaban_noidung">
         <img src="@(ViewBag.UserMyPage.ImgChannel==null?"/Client/img/imgChannel.jpg":"/Client/imgChannel/"+ViewBag.UserMyPage.ImgChannel)" alt="Cinque Terre" width="1200" height="250">
         @if (ViewBag.FollowUser == false)
@@ -184,8 +200,9 @@
         //-------Process search Video----
         $(".click_search_kenhcb").click(function () {
             var nameSearch = $("#select2-search_name_video-container").text();
-            $.get("/Video/MyPage_Partial/?nameSearch=" + nameSearch + "&id=" + $('#idUser').val(), function (respone) {
+            $.get("/Video/MyPage_Partial/?nameSearch=" + nameSearch + "&id=" + $('#idChannel').val(), function (respone) {
                 $(".content_video").html(respone);
+                loadSecondVideo();
                 setTimeout(function () {
                     loadDurationTime();
                 }, 2000);
@@ -193,9 +210,9 @@
         });
         //-------End-----------------
         //-------Load list search--------
-        $.get("/Video/ListVideoJson/?id=" + $('#idUser').val(), function (respone) {
+        $.get("/Video/ListVideoJson/?id=" + $('#idChannel').val(), function (respone) {
             respone = JSON.parse(respone);
-            console.log(respone);
+           
             $("#search_name_video").select2({
                 them: 'clasic',
                 placeholder: 'Tìm kiếm......',
@@ -208,7 +225,9 @@
             let div = $(this).get(0);
             if (div.scrollTop + div.clientHeight >= div.scrollHeight) {
                 loadData();
-
+                setTimeout(function () {
+                    loadDurationTime();
+                }, 1000);
                 currentPage += 1;
             }
         });
@@ -216,7 +235,7 @@
             var inputSearch = $("#select2-search_name_video-container").text();
             if (inputSearch == "Tìm kiếm")
                 inputSearch = null;
-            $.get("/Video/MyPage_Partial/?id=" + $("#idUser").val() + "&page=" + currentPage + "&nameSearch=" + inputSearch,
+            $.get("/Video/MyPage_Partial/?id=" + $("#idChannel").val() + "&page=" + currentPage + "&nameSearch=" + inputSearch,
                 function (respone) {
                 $('.content_video').append(respone);
                 loadSecondVideo();

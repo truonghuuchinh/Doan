@@ -139,6 +139,27 @@ namespace DoanApp.Services
             return  cm_vm;
         }
 
+        public List<CountComment> GetCountCm()
+        {
+            var listCount = new List<CountComment>();
+            var listCountComment = (from vd in _context.Video.ToList()
+                                    join cm in GetAll() on vd.Id equals cm.VideoId
+                                    group cm by cm.VideoId into grp
+                                    select new
+                                    {
+                                        grp.Key,
+                                        Count = grp.Count()
+                                    }).OrderByDescending(x => x.Key).ToList();
+            foreach (var item in listCountComment)
+            {
+                var i = new CountComment();
+                i.Id = item.Key;
+                i.Count = item.Count;
+                listCount.Add(i);
+            }
+            return listCount;
+        }
+
         public async Task<int> Update(CommentRequest cmRequest)
         {
             var comment = _context.Comment.FirstOrDefault(X => X.Id == cmRequest.Id);

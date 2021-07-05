@@ -11,6 +11,7 @@ namespace DoanApp.Services
     public interface IVideoService
     {
         List<Video> GetAll();
+        List<Video_vm> GetAllVideoPlayList(List<Video> video, AppUser user);
         Task<Video> Create(VideoRequest videoRequest,List<IFormFile> listPost);
         Task<int> Update(VideoRequest videoRequest);
         Task<int> Delete(int id);
@@ -22,7 +23,8 @@ namespace DoanApp.Services
         Task<int> UpdateCategory(int id,int idCategory);
         Task<int> UpdatePermission(VideoRequest request);
         Task<int> DeleteVideoFavorite(int id);
-        List<Video_vm> GetAllVideoPlayList(List<Video> video, AppUser user);
+        Task<int> UpdateStatus(int id);
+     
         
     }
 }

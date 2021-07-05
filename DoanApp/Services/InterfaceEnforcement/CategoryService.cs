@@ -27,7 +27,9 @@ namespace DoanApp.Services
         public async Task<int> DeleteAsync(int id)
         {
             var category = _context.Category.FirstOrDefault(x => x.Id == id);
-            _context.Remove(category);
+            if (category.Status) category.Status = false;
+            else category.Status = true;
+            _context.Update(category);
             return await _context.SaveChangesAsync();
         }
 
@@ -38,7 +40,7 @@ namespace DoanApp.Services
 
         public async Task<List<Category>> GetAll()
         {
-            var list = await _context.Category.ToListAsync();
+            var list = await _context.Category.Where(x=>x.Status).ToListAsync();
             return list;
         }
 

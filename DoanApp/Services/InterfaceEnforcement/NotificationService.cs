@@ -71,6 +71,28 @@ namespace DoanApp.Services
             return -1;
         }
 
+        public async Task<int> CreateReplyReport(NotificationRequest request,int idAmdin)
+        {
+            if (request != null)
+            {
+                var notifi = new Notification();
+                notifi.AvartarUser = "avartarDefault.jpg";
+                notifi.UserId = idAmdin;
+                notifi.FromUserId = request.FromUserId;
+                notifi.LoginExternal = false;
+                notifi.PoterImg = request.PoterImg;
+                notifi.Content = request.Content;
+                notifi.VideoId = request.VideoId;
+                notifi.Watched = true;
+                notifi.CreateDate = DateTime.Now.ToString("MM-d-yyyy H:mm:ss");
+                notifi.Status = request.Status;
+                notifi.UserName = "Admin";
+                _context.Notification.Add(notifi);
+                return await _context.SaveChangesAsync();
+            }
+            return -1;
+        }
+
         public async Task<int> Delete(int id)
         {
             var notifi = _context.Notification.FirstOrDefault(X => X.Id == id);

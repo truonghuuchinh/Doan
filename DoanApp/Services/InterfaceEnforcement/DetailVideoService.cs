@@ -85,7 +85,9 @@ namespace DoanApp.Services
                                     Count = grp.Count()
                                 };
             var detailPlayListVideo = from dlist in detailPlayList
-                                      join video in _context.Video on dlist.VideoId equals video.Id
+                                      join video in _context.Video.Where(x=>x.Status&&x.HidenVideo) on dlist.VideoId equals video.Id
+                                      join cate in _context.Category on video.CategorysId equals cate.Id
+                                      where cate.Status
                                       select new { dlist, video.PosterImg };
             var listComplete = (from countItem in listCountItem
                                 join detail in detailPlayListVideo on countItem.Key equals detail.dlist.Id

@@ -52,7 +52,12 @@ namespace DoanApp.Services
 
         public List<LikeVideoDetail> GeAll()
         {
-            return _context.LikeVideoDetail.ToList();
+            var listWatched = (from video in _context.Video
+                               join like in _context.LikeVideoDetail on video.Id equals like.VideoId
+                               join category in _context.Category on video.CategorysId equals category.Id
+                               where category.Status
+                               select like).ToList();
+            return listWatched;
         }
 
         public async Task<int> Update(LikeVideoRequest likeRequest)

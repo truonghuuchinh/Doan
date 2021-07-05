@@ -1,6 +1,13 @@
-﻿function OpenPopUp(title,url) {
+﻿function OpenPopUp2(title,url) {
     $.get(url, function (respone) {
-        $("#ModalTitle").text(title);
+        $("#mediumModalLabel").text(title);
+        $(".contentAll").html(respone);
+        $("#mediumModal").modal("show");
+    });
+}
+function OpenPopUp(tieude,url) {
+    $.get(url, function (respone) {
+        $("#ModalTitle").text(tieude);
         $("#ModalContent").html(respone);
         $("#myModal").modal("show");
     });
@@ -329,4 +336,44 @@ function toast(msg, srcImg, options = {}) {
         }
         container.appendChild(h);
     }
+}
+function alertSuccess(msg) {
+    toast(msg, "/Client", {
+        type: 'success',
+        animation: 'zoom',
+        position:'bottom-right'
+    });
+}
+function alertWarn(msg) {
+    toast(msg, "/Client", {
+        type: 'warn',
+        animation: 'zoom',
+        position: 'bottom-right'
+    });
+}
+function PaginationPage(url,parent) {
+    $(window).scroll(function () {
+        if ($(window).scrollTop().toFixed() == $(document).height() - $(window).height()) {
+            $.get(url + "?name=" + $("#searchAll").val()+"&page=" + currentPage, function (respone) {
+                $(parent).append(respone);
+                loadVideoReport();
+                loadSecondVideo();
+            });
+            currentPage++;
+        }
+    });
+}
+
+function searchAll(url) {
+    
+    $(".searchAll").click(function () {
+        currentPage = 1;
+        if ($("#searchAll").val() != '') {
+            $.get(url +"?name=" + $("#searchAll").val()+"&page=" + currentPage, function (respone) {
+                if (respone != undefined)
+                    $("tbody").html(respone);
+                currentPage++;
+            });
+        }
+    });
 }

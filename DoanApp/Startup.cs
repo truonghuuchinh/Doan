@@ -115,8 +115,11 @@ namespace DoanApp
             {
                 endpoints.MapRazorPages();
                 endpoints.MapControllerRoute(
-                  name: "Administration",
-                  pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
+                  name: "areadefault",
+                  pattern: "{area:exists}/{controller=Home}/{action=Login}/{id?}");
+                endpoints.MapControllerRoute(
+                 name: "Administration",
+                 pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
                 endpoints.MapControllerRoute(
                  name: "default",
                  pattern: "{controller=Home}/{action=Index}/{id?}");

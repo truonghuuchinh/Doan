@@ -1,0 +1,132 @@
+﻿@model IPagedList<ReportVideo_Vm>
+@using X.PagedList;
+@{
+    int count = 0;
+
+}
+
+<div class="row">
+    <div class="box">
+        <div class="box-header displayFlex">
+            <div>Danh sách báo cáo</div>
+
+        </div>
+        <div class="box-body overflow-scroll">
+            <table>
+                <thead>
+                    <tr>
+                        <th>
+                            Nội dung báo cáo
+                        </th>
+                        <th class="center">
+                            Video báo cáo
+                        </th>
+                        <th class="center">Người báo cáo</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody id="tbodyReport">
+
+                    @foreach (var item in Model)
+                    {
+                        <tr onclick="showDetailReport(@item.Id)" class="tr-shadow hover removeItem-@item.Id" title="Click vào để xem chi tiết">
+                            <td style="width:280px;"><div class="content__report">@item.Content</div></td>
+                            <td style=" width:300px;" class="center">
+                                <img class="imgPoster" src="/Client/imgPoster/@item.ImgPoster" alt="Alternate Text" />
+                                <div class="nameVideoReport">@item.NameVideo</div>
+                            </td>
+                            <td class="center">
+                                @item.NamUser
+                            </td>
+
+                            <td>
+                                <div class="table-data-feature">
+                                    <button class="item" data-toggle="tooltip" data-placement="top" title="Phản hồi" onclick="replyFunction(event,@item.UserId,@item.VideoId)">
+                                        <i class="zmdi zmdi-mail-reply"></i>
+                                    </button>
+                                    <button class="item" data-toggle="tooltip" data-placement="top" title="Xóa" onclick="deleteFunction(event,@item.Id)">
+                                        <i class="zmdi zmdi-delete"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr class="spacer"></tr>
+                    }
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="replyReport" tabindex="-1" role="dialog" aria-labelledby="staticModalLabel" aria-hidden="true"
+     data-backdrop="static">
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+            <div class="modal-header" style="background:#dddd">
+                <h5 class="modal-title" id="staticModalLabel">Phản hồi báo cáo</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body contentReport">
+                <div>Nội dung</div>
+                <textarea id="contentreply"></textarea>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Hủy</button>
+                <button disabled type="button" class="btn btn-primary" id="confirmReply">Phản hồi</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    <script>
+        searchAll("/Administration/ReportVideo/Index_Partial");
+        PaginationPage("/Administration/ReportVideo/Index_Partial", "#tbodyReport")
+        var iduserReply = 0;
+        var idvideo = 0;
+        $("#contentreply").keyup(function () {
+            if ($(this).val() != '')
+                $("#confirmReply").prop("disabled", false);
+            else $("#confirmReply").prop("disabled", true);
+          
+        });
+        function replyFunction(event, iduser, videoid) {
+            event.stopPropagation();
+            $("#contentreply").val('');
+            $("#replyReport").modal("show");
+            setTimeout(() => {
+                $("#contentreply").focus();
+            }, 500);
+            iduserReply = iduser;
+            idvideo = videoid;
+        }
+        $("#confirmReply").click(function () {
+            $.get("/Administration/ReportVideo/CreateReply/?idUser=" + iduserReply +
+                "&idVideo=" + idvideo + "&content=" + $("#contentreply").val(), function (respone) {
+                    if (respone == "Success") {
+                        alertSuccess("Đã phản hồi");
+                        $("#replyReport").modal("hide");
+                    }
+                        
+            });
+        });
+        function deleteFunction(event, id) {
+            event.stopPropagation();
+            var isDelete = confirm("Bạn có chắc muốn xóa phần tử này");
+            if (isDelete) {
+                $.post("/Administration/ReportVideo/Delete", {id:id}, function (respone) {
+                    if (respone == "Success") {
+                        $(".removeItem-" + id).remove();
+                        alertSuccess("Đã xóa");
+                    }
+                });
+            }
+        }
+        function showDetailReport(id) {
+            OpenPopUp2("Chi tiết báo cáo","/Administration/ReportVideo/Detail_Partial/?id=" + id);
+        }
+    </script>
+}
+
