@@ -66,10 +66,11 @@ namespace DoanApp.Controllers
         public async Task<IActionResult> Index(int? page)
         {
             ViewBag.ForCus = 0;
-            if (User.Identity.IsAuthenticated)
+            var user = UserAuthenticated.GetUser(User.Identity.Name);
+            if (User.Identity.IsAuthenticated&&user!=null)
             {
                 GetNotificationHome();
-                var user = UserAuthenticated.GetUser(User.Identity.Name);
+              
                 ViewBag.IdUser = user.Id;
                 ViewBag.PlayList = _playListService.GetAll().Where(x => x.UserId == ViewBag.IdUser).ToList();
                 ViewBag.UserFollow=_userService.GetUserFollow(user.UserName);
@@ -81,6 +82,7 @@ namespace DoanApp.Controllers
                 ViewBag.ListNotification = null;
                 ViewBag.CountNotifi = 0;
                 ViewBag.UserFollow = null;
+                ViewBag.UserFollow = _userService.GetChannel();
             }
             ViewBag.LinkActive = "/Home/Index";
             if (page == null) page = 1;
@@ -89,7 +91,7 @@ namespace DoanApp.Controllers
             var listVideo = _videoService.GetAll();
             var listUser = _userService.GetAll();
             listVideo_Vm =_videoService.GetVideo_Vm(listVideo, listUser).
-                OrderByDescending(x => x.Id).Where(x => x.Status &x.HidenVideo).ToList();
+                OrderByDescending(x => x.Id).Where(x=>x.HidenVideo).ToList();
             ViewBag.Search_Video = new SelectList(listVideo, "Id", "Name");
             return View(await listVideo_Vm.ToPagedListAsync(pageNumber, 12));
         }
@@ -116,7 +118,7 @@ namespace DoanApp.Controllers
             var listVideo = _videoService.GetAll();
             var listUser = _userService.GetAll();            
             listVideo_Vm = _videoService.GetVideo_Vm(listVideo, listUser).
-                OrderByDescending(x => x.Id).Where(x => x.Status).ToList();
+                OrderByDescending(x => x.Id).Where(x => x.HidenVideo).ToList();
             if (nameSearch != null) {
                 nameSearch = nameSearch.ToLower();
                 listVideo_Vm = listVideo_Vm.Where(x => x.Name.ToLower().Contains(nameSearch)).ToList();
@@ -135,7 +137,7 @@ namespace DoanApp.Controllers
             }
             else
             {
-                ViewBag.UserFollow = null;
+                ViewBag.UserFollow = _userService.GetChannel();
             }
             ViewBag.ForCus = 1;
             GetNotificationHome();
@@ -350,13 +352,20 @@ namespace DoanApp.Controllers
         {
             return View();
         }
-        public async Task<IActionResult> Login()
+        public async Task<IActionResult> Login(int? checkLock)
         {
+           
             countLockout = 0;
             ViewBag.Titles = "Đăng nhập";
             //Cleare cookie external to sure clean cookie
             await HttpContext.SignOutAsync(IdentityConstants.ExternalScheme);
+
+            
             ViewBag.ExternaLogin = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
+            if (checkLock == 1)
+                ModelState.AddModelError(string.Empty, "Tài khoản bị khóa vui lòng liên hệ Admin!");
+            if (checkLock == 2) 
+                ModelState.AddModelError(string.Empty, "Tài Khoản đã bị xóa!");
             return View();
         }
 
@@ -368,28 +377,29 @@ namespace DoanApp.Controllers
                 countLockout = 0;
             }
             userEmail = model.Email;
-         
-            var reusult = await _userService.Login(model);
-            var user = await _userManager.FindByEmailAsync(model.Email);
-                if (reusult)
+            var user = await _userService.FindUser(model.Email);
+            ViewBag.ExternaLogin = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
+            if (user == null)
+            {
+                ModelState.AddModelError(string.Empty, "Tài khoản  chưa đăng ký, đăng ký để tiếp tục!");
+                return View();
+            }
+            else
+            {
+                if (user.LockoutEnabled)
                 {
-                          return RedirectToAction("Index", "Home");
-                 }
-                else
-                {
-               
-                    ViewBag.ExternaLogin = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
-                    if (user == null)
+                    var reusult = await _userService.Login(model);
+
+                    if (reusult)
                     {
-                        ModelState.AddModelError(string.Empty, "Tài khoản  chưa đăng ký, đăng ký để tiếp tục!");
-                        return View();
+                        return RedirectToAction("Index", "Home");
                     }
                     else
                     {
                         countLockout++;
-                        if (countLockout >= 5&&user.LockoutEnabled)
+                        if (countLockout >= 5 && user.LockoutEnabled)
                         {
-                            await _userService.UpdatLockcout(user);
+                            await _userService.UpdateLockout(user);
                             ModelState.AddModelError(string.Empty, "Tài khoản đã bị khóa" +
                                 " vui lòng liên hệ Admin để được hỗ trợ");
                             return View();
@@ -397,14 +407,22 @@ namespace DoanApp.Controllers
                         ModelState.AddModelError(string.Empty, "Lưu ý nhập sai 5 lần liên tiếp sẽ khóa tài khoản!");
                         ModelState.AddModelError(string.Empty, "Sai tài khoản hoặc mật khẩu vui lòng nhập lại!");
                         return View();
+
                     }
-                    
                 }
+                else
+                {
+                    ModelState.AddModelError(string.Empty, "Tài khoản đã bị khóa" +
+                        " vui lòng liên hệ Admin để được hỗ trợ");
+                    return View();
+                }
+            }
         }
 
         [HttpPost]
-        public  IActionResult ExternalLogin(string provider, string returnUrl = null)
+        public async  Task<IActionResult> ExternalLogin(string provider, string returnUrl = null)
         {
+            await HttpContext.SignOutAsync(IdentityConstants.ExternalScheme);
             var redirectUrl = Url.Action("ExternalCallback");
             var properties = _signInManager.ConfigureExternalAuthenticationProperties(provider, redirectUrl);
             return new ChallengeResult(provider, properties);
@@ -426,11 +444,25 @@ namespace DoanApp.Controllers
 
             if (users!=null)
             {
-                
+                if (users.Status&&users.LockoutEnabled)
+                {
+                    UserAuthenticated.checkUserAuthenticated(users);
+                    await _signInManager.SignInAsync(users, isPersistent: false, info.LoginProvider);
+                    return RedirectToAction("Index");
+                }
+                else
+                {
+                    if (users.LockoutEnabled == false)
+                    {
+                        return Redirect("Login/?checkLock=1");
+                    }
+                    if (users.Status == false)
+                    {
+                        return Redirect("Login/?checkLock=2");
+                    }
+                }
                
-                UserAuthenticated.checkUserAuthenticated(users);
-                await _signInManager.SignInAsync(users, isPersistent: false, info.LoginProvider);
-                return RedirectToAction("Index");
+               
             }
             else
             {
@@ -506,13 +538,15 @@ namespace DoanApp.Controllers
                     ViewBag.Flag = true;
                     ViewBag.InfoUserLogin = user;
                     await _signInManager.SignInAsync(user, isPersistent: false);
+                    await _userManager.AddToRoleAsync(user, "User");
                     return View();
                 }
                 if (check == 3)
                 {
                     ViewBag.Flag = false;
                     return View(user);
-                }    
+                }
+              
             }
             return BadRequest();
         }

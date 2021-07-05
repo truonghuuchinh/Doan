@@ -1,4 +1,5 @@
-﻿using DoanApp.Models;
+﻿using DoanApp.Commons;
+using DoanApp.Models;
 using DoanData.Models;
 using System;
 using System.Collections.Generic;
@@ -10,6 +11,7 @@ namespace DoanApp.Services
     public interface ICommentService
     {
         List<Comment> GetAll();
+        List<CountComment> GetCountCm();
         Task<int> Create(CommentRequest cmRequest);
         Task<int> Update(CommentRequest cmRequest);
         Task<List<int>> Delete(int id);
@@ -19,6 +21,7 @@ namespace DoanApp.Services
         Task<int> UpdateLikeRevert(int id,string reaction);
         Task<Comment> Find(int id);
         Task<int> UpdateContent(CommentRequest cmRequest);
+
 
     }
 }

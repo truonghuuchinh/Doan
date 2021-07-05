@@ -42,7 +42,7 @@
                             </div>
                         </div>
                     </a>
-                    <div class="daubacham_anthongbao" onclick="optionNotifi(event,@item.Id)">
+                    <div class="daubacham_anthongbao hover" onclick="optionNotifi(event,@item.Id)">
                         <div class="daubacham_anthongbao_video">
                             <img src="/Client/img/more.png" alt="" class="show_daubacham_anthongbao_video more-@item.Id">
                         </div>
@@ -53,18 +53,19 @@
                             <div class="khung_img_class_nameimg_anthongbo">
                                 <div class="img_class_nameimg_anthongbo"></div>
                             </div>
-                            <div class="noidung_class_nameimg_anthongbao">Ẩn thông báo này</div>
+                            <div class="noidung_class_nameimg_anthongbao hover">Ẩn thông báo này</div>
                         </div>
-                        <div class="class_nameimg_anthongbao">
-                            <div class="khung_img_class_nameimg_anthongbo">
-                                <div class="img_offthongbao"></div>
+                        @if (item.AvartarUser != "avartarDefault.jpg")
+                        {
+                            <div class="class_nameimg_anthongbao">
+                                <div class="khung_img_class_nameimg_anthongbo">
+                                    <div class="img_offthongbao"></div>
+                                </div>
+                                <div class="noidung_class_nameimg_anthongbao hover">Tắt thông báo từ kênh </div>
                             </div>
-                            <div class="noidung_class_nameimg_anthongbao">Tắt thông báo từ kênh </div>
-                        </div>
+                        }
                     </div>
                 </div>
-
-
             }
         }
     </div>

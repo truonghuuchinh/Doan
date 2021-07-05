@@ -22,30 +22,29 @@ namespace DoanApp.Areas.Administration.Controllers
             _categoryService = categoryService;
         }
         // GET: CategoryController
-        public ActionResult Index()
+        public IActionResult Index(int? page)
         {
-            ViewBag.TitlePage = "Quản lý Chủ đề";
-            return View();
-        }
-        public IActionResult IndexPartial(int? page, string name = null)
-        {
+            ViewBag.Active = 2;
             if (page == null) page = 1;
-            var pageSize = 3;
+            var pageSize = 6;
             var pageNumber = page ?? 1;
-            IPagedList<Category> list;
+            var  list = _categoryService.GetAll().Result.OrderByDescending(x => x.Id).ToPagedList(pageNumber, pageSize);
+            return View(list);
+        }
+        public IActionResult Index_Partial(int? page, string name = null)
+        {
+            ViewBag.Active = 2;
+            if (page == null) page = 1;
+            var pageSize = 6;
+            var pageNumber = page ?? 1;
+            var list = _categoryService.GetAll().Result.OrderByDescending(x => x.Id).ToList();
             if (name != null)
             {
                 name = ConvertUnSigned.convertToUnSign(name).ToLower();
-                list = _categoryService.GetAll().Result.
-                    Where(x=>ConvertUnSigned.convertToUnSign(x.Name).ToLower().Contains(name)).ToPagedList(pageNumber, pageSize);
+                list = list.Where(x => ConvertUnSigned.convertToUnSign(x.Name).ToLower().Contains(name)).OrderByDescending(x => x.Id).ToList();
             }
-            else
-            {
-                list = _categoryService.GetAll().Result.ToPagedList(pageNumber, pageSize);
-            }
-            return View(list);
+            return View(list.ToPagedList(pageNumber, pageSize));
         }
-
         // GET: CategoryController/Create
         public ActionResult Create()
         {
@@ -57,7 +56,7 @@ namespace DoanApp.Areas.Administration.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Create(CategoryRequest categoryRequest)
         {
-            if (ModelState.IsValid)
+            if (categoryRequest.Name!=null)
             {
                 var result = await _categoryService.CreateAsync(categoryRequest);
                 if (result > 0) return Redirect("Index");
@@ -75,22 +74,21 @@ namespace DoanApp.Areas.Administration.Controllers
 
         // POST: CategoryController/Edit/5
         [HttpPost]
-        [ValidateAntiForgeryToken]
         public async Task<ActionResult> Edit(CategoryRequest categoryRequest)
         {
             if (ModelState.IsValid)
             {
                 var result = await _categoryService.UpdateAsync(categoryRequest);
-                if (result > 0) return Redirect("Index");
+                if (result > 0) return Content("Success");
             }
             return Redirect("Index");
         }
 
         // GET: CategoryController/Delete/5
-        public ActionResult Delete(int id)
+        public async  Task<ActionResult> Delete(int id)
         {
-            var result = _categoryService.DeleteAsync(id);
-            if (result.Result > 0) return Content("Success");
+            var result = await _categoryService.DeleteAsync(id);
+            if (result > 0) return Content("Success");
             else return Content("Error");
         }
 
@@ -98,15 +96,19 @@ namespace DoanApp.Areas.Administration.Controllers
        
         public ContentResult checkName(string name)
         {
-            name = name == null ? " " : name;
-            foreach (var item in _categoryService.GetAll().Result.ToList())
+            if (name == null) return Content("");
+            else
             {
-                if (item.Name.Contains(name))
+                foreach (var item in _categoryService.GetAll().Result.ToList())
                 {
-                    return Content("Error");
+                    if (item.Name.Contains(name))
+                    {
+                        return Content("Error");
+                    }
                 }
+                return Content("Success");
             }
-            return Content("Success");
+          
         }
     }
 }

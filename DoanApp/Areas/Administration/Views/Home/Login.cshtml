@@ -16,9 +16,13 @@
     <!--===============================================================================================-->
     <link rel="stylesheet" type="text/css" href="~/Administration/assets/login/fonts/iconic/css/material-design-iconic-font.min.css">
     <!--===============================================================================================-->
-
     <link rel="stylesheet" type="text/css" href="~/Administration/assets/login/css/util.css">
     <link rel="stylesheet" type="text/css" href="~/Administration/assets/login/css/main.css">
+    <style>
+        .hover{
+            cursor:pointer;
+        }
+    </style>
 </head>
 <body>
     <div class="limiter">
@@ -33,14 +37,14 @@
                     <span class="login100-form-title p-b-34 p-t-27">
                         Đăng nhập Admin
                     </span>
-                    <div asp-validation-summary="ModelOnly" class="text-center" style="color:#970715;"></div>
+                    <div asp-validation-summary="ModelOnly" class="text-center" style="color:white;"></div>
                     <br />
                     <div  class="wrap-input100 validate-input" data-validate="Enter username">
                         <input class="input100" value="@Context.Request.Cookies["userName"]" type="text" id="email" name="Email" placeholder="Username">
                         <span class="focus-input100" data-placeholder="&#xf207;"></span>
 
                     </div>
-                    <span class="text-danger" id="errorEmail"></span>
+                    <span style="color:white" id="errorEmail"></span>
                     <div  class="wrap-input100 validate-input" data-validate="Enter password">
                         <input class="input100"  value="@Context.Request.Cookies["password"]" id="password" type="password" name="PasswordHash" placeholder="Password">
                         <span class="focus-input100" data-placeholder="&#xf191;"></span>
@@ -68,7 +72,7 @@
                     </div>
 
                     <div class="text-center p-t-90">
-                        <a class="txt1" id="ForgotPassword">
+                        <a asp-action="ForgotPassword" class="txt1 hover" id="ForgotPassword">
                             Forgot Password?
                         </a>
                     </div>
@@ -97,13 +101,6 @@
 
                     </div>
                 </div>
-
-                @*<div class="modal-footer-UPMT">
-                        <div class="button-footer-UPMT ">
-                            <button type="button" id="btn-cancel-sumitUPMT" class="btn btn-cancel" data-dismiss="modal">Hủy bỏ</button>
-                            <button type="submit" id="btn-add-sumitUPMT_meeting" class="btn tn-add" data-dismiss="modal">Xác nhận</button>
-                        </div>
-                    </div>*@
             </div>
         </div>
     </div>
