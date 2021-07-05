@@ -15,6 +15,7 @@ namespace DoanApp.Models
         public string PasswordHash { get; set; }
         public string UserName { get; set; }
         [Required(ErrorMessage ="Vui lòng nhập Email!")]
+        [EmailAddress(ErrorMessage ="Trường này phải là Email")]
         public string Email { get; set; }
         [Required(ErrorMessage = "Vui lòng nhập trường này!")]
         public string FirtsName { get; set; }

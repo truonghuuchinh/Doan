@@ -18,17 +18,19 @@ namespace DoanApp.Areas.Administration.Controllers
         {
             if (User.Identity.IsAuthenticated)
             {
-              
-                if (!User.IsInRole("Admin"))
+                if (User.IsInRole("Admin")|| User.IsInRole("Manager"))
+                {
+                   
+                }else
                 {
                     context.Result = new RedirectToRouteResult(new
-                        RouteValueDictionary(new { controller = "Home", action = "Login", Area = "Administration" }));
+                       RouteValueDictionary(new { controller = "Home", action = "Login", area = "Administration" }));
                 }
             }
             else
             {
                 context.Result = new RedirectToRouteResult(new
-                       RouteValueDictionary(new { controller = "Home", action = "Login", Area = "Administration" }));
+                       RouteValueDictionary(new { controller = "Home", action = "Login", area = "Administration" }));
             }
             base.OnActionExecuting(context);
         }

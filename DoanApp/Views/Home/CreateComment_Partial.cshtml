@@ -53,9 +53,9 @@
                 </div>
             </div>
             <div class="khung_hang_3">
-                <div class="like_binh_luan hover" onclick="likeComment(@Model.Id)"><i class="fa fa-thumbs-up like-@Model.Id"></i></div>
+                <div class="like_binh_luan hover" onclick="likeComment(@Model.Id)"><i class="zmdi zmdi-thumb-up  like-@Model.Id"></i></div>
                 <div class="so_luong_like countLike-@Model.Id">@Model.Like</div>
-                <div class="disklike_binh_luan hover" onclick="dislikeComment(@Model.Id)"><i class="fa fa-thumbs-down dislike-@Model.Id"></i></div>
+                <div class="disklike_binh_luan hover" onclick="dislikeComment(@Model.Id)"><i class="zmdi zmdi-thumb-down  dislike-@Model.Id"></i></div>
                 <div class="so_luong_disklike countDis-@Model.Id">@Model.DisLike</div>
                 <input type="hidden" class="comment-@Model.Id" value="@Model.CommentId" />
                 @if (Model.ReplyFor == "")

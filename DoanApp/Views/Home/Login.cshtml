@@ -42,7 +42,7 @@
         <div class="logo"></div>
     </div>
     <p class="login-card-description">Đăng nhập vào tài khoản của bạn</p>
-    <form  method="post" asp-action="Login">
+    <form id="formLogin"  method="post" asp-action="Login">
         <div class="text-danger" asp-validation-summary="ModelOnly"></div>
         <br />
         <div class="form-group">
@@ -65,12 +65,12 @@
                 {
                     if (dem == 0)
                     {
-                        <button type="submit" class="btn btn-primary provider" name="provider" 
+                        <button onclick="imgLoading()" type="submit" class="btn btn-primary provider" name="provider" 
                                 value="@provider.Name" title="Log in using your @provider.DisplayName account"><i class="fab fa-facebook"></i> @provider.DisplayName</button>
                     }
                     else
                     {
-                        <button type="submit" class="btn btn-danger provider" name="provider" 
+                        <button onclick="imgLoading()" type="submit" class="btn btn-danger provider" name="provider" 
                                 value="@provider.Name" title="Log in using your @provider.DisplayName account"><i class="fab fa-google"></i>  @provider.DisplayName</button>
                     }
                     dem++;
@@ -82,9 +82,16 @@
 @section Scripts {
   
 <script>
+   
     $("#ForgotPassword").click(function() {
         OpenPopUp("Quên mật khẩu", "/Home/ForgotPassword");
     });
-  
+    $("#formLogin").submit(function () {
+        if ($("#email").val() != '' && $("#password").val() != '') {
+            imgLoading();
+            return;
+        }
+        
+    });
 </script>
 }

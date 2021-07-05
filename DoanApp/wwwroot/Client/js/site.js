@@ -6,6 +6,10 @@ var videoId = $("#VideoId").val();
 var currentPage = 2;
 var idVideoReport = 0;
 var arrayNoLoaded = [];
+
+function imgLoading() {
+    $(".img-loading").css("display", "block");
+}
 //----------------Xử lý tạo danh sách phát------------
 $(".btnPlaylist").click(function () {
     var inputname = $("#namePlayList").val();
@@ -76,11 +80,7 @@ function deleteInPlayList(id) {
                 }
                 $(".item2__count-" + idPlaylist).text(countItem1);
                 $(".modifier__td-" + idPlaylist).text(countItem2);
-                toast('Đã xóa', '/Client', {
-                    type: 'success',
-                    animation: 'zoom',
-                    position: 'bottom-right'
-                });
+                alertSuccess("Đã xóa");
             }
         });
     }
@@ -199,11 +199,7 @@ function confirmRepairComment(id) {
             cancelRepairComment(id,false);
             $(".content__Comment-" + id).text($(".repaircomment__input-" + id).val());
             $(".inputContent-" + id).val($(".repaircomment__input-" + id).val());
-            toast(' Đã Chỉnh sửa', '/Client', {
-                type: 'success',
-                animation: 'zoom',
-                position: 'bottom-left'
-            });
+            alertSuccess("Đã chỉnh sửa");
         }
     });
 }
@@ -271,17 +267,9 @@ function deleteComment(Id,commentId) {
                     $(".listChild__text-" + commentId).text("Ẩn đi " + viewChild);
                     $(".countChildComment-" + commentId).val(viewChild);
                 }
-                toast('Đã xóa', '/Client', {
-                    type: 'success',
-                    animation: 'zoom',
-                    position: 'bottom-left'
-                });
+                alertSuccess("Đã xóa");
             } else {
-                toast('Xóa không thành công', '/Client', {
-                    type: 'success',
-                    animation: 'zoom',
-                    position: 'bottom-left'
-                });
+                alertSuccess("Xóa không thành công");
             }
         });
     }
@@ -291,23 +279,10 @@ function deleteComment(Id,commentId) {
 
 function reportVideo(id) {
     idVideoReport = id;
-    var userId = $("#idUser").val();
-    if (userId != '' && userId != 0) {
         $("#reportvideo").modal("show");
         $("#valueReport").focus();
         $("#errorReport").text('');
         $("#valueReport").val('');
-    } else {
-        cuteAlert({
-            type: "question",
-            title: "Đăng nhập",
-            message: "Vui lòng đăng nhập để thực hiện chức năng",
-            confirmText: "Đăng nhập",
-            cancelText: "Hủy",
-            srcImg: "/Client"
-        });
-    }
-
 }
 $("#confirm_report").click(function () {
     var userId = $("#idUser").val();
@@ -322,11 +297,7 @@ $("#confirm_report").click(function () {
         };
         $.post("/ReportVideo/Create", { "data": JSON.stringify(datas) }, function (respone) {
             if (respone == "Success") {
-                toast('Báo cáo thành công', '/Client', {
-                    type: 'success',
-                    animation: 'zoom',
-                    position: 'bottom-right'
-                });
+                alertSuccess("Báo cáo thành công");
                 $("#valueReport").val('');
             }
         });
@@ -344,27 +315,15 @@ function addItem(id) {
     if ($(".chooseList-" + id).prop("checked") == false) {
         $.post("/DetailVideo/Create", { "data": JSON.stringify(data) }, function (respone) {
             if (respone == "Success") {
-                toast('Đã thêm', '/Client', {
-                    type: 'success',
-                    animation: 'zoom',
-                    position: 'bottom-right'
-                });
+                alertSuccess("Đã thêm");
             } else {
-                toast('Có lỗi vui lòng thử lại', '/Client', {
-                    type: 'warn',
-                    animation: 'zoom',
-                    position: 'bottom-right'
-                });
+                alertWarn("Có lỗi vui lòng thử lại!");
             }
         });
     } else {
         $.post("/DetailVideo/Delete", { "data": JSON.stringify(data) }, function (respone) {
             if (respone != "Error") {
-                toast('Đã xóa', '/Client', {
-                    type: 'warn',
-                    animation: 'zoom',
-                    position: 'bottom-right'
-                });
+                alertSuccess("Đã xóa");
             }
         });
 
@@ -383,19 +342,7 @@ $(".close").click(function () {
     });
 });
 function showPlayList(id) {
-    var userId = $("#idUser").val();
-    if (userId != '' && userId != 0) {
         $("#modalPlayList").modal('show');
-    } else {
-        cuteAlert({
-            type: "question",
-            title: "Đăng nhập",
-            message: "Vui lòng đăng nhập để thực hiện chức năng",
-            confirmText: "Đăng nhập",
-            cancelText: "Hủy",
-            srcImg: "/Client"
-        });
-    }
 }
 function addPlayList(id) {
     idvideo = id;
@@ -403,7 +350,7 @@ function addPlayList(id) {
         e.preventDefault();
         $(this).unbind(e);
     });
-    if ($("#idUser").val() == '0' ||$("#idUser").val() == '') {
+    if ($("#idUser").val() == '0' || $("#idUser").val() == '' || $("#idUser").val() == undefined) {
         cuteAlert({
             type: "question",
             title: "Đăng nhập",
@@ -1106,11 +1053,7 @@ function revertStatus(event, id) {
     $.get("/Notification/UpdateStatus/?id=" + id, function (respone) {
         if (respone != "Error") {
             $(".item_notifi-" + id).remove();
-            toast('Đã xóa thông báo', '/Client', {
-                type: 'success',
-                animation: 'zoom',
-                position: 'bottom-right'
-            });
+            alertSuccess("Đã ẩn thông báo")
         }
     });
 }
@@ -1130,11 +1073,7 @@ function revertFollow(event, id) {
         contentType: 'application/x-www-form-urlencoded'
     }).done(function (respone) {
         if (respone != "Error") {
-            toast('Đã tắt thông báo', '/Client', {
-                type: 'success',
-                animation: 'zoom',
-                position: 'bottom-right'
-            });
+            alertSuccess("Đã tắt thông báo")
         }
     });
 }
@@ -1169,11 +1108,7 @@ function removeWatched(link, id) {
         $.post(link, { resquest: data }, function (respone) {
             if (respone != "Error") {
                 $("#remove-" + id).remove();
-                toast('Đã xóa', '/Client', {
-                    type: 'success',
-                    animation: 'zoom',
-                    position: 'bottom-right'
-                });
+                alertSuccess("Đã xóa");
             }
         });
     }

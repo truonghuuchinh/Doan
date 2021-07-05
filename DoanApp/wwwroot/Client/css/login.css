@@ -182,9 +182,9 @@ body {
     border-right: none;
 }
 
-    .input-group.date input::placeholder {
-        color: #757575 !important;
-    }
+.input-group.date input::placeholder {
+    color: #757575 !important;
+}
 /*# sourceMappingURL=login.css.map */
 
 
@@ -194,5 +194,5 @@ body {
 }
 
 #external-account{
-    margin-top:-35px;
+    margin-top:23px;
 }

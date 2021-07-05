@@ -1,0 +1,54 @@
+﻿@model List<ReportVideo_Vm>
+@using X.PagedList;
+@{
+    Layout = null;
+}
+<style>
+    #mediumModal .modal-dialog .modal-content {
+        
+        margin-left: 35px;
+    }
+    #tableDetail {
+        width: 60% ;
+        min-width: 770px;
+    }
+    .modal-header{
+        background:#dddd;
+
+    }
+</style>
+<table id="tableDetail">
+    <thead>
+        <tr>
+            <th>
+                Nội dung báo cáo
+            </th>
+            <th>Ngày báo cáo</th>
+            <th class="center">
+                Video báo cáo
+            </th>
+            <th class="center">Người báo cáo</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody id="tbodyReport">
+
+        @foreach (var item in Model)
+        {
+            <tr class="tr-shadow" title="Click vào Poster để xem">
+                <td style="width:280px; padding:10px;"><div>@item.Content</div></td>
+                <td>@item.CreateDate.Split(' ')[0]</td>
+                <td style=" width:300px;" class="center hover">
+                    <a asp-action="Index" asp-controller="Video" asp-route-id="@item.VideoId"><img class="imgPoster" src="/Client/imgPoster/@item.ImgPoster" alt="Alternate Text" /></a>
+                    <div style="margin-top:15px;">@item.NameVideo</div>
+                </td>
+                <td class="center">
+                    <div>@item.NamUser</div>
+                </td>
+
+            </tr>
+            <tr class="spacer"></tr>
+        }
+
+    </tbody>
+</table>

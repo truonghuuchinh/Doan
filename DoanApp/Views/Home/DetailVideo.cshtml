@@ -13,6 +13,7 @@
     <link rel="stylesheet" href="https://cdn.plyr.io/3.6.2/demo.css">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/material-design-iconic-font/2.2.0/css/material-design-iconic-font.min.css">
     <link href="~/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
     <link href="~/Client/fonts/fontawesome/css/all.min.css" rel="stylesheet" />
     <link href="~/css/toastifier.min.css" rel="stylesheet" />
@@ -22,6 +23,12 @@
     <script src="~/js/site.js"></script>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.min.js"></script>
+    <style>
+        .details_lerfts{
+            width:50px;
+            height:60px;
+        }
+    </style>
 </head>
 <body>
     <div class="warpper">
@@ -56,7 +63,7 @@
                                     </div>
                                 </a>
                                 <div class="notification">
-                                    <div class="notificationss hover"></div>
+                                    <div class="notificationss hover"><i class="zmdi zmdi-notifications"></i></div>
                                     <div class="thongbao_do">
                                         <div class="thong_baos">
                                             <div class="soluongtb">@ViewBag.CountNotifi</div>
@@ -86,7 +93,7 @@
                                                 <div class="modal_check_function_fier">
                                                     <div class="modal_check_function_fier_left">
                                                         <div class="khung_function_fier_img">
-                                                            <div class="img_kenhdangky"></div>
+                                                            <div class="img_kenhdangky"><i class="zmdi zmdi-account-box fontsize"></i></div>
                                                         </div>
                                                     </div>
                                                     <div class="modal_check_function_fier_right">
@@ -97,7 +104,7 @@
                                             <div class="modal_check_function_fier">
                                                 <div class="modal_check_function_fier_left">
                                                     <div class="khung_function_fier_img">
-                                                        <div class="img_Logout"></div>
+                                                        <div class="img_Logout"><i class="zmdi zmdi-power fontsize"></i></div>
                                                     </div>
                                                 </div>
 
@@ -113,7 +120,7 @@
                                             <div class="modal_check_function_fier">
                                                 <div class="modal_check_function_fier_left">
                                                     <div class="khung_function_fier_img">
-                                                        <div class="img_kenhdangky"></div>
+                                                        <div class="img_kenhdangky"><i class="zmdi zmdi-brightness-6 fontsize"></i></div>
                                                     </div>
                                                 </div>
                                                 <div class="modal_check_function_fier_right">
@@ -172,7 +179,14 @@
                                             }
                                         </div>
                                         <div class="khung_thongbao_video_img">
-                                            <img class="img_trang__cuaban_thongbao" alt="" src="@(item.LoginExternal?item.AvartarUser:"/Client/avartar/"+item.AvartarUser)">
+                                            @if (item.AvartarUser == "avartarDefault.jpg")
+                                            {
+                                                <img class="img_trang__cuaban_thongbao" alt="" src="/Client/avartar/@item.AvartarUser">
+                                            }
+                                            else
+                                            {
+                                                <img class="img_trang__cuaban_thongbao" alt="" src="@(item.LoginExternal?item.AvartarUser:"/Client/avartar/"+item.AvartarUser)">
+                                            }
                                         </div>
                                         <div class="noidung_khungthongbaovideo_text">
                                             <div class="noidung_khungthongbao_video__text"><strong>@item.UserName</strong> @item.Content</div>
@@ -184,12 +198,12 @@
                                             </div>
                                         </div>
                                     </a>
-                                    <div class="daubacham_anthongbao" onclick="optionNotifi(event,@item.Id)">
+                                    <div class="daubacham_anthongbao hover" onclick="optionNotifi(event,@item.Id)">
                                         <div class="daubacham_anthongbao_video hover">
                                             <img src="/Client/img/more.png" alt="" class="show_daubacham_anthongbao_video more-@item.Id">
                                         </div>
                                     </div>
-                                    <div class="an_thongbaonay_all option_notifi-@item.Id">
+                                    <div class="an_thongbaonay_all hover option_notifi-@item.Id">
                                         <div class="kekhungheader"></div>
                                         <div class=" hover class_nameimg_anthongbao">
                                             <div class="khung_img_class_nameimg_anthongbo">
@@ -197,14 +211,18 @@
                                             </div>
                                             <div onclick="revertStatus(event,@item.Id)" class="noidung_class_nameimg_anthongbao">Ẩn thông báo này</div>
                                         </div>
-                                        <div class=" hover class_nameimg_anthongbao">
-                                            <div class="khung_img_class_nameimg_anthongbo">
-                                                <div class="img_offthongbao">
-                                                    <i class="material-icons">&#xe7f6;</i>
+                                        @if (item.AvartarUser != "avartarDefault.jpg")
+                                        {
+                                            <div class=" hover class_nameimg_anthongbao">
+                                                <div class="khung_img_class_nameimg_anthongbo">
+                                                    <div class="img_offthongbao">
+                                                        <i class="material-icons">&#xe7f6;</i>
+                                                    </div>
                                                 </div>
+                                                <div onclick="revertFollow(event,@item.Id)" class="noidung_class_nameimg_anthongbao">Tắt thông báo từ kênh </div>
                                             </div>
-                                            <div onclick="revertFollow(event,@item.Id)" class="noidung_class_nameimg_anthongbao">Tắt thông báo từ kênh </div>
-                                        </div>
+                                        }
+                                        
                                     </div>
                                 </div>
                             </div>
@@ -243,16 +261,16 @@
                                     <div class="like_shares">
                                         <input type="hidden" id="Reaction" value="@Model.Reaction" />
                                         <div id="Like" class="unlike hover">
-                                            <i title=" Tôi Thích video này" class="fa fa-thumbs-up likeVideo"></i>
+                                            <i title=" Tôi Thích video này" class="zmdi zmdi-thumb-up likeVideo"></i>
                                             <span id="countLike" class="text-sidebar-item_content">@Model.Like</span>
                                         </div>
                                         <div id="DisLike" class="unlike hover">
-                                            <i title=" Tôi không Thích video này" class="fa fa-thumbs-down dislikeVideo" style=""></i>
+                                            <i title=" Tôi không Thích video này" class="zmdi zmdi-thumb-down dislikeVideo" style=""></i>
                                             <span id="countDisLike" class="text-sidebar-item_content">@Model.DisLike</span>
                                         </div>
 
                                         <div id="Share" class="unlike acount_share hover">
-                                            <i title="Chia sẻ video này" class="icon-sidebar-item_content fa fa-share-alt"></i>
+                                            <i title="Chia sẻ video này" class="icon-sidebar-item_content zmdi zmdi-mail-reply" ></i>
                                             <span class="text-sidebar-item_content">CHIA SẺ</span>
                                         </div>
 
@@ -302,7 +320,7 @@
                                 @(Model.Description==null?"": "HIỂN THỊ THÊM")
                             </div>
                             <div class="cut"></div>
-                            <div class="count_comment">@ViewBag.Comment.Count Bình luận</div>
+                            <div class="count_comment"></div>
                             <div class="all_counts_comment">
                                 @if (User.Identity.IsAuthenticated)
                                 {
@@ -387,9 +405,9 @@
                                                         </div>
                                                     </div>
                                                     <div class="khung_hang_3">
-                                                        <div class="like_binh_luan hover" onclick="likeComment(@item.Id)"><i class="fa fa-thumbs-up like-@item.Id"></i></div>
+                                                        <div class="like_binh_luan hover" onclick="likeComment(@item.Id)"><i class="zmdi zmdi-thumb-up like-@item.Id"></i></div>
                                                         <div class="so_luong_like countLike-@item.Id">@item.Like</div>
-                                                        <div class="disklike_binh_luan hover" onclick="dislikeComment(@item.Id)"><i class="fa fa-thumbs-down dislike-@item.Id"></i></div>
+                                                        <div class="disklike_binh_luan hover" onclick="dislikeComment(@item.Id)"><i class="zmdi zmdi-thumb-down  dislike-@item.Id"></i></div>
                                                         <div class="so_luong_disklike countDis-@item.Id">@item.DisLike</div>
                                                         <input type="hidden" class="comment-@item.Id" value="@item.CommentId" />
                                                         @if (User.Identity.IsAuthenticated)
@@ -478,9 +496,9 @@
                                                                         </div>
 
                                                                         <div class="khung_hang_3">
-                                                                            <div class="like_binh_luan hover" onclick="likeComment(@child.Id)"><i class="fa fa-thumbs-up like-@child.Id"></i></div>
+                                                                            <div class="like_binh_luan hover" onclick="likeComment(@child.Id)"><i class="zmdi zmdi-thumb-up  like-@child.Id"></i></div>
                                                                             <div class="so_luong_like countLike-@child.Id">@child.Like</div>
-                                                                            <div class="disklike_binh_luan hover" onclick="dislikeComment(@child.Id)"><i class="fa fa-thumbs-down dislike-@child.Id"></i></div>
+                                                                            <div class="disklike_binh_luan hover" onclick="dislikeComment(@child.Id)"><i class="zmdi zmdi-thumb-down  dislike-@child.Id"></i></div>
                                                                             <div class="so_luong_disklike countDis-@child.Id">@child.DisLike</div>
                                                                             <input type="hidden" class="comment-@child.Id" value="@child.CommentId" />
                                                                             @if (User.Identity.IsAuthenticated)
@@ -532,7 +550,7 @@
                                                     }
                                                 </div>
                                             </div>
-                                            <input type="hidden" class="countChildComment-@item.Id" value="@countFlag" />
+                                            <input type="hidden" class=" countChildComment countChildComment-@item.Id" value="@countFlag" />
                                             <script>
                                             $(".listChild__text-@item.Id").text("Xem thêm "+$(".countChildComment-@item.Id").val());
                                             </script>
@@ -595,46 +613,46 @@
             <div class="all_nav_menus">
                 <nav class="col strong_headers">
                     <a class="move_page" asp-action="Index" asp-controller="Home">
-                        <li class="text-white sidebar-item sidebar-menu">
+                        <li class="text-white sidebar-item sidebar-menu @(ViewBag.ForCus ==0?"forcus__item":"")">
 
                             <div class="row">
-                                <img class="icon-sidebar-item" alt="" src="~/Client/img/home_mau.png">
+                                <i class="icon-sidebar-item zmdi zmdi-home"></i>
                                 <span class="text-sidebar-item">Trang chủ</span>
                             </div>
                         </li>
                     </a>
                     <a class="move_page" asp-action="Popular" asp-controller="Home">
-                        <li class="text-white sidebar-item sidebar-menu">
+                        <li class="text-white sidebar-item sidebar-menu @(ViewBag.ForCus ==1?"forcus__item":"")">
 
                             <div class="row">
-                                <img class="icon-sidebar-item" alt="" src="~/Client/img/explore.png">
+                                <i class="icon-sidebar-item zmdi zmdi-compass"></i>
                                 <span class="text-sidebar-item">Khám phá</span>
                             </div>
                         </li>
                     </a>
                     <a class="move_page" asp-action="SubscriptionChannel" asp-controller="Video">
-                        <li class="text-white sidebar-item sidebar-menu">
+                        <li class="text-white sidebar-item sidebar-menu @(ViewBag.ForCus ==2?"forcus__item":"")">
                             <div class="row">
-                                <img class="icon-sidebar-item" alt="" src="~/Client/img/youtube_danky.png">
+                                <i class="icon-sidebar-item zmdi zmdi-youtube-play"></i>
                                 <span class="text-sidebar-item">Kênh đăng ký</span>
                             </div>
                         </li>
                     </a>
-                    <li class="text-white sidebar-item sidebar-menu sider_colors" style="height: 0px;">
+                    <li class="text-white sidebar-item sidebar-menu sider_colors " style="height: 0px;">
                         <div style="background-color: #0C386A; height:1px"></div>
                     </li>
                     <a class="move_page" asp-action="LibaryVideo" asp-controller="Video">
-                        <li class="text-white sidebar-item sidebar-menu">
+                        <li class="text-white sidebar-item sidebar-menu @(ViewBag.ForCus ==3?"forcus__item":"")">
                             <div class="row">
-                                <img class="icon-sidebar-item" alt="" src="~/Client/img/youtube_thuvien.png">
+                                <i class="icon-sidebar-item zmdi zmdi-collection-video"></i>
                                 <span class="text-sidebar-item">Thư viện</span>
                             </div>
                         </li>
                     </a>
                     <a class="move_page" asp-action="@(user!=null?"Index":"Login")" asp-controller="@(user!=null?"VideoWatched":"Home")">
-                        <li class="text-white sidebar-item sidebar-menu">
+                        <li class="text-white sidebar-item sidebar-menu @(ViewBag.ForCus ==4?"forcus__item":"")">
                             <div class="row">
-                                <img class="icon-sidebar-item" alt="" src="~/Client/img/future.png">
+                                <i class="icon-sidebar-item zmdi zmdi-time-restore-setting"></i>
                                 <span class="text-sidebar-item">Video đã xem</span>
                             </div>
                         </li>
@@ -642,18 +660,18 @@
                     @if (User.Identity.IsAuthenticated)
                     {
                         <a class="move_page" asp-action="MyChannel" asp-controller="Video" target="_blank">
-                            <li class="text-white sidebar-item sidebar-menu">
+                            <li class="text-white sidebar-item sidebar-menu @(ViewBag.ForCus ==5?"forcus__item":"")">
                                 <div class="row">
-                                    <img class="icon-sidebar-item" alt="" src="~/Client/img/youtube_videocuaban.png">
+                                    <i class="icon-sidebar-item zmdi zmdi-collection-case-play"></i>
                                     <span class="text-sidebar-item">Video của bạn</span>
                                 </div>
                             </li>
                         </a>
 
                         <a class="move_page" asp-action="FavoritedVideo" asp-controller="Video">
-                            <li class="text-white sidebar-item sidebar-menu">
+                            <li class="text-white sidebar-item sidebar-menu @(ViewBag.ForCus ==6?"forcus__item":"")">
                                 <div class="row">
-                                    <img class="icon-sidebar-item" alt="" src="/Client/img/like.png">
+                                    <i class="icon-sidebar-item zmdi zmdi-thumb-up"></i>
                                     <span class="text-sidebar-item">Video đã thích</span>
                                 </div>
                             </li>
@@ -795,6 +813,15 @@
     <script src="~/Client/js/site.js"></script>
     <script src="https://cdn.plyr.io/3.6.2/demo.js" crossorigin="anonymous"></script>
     <script>
+        //--------------------Xử lý số bình luận-------------
+        $(document).ready(function () {
+            var countComment = 0;
+            document.querySelectorAll(".countChildComment").forEach(item => {
+                countComment += parseInt(item.value) + 1;
+            });
+            $(".count_comment").text(countComment+" Bình luận")
+        });
+        //--------------------Kết thúc----------------------
         loadSecondVideo();
         function displayButton() {
             $(".text__comment_right").css('display', 'block');

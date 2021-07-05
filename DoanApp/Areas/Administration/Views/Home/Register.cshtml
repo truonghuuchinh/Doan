@@ -1,0 +1,55 @@
+﻿@model AppUserRequest
+@{
+    Layout = "~/Areas/Administration/Views/Shared/_Layout_Register.cshtml";
+}
+<form asp-action="Register" asp-controller="Home" id="submitForm" method="post" enctype="multipart/form-data" style="max-width:450px;">
+    <h3>Đăng Ký</h3>
+    <hr />
+    <div class="form-group">
+        <input  asp-for="FirtsName" required type="text" placeholder="First Name" class="form-control noneBoxShadown" style=" padding: 3px 11px;">
+        <span asp-validation-for="FirtsName" class="text-danger"></span>
+        <input asp-for="LastName" required type="text" placeholder="Last Name" class="form-control form__Input noneBoxShadown" >
+        <span asp-validation-for="LastName" class="text-danger"></span>
+    </div>
+    <div class="form-wrapper">
+        <input id="Email" required asp-for="Email" type="email" placeholder="Email Address" class="form-control noneBoxShadown" style="padding: 3px 25px 3px 11px;">
+        <span asp-validation-for="Email" class="text-danger"></span>
+    </div>
+    <div class="input-group mb-3 form-group " style="margin-top:10px;">
+        <div class="custom-file">
+            <input accept=".png, .jpg, .jpeg" name="avartarFile" type="file" class="custom-file-input noneBoxShadown " id="inputAvartar">
+            <label class="custom-file-label" id="inputAvartarLable" for="inputAvartar">Chọn Avartar</label>
+
+        </div>
+    </div>
+
+    <div class="form-wrapper">
+        <input required id="password" asp-for="PasswordHash" type="password" placeholder="Password" class="form-control noneBoxShadown" >
+        <span asp-validation-for="PasswordHash" class="text-danger"></span>
+        <input required id="confirmPassword" type="password" placeholder="Confirm Password" class="form-control form__Input noneBoxShadown" >
+        <span id="errorPassword" class="text-danger"></span>
+    </div>
+    <button type="submit" class="btn btn-primary sbmit__register" >
+        Tạo tài khoản <i style="margin-left:10px;" class="zmdi zmdi-arrow-right"></i>
+    </button>
+</form>
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script>
+    $("#confirmPassword").change(function () {
+        $("#errorPassword").text('');
+        if ($("#password").val() != $(this).val()) {
+            $("#errorPassword").text("Vui lòng nhập đúng mật khẩu!");
+        }
+    });
+        $("#inputAvartar").change(function (event) {
+            $("#inputAvartarLable").text($(this)[0].files[0].name);
+        });
+    $("#submitForm").submit(function (event) {
+        if ($("#errorPassword").text() == '') {
+            return;
+        }
+        event.preventDefault();
+    });
+    </script>
+}

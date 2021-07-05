@@ -2,6 +2,7 @@
 using DoanData.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -21,43 +22,59 @@ namespace DoanApp.Areas.Administration.Controllers
             _roleManager = roleManager;
             _userManager = userManager;
         }
-        public IActionResult Index()
+        public IActionResult Index(int? page)
         {
-            ViewBag.TitlePage = "Quản lý Vai trò";
-            return View();
-        }
-        public IActionResult IndexPartial(int? page, string name = null)
-        {
+            ViewBag.Active = 3;
             if (page == null) page = 1;
-            var pageSize = 3;
+            var pageSize = 6;
             var pageNumber = page ?? 1;
             var listUser = new List<string>();
-            IPagedList<AppRole> listRole;
-            if (name != null)
-            {
-                name=name.ToLower();
-                listRole = _roleManager.Roles.Where(x=>x.Name.ToLower().
-              Contains(name)).ToPagedList(pageNumber,pageSize);
-            }
-            else
-            {
-                listRole = _roleManager.Roles.ToPagedList(pageNumber, pageSize);
-            }
+            var listRole = _roleManager.Roles.ToPagedList(pageNumber, pageSize);
             foreach (var item in listRole)
             {
-               string user = null;
-               var list= _userManager.GetUsersInRoleAsync(item.Name).Result;
-                if (list.Count>0)
+                string user = null;
+                var list = _userManager.GetUsersInRoleAsync(item.Name).Result;
+                if (list.Count > 0)
                 {
                     foreach (var user1 in list)
                     {
-                        user += user1.FirtsName + " " + user1.LastName+", ";
+                        user += user1.FirtsName + " " + user1.LastName + ", ";
                     }
                     listUser.Add(user);
                 }
             }
             ViewBag.ListUser = listUser;
             return View(listRole);
+        }
+        public IActionResult Index_Partial(int? page, string name = null)
+        {
+            ViewBag.Active = 3;
+            if (page == null) page = 1;
+            var pageSize = 6;
+            var pageNumber = page ?? 1;
+            var listUser = new List<string>();
+            var listRole = _roleManager.Roles.ToList();
+            if (name != null)
+            {
+                name = name.ToLower();
+                listRole = listRole.Where(x => x.Name.ToLower().Contains(name)).ToList();
+            }
+            foreach (var item in listRole)
+            {
+                string user = null;
+                var list = _userManager.GetUsersInRoleAsync(item.Name).Result;
+                if (list.Count > 0)
+                {
+                    foreach (var user1 in list)
+                    {
+                        user += user1.FirtsName + " " + user1.LastName + ", ";
+                    }
+                    listUser.Add(user);
+                }
+            }
+       
+            ViewBag.ListUser = listUser;
+            return View(listRole.ToPagedList(pageNumber, pageSize));
         }
         public IActionResult Create()
         {
@@ -125,7 +142,6 @@ namespace DoanApp.Areas.Administration.Controllers
                     if (user != null)
                     {
                         result = await _userManager.AddToRoleAsync(user, model.RoleName);
-                      
                     }
                 }
                 foreach (string userId in model.DeleteIds ?? new string[] { })
@@ -145,6 +161,8 @@ namespace DoanApp.Areas.Administration.Controllers
         }
         public string CheckName(string name)
         {
+            if (name == null)
+                return "NoSearch";
             foreach (var item in _roleManager.Roles)
             {
                 if (item.Name.ToLower() == name.ToLower()) return "Error";

@@ -96,9 +96,12 @@ namespace DoanApp.Services
 
         public List<Video> GetAll()
         {
-            return  _context.Video.Where(x=>x.Status).ToList();
+            var listVideo= (from cate in _context.Category
+                           join video in _context.Video on cate.Id equals video.CategorysId
+                           where cate.Status && video.Status
+                           select video).ToList();
+            return listVideo;
         }
-
         public List<Video_vm> GetAllVideoPlayList(List<Video> videos, AppUser user)
         {
             var listvm = new List<Video_vm>()
@@ -230,6 +233,18 @@ namespace DoanApp.Services
             {
                 if (request.HidenVideo) video.HidenVideo = true;
                 else video.HidenVideo = false;
+                _context.Update(video);
+                return await _context.SaveChangesAsync();
+            }
+            return -1;
+        }
+
+        public async Task<int> UpdateStatus(int id)
+        {
+            var video = GetAll().FirstOrDefault(X => X.Id==id);
+            if (video != null)
+            {
+                video.HidenVideo = video.HidenVideo ? false : true; 
                 _context.Update(video);
                 return await _context.SaveChangesAsync();
             }
