@@ -1,4 +1,6 @@
-﻿using DoanApp.Models;
+﻿using DoanApp.Areas.Administration.Models;
+using DoanApp.Commons;
+using DoanApp.Models;
 using DoanData.DoanContext;
 using DoanData.Models;
 using Microsoft.EntityFrameworkCore;
@@ -24,7 +26,7 @@ namespace DoanApp.Services
                 report.Content = request.Content;
                 report.UserId = request.UserId;
                 report.VideoId = request.VideoId;
-                report.CreateDate = DateTime.Now.ToString("d-MM-yyyy H:mm:ss");
+                report.CreateDate = new GetDateNow().DateNow;
                 _context.ReportVideo.Add(report);
                 return await _context.SaveChangesAsync();
             }
@@ -50,6 +52,41 @@ namespace DoanApp.Services
         public List<ReportVideo> GetAll()
         {
             return _context.ReportVideo.ToList();
+        }
+
+        public List<ReportVideo_Vm> GetList_Vm()
+        {
+            var listReport_Vm = new List<ReportVideo_Vm>();
+            var listReport = (from rp in _context.ReportVideo
+                              join vd in _context.Video on rp.VideoId equals vd.Id
+                              join us in _context.AppUser.Where(x=>x.Status) on rp.UserId equals us.Id
+                              select new
+                              {
+                                  rp.Id,
+                                  rp.Content,
+                                  NameVideo = vd.Name,
+                                  vd.PosterImg,
+                                  VideoId = vd.Id,
+                                  UserId = us.Id,
+                                  UserName = us.FirtsName + " " + us.LastName,
+                                  rp.CreateDate
+
+                              });
+            foreach (var item in listReport)
+            {
+                var report = new ReportVideo_Vm();
+                report.Id = item.Id;
+                report.Content = item.Content;
+                report.NameVideo = item.NameVideo;
+                report.ImgPoster = item.PosterImg;
+                report.VideoId = item.VideoId;
+                report.UserId = item.UserId;
+                report.NamUser = item.UserName;
+                report.CreateDate = item.CreateDate;
+                listReport_Vm.Add(report);
+
+            }
+            return listReport_Vm.OrderByDescending(x=>x.Id).ToList();
         }
 
         public async Task<int> Update(ReportVideoRequest request)

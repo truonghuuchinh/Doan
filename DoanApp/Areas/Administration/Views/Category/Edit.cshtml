@@ -4,28 +4,52 @@
 
     Layout = null;
 }
+<style>
+    .modal-content {
+        width: 50%;
+        margin-left: 30%;
+    }
+
+    .col-md-12 {
+        margin: 0;
+    }
+
+    #errorName {
+        font-size: 14px;
+        margin: 1px 0px 0px 5px;
+    }
+</style>
 <div class="row">
-    <div class="col-md-6">
-        <form asp-action="Edit">
+    <div class="col-md-12">
+       
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="Id" class="form-control" />
+            <input id="idEdit" type="hidden" asp-for="Id" class="form-control" />
             <div class="form-group">
                 <label asp-for="Name" class="control-label"></label>
-                <input asp-for="Name" class="form-control" />
+                <input id="nameEdit" asp-for="Name" class="form-control" />
                 <span asp-validation-for="Name" class="text-danger"></span>
             </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="Status" /> @Html.DisplayNameFor(model => model.Status)
-                </label>
-            </div>
             <br />
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
+            <div class="modal-footer">
+                <input  type="button" value="Lưu" class="btn btn-primary repairCate" />
             </div>
-        </form>
+        
     </div>
 </div>
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}
+
+<script>
+    $(".repairCate").click(function () {
+        var data = {
+            Name: $("#nameEdit").val(),
+            Id: $("#idEdit").val()
+        };
+        $.post("/Administration/Category/Edit", { categoryRequest: data }, function (respone) {
+            if (respone == "Success") {
+                $(".name-" + $("#idEdit").val()).text($("#nameEdit").val());
+                alertSuccess("Đã cập nhật");
+                $("#mediumModal").modal('hide');
+            }
+        });
+    });
+</script>
+

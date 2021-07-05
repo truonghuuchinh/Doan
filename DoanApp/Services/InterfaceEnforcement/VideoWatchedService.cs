@@ -69,7 +69,12 @@ namespace DoanApp.Services
 
         public List<VideoWatched> GetAll()
         {
-            return _context.VideoWatched.ToList();
+            var listWatched=(from video in _context.Video
+                            join watched in _context.VideoWatched on video.Id equals watched.VideoId
+                            join category in _context.Category on video.CategorysId equals category.Id
+                            where category.Status
+                            select watched).ToList();
+            return listWatched;
         }
 
         public Task<int> GetJsonList()

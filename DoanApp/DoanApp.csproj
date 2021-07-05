@@ -6,7 +6,7 @@
 
   <ItemGroup>
     <Folder Include="Areas\Administration\Data\" />
-    <Folder Include="Areas\Administration\Models\" />
+    <Folder Include="wwwroot\Administration\assets\charts\" />
     <Folder Include="wwwroot\Client\imgPoster\" />
     <Folder Include="wwwroot\Client\imgChannel\" />
     <Folder Include="wwwroot\Client\video\" />

@@ -50,7 +50,7 @@ namespace DoanApp.Controllers
             _detailService = detail;
         }
         // GET: VideoController
-
+        [AllowAnonymous]
         public ActionResult MyPage(int? page,int? idUser)
         {
             GetNotificationHome();
@@ -59,14 +59,21 @@ namespace DoanApp.Controllers
             List<Video_vm> listVideo_Vm;
             var listVideo = new List<Video>();
             var users = UserAuthenticated.GetUser(User.Identity.Name);
-            ViewBag.UserFollow = _userService.GetUserFollow(users.UserName);
-            ViewBag.IdUser = users.Id;
-            ViewBag.PlayList = _playListService.GetAll().Where(x => x.UserId == ViewBag.IdUser).ToList();
+            if (users != null)
+            {
+                ViewBag.IdUser = users.Id;
+                ViewBag.UserFollow = _userService.GetUserFollow(users.UserName);
+                ViewBag.PlayList = _playListService.GetAll().Where(x => x.UserId == users.Id).ToList();
+            }
+            else
+            {
+                ViewBag.PlayList = null;
+                ViewBag.UserFollow = _userService.GetChannel();
+            }
+          
             if (idUser != null)
             {
-                
                 var user =  _userService.FindUserId((int)idUser).Result;
-                
                 ViewBag.CountUserFollow = _followChannel.GetAll().Where(x => x.ToUserId == user.Id).Count();
                 ViewBag.UserMyPage = user;
                 listVideo = _videoService.GetAll().Where(x => x.AppUserId == idUser).ToList();
@@ -78,12 +85,32 @@ namespace DoanApp.Controllers
                 ViewBag.UserMyPage = users;
                 listVideo = _videoService.GetAll().Where(x => x.AppUserId == users.Id).ToList();
             }
-            if (idUser != users.Id&&idUser!=null) ViewBag.FollowUser = true;
+            if (users==null||idUser != users.Id&&idUser!=null) ViewBag.FollowUser = true;
             else ViewBag.FollowUser = false;
             ViewBag.BottomPage = true;
            var listUser = _userService.GetAll();
             listVideo_Vm = _videoService.GetVideo_Vm(listVideo, listUser).
                 OrderByDescending(x => x.Id).Where(x => x.Status & x.HidenVideo).ToList();
+            return View(listVideo_Vm.ToPagedList(pageNumber, 8));
+        }
+        [AllowAnonymous]
+        public ActionResult MyPage_Partial(int? id, int? page, string nameSearch =null)
+        {
+            if (id == null) id = 0;
+            var user = _userService.FindUserId((int)id).Result;
+            if (page == null) page = 1;
+            var pageNumber = page ?? 1;
+            List<Video_vm> listVideo_Vm;
+
+            var listVideo = _videoService.GetAll().Where(x => x.AppUserId == user.Id).ToList();
+            if (nameSearch != null && nameSearch != "Tìm kiếm"&& nameSearch != "null")
+                listVideo = listVideo.Where(x => x.Name.Contains(nameSearch)).ToList();
+            var listUser = _userService.GetAll().Where(x=>x.Id==id).ToList();
+            listVideo_Vm = _videoService.GetVideo_Vm(listVideo, listUser).
+                OrderByDescending(x => x.Id).Where(x => x.Status & x.HidenVideo).ToList();
+
+            ViewBag.CountUserFollow = _followChannel.GetAll().Where(x => x.FromUserId == user.Id).Count();
+            ViewBag.UserMyPage = user;
             return View(listVideo_Vm.ToPagedList(pageNumber, 8));
         }
         public IActionResult GetAllPlayList(int id,string nameSearch=null)
@@ -119,17 +146,26 @@ namespace DoanApp.Controllers
             var listvm = _detailService.GetDetailPlayList(user,null).OrderByDescending(x => x.Id).ToList();
                 return View(listvm.ToPagedList(1,4));
         }
+        [AllowAnonymous]
         public IActionResult MyIntroduction(int? idUser)
         {
             GetNotificationHome();
             var users = UserAuthenticated.GetUser(User.Identity.Name);
-            ViewBag.UserFollow = _userService.GetUserFollow(users.UserName);
+            if (users != null)
+            {
+                ViewBag.IdUser = users.Id;
+                ViewBag.UserFollow = _userService.GetUserFollow(users.UserName);
+                ViewBag.PlayList = _playListService.GetAll().Where(x => x.UserId == users.Id).ToList();
+            }
+            else
+            {
+                ViewBag.UserFollow = _userService.GetChannel();
+            }
             if (idUser != null)
             {
                 var user = _userService.FindUserId((int)idUser).Result;
                 ViewBag.CountUserFollow = _followChannel.GetAll().Where(x => x.ToUserId == user.Id).Count();
                 ViewBag.UserMyPage = user;
-                
                 ViewBag.CountView = _videoService.GetAll().Where(x => x.AppUserId == user.Id).Sum(x => x.ViewCount);
             }
             else
@@ -139,34 +175,16 @@ namespace DoanApp.Controllers
                 ViewBag.UserMyPage = users;
                 ViewBag.CountView = _videoService.GetAll().Where(x => x.AppUserId == users.Id).Sum(x => x.ViewCount);
             }
-            if (idUser != users.Id) ViewBag.FollowUser = true;
+            if (users==null||idUser != users.Id) ViewBag.FollowUser = true;
            else ViewBag.FollowUser = false;
             ViewBag.BottomPage = true;
             return View();
         }
-        public ActionResult MyPage_Partial(int? id,int? page,string nameSearch="null")
-        {
-            if (id == null) id = 0;
-            var user = _userService.FindUserId((int)id).Result;
-            if (page == null) page = 1;
-            var pageNumber = page ?? 1;
-            List<Video_vm> listVideo_Vm;
-            
-            var listVideo = _videoService.GetAll().Where(x => x.AppUserId == user.Id).ToList();
-            if (nameSearch != "null") 
-                listVideo = listVideo.Where(x => x.Name.Contains(nameSearch)).ToList();
-             var listUser = _userService.GetAll();
-            listVideo_Vm = _videoService.GetVideo_Vm(listVideo, listUser).
-                OrderByDescending(x => x.Id).Where(x => x.Status & x.HidenVideo).ToList();
-          
-            ViewBag.CountUserFollow = _followChannel.GetAll().Where(x => x.FromUserId == user.Id).Count();
-            ViewBag.UserMyPage = user;
-            return View(listVideo_Vm.ToPagedList(pageNumber, 8));
-        }
+       [AllowAnonymous]
         public string ListVideoJson(int id)
         {
             var listName = new List<string>();
-            var listVideo = _videoService.GetAll().Where(x => x.AppUserId == id).ToList();
+            var listVideo = _videoService.GetAll().Where(x => x.AppUserId == id&&x.HidenVideo).ToList();
             foreach (var item in listVideo)
             {
                 listName.Add(item.Name);
@@ -307,7 +325,7 @@ namespace DoanApp.Controllers
         public IActionResult MyChannel(int? page)
         {
             GetNotificationHome();
-            ViewData["Category"] = new SelectList(_categoryService.GetAll().Result, "Id", "Name");
+            ViewData["Category"] = new SelectList(_categoryService.GetAll().Result.Where(x=>x.Status).ToList(), "Id", "Name");
             ViewBag.ForCus = 5;
             if (page == null) page = 1;
             var pageSize = 6;

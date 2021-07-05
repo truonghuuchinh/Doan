@@ -1,30 +1,112 @@
-﻿@{
-    Layout = "~/Areas/Administration/Views/shared/_LayoutAdmin.cshtml";
+﻿@model IPagedList<DoanData.Models.AppRole>
+@using X.PagedList;
+@using X.PagedList.Mvc.Core;
+@{
+    int count = 0;
+    int totalUser = ViewBag.ListUser.Count;
 }
 
-<div id="contents">
 
+
+<div class="row">
+
+    <div class="box">
+        <div class="box-header displayFlex">
+            <div>Danh sách vai trò</div>
+            <div class="btn btn-primary displayFlex " id="showCreate"> <i style="margin-right:7px;" class="zmdi zmdi-plus-circle"></i>   Thêm</div>
+        </div>
+        <div class="box-body overflow-scroll">
+            <table>
+                <thead>
+                    <tr>
+
+                        <th>
+                            Tên
+                        </th>
+                        <th>
+                            Quyền
+                        </th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    @foreach (var item in Model)
+                    {
+                        <tr class="tr-shadow remove-@item.Id">
+
+                            <td>
+                                <textarea class="tr-shadow__textarea" readonly> @(count<totalUser? ViewBag.ListUser[count]:"không có User")</textarea>
+                            </td>
+                            <td>
+                                @if (item.Name.Contains("Admin"))
+                                {
+                                    <span class="role admin">@item.Name</span>
+                                }
+                                @if (item.Name.Contains("User"))
+                                {
+                                    <span class="role user">@item.Name</span>
+                                }
+                                @if (item.Name.Contains("Manager"))
+                                {
+                                    <span class="role member">@item.Name</span>
+                                }
+
+                            </td>
+                            <td>
+                                <div class="table-data-feature">
+
+                                    <button class="item" data-toggle="tooltip" data-placement="top" title="Edit" onclick="editFunction(@item.Id)">
+                                        <i class="zmdi zmdi-edit"></i>
+                                    </button>
+                                    <button class="item" data-toggle="tooltip" data-placement="top" title="Delete" onclick="deleteFunction(@item.Id)">
+                                        <i class="zmdi zmdi-delete"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr class="spacer"></tr>
+                        count++;
+                    }
+
+
+
+                </tbody>
+            </table>
+        </div>
+    </div>
 </div>
+
+
 
 @section Scripts{
     <script>
-            $(document).ready(function () {
-                $.get("/Administration/Role/IndexPartial", function (respone) {
-                    $('#contents').empty().html(respone);
-                });
-        });
+        $("#showCreate").click(function () {
 
-        $(document).on("click", "#contentPager a", function () {
-            $.ajax({
-                url: $(this).attr("href"),
-                type: 'GET',
-                cache: false,
-                success: function (result) {
-                    $('#contents').empty().html(result);
-                }
-            });
-            return false;
+            OpenPopUp2("Thêm Quyền", "/Administration/Role/Create");
+            $("#Name").val('');
+            $("#errorName").text('');
+            setTimeout(() => { $("#Name").focus(); }, 500);
         });
+        function editFunction(id) {
+            OpenPopUp2("Cập nhật Quyền", "/Administration/Role/Update/?Id=" + id);
+           
+        }
+        function deleteFunction(id) {
+            var isDelete = confirm("Bạn có chắc muốn xóa phần tử này");
+            if (isDelete) {
+                $.get("/Administration/Role/Delete/?id=" + id, function (result) {
+                    if (result == "Success") {
+                        $(".remove-" + id).remove();
+                        alertSuccess("Đã xóa");
+                    }
+                });
+
+
+            }
+        }
+
+        searchAll("/Administration/Role/Index_Partial/");
     </script>
 }
 

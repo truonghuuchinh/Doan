@@ -1,0 +1,31 @@
+﻿@model IPagedList<ReportVideo_Vm>
+@using X.PagedList;
+@{
+    int count = 0;
+    Layout = null;
+}
+@foreach (var item in Model)
+{
+    <tr onclick="showDetailReport(@item.Id)" class="tr-shadow hover removeItem-@item.Id" title="Click vào để xem chi tiết">
+        <td style="width:280px;"><div class="content__report">@item.Content</div></td>
+        <td style=" width:300px;" class="center">
+            <img class="imgPoster" src="/Client/imgPoster/@item.ImgPoster" alt="Alternate Text" />
+            <div class="nameVideoReport">@item.NameVideo</div>
+        </td>
+        <td class="center">
+            @item.NamUser
+        </td>
+
+        <td>
+            <div class="table-data-feature">
+                <button class="item" data-toggle="tooltip" data-placement="top" title="Phản hồi" onclick="replyFunction(event,@item.UserId,@item.VideoId)">
+                    <i class="zmdi zmdi-mail-reply"></i>
+                </button>
+                <button class="item" data-toggle="tooltip" data-placement="top" title="Xóa" onclick="deleteFunction(event,@item.Id)">
+                    <i class="zmdi zmdi-delete"></i>
+                </button>
+            </div>
+        </td>
+    </tr>
+    <tr class="spacer"></tr>
+}

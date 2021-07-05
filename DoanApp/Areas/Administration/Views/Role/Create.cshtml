@@ -5,43 +5,62 @@
     Layout = null;
 
 }
+<style>
+    .modal-content{
+        width:50%;
+        margin-left:30%;
+    }
+    .col-md-12{
+        margin:0;
+    }
+   
+</style>
 <div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create" id="formCreate">
+    <div class="col-md-12">
+        <form asp-action="Create" id="createRole" method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="Name" class="control-label"></label>
-                <input id="Name" asp-for="Name" class="form-control" />
-                <span asp-validation-for="Name" id="errorName" class="text-danger"></span>
+                <div style="display:flex;">
+                    <label asp-for="Name" class="control-label">Tên quyền</label>
+                    <span asp-validation-for="Name" id="errorName" class="text-danger"></span>
+                </div>
+               
+                <input id="Name" asp-for="Name" class="form-control nameRole" />
+
             </div><br />
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+            <div class="form-group modal-footer">
+                <button type="button" data-dismiss="modal" class="btn btn-danger">Hủy</button>
+                <button  type="submit" class="btn btn-primary createRole">Tạo</button>
             </div>
         </form>
     </div>
 </div>
-
-
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 <script>
-    $("#Name").blur(function () {
+    //-------Xử lý tạo quyền-----------------
 
+
+    $("#Name").blur(function () {
         var roleName = $("#Name").val();
         $("#errorName").text('');
         $.get("/Administration/Role/CheckName/?name=" + roleName, function (respone) {
             if (respone == "Error") {
                 $("#errorName").text("Tên chủ đề bạn nhập đã tồn tại!");
             }
+          
         });
 
     });
-    $("#formCreate").submit(function (event) {
-        if ($("#Name").val() == '' || $("#errorName").text() != '') {
-            if ($("#Name").val() == '')
-                $("#errorName").text("Vui lòng nhập tên!");
-            event.preventDefault();
+
+    $("#createRole").submit(function (event) { 
+         if ($("#Name").val() != '' && $("#errorName").text() == '') {
+            return;
         }
+        if ($("#Name").val() == '')
+            $("#errorName").text("(Vui lòng nhập tên!)");
+        event.preventDefault();
     });
+   
 </script>
-}
+
+
+

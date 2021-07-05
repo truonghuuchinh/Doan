@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="https://cdn.plyr.io/3.6.2/demo.css">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/material-design-iconic-font/2.2.0/css/material-design-iconic-font.min.css">
     <link href="~/Client/fonts/fontawesome/css/all.min.css" rel="stylesheet" />
     <link href="~/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="~/Client/css/style.css">
@@ -15,7 +16,7 @@
     <link href="~/css/alert_css.css" rel="stylesheet" />
     <link href="~/css/toastifier.min.css" rel="stylesheet" />
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
-   
+
 </head>
 <body>
     <div class="warpper">
@@ -52,7 +53,7 @@
                                 </a>
 
                                 <div class="notification">
-                                    <div class="notificationss hover"></div>
+                                    <div class="notificationss hover"><i class="zmdi zmdi-notifications"></i></div>
                                     <div class="thongbao_do">
                                         <div class="thong_baos">
                                             <div class="soluongtb">@ViewBag.CountNotifi</div>
@@ -84,7 +85,7 @@
                                                 <div class="modal_check_function_fier">
                                                     <div class="modal_check_function_fier_left">
                                                         <div class="khung_function_fier_img">
-                                                            <div class="img_kenhdangky"></div>
+                                                            <div class="img_kenhdangky"><i class="zmdi zmdi-account-box fontsize"></i></div>
                                                         </div>
                                                     </div>
                                                     <div class="modal_check_function_fier_right">
@@ -95,13 +96,13 @@
                                             <div class="modal_check_function_fier">
                                                 <div class="modal_check_function_fier_left">
                                                     <div class="khung_function_fier_img">
-                                                        <div class="img_Logout"></div>
+                                                        <div class="img_Logout"><i class="zmdi  zmdi-power fontsize"></i></div>
                                                     </div>
                                                 </div>
 
                                                 <div class="modal_check_function_fier_right">
                                                     <a class="move_page" asp-action="Logout" asp-controller="Home">
-                                                        <div class="text_modal_check_function_fier">Đăng xuất</div>
+                                                        <div class="text_modal_check_function_fier ">Đăng xuất</div>
                                                     </a>
                                                 </div>
 
@@ -111,7 +112,7 @@
                                             <div class="modal_check_function_fier">
                                                 <div class="modal_check_function_fier_left">
                                                     <div class="khung_function_fier_img">
-                                                        <div class="img_kenhdangky"></div>
+                                                        <div class="img_kenhdangky"><i class="zmdi zmdi-brightness-6 fontsize"></i></div>
                                                     </div>
                                                 </div>
                                                 <div class="modal_check_function_fier_right">
@@ -170,7 +171,15 @@
                                             }
                                         </div>
                                         <div class="khung_thongbao_video_img">
-                                            <img class="img_trang__cuaban_thongbao" alt="" src="@(item.LoginExternal?item.AvartarUser:"/Client/avartar/"+item.AvartarUser)">
+                                            @if (item.AvartarUser == "avartarDefault.jpg")
+                                            {
+                                                <img class="img_trang__cuaban_thongbao" alt="" src="/Client/avartar/@item.AvartarUser">
+                                            }
+                                            else
+                                            {
+                                                <img class="img_trang__cuaban_thongbao" alt="" src="@(item.LoginExternal?item.AvartarUser:"/Client/avartar/"+item.AvartarUser)">
+                                            }
+
                                         </div>
                                         <div class="noidung_khungthongbaovideo_text">
                                             <div class="noidung_khungthongbao_video__text"><strong>@item.UserName</strong> @item.Content</div>
@@ -182,12 +191,12 @@
                                             </div>
                                         </div>
                                     </a>
-                                    <div class="daubacham_anthongbao" onclick="optionNotifi(event,@item.Id)">
+                                    <div class="daubacham_anthongbao hover" onclick="optionNotifi(event,@item.Id)">
                                         <div class=" hover daubacham_anthongbao_video">
                                             <img src="/Client/img/more.png" alt="" class="show_daubacham_anthongbao_video more-@item.Id">
                                         </div>
                                     </div>
-                                    <div class="an_thongbaonay_all option_notifi-@item.Id">
+                                    <div class="an_thongbaonay_all hover option_notifi-@item.Id">
                                         <div class="kekhungheader"></div>
                                         <div class=" hover class_nameimg_anthongbao">
                                             <div class="khung_img_class_nameimg_anthongbo">
@@ -195,15 +204,20 @@
                                             </div>
                                             <div onclick="revertStatus(event,@item.Id)" class="noidung_class_nameimg_anthongbao">Ẩn thông báo này</div>
                                         </div>
-                                        <div class=" hover class_nameimg_anthongbao">
-                                            <div class="khung_img_class_nameimg_anthongbo">
-                                                <div class="img_offthongbao">
-                                                    <i class="material-icons">&#xe7f6;</i>
+                                        @if (item.AvartarUser != "avartarDefault.jpg")
+                                        {
+                                            <div class=" hover class_nameimg_anthongbao">
+                                                <div class="khung_img_class_nameimg_anthongbo">
+                                                    <div class="img_offthongbao">
+                                                        <i class="material-icons">&#xe7f6;</i>
+                                                    </div>
                                                 </div>
+                                                <div onclick="revertFollow(event,@item.Id)" class="noidung_class_nameimg_anthongbao">Tắt thông báo từ kênh </div>
+
                                             </div>
-                                            <div onclick="revertFollow(event,@item.Id)" class="noidung_class_nameimg_anthongbao">Tắt thông báo từ kênh </div>
-                                        </div>
+                                        }
                                     </div>
+
                                 </div>
                             </div>
 
@@ -221,7 +235,7 @@
                     <li class="text-white sidebar-item sidebar-menu @(ViewBag.ForCus ==0?"forcus__item":"")">
 
                         <div class="row">
-                            <img class="icon-sidebar-item" alt="" src="~/Client/img/home_mau.png">
+                            <i class="icon-sidebar-item zmdi zmdi-home"></i>
                             <span class="text-sidebar-item">Trang chủ</span>
                         </div>
                     </li>
@@ -230,44 +244,47 @@
                     <li class="text-white sidebar-item sidebar-menu @(ViewBag.ForCus ==1?"forcus__item":"")">
 
                         <div class="row">
-                            <img class="icon-sidebar-item" alt="" src="~/Client/img/explore.png">
+                            <i class="icon-sidebar-item zmdi zmdi-compass"></i>
                             <span class="text-sidebar-item">Khám phá</span>
                         </div>
                     </li>
                 </a>
-                <a class="move_page" asp-action="SubscriptionChannel" asp-controller="Video">
-                    <li class="text-white sidebar-item sidebar-menu @(ViewBag.ForCus ==2?"forcus__item":"")">
-                        <div class="row">
-                            <img class="icon-sidebar-item" alt="" src="~/Client/img/youtube_danky.png">
-                            <span class="text-sidebar-item">Kênh đăng ký</span>
-                        </div>
-                    </li>
-                </a>
-                <li class="text-white sidebar-item sidebar-menu sider_colors " style="height: 0px;">
+                <li class="text-white sidebar-item sidebar-menu sider_colors" style="height: 0px;">
                     <div style="background-color: #0C386A; height:1px"></div>
                 </li>
-                <a class="move_page" asp-action="LibaryVideo" asp-controller="Video">
-                    <li class="text-white sidebar-item sidebar-menu @(ViewBag.ForCus ==3?"forcus__item":"")">
-                        <div class="row">
-                            <img class="icon-sidebar-item" alt="" src="~/Client/img/youtube_thuvien.png">
-                            <span class="text-sidebar-item">Thư viện</span>
-                        </div>
-                    </li>
-                </a>
-                <a class="move_page" asp-action="@(user!=null?"Index":"Login")" asp-controller="@(user!=null?"VideoWatched":"Home")">
-                    <li class="text-white sidebar-item sidebar-menu @(ViewBag.ForCus ==4?"forcus__item":"")">
-                        <div class="row">
-                            <img class="icon-sidebar-item" alt="" src="~/Client/img/future.png">
-                            <span class="text-sidebar-item">Video đã xem</span>
-                        </div>
-                    </li>
-                </a>
                 @if (User.Identity.IsAuthenticated)
                 {
+                    <a class="move_page" asp-action="SubscriptionChannel" asp-controller="Video">
+                        <li class="text-white sidebar-item sidebar-menu @(ViewBag.ForCus ==2?"forcus__item":"")">
+                            <div class="row">
+                                <i class="icon-sidebar-item zmdi zmdi-youtube-play"></i>
+                                <span class="text-sidebar-item">Kênh đăng ký</span>
+                            </div>
+                        </li>
+                    </a>
+                    <li class="text-white sidebar-item sidebar-menu sider_colors " style="height: 0px;">
+                        <div style="background-color: #0C386A; height:1px"></div>
+                    </li>
+                    <a class="move_page" asp-action="LibaryVideo" asp-controller="Video">
+                        <li class="text-white sidebar-item sidebar-menu @(ViewBag.ForCus ==3?"forcus__item":"")">
+                            <div class="row">
+                                <i class="icon-sidebar-item zmdi zmdi-collection-video"></i>
+                                <span class="text-sidebar-item">Thư viện</span>
+                            </div>
+                        </li>
+                    </a>
+                    <a class="move_page" asp-action="@(user!=null?"Index":"Login")" asp-controller="@(user!=null?"VideoWatched":"Home")">
+                        <li class="text-white sidebar-item sidebar-menu @(ViewBag.ForCus ==4?"forcus__item":"")">
+                            <div class="row">
+                                <i class="icon-sidebar-item zmdi zmdi-time-restore-setting"></i>
+                                <span class="text-sidebar-item">Video đã xem</span>
+                            </div>
+                        </li>
+                    </a>
                     <a class="move_page" asp-action="MyChannel" asp-controller="Video" target="_blank">
                         <li class="text-white sidebar-item sidebar-menu @(ViewBag.ForCus ==5?"forcus__item":"")">
                             <div class="row">
-                                <img class="icon-sidebar-item" alt="" src="~/Client/img/youtube_videocuaban.png">
+                                <i class="icon-sidebar-item zmdi zmdi-collection-case-play"></i>
                                 <span class="text-sidebar-item">Video của bạn</span>
                             </div>
                         </li>
@@ -276,12 +293,33 @@
                     <a class="move_page" asp-action="FavoritedVideo" asp-controller="Video">
                         <li class="text-white sidebar-item sidebar-menu @(ViewBag.ForCus ==6?"forcus__item":"")">
                             <div class="row">
-                                <img class="icon-sidebar-item" alt="" src="/Client/img/like.png">
+                                <i class="icon-sidebar-item zmdi zmdi-thumb-up"></i>
                                 <span class="text-sidebar-item">Video đã thích</span>
                             </div>
                         </li>
                     </a>
 
+                }
+                else
+                {
+                    <div class="hearer_container_text">Kênh đề xuất</div>
+                    <div class="xohangall">
+
+                        @foreach (var item in ViewBag.UserFollow)
+                        {
+                            <a class="move_page" asp-action="MyPage" asp-controller="Video" asp-route-idUser="@item.Id">
+                                <li class="text-white sidebar-item sidebar-menu fix_texts_count">
+                                    <div class="row">
+                                        <img class="icon-sidebar-item img_follow" alt="" src="@(item.LoginExternal ? item.Avartar : "/Client/avartar/" + item.Avartar)">
+                                        <span class="text-sidebar-item fix_texts">@item.FirtsName @item.LastName</span>
+                                    </div>
+                                </li>
+                            </a>
+                        }
+                    </div>
+                    <div class="collapses hover">
+                        Xem thêm
+                    </div>
                 }
                 <li class="text-white sidebar-item sidebar-menu sider_colors" style="height: 0px;">
                     <div style="background-color: #0C386A; height:1px"></div>
@@ -313,6 +351,7 @@
                 }
                 else
                 {
+
                     <div class="title_NoSignin">Đăng nhập để like, comment và subscribe</div>
                     <div id="no_Login_Register">
                         <a class="move_page" asp-action="Login" asp-controller="Home">
@@ -328,41 +367,56 @@
                 @RenderBody()
             </div>
         </div>
-        <!--Modal reportvideo and add playlist-->
-        <div class="modal" tabindex="-1" id="modalPlayList" data-backdrop="static">
-            <div class="modal-dialog">
-                <div class="modal-content modalPlayList">
-                    <div class="modal-header">
-                        <h5 class="modal-title">Lưu vào danh sách</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true"><i class="fa fa-times"></i></span>
-                        </button>
-                    </div>
+    </div>
+    <div class="img-loading">
+        <div>
+            <span class="spinner-border spinner-border-sm"></span>
+            Loading..
+        </div>
+    </div>
+    <!--Modal reportvideo and add playlist-->
+    <div class="modal" tabindex="-1" id="modalPlayList" data-backdrop="static">
+        <div class="modal-dialog">
+            <div class="modal-content modalPlayList">
+                <div class="modal-header">
+                    <h5 class="modal-title">Lưu vào danh sách</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true"><i  class="fa fa-times iconclosePlayList"></i></span>
+                    </button>
+                </div>
 
-                    <div class="modal-body">
-                        <div class="list__playlist">
-                            @if (ViewBag.PlayList != null)
+                <div class="modal-body">
+                    <div class="list__playlist">
+                        @if (ViewBag.PlayList != null)
+                        {
+                            if (ViewBag.PlayList.Count == 0)
                             {
-                                if (ViewBag.PlayList.Count == 0)
+                                <div class="listChoose">
+                                    Chưa có danh sách, tạo ngay...
+                                </div>
+                            }
+                            else
+                            {
+                                @foreach (var item in ViewBag.PlayList)
                                 {
                                     <div class="listChoose">
-                                        Chưa có danh sách, tạo ngay...
+                                        <input type="checkbox" id="chooseList-@item.Id" data-id="@item.Id" class="chooseList chooseList-@item.Id" />
+                                        <label class="hover" onclick="addItem(@item.Id)" for="chooseList-@item.Id"><span>@item.Name</span></label>
                                     </div>
                                 }
-                                else
-                                {
-                                    @foreach (var item in ViewBag.PlayList)
-                                    {
-                                        <div class="listChoose">
-                                            <input type="checkbox" id="chooseList-@item.Id" data-id="@item.Id" class="chooseList chooseList-@item.Id" />
-                                            <label class="hover" onclick="addItem(@item.Id)" for="chooseList-@item.Id"><span>@item.Name</span></label>
-                                        </div>
-                                    }
-                                }
                             }
-                        </div>
+                        }
+                        else
+                        {
+                            <div class="listChoose">
+                                Chưa có danh sách, vui lòng đăng nhập để tạo danh sách
+                            </div>
+                        }
                     </div>
-                    <div class="modal-footer">
+                </div>
+                <div class="modal-footer">
+                    @if (ViewBag.PlayList != null)
+                    {
                         <div class="add-playlist hover"><i class=" fa fa-plus"></i> Tạo danh sách mới</div>
                         <div class="create_playlist">
                             <span>Tên</span>
@@ -370,91 +424,93 @@
                             <input type="hidden" value="@ViewBag.IdUser" id="idUser" name="UserId" />
                             <button type="submit" class="btn-primary btnPlaylist" disabled>Tạo</button>
                         </div>
-                    </div>
+                    }
                 </div>
             </div>
         </div>
-        <div class="modal" id="reportvideo">
-            <div class="modal_reportvideo">
-                <div class="header_videodau">
-                    <div class="benphaiheader_videodau">
-                        <div class="na_tieude">Vui lòng nhập nôi dung báo cáo</div>
-                    </div>
+    </div>
+    <div class="modal" id="reportvideo">
+        <div class="modal_reportvideo">
+            <div class="header_videodau">
+                <div class="benphaiheader_videodau">
+                    <div class="na_tieude">Vui lòng nhập nôi dung báo cáo</div>
                 </div>
-                <div class="content_videodau">
-                    <span class="text-danger errorReport" style="margin-left:10px; display:block" id="errorReport"></span>
-                    <textarea class="noidung_baocao" id="valueReport" rows="4" placeholder="Mô tả văn bản" style="-webkit-appearance: none;"></textarea>
-                    <div class="sangphai_header_videodauu">
-                        <div type="button" class="btn btn-primary" id="confirm_report">Báo cáo</div>
+            </div>
+            <div class="content_videodau">
+                <span class="text-danger errorReport" style="margin-left:10px; display:block" id="errorReport"></span>
+                <textarea class="noidung_baocao" id="valueReport" rows="4" placeholder="Mô tả văn bản" style="-webkit-appearance: none;"></textarea>
+                <div class="sangphai_header_videodauu">
+                    <div type="button" class="btn btn-primary" id="confirm_report">Báo cáo</div>
+                </div>
+                <div class="sangphai_header_videodauu">
+                    <div type="button" class="btn btn-danger" data-dismiss="modal">Hủy</div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <!--Kết thúc-->
+    <!--Modal show danh sách phát-->
+    <div class="modal" id="modalShowPlayList" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <div class="body__search">
+                        <i class="fas fa-search"></i>
+                        <input placeholder="Tìm trên kênh của bạn" id="timkiem__video" type="search" class="name__Create searchAllList" value="" />
                     </div>
-                    <div class="sangphai_header_videodauu">
+                    <hr style="margin-top:35px;" />
+                    <div>Tất cả video</div>
+                    <hr />
+                    <div class="tbodyOfPlayList">
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--Kết thúc-->
+    <!--Modal upload Avartar-->
+    <div class="modal" id="upload_avartar">
+        <div class="modal_upload_img">
+            <div class="header_videodau">
+                <div class="benphaiheader_videodau">
+
+                </div>
+            </div>
+            <div class="content_videodau">
+                <form asp-action="UpdateAvartar" id="fUploadAvartar" asp-controller="Video" method="post" enctype="multipart/form-data">
+                    <div class="na_tieude">
+                        Vui lòng chọn ảnh <span class="text-danger" id="erroravartar"></span>
+                    </div>
+
+                    <div class="custom-file">
+                        <input type="file" class="custom-file-input" name="fileUpload" id="updateImgAvartar">
+                        <label class="custom-file-label">Chọn Ảnh</label>
+                        <input type="hidden" name="emailUser" id="emailUser" />
+
+                    </div>
+                    <div> <img src="~/Client/img/default_image.png" class="imgReview" id="img_review__avartar" /></div>
+                    <div class="sangphai_header_videodauu" style="margin-top:50px;">
                         <div type="button" class="btn btn-danger" data-dismiss="modal">Hủy</div>
+                        <button type="submit" class="btn btn-primary">Xác nhận</button>
                     </div>
-                </div>
+
+                </form>
 
             </div>
+
         </div>
-        <!--Kết thúc-->
-        <!--Modal show danh sách phát-->
-        <div class="modal" id="modalShowPlayList" tabindex="-1" role="dialog">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-body">
-                        <div class="body__search">
-                            <i class="fas fa-search"></i>
-                            <input placeholder="Tìm trên kênh của bạn" id="timkiem__video" type="search" class="name__Create searchAllList" value="" />
-                        </div>
-                        <hr style="margin-top:35px;" />
-                        <div>Tất cả video</div>
-                        <hr />
-                        <div class="tbodyOfPlayList">
+    </div>
+    <!--kết thúc-->
+    <script src="~/js/site.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="~/select2/js/select2.min.js"></script>
+    <script src="~/js/signalr/signalr.min.js"></script>
+    <script src="~/Client/js/site.js"></script>
+    @RenderSection("Scripts", false)
 
-                        </div>
-
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!--Kết thúc-->
-        <!--Modal upload Avartar-->
-        <div class="modal" id="upload_avartar">
-            <div class="modal_upload_img">
-                <div class="header_videodau">
-                    <div class="benphaiheader_videodau">
-
-                    </div>
-                </div>
-                <div class="content_videodau">
-                    <form asp-action="UpdateAvartar" id="fUploadAvartar" asp-controller="Video" method="post" enctype="multipart/form-data">
-                        <div class="na_tieude">
-                            Vui lòng chọn ảnh <span class="text-danger" id="erroravartar"></span>
-                        </div>
-
-                        <div class="custom-file">
-                            <input type="file" class="custom-file-input" name="fileUpload" id="updateImgAvartar">
-                            <label class="custom-file-label">Chọn Ảnh</label>
-                            <input type="hidden" name="emailUser" id="emailUser" />
-
-                        </div>
-                        <div> <img src="~/Client/img/default_image.png" class="imgReview" id="img_review__avartar" /></div>
-                        <div class="sangphai_header_videodauu" style="margin-top:50px;">
-                            <div type="button" class="btn btn-danger" data-dismiss="modal">Hủy</div>
-                            <button type="submit" class="btn btn-primary">Xác nhận</button>
-                        </div>
-
-                    </form>
-
-                </div>
-
-            </div>
-        </div>
-        <!--kết thúc-->
-        <script src="~/js/site.js"></script>
-        <script src="~/lib/bootstrap/dist/js/bootstrap.min.js"></script>
-        <script src="~/select2/js/select2.min.js"></script>
-        <script src="~/js/signalr/signalr.min.js"></script>
-        <script src="~/Client/js/site.js"></script>
-        @RenderSection("Scripts", false)
 
 </body>
 </html>

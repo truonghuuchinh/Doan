@@ -1,0 +1,154 @@
+﻿@model List<Video>
+@{
+    int count = 1;
+}
+<style>
+    .modal-body {
+        background: #eeeeee;
+    }
+    .modal-header {
+        background: #dddd;
+    }
+    
+    .modal-footer {
+        background: #515151;
+    }
+</style>
+<!-- Counts Section -->
+<section class="dashboard-counts section-padding">
+    <input type="hidden" id="user__Id" value="@ViewBag.IdUser" />
+    <div class="container-fluid">
+        <div class="row row_charts">
+            <!-- Count item widget-->
+            <div class="col-xl-2 col-md-4 col-6">
+                <div class="wrapper count-title d-flex">
+                    <div class="icon"><i class="icon-user"></i></div>
+                    <div class="name">
+                        <strong class="text-uppercase">Người đăng ký</strong>
+                        <div class="count-number count__register">@ViewBag.UserFollow</div>
+                    </div>
+                </div>
+            </div>
+            <!-- Count item widget-->
+            <div class="col-xl-2 col-md-4 col-6">
+                <div class="wrapper count-title d-flex">
+                    <div class="icon"><i class="zmdi zmdi-desktop-windows"></i></div>
+                    <div class="name">
+                        <strong class="text-uppercase">Lượt xem kênh</strong>
+                        <div class="count-number countView">@ViewBag.CountViewChannel </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Count item widget-->
+            <div class="col-xl-2 col-md-4 col-6">
+                <div class="wrapper count-title d-flex">
+                    <div class="icon"><i class="zmdi zmdi-collection-video"></i></div>
+                    <div class="name">
+                        <strong class="text-uppercase">Tổng Số video</strong>
+                        <div class="count-number countVideo">@ViewBag.CountVideo</div>
+                    </div>
+                </div>
+            </div>
+            <!-- Count item widget-->
+            <div class="col-xl-2 col-md-4 col-6">
+                <div class="wrapper count-title d-flex">
+                    <div class="icon"><i class="icon-bill"></i></div>
+                    <div class="name">
+                        <strong class="text-uppercase">Lượt báo cáo</strong>
+                        <div class="count-number countReport">@ViewBag.CountReport</div>
+                    </div>
+                </div>
+            </div>
+            <!-- Count item widget-->
+            <div class="col-xl-2 col-md-4 col-6">
+                <div class="wrapper count-title d-flex">
+                    <div class="icon"><i class="icon-list"></i></div>
+                    <div class="name">
+                        <strong class="text-uppercase">Tổng số chủ đề</strong>
+                        <div class="count-number countCategory">@ViewBag.CoutCategory</div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+<!-- Header Section-->
+<section class="dashboard-header section-padding">
+    <div class="container-fluid">
+        <div class="row d-flex align-items-md-stretch">
+
+            <!-- Pie Chart-->
+            <div class="col-lg-6 col-md-6">
+                <div class="card project-progress">
+                    <h2 class="display h4">Thống kê thể loại kênh</h2>
+                    <p> Biểu đồ thể hiện chủ đề của kênh</p>
+                    <div class="pie-chart">
+                        <canvas id="pieChart" width="300" height="300"> </canvas>
+                    </div>
+                </div>
+            </div>
+            <!-- Line Chart -->
+            <div class="col-lg-6 col-md-12 flex-lg-last flex-md-first align-self-baseline">
+                <div class="card sales-report">
+                    <h2 class="display h4">Hoạt động đăng Video </h2>
+                    <p> Thống kê việc đăng video các tháng trong năm </p>
+                    <div class="line-chart">
+                        <canvas id="lineCahrt"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Statistics Section-->
+<section class="statistics">
+    <div class="container-fluid">
+        <div class="row d-flex">
+            <div class="row m-t-30">
+                <div class="col-md-12">
+                    <!-- DATA TABLE-->
+                    <div class="topVideo">Top 10 các video nhiều lượt xem nhất Kênh </div>
+                    <div class="table-responsive m-b-40">
+                        <table class="table table-borderless table-data3">
+                            <thead>
+                                <tr>
+                                    <th>Xếp hạng</th>
+                                    <th>Tên video</th>
+                                    <th>Ngày đăng</th>
+                                    <th>Lượt xem</th>
+                                    <th>Lượt Like</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+
+                                @foreach (var item in Model)
+                                {
+                                    <tr title="Click vào để xem chi tiết" class="hover" onclick="showDetailVideo(@item.Id)">
+                                        <td>#@count</td>
+                                        <td><div class="nameVideo__popular">@item.Name</div></td>
+                                        <td>@item.CreateDate.Split(' ')[0]</td>
+                                        <td class="process">@ConvertViewCount.ConvertView(item.ViewCount) lượt xem</td>
+                                        <td>@item.Like</td>
+                                    </tr>
+                                    count++;
+                                }
+
+                            </tbody>
+                        </table>
+                    </div>
+                    <!-- END DATA TABLE-->
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+@section Scripts{
+    <script>
+        function showDetailVideo(id) {
+            OpenPopUp2("Chi tiết Video","/Administration/Video/DetailVideo/?id=" + id);
+        }
+    </script>
+}
+

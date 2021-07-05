@@ -51,7 +51,7 @@ namespace DoanApp.Controllers
         public string GetCountNotifi()
         {
             var userss = UserAuthenticated.GetUser(User.Identity.Name);
-            if (User != null)
+            if (userss != null)
             {
                 var countnoti = _notifiService.GetNotification(userss).Where(x => x.Watched).Count();
                 return countnoti.ToString();

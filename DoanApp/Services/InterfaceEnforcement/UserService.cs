@@ -1,4 +1,5 @@
-﻿using DoanApp.Commons;
+﻿using DoanApp.Areas.Administration.Models;
+using DoanApp.Commons;
 using DoanApp.Models;
 using DoanData.DoanContext;
 using DoanData.Models;
@@ -29,9 +30,22 @@ namespace DoanApp.Services
             _context = context;
         }
 
+        public async Task<int> Delete(int id)
+        {
+            var user = _context.AppUser.Where(x => x.Status).FirstOrDefault(x => x.Id == id);
+            if (user != null)
+            {
+                user.Status = false;
+                _context.Update(user);
+                return await  _context.SaveChangesAsync();
+            }
+            return -1;
+        }
+
         public async Task<AppUser> FindUser(string email)
         {
-            return await _userManager.FindByEmailAsync(email);
+            var user = await _context.AppUser.FirstOrDefaultAsync(x => x.Email == email);
+            return user; 
         }
 
         public async Task<AppUser> FindUserId(int id)
@@ -41,7 +55,75 @@ namespace DoanApp.Services
 
         public  List<AppUser> GetAll()
         {
-            return  _context.AppUser.ToList();
+            return  _context.AppUser.Where(x=>x.Status).ToList();
+        }
+
+        public List<AppUser> GetChannel()
+        {
+            var listVideo = _context.Video.Where(x => x.Status && x.HidenVideo).GroupBy(x => x.AppUserId).Select(x => new
+            {
+                x.Key
+            });
+            var lisUser = new List<AppUser>();
+            lisUser = (from user in GetAll().ToList()
+                       join follow in listVideo on user.Id equals follow.Key
+                       select user).ToList();
+            return lisUser;
+        }
+
+        public List<UserAdmin> GetUserAdmin(string name)
+        {
+            var video = _context.Video.GroupBy(x => x.AppUserId).Select(y => new
+            {
+                Key = y.Key,
+                TotalVideo = y.Count(),
+                TotalView = y.Sum(x => x.ViewCount)
+            });
+            var userNovideo = GetAll().Where(x => !_context.Video.Any(y => y.AppUserId == x.Id)&&x.UserName!=name).ToList();
+            var userAdmin = (from user in GetAll().Where(x=>x.UserName!=name).ToList()
+                             join vd in video on user.Id equals vd.Key
+                             select new
+                             {
+                                 Id=user.Id,
+                                 Name=user.FirtsName+" "+user.LastName,
+                                 CreateDate=user.CreateDate,
+                                 TotalVideo=vd.TotalVideo,
+                                 TotalView=vd.TotalView,
+                                 LoginExternal=user.LoginExternal,
+                                 Avartar=user.Avartar,
+                                 LockOutEnabled=user.LockoutEnabled
+                             }).ToList();
+            var listUserAdmin = new List<UserAdmin>();
+            var listNoUserAdmin = new List<UserAdmin>();
+            foreach (var item in userAdmin)
+            {
+                var us = new UserAdmin();
+                us.Id = item.Id;
+                us.Name = item.Name;
+                us.CreateDate = item.CreateDate;
+                us.TotalVideo = item.TotalVideo;
+                us.TotalView = item.TotalView;
+                us.LoginExternal = item.LoginExternal;
+                us.Avartar = item.Avartar;
+                us.LockOutEnabled = item.LockOutEnabled;
+                listUserAdmin.Add(us);
+            }
+            foreach (var item in userNovideo)
+            {
+                var us = new UserAdmin();
+                us.Id = item.Id;
+                us.Name = item.FirtsName+" "+item.LastName;
+                us.CreateDate = item.CreateDate;
+                us.TotalVideo = 0;
+                us.TotalView = 0;
+                us.LockOutEnabled = item.LockoutEnabled;
+                us.LoginExternal = item.LoginExternal;
+                us.Avartar = item.Avartar;
+                listNoUserAdmin.Add(us);
+            }
+            listUserAdmin.AddRange(listNoUserAdmin);
+            listUserAdmin = listUserAdmin.OrderByDescending(x => x.Id).ToList();
+            return listUserAdmin;
         }
 
         public List<AppUser> GetUserFollow(string email)
@@ -49,12 +131,12 @@ namespace DoanApp.Services
             var userLogin = UserAuthenticated.GetUser(email);
             var listFollow = _context.FollowChannel.Where(x => x.FromUserId == userLogin.Id);
             var lisUser = new List<AppUser>();
-            lisUser = (from user in _context.AppUser
+            lisUser = (from user in GetAll().ToList()
                        join follow in listFollow on user.Id equals follow.ToUserId
                        select user).ToList();
             return lisUser;
         }
-
+       
         public async Task<bool> Login(AppUserRequest model)
         {
            
@@ -109,7 +191,7 @@ namespace DoanApp.Services
 
             message.Body = new TextPart(MimeKit.Text.TextFormat.Html)
             {
-                Text = "<a href=\"" + link + "\">Please click to confirm email</a>"
+                Text = "<a href=\"" + link + "\">Vui lòng xác nhận email</a>"
             };
             using (var client = new SmtpClient())
             {
@@ -206,10 +288,10 @@ namespace DoanApp.Services
             return -1;
         }
 
-        public async Task<int> UpdatLockcout(AppUser user)
+        public async Task<int> UpdateLockout(AppUser user)
         {
             var users = _context.Users.FirstOrDefault(x => x.Id == user.Id);
-            user.LockoutEnabled = true;
+            user.LockoutEnabled = user.LockoutEnabled ? false : true;
             _context.Update(users);
             return await _context.SaveChangesAsync();
         }

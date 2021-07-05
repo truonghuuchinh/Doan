@@ -20,12 +20,13 @@
         padding: 16px;
         text-align: center;
     }
+  
 </style>
 
 <div id="content">
     @if (ViewBag.Flag == true)
     {
-        <h3><a asp-action="Index" asp-controller="Home">Đăng ký thành công, trở về trang chủ</a></h3>
+        <h3 style="margin-top:200px;"><a asp-action="Index" asp-controller="Home">Đăng ký thành công, trở về trang chủ</a></h3>
     }
     else
     {

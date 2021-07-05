@@ -1,0 +1,46 @@
+﻿@model IPagedList<DoanData.Models.AppRole>
+@using X.PagedList;
+@using X.PagedList.Mvc.Core;
+@{
+    Layout = null;
+    int count = 0;
+    int totalUser = ViewBag.ListUser.Count;
+}
+
+@foreach (var item in Model)
+{
+    <tr class="tr-shadow remove-@item.Id">
+
+        <td>
+            <textarea class="tr-shadow__textarea" readonly> @(count<totalUser? ViewBag.ListUser[count]:"không có User")</textarea>
+        </td>
+        <td>
+            @if (item.Name.Contains("Admin"))
+            {
+                <span class="role admin">@item.Name</span>
+            }
+            @if (item.Name.Contains("User"))
+            {
+                <span class="role user">@item.Name</span>
+            }
+            @if (item.Name.Contains("Manager"))
+            {
+                <span class="role member">@item.Name</span>
+            }
+
+        </td>
+        <td>
+            <div class="table-data-feature">
+
+                <button class="item" data-toggle="tooltip" data-placement="top" title="Edit" onclick="editFunction(@item.Id)">
+                    <i class="zmdi zmdi-edit"></i>
+                </button>
+                <button class="item" data-toggle="tooltip" data-placement="top" title="Delete" onclick="deleteFunction(@item.Id)">
+                    <i class="zmdi zmdi-delete"></i>
+                </button>
+            </div>
+        </td>
+    </tr>
+    <tr class="spacer"></tr>
+    count++;
+}

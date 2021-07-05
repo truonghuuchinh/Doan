@@ -17,5 +17,6 @@ namespace DoanApp.Services
         List<Notification> GetNotification(AppUser user);
         Task<int> CreateNotifiComment(Comment_vm video_user,Comment comment_fromUser,Video video);
         Task<int> UpdateStatus(int id);
+        Task<int> CreateReplyReport(NotificationRequest request,int idAdmin);
     }
 }
