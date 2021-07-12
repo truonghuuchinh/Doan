@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.WebUtilities;
 using Newtonsoft.Json;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -76,7 +77,11 @@ namespace DoanApp.Areas.Administration.Controllers
                     arrayDate[i].Day = tam;
                 else arrayDate[i].Day = 0;
             }
-            return JsonConvert.SerializeObject(arrayDate);
+            var lastItem = arrayDate[arrayDate.Length - 1];
+            var arrayList = new ArrayList(arrayDate);
+            arrayList.RemoveAt(arrayList.IndexOf(lastItem));
+            arrayList.Insert(0, lastItem);
+            return JsonConvert.SerializeObject(arrayList);
         }
         public string GetCreateDate()
         {

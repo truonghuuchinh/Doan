@@ -1,0 +1,57 @@
+﻿@model List<Message>
+@{ 
+    Layout = null;
+    var user = UserAuthenticated.GetUser(User.Identity.Name);
+    var checkAvartar = 0;
+} 
+@if (Model != null&&Model.Count>0)
+{
+        var currentUser = user.FirtsName + " " + user.LastName;
+        foreach (var item in Model)
+        {
+            
+                if (user.Id!=item.SenderId)
+                {
+                    <div  class="recei-mess-wrap hover delete-@item.Id check-@item.SenderId-@item.ReceiverId" onclick="showTime(@item.Id)">
+                       
+                        <span class="mess-time time-@item.Id">@CaculatorHours.Caculator(item.CreateDate)</span>
+                        <div class="recei-mess__inner" onclick="showTime(@item.Id)">
+                            @if (checkAvartar == 0)
+                            {
+                                <div class="avatar avatar--tiny">
+                                    <img src="@(item.LoginExternal?item.Avartar:"/Client/avartar/"+item.Avartar)" alt="John Smith">
+                                </div>
+                            }
+                            else
+                            {
+                                 <div class="avatar avatar--tiny">
+                                    
+                                </div>
+                            }
+
+                        <div  class="recei-mess-list">
+                            <div class="recei-mess">  @item.Content</div>
+                        </div>
+                        </div>
+                    </div> 
+                    checkAvartar++;
+                }
+                else
+                {
+                    checkAvartar=0;
+                    <div style="position:relative;" class="send-mess-wrap delete-@item.Id hover check-@item.SenderId-@item.ReceiverId" >
+                        <span class="mess-time time-@item.Id">@CaculatorHours.Caculator(item.CreateDate)</span>
+                        <div class="send-mess__inner" onclick="showTime(@item.Id)">
+                            <div  class="send-mess-list">
+                                <div class="send-mess send-mess-@item.Id">@item.Content</div>
+                                
+                            </div>
+                        </div>
+                        <div class="optionMessage optionMessage__send">
+                            <div onclick="deleteMessage(@item.Id)" class="optionMessage__delete" title="Xóa"> <i class="zmdi zmdi-delete"></i> </div>
+                           @* <div onclick="updateMessage(@item.Id)" class="optionMessage__repair" title=" Sửa"> <i class="zmdi zmdi-edit"></i> </div>*@
+                        </div>
+                    </div>
+                }
+        }
+}

@@ -1,4 +1,87 @@
-﻿function OpenPopUp2(title,url) {
+﻿//---------------Process chat application----------//
+var senderIds = 0;
+var receiverIds = 0;
+var countChange = 0;
+//------------------------Xử lý Update and Delete Message---------//
+function deleteMessage(id) {
+    var ms = new Message();
+    ms.id = id;
+    ms.watched = true;
+    ms.receiverId = receiverIds;
+    ms.senderId = senderIds;
+    $.post("/Message/Delete", { id: id }, function (respone) {
+        if (respone == "Success") {
+            sendMessageToHub(ms);
+        }
+    });
+}
+/*function updateMessage(id) {
+
+}*/
+//------------------------Kết thúc--------------------------------//
+//------------------------Xử lý cập nhật đếm tin nhắn--------------//
+var user__Logins = $("#user_authenticated").val();
+if (user__Logins != '') {
+
+    $.get("/Message/GetNotifyMessage/?id=" + user__Logins, function (respone) {
+        if (respone != 0) {
+            $(".message__count").text(respone);
+            $(".message__count").addClass("displayCount");
+        }
+    });
+}
+
+//-------------------------------Kết thúc--------------------------//
+
+function contactUser(senderid, receiverid) {
+    var model = document.getElementById("leave_the_check_avarta");
+    if(model != null || model!= undefined){
+        $("#leave_the_check_avarta").modal('hide');
+    }
+    loadMessage(senderid, receiverid);
+    $(".chatApplication").addClass("displayMessage");
+}
+$(".chatApplication__title").click(function () {
+    if (!$(".au-message-list").hasClass("displayMessage")) {
+        $.get("/Message/MessageList_Partial/?id=" + $("#user_authenticated").val(), function (respone) {
+            if (respone != null) {
+                $(".au-message-list").html(respone);
+            }
+        });
+    }
+})
+
+$("#contentMessage").keyup(function () {
+    if ($(this).val() != '')
+        $(".au-input-icon").prop("hidden", false);
+    else $(".au-input-icon").prop("hidden", true);
+});
+function showTime(id) {
+    $(".time-" + id).toggleClass("displayTime");
+}
+function loadMessage(senderId, receiverId) {
+    senderIds = senderId;
+    receiverIds = receiverId;
+    RevertWatched(senderId, receiverId, true, false,true);
+    $(".au-message-list").removeClass("displayMessage");
+    $.get("/Message/Message_Partial/?senderId=" + senderId + "&receiverId=" + receiverId, function (respone) {
+        if (respone != null) {
+            $(".au-chat__content").html(respone);
+            $(".au-input--full").focus();
+            $("#ReceiverId").val(receiverId);
+        }
+    });
+    countChange = 0;
+}
+$(".message").click(function () {
+    $(".chatApplication").toggleClass("displayMessage");
+
+});
+$(".au-btn-plus").click(function () {
+    $(".au-message-list").toggleClass("displayMessage");
+});
+//---------------End------------------------------//
+function OpenPopUp2(title, url) {
     $.get(url, function (respone) {
         $("#mediumModalLabel").text(title);
         $(".contentAll").html(respone);

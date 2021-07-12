@@ -1,4 +1,5 @@
 
+using DoanApp.Hubs;
 using DoanApp.Services;
 using DoanData.DoanContext;
 using DoanData.Models;
@@ -47,6 +48,7 @@ namespace DoanApp
             services.AddTransient<IReportVideoService, ReportVideoService>();
             services.AddTransient<INotificationService, NotificationService>();
             services.AddTransient<IVideoWatchedService, VideoWatchedService>();
+            services.AddTransient<IMessageService, MessageService>();
             services.AddSession(options =>
             {
                 options.IdleTimeout = TimeSpan.FromMinutes(2);
@@ -111,6 +113,10 @@ namespace DoanApp
             app.UseAuthentication();
             app.UseAuthorization();
             app.UseSession();
+            app.UseSignalR(x =>
+            {
+                x.MapHub<ChatHub>("/MessageChat");
+            });
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapRazorPages();

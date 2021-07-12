@@ -35,6 +35,7 @@ namespace DoanData.DoanContext
             builder.ApplyConfiguration(new VideoConfig());
             builder.ApplyConfiguration(new LikeCommentDetailConfig());
             builder.ApplyConfiguration(new VideoWatchedConfig());
+            builder.ApplyConfiguration(new MessageConfig());
 
         }
         public DbSet<AppRole> AppRoles { get; set; }
@@ -51,5 +52,6 @@ namespace DoanData.DoanContext
         public DbSet<Video> Video { get; set; }
         public DbSet<VideoWatched> VideoWatched { get; set; }
         public DbSet<LikeCommentDetail> LikeComments {get;set;}
+        public DbSet<Message> Message { get; set; }
     }
 }
