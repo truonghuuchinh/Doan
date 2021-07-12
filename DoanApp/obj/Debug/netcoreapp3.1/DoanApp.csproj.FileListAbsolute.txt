@@ -580,3 +580,5 @@ E:\HK5\Prepare Project Last Semester\DoanTotNghiep\DoanApp\obj\Debug\netcoreapp3
 E:\HK5\Prepare Project Last Semester\DoanTotNghiep\DoanApp\obj\Debug\netcoreapp3.1\Razor\Areas\Administration\Views\ReportVideo\Detail_Partial.cshtml.g.cs
 E:\HK5\Prepare Project Last Semester\DoanTotNghiep\DoanApp\obj\Debug\netcoreapp3.1\Razor\Areas\Administration\Views\Video\Index.cshtml.g.cs
 E:\HK5\Prepare Project Last Semester\DoanTotNghiep\DoanApp\obj\Debug\netcoreapp3.1\Razor\Areas\Administration\Views\Video\Index_Partial.cshtml.g.cs
+E:\HK5\Prepare Project Last Semester\DoanTotNghiep\DoanApp\obj\Debug\netcoreapp3.1\Razor\Views\Message\MessageList_Partial.cshtml.g.cs
+E:\HK5\Prepare Project Last Semester\DoanTotNghiep\DoanApp\obj\Debug\netcoreapp3.1\Razor\Views\Message\Message_Partial.cshtml.g.cs

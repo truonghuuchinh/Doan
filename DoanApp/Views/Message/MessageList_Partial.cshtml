@@ -1,0 +1,52 @@
+﻿ @model List<Message_Vm>
+@{ 
+    Layout = null;
+    var user = UserAuthenticated.GetUser(User.Identity.Name);
+
+}
+@if (Model!=null)
+{
+        foreach(var item in Model)
+        {
+            <div class="au-message__item unread " onclick="loadMessage(@item.SenderId,@item.ReceiverId)">
+                <div class="au-message__item-inner">
+                    <div class="au-message__item-text">
+                        <div class="avatar-wrap @(item.Online?"online":"")">
+                            <div class="avatar">
+                                <img src="@(item.LoginExternal?item.Avartar:"/Client/avartar/"+item.Avartar)"/>
+                            </div>
+                        </div>
+                        <div class="text">
+                            <h5 class="name">@item.UserName</h5>
+                            <p class="watched-@item.ReceiverId" style="@(item.CheckWatched?"color:#0351c6;":"")">@item.Content</p>
+                        </div>
+                    </div>
+                    <div class="au-message__item-time">
+                        <span>@CaculatorHours.Caculator(item.CreateDate)</span>
+                    </div>
+                </div>
+            </div>
+        }
+         <hr />
+        foreach (var item in ViewBag.GetUserNoneChat)
+        {
+                <div class="au-message__item unread " onclick="loadMessage(@item.SenderId,@item.ReceiverId)">
+                <div class="au-message__item-inner">
+                    <div class="au-message__item-text">
+                        <div class="avatar-wrap @(item.Online?"online":"")">
+                            <div class="avatar">
+                                <img src="@(item.LoginExternal?item.Avartar:"/Client/avartar/"+item.Avartar)"/>
+                            </div>
+                        </div>
+                        <div class="text">
+                            <h5 class="name">@item.UserName</h5>
+                            <p>@item.Content</p>
+                        </div>
+                    </div>
+                    <div class="au-message__item-time">
+                        <span>@CaculatorHours.Caculator(item.CreateDate)</span>
+                    </div>
+                </div>
+            </div>
+        }
+}

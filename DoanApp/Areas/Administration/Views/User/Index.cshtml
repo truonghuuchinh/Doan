@@ -1,6 +1,8 @@
 ﻿@model IPagedList<UserAdmin>
 @using X.PagedList;
-
+@{ 
+    var users = UserAuthenticated.GetUser(User.Identity.Name);
+}
     <div class="row">
             <div class="box">
                 <div class="box-header" style="display:flex;">
@@ -48,6 +50,12 @@
 
                                         <td>
                                             <div class="table-data-feature">
+                                                @if (users.Id != item.Id)
+                                                {
+                                                    <button onclick="contactUser(@users.Id,@item.Id)" class="item contactUser" title="Liên hệ">
+                                                        <i class="zmdi zmdi-comment-more"></i>
+                                                    </button>
+                                                }
                                                 <button onclick="deleteUser(@item.Id)" class="item deleteUser" data-toggle="tooltip" data-placement="top" title="Xóa">
                                                     <i class="zmdi zmdi-delete"></i>
                                                 </button>
