@@ -5433,4 +5433,11 @@ a:hover, a:focus, a:active {
 .send-mess-wrap:hover .optionMessage {
     display: inline-flex;
 }
+.dowload:hover{
+    color:#ffffff;
+}
+.dowload{
+    border:0;
+    outline:0;
+}
 /*Kết thúc message*/

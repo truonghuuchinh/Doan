@@ -135,7 +135,7 @@
                                                 <div class="modal_check_function_fier hover" onclick="contactUser(@user.Id,36)">
                                                     <div class="modal_check_function_fier_left">
                                                         <div class="khung_function_fier_img">
-                                                            <div class="img_kenhdangky"><i class="zmdi zmdi-brightness-6 fontsize"></i></div>
+                                                            <div class="img_kenhdangky"><i class="zmdi zmdi-help fontsize"></i></div>
                                                         </div>
                                                     </div>
                                                     <div class="modal_check_function_fier_right">
@@ -284,12 +284,14 @@
                                             <i title=" Tôi không Thích video này" class="zmdi zmdi-thumb-down dislikeVideo" style=""></i>
                                             <span id="countDisLike" class="text-sidebar-item_content">@Model.DisLike</span>
                                         </div>
-
+                                       
                                         <div id="Share" class="unlike acount_share hover">
-                                            <i title="Chia sẻ video này" class="icon-sidebar-item_content zmdi zmdi-mail-reply"></i>
-                                            <span class="text-sidebar-item_content">CHIA SẺ</span>
+                                            <a class="dowload" download href="/Client/video/@Model.LinkVideo">
+                                                <i style="margin-top:1px;" title="Chia sẻ video này" class="icon-sidebar-item_content zmdi zmdi-download"></i>
+                                                <span class="text-sidebar-item_content">Tải xuống</span>
+                                            </a>
                                         </div>
-
+                                       
                                     </div>
                                 </div>
                                 <div class="cut"></div>

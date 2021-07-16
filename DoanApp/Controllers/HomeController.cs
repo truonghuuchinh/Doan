@@ -265,7 +265,7 @@ namespace DoanApp.Controllers
             video_Vm.Description = video.Description;
             video_Vm.LoginExternal = user.LoginExternal;
             video_Vm.CreateDate = video.CreateDate;
-            var lVideo = _videoService.GetAll().Where(x => x.CategorysId == video.CategorysId && x.Id != video.Id).ToList();
+            var lVideo = _videoService.GetAll().Where(x => x.CategorysId == video.CategorysId && x.Id != video.Id&&x.HidenVideo).ToList();
             var lUser = _userService.GetAll();
             if (userLogin != null)
             {
@@ -437,7 +437,7 @@ namespace DoanApp.Controllers
                 return RedirectToAction("Login");
             }
             if (info.LoginProvider == "Facebook")
-                email = info.Principal.Claims.ToArray()[2].Value;
+                email = info.Principal.Claims.ToArray()[1].Value;
             else email = info.Principal.Claims.ToArray()[4].Value;
             // Sign in the user with this external login provider if the user already has a login.
             var users = await _userService.FindUser(email);

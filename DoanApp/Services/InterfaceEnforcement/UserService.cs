@@ -215,8 +215,8 @@ namespace DoanApp.Services
                 userLogin.Avartar = info.Principal.FindFirstValue("picture");
             if (info.LoginProvider == "Facebook")
             {
-                userLogin.LastName = info.Principal.Claims.ToArray()[4].Value;
-                userLogin.FirtsName = info.Principal.Claims.ToArray()[5].Value;
+                userLogin.LastName = info.Principal.Claims.ToArray()[3].Value;
+                userLogin.FirtsName = info.Principal.Claims.ToArray()[4].Value;
             }
             else
             {
