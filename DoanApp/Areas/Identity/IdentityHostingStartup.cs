@@ -22,11 +22,13 @@ namespace DoanApp.Areas.Identity
                 {
                     options.SignIn.RequireConfirmedEmail = true;
                     options.Password.RequireUppercase = false;
+                    
                    
                 });
                 services.ConfigureApplicationCookie(options =>
                 {
                     options.LoginPath = "/Home/Login";
+                    options.AccessDeniedPath = "/Administration/Home/Login";
                 });
             });
         }

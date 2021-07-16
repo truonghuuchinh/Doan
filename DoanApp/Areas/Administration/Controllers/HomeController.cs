@@ -40,6 +40,7 @@ namespace DoanApp.Areas.Administration.Controllers
             _categoryService = category;
         }
 
+        [Authorize(Roles ="Admin,Manager")]
         public IActionResult Index()
         {
             ViewBag.Active = 0;
