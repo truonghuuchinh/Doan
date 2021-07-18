@@ -23,9 +23,13 @@
     </td>
     <td>
         <div class="table-data-feature">
-            <button onclick="deleteUser(@item.Id)" class="item deleteUser" data-toggle="tooltip" data-placement="top" title="Xóa">
-                <i class="zmdi zmdi-delete"></i>
-            </button>
+            @if (User.IsInRole("Admin"))
+            {
+                <button onclick="deleteUser(@item.Id)" class="item deleteUser" data-toggle="tooltip" data-placement="top" title="Xóa">
+                    <i class="zmdi zmdi-delete"></i>
+                </button>
+            }
+
             <button onclick="lockUser(@item.Id)" class="item" data-toggle="tooltip" data-placement="top" title="Khóa">
                 <i class=" lockUser-@item.Id zmdi @(item.LockOutEnabled?"zmdi-lock-open":"zmdi-lock")"></i>
             </button>

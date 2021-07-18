@@ -348,6 +348,49 @@ namespace DoanData.Migrations
                     b.ToTable("ListVideoFavorite");
                 });
 
+            modelBuilder.Entity("DoanData.Models.Message", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Avartar")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("CheckWatched")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Content")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CreateDate")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("LoginExternal")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("ReceiverId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("SenderId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UserName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("Watched")
+                        .HasColumnType("bit");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ReceiverId");
+
+                    b.HasIndex("SenderId");
+
+                    b.ToTable("Message");
+                });
+
             modelBuilder.Entity("DoanData.Models.Notification", b =>
                 {
                     b.Property<int>("Id")
@@ -364,7 +407,7 @@ namespace DoanData.Migrations
                     b.Property<string>("CreateDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("nvarchar(max)")
-                        .HasDefaultValue("20-06-2021 9:56:58");
+                        .HasDefaultValue("10-07-2021 9:28:49");
 
                     b.Property<int>("FromUserId")
                         .HasColumnType("int");
@@ -722,6 +765,21 @@ namespace DoanData.Migrations
                     b.HasOne("DoanData.Models.AppUser", "appUser")
                         .WithMany("ListVideoFavavorites")
                         .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("DoanData.Models.Message", b =>
+                {
+                    b.HasOne("DoanData.Models.AppUser", "AppusersReceiver")
+                        .WithMany("MessagesReciever")
+                        .HasForeignKey("ReceiverId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("DoanData.Models.AppUser", "AppusersSender")
+                        .WithMany("MessagesSender")
+                        .HasForeignKey("SenderId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

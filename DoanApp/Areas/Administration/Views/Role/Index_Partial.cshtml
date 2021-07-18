@@ -30,15 +30,19 @@
 
         </td>
         <td>
-            <div class="table-data-feature">
+            @if (User.IsInRole("Admin"))
+            {
+                <div class="table-data-feature">
 
-                <button class="item" data-toggle="tooltip" data-placement="top" title="Edit" onclick="editFunction(@item.Id)">
-                    <i class="zmdi zmdi-edit"></i>
-                </button>
-                <button class="item" data-toggle="tooltip" data-placement="top" title="Delete" onclick="deleteFunction(@item.Id)">
-                    <i class="zmdi zmdi-delete"></i>
-                </button>
-            </div>
+                    <button class="item" data-toggle="tooltip" data-placement="top" title="Edit" onclick="editFunction(@item.Id)">
+                        <i class="zmdi zmdi-edit"></i>
+                    </button>
+                    <button class="item" data-toggle="tooltip" data-placement="top" title="Delete" onclick="deleteFunction(@item.Id)">
+                        <i class="zmdi zmdi-delete"></i>
+                    </button>
+                </div>
+            }
+
         </td>
     </tr>
     <tr class="spacer"></tr>
