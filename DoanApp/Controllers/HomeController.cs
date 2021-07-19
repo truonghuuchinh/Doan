@@ -81,7 +81,6 @@ namespace DoanApp.Controllers
                 ViewBag.PlayList = null;
                 ViewBag.ListNotification = null;
                 ViewBag.CountNotifi = 0;
-                ViewBag.UserFollow = null;
                 ViewBag.UserFollow = _userService.GetChannel();
             }
             ViewBag.LinkActive = "/Home/Index";
@@ -172,8 +171,8 @@ namespace DoanApp.Controllers
                 ViewBag.PlayList = _playListService.GetAll().Where(x => x.UserId == ViewBag.IdUser).ToList();
                 ViewBag.UserFollow = _userService.GetUserFollow(user.UserName);
             }
-            else ViewBag.UserFollow = null;
-            
+            else ViewBag.UserFollow = _userService.GetChannel();
+
             GetNotificationHome();
             if (page == null) page = 1;
             var pageNumber = page ?? 1;
