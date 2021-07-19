@@ -323,18 +323,21 @@
                 {
                     <div class="hearer_container_text">Kênh đề xuất</div>
                     <div class="xohangall">
-
-                        @foreach (var item in ViewBag.UserFollow)
+                        @if (ViewBag.UserFollow != null)
                         {
-                            <a class="move_page" asp-action="MyPage" asp-controller="Video" asp-route-idUser="@item.Id">
-                                <li class="text-white sidebar-item sidebar-menu fix_texts_count">
-                                    <div class="row">
-                                        <img class="icon-sidebar-item img_follow" alt="" src="@(item.LoginExternal ? item.Avartar : "/Client/avartar/" + item.Avartar)">
-                                        <span class="text-sidebar-item fix_texts">@item.FirtsName @item.LastName</span>
-                                    </div>
-                                </li>
-                            </a>
+                            @foreach (var item in ViewBag.UserFollow)
+                            {
+                                <a class="move_page" asp-action="MyPage" asp-controller="Video" asp-route-idUser="@item.Id">
+                                    <li class="text-white sidebar-item sidebar-menu fix_texts_count">
+                                        <div class="row">
+                                            <img class="icon-sidebar-item img_follow" alt="" src="@(item.LoginExternal ? item.Avartar : "/Client/avartar/" + item.Avartar)">
+                                            <span class="text-sidebar-item fix_texts">@item.FirtsName @item.LastName</span>
+                                        </div>
+                                    </li>
+                                </a>
+                            }
                         }
+
                     </div>
                     <div class="collapses hover">
                         Xem thêm
