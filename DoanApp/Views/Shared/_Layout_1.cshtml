@@ -15,6 +15,15 @@
     <link href="~/css/alert_css.css" rel="stylesheet" />
     <link href="~/css/toastifier.min.css" rel="stylesheet" />
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <style>
+        .chatApplication {
+            position: absolute;
+            margin-top: -539px;
+            width: 355px;
+            margin-left: 74% !important;
+            display: none;
+        }
+    </style>
 </head>
 <body>
     <div class="warpper">
@@ -43,6 +52,10 @@
                             userId = user.Id;
                             <input type="hidden" value="@user.Id" id="user_authenticated" />
                             <div id="completed_Login">
+                                <div class="message hover">
+                                    <i class="zmdi zmdi-comment-more"></i>
+                                    <span class="message__count">0</span>
+                                </div>
                                 <a asp-action="MyChannel" asp-controller="Video" class="move_page">
                                     <div class="create click_create">
                                         <i class="material-icons">&#xe070;</i>
@@ -62,62 +75,75 @@
                                 </div>
                             </div>
                             @* Modal menu logout*@
-                <div class="modal" id="leave_the_check_avarta">
-                    <div class="modal-dialog_es">
-                        <div class="modal-content_es">
-                            <div class="modal_check_fier_all">
-                                <div class="modal_check__fier__all">
-                                    <div class="avartar_fier_left">
-                                        <img class="hover" src="@(user.LoginExternal ? user.Avartar : "/Client/avartar/" + user.Avartar)" alt="Alternate Text" />
-                                    </div>
-                                    <div class="avartar_fier_right">
-                                        <div class="name__avartar_fier_right">@(user.FirtsName + " " + user.LastName)</div>
-                                        <div class="email__avartar_fier_right">@(user.Email)</div>
-                                    </div>
-                                </div>
-                                <div class="ke_ngang_fier"></div>
-                                <a asp-action="MyPage" asp-controller="Video">
-                                    <div class="modal_check_function_fier">
-                                        <div class="modal_check_function_fier_left">
-                                            <div class="khung_function_fier_img">
-                                                <div class="img_kenhdangky"><i class="zmdi zmdi-account-box fontsize"></i></div>
+                            <div class="modal" id="leave_the_check_avarta">
+                                <div class="modal-dialog_es">
+                                    <div class="modal-content_es">
+                                        <div class="modal_check_fier_all">
+                                            <div class="modal_check__fier__all">
+                                                <div class="avartar_fier_left">
+                                                    <img class="hover" src="@(user.LoginExternal ? user.Avartar : "/Client/avartar/" + user.Avartar)" alt="Alternate Text" />
+                                                </div>
+                                                <div class="avartar_fier_right">
+                                                    <div class="name__avartar_fier_right">@(user.FirtsName + " " + user.LastName)</div>
+                                                    <div class="email__avartar_fier_right">@(user.Email)</div>
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div class="modal_check_function_fier_right">
-                                            <div class="text_modal_check_function_fier">Kênh của bạn</div>
-                                        </div>
-                                    </div>
-                                </a>
-                                <div class="modal_check_function_fier">
-                                    <div class="modal_check_function_fier_left">
-                                        <div class="khung_function_fier_img">
-                                            <div class="img_Logout"><i class="zmdi  zmdi-power fontsize"></i></div>
-                                        </div>
-                                    </div>
+                                            <div class="ke_ngang_fier"></div>
+                                            <a asp-action="MyPage" asp-controller="Video">
+                                                <div class="modal_check_function_fier">
+                                                    <div class="modal_check_function_fier_left">
+                                                        <div class="khung_function_fier_img">
+                                                            <div class="img_kenhdangky"><i class="zmdi zmdi-account-box fontsize"></i></div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="modal_check_function_fier_right">
+                                                        <div class="text_modal_check_function_fier">Kênh của bạn</div>
+                                                    </div>
+                                                </div>
+                                            </a>
+                                            <div class="modal_check_function_fier">
+                                                <div class="modal_check_function_fier_left">
+                                                    <div class="khung_function_fier_img">
+                                                        <div class="img_Logout"><i class="zmdi  zmdi-power fontsize"></i></div>
+                                                    </div>
+                                                </div>
 
-                                    <div class="modal_check_function_fier_right">
-                                        <a class="move_page" asp-action="Logout" asp-controller="Home">
-                                            <div class="text_modal_check_function_fier ">Đăng xuất</div>
-                                        </a>
-                                    </div>
+                                                <div class="modal_check_function_fier_right">
+                                                    <a class="move_page" asp-action="Logout" asp-controller="Home">
+                                                        <div class="text_modal_check_function_fier ">Đăng xuất</div>
+                                                    </a>
+                                                </div>
 
 
-                                </div>
-                                <div class="ke_ngang_fier"></div>
-                                <div class="modal_check_function_fier">
-                                    <div class="modal_check_function_fier_left">
-                                        <div class="khung_function_fier_img">
-                                            <div class="img_kenhdangky"><i class="zmdi zmdi-brightness-6 fontsize"></i></div>
+                                            </div>
+                                            <div class="ke_ngang_fier"></div>
+                                            <div class="modal_check_function_fier">
+                                                <div class="modal_check_function_fier_left">
+                                                    <div class="khung_function_fier_img">
+                                                        <div class="img_kenhdangky"><i class="zmdi zmdi-brightness-6 fontsize"></i></div>
+                                                    </div>
+                                                </div>
+                                                <div class="modal_check_function_fier_right">
+                                                    <div class="text_modal_check_function_fier">Đổi màu Giao diện ...</div>
+                                                </div>
+                                            </div>
+                                            @if (user.Id != 36)
+                                            {
+                                                <div class="modal_check_function_fier hover" onclick="contactUser(@user.Id,36)">
+                                                    <div class="modal_check_function_fier_left">
+                                                        <div class="khung_function_fier_img">
+                                                            <div class="img_kenhdangky"><i class="zmdi zmdi-help fontsize"></i></div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="modal_check_function_fier_right">
+                                                        <div class="text_modal_check_function_fier">Liên hệ Admin</div>
+                                                    </div>
+                                                </div>
+                                            }
                                         </div>
-                                    </div>
-                                    <div class="modal_check_function_fier_right">
-                                        <div class="text_modal_check_function_fier">Giao diện: Giao diện ...</div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    </div>
-                </div>
                         }
                         else
                         {
@@ -271,6 +297,54 @@
             </div>
         </div>
     </div>
+    <div class="chatApplication row">
+        <div class="col-12">
+            <div class="au-card au-card--no-shadow au-card--no-pad m-b-40 au-card--border">
+                <div class="au-card-title chatApplication__title" style="padding-bottom: 0; height: 50px;">
+                    <div class="bg-overlay bg-overlay--blue chatApplication__title1"></div>
+                    <h3 class="chatApplication__title2">
+                        <i class="zmdi zmdi-comment-text"></i> Chat
+                    </h3>
+                    <button class="au-btn-plus chatApplication__title">
+                        <i class="zmdi zmdi-plus"></i>
+                    </button>
+                </div>
+                <div class="au-inbox-wrap">
+                    <div class="au-chat au-chat--border">
+                        <div class="au-chat__content au-chat__content2 js-scrollbar5">
+                            <div class="noneMessage">Chưa có cuộc trò chuyện. Chọn một người bạn để trò chuyện ngay</div>
+                        </div>
+                        <div class="au-message-list">
+
+                        </div>
+                        <div class="au-chat-textfield">
+                            @if (user != null)
+                            {
+                                <form data-ajax-begin="clearInput" data-ajax-complete="" data-ajax-failure="alert('Fail')"
+                                      data-ajax-success="sendMessage" data-ajax="true" data-ajax-method="POST"
+                                      class="au-form-icon" asp-action="Create" asp-controller="Message">
+                                    <input type="hidden" name="SenderId" value="@user.Id" />
+                                    <input type="hidden" name="ReceiverId" id="ReceiverId" />
+                                    <input type="hidden" name="admin" value="false" />
+                                    <input type="hidden" name="LoginExternal" value="@(user.LoginExternal?"true":"false")" id="LoginExternal" />
+                                    <input type="hidden" name="Avartar" value="@user.Avartar" id="Avartar" />
+                                    <input type="hidden" name="UserName" id="UserName" value="@(user.FirtsName+" "+user.LastName)" />
+                                    <div class="au-input__parent">
+                                        <input id="contentMessage" class="au-input au-input--full au-input--h65" name="Content" type="text" placeholder="Nhập tin nhắn">
+                                        <button hidden type="submit" class="au-input-icon btnSubmit-@user.Id">
+                                            <i class="zmdi zmdi-mail-send"></i>
+                                        </button>
+                                    </div>
+
+                                </form>
+                            }
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
     <!--Modal show danh sách phát-->
     <div class="modal" id="modalShowPlayList" tabindex="-1" role="dialog">
         <div class="modal-dialog" role="document">
@@ -292,8 +366,11 @@
         </div>
     </div>
     <!--Kết thúc-->
-
     <script src="~/js/site.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-ajax-unobtrusive/3.2.6/jquery.unobtrusive-ajax.min.js"></script>
+    <script src="~/lib/signalr/dist/browser/signalr.min.js"></script>
+    <script src="~/js/chat.js"></script>
+    <script src="~/js/signalRHandler.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.min.js"></script>
     <script src="~/Client/js/site.js"></script>
 

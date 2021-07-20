@@ -81,7 +81,6 @@ namespace DoanApp.Controllers
                 ViewBag.PlayList = null;
                 ViewBag.ListNotification = null;
                 ViewBag.CountNotifi = 0;
-                ViewBag.UserFollow = null;
                 ViewBag.UserFollow = _userService.GetChannel();
             }
             ViewBag.LinkActive = "/Home/Index";
@@ -172,8 +171,8 @@ namespace DoanApp.Controllers
                 ViewBag.PlayList = _playListService.GetAll().Where(x => x.UserId == ViewBag.IdUser).ToList();
                 ViewBag.UserFollow = _userService.GetUserFollow(user.UserName);
             }
-            else ViewBag.UserFollow = null;
-            
+            else ViewBag.UserFollow = _userService.GetChannel();
+
             GetNotificationHome();
             if (page == null) page = 1;
             var pageNumber = page ?? 1;
@@ -265,7 +264,7 @@ namespace DoanApp.Controllers
             video_Vm.Description = video.Description;
             video_Vm.LoginExternal = user.LoginExternal;
             video_Vm.CreateDate = video.CreateDate;
-            var lVideo = _videoService.GetAll().Where(x => x.CategorysId == video.CategorysId && x.Id != video.Id).ToList();
+            var lVideo = _videoService.GetAll().Where(x => x.CategorysId == video.CategorysId && x.Id != video.Id&&x.HidenVideo).ToList();
             var lUser = _userService.GetAll();
             if (userLogin != null)
             {
@@ -437,7 +436,7 @@ namespace DoanApp.Controllers
                 return RedirectToAction("Login");
             }
             if (info.LoginProvider == "Facebook")
-                email = info.Principal.Claims.ToArray()[2].Value;
+                email = info.Principal.Claims.ToArray()[1].Value;
             else email = info.Principal.Claims.ToArray()[4].Value;
             // Sign in the user with this external login provider if the user already has a login.
             var users = await _userService.FindUser(email);
@@ -518,7 +517,7 @@ namespace DoanApp.Controllers
             {
                 link = Url.Action("VerifyEmail", "Home", new { userId = user.Id, token, check = 3 }, Request.Scheme);
             }
-            _userService.SendEmail(user, link);
+              _userService.SendEmail(user, link);
         }
         
         public async Task<IActionResult> VerifyEmail(string userId, string token, int check)

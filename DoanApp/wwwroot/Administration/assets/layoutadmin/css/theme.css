@@ -768,9 +768,7 @@ section {
     position: relative;
 }
 
-.au-form-icon .au-input {
-    padding-right: 80px;
-}
+
 
 .au-form-icon--sm {
     position: relative;
@@ -780,29 +778,8 @@ section {
     padding-right: 43px;
 }
 
-.au-input-icon {
-    position: absolute;
-    top: 1px;
-    right: 12px;
-    width: 63px;
-    height: 63px;
-    line-height: 63px;
-    text-align: center;
-    display: block;
-}
 
-.au-input-icon i {
-    font-size: 30px;
-    color: #808080;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    -webkit-transform: translate(-50%, -50%);
-    -moz-transform: translate(-50%, -50%);
-    -ms-transform: translate(-50%, -50%);
-    -o-transform: translate(-50%, -50%);
-    transform: translate(-50%, -50%);
-}
+
 
 .au-input--xl {
     min-width: 935px;
@@ -1381,19 +1358,18 @@ section {
 
 .noti__item .quantity {
     position: absolute;
-    display: inline-block;
-    top: -4px;
-    right: -7px;
-    height: 15px;
-    width: 15px;
+    display: none;
+    top: 44px;
+    right: -11px;
+    height: 17px;
+    width: 19px;
+    padding-left: -5px;
     line-height: 15px;
-    text-align: center;
     background: #ff4b5a;
     color: #fff;
-    -webkit-border-radius: 100%;
-    -moz-border-radius: 100%;
     border-radius: 100%;
-    font-size: 12px;
+    font-size: 10px;
+    padding-top: 1px;
 }
 
 .account-wrap {

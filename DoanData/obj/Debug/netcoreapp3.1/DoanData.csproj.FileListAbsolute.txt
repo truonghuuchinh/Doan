@@ -21,3 +21,4 @@ E:\HK5\Prepare Project Last Semester\DoanTotNghiep\DoanData\obj\Debug\netcoreapp
 E:\HK5\Prepare Project Last Semester\DoanTotNghiep\DoanData\obj\Debug\netcoreapp3.1\DoanData.dll
 E:\HK5\Prepare Project Last Semester\DoanTotNghiep\DoanData\obj\Debug\netcoreapp3.1\DoanData.pdb
 E:\HK5\Prepare Project Last Semester\DoanTotNghiep\DoanData\obj\Debug\netcoreapp3.1\DoanData.genruntimeconfig.cache
+E:\HK5\Prepare Project Last Semester\DoanTotNghiep\DoanData\obj\Debug\netcoreapp3.1\DoanData.csprojAssemblyReference.cache

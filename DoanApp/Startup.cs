@@ -1,4 +1,5 @@
 
+using DoanApp.Hubs;
 using DoanApp.Services;
 using DoanData.DoanContext;
 using DoanData.Models;
@@ -47,6 +48,7 @@ namespace DoanApp
             services.AddTransient<IReportVideoService, ReportVideoService>();
             services.AddTransient<INotificationService, NotificationService>();
             services.AddTransient<IVideoWatchedService, VideoWatchedService>();
+            services.AddTransient<IMessageService, MessageService>();
             services.AddSession(options =>
             {
                 options.IdleTimeout = TimeSpan.FromMinutes(2);
@@ -59,16 +61,14 @@ namespace DoanApp
                      options.AppSecret = "bd86615d96bda050d19536a5fce84e44";
                      options.AppId = "794564367817812";
                      options.Fields.Add("picture");
-                     options.Fields.Add("birthday");
+                     options.Fields.Add("email");
                      options.Events = new OAuthEvents
                      {
                          OnCreatingTicket = context =>
                          {
                              var identity = (ClaimsIdentity)context.Principal.Identity;
                              var profileImg = context.User.GetProperty("picture").GetProperty("data").GetProperty("url").ToString();
-                             var birthDay = context.User.GetProperty("birthday").ToString();
                              identity.AddClaim(new Claim(JwtClaimTypes.Picture, profileImg));
-                             identity.AddClaim(new Claim(JwtClaimTypes.BirthDate, birthDay));
                              return Task.CompletedTask;
                          }
                      };
@@ -111,15 +111,20 @@ namespace DoanApp
             app.UseAuthentication();
             app.UseAuthorization();
             app.UseSession();
+            app.UseSignalR(x =>
+            {
+                x.MapHub<ChatHub>("/MessageChat");
+            });
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapRazorPages();
-                endpoints.MapControllerRoute(
-                  name: "areadefault",
-                  pattern: "{area:exists}/{controller=Home}/{action=Login}/{id?}");
+               
                 endpoints.MapControllerRoute(
                  name: "Administration",
                  pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
+                endpoints.MapControllerRoute(
+                 name: "areadefault",
+                 pattern: "{area:exists}/{controller=Home}/{action=Login}/{id?}");
                 endpoints.MapControllerRoute(
                  name: "default",
                  pattern: "{controller=Home}/{action=Index}/{id?}");
