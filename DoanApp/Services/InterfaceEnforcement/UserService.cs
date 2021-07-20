@@ -298,9 +298,13 @@ namespace DoanApp.Services
         public async Task<int> UpdateLockout(AppUser user)
         {
             var users = _context.Users.FirstOrDefault(x => x.Id == user.Id);
-            user.LockoutEnabled = user.LockoutEnabled ? false : true;
-            _context.Update(users);
-            return await _context.SaveChangesAsync();
+            if (users != null)
+            {
+                user.LockoutEnabled = user.LockoutEnabled ? false : true;
+                _context.Update(users);
+                return await _context.SaveChangesAsync();
+            }
+            return -1;
         }
     }
 }
