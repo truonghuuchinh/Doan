@@ -4,6 +4,7 @@ using DoanApp.Models;
 using DoanData.DoanContext;
 using DoanData.Models;
 using MailKit.Net.Smtp;
+using MailKit.Security;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -181,25 +182,31 @@ namespace DoanApp.Services
             return false;
         }
 
-        public void SendEmail(AppUser user,string link)
+        public async void SendEmail(AppUser user,string link)
         {
 
             var message = new MimeMessage();
-            message.From.Add(new MailboxAddress("Confirm Email", "khleson79929@gmail.com"));
-            message.To.Add(new MailboxAddress("test", user.Email));
-            message.Subject = "Confirm Email Register";
+            message.From.Add(new MailboxAddress("QUANTRIHETHONG", "khleson79929@gmail.com"));
+            message.To.Add(new MailboxAddress("XACNHANEMAIL", user.Email));
+            message.Subject = "Confirm Email";
 
             message.Body = new TextPart(MimeKit.Text.TextFormat.Html)
             {
-                Text = "<a href=\"" + link + "\">Vui lòng xác nhận email</a>"
+                Text = "<div>" +
+               
+                "<h4 style=\" margin-top:25px; margin-left:10px;\">Tài khoản của bạn đã được tạo thành công vui lòng xác nhận Email để hoàn thành việc đăng ký</h3>" +
+                "<div style=\"background: #1da1f2;width: 150px;height: 86px;margin: 11px;margin-left: 140px;border-radius: 10px;padding-top: 63px;padding-left: 40px;\">" +
+                "<a style=\"font-size:16px; text-decoration:none; color:white;\" href=\"" + link + "\">Xác nhận email</a>" +
+                "</div>" +
+                "</div>"
             };
             using (var client = new SmtpClient())
             {
                 //587 hoặc 465
-                client.Connect("smtp.gmail.com", 465,true);
+                client.Connect("smtp.gmail.com", 587, SecureSocketOptions.StartTls);
                 client.Timeout = 100000;
                 client.Authenticate("khleson79929@gmail.com", "phlakkmxjeceukbu");
-                client.Send(message);
+                await client.SendAsync(message);
                 client.Disconnect(true);
             }
         }
