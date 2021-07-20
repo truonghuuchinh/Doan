@@ -27,10 +27,13 @@ namespace DoanApp.Services
         public async Task<int> DeleteAsync(int id)
         {
             var category = _context.Category.FirstOrDefault(x => x.Id == id);
-            if (category.Status) category.Status = false;
-            else category.Status = true;
-            _context.Update(category);
-            return await _context.SaveChangesAsync();
+            if (category != null)
+            {
+                _context.Remove(category);
+                return await _context.SaveChangesAsync();
+            }
+            return -1;
+            
         }
 
         public async Task<Category> FinByIdAsync(int id)
@@ -46,11 +49,15 @@ namespace DoanApp.Services
 
         public async Task<int> UpdateAsync(CategoryRequest categoryRequest)
         {
-            var caegory = _context.Category.FirstOrDefault(x => x.Id == categoryRequest.Id);
-            caegory.Name = categoryRequest.Name;
-            caegory.Status = categoryRequest.Status;
-            _context.Update(caegory);
-            return await _context.SaveChangesAsync();
+            var category = _context.Category.FirstOrDefault(x => x.Id == categoryRequest.Id);
+            if (category != null)
+            {
+                category.Name = categoryRequest.Name;
+                category.Status = categoryRequest.Status;
+                _context.Update(category);
+                return await _context.SaveChangesAsync();
+            }
+            return -1;
         }
 
     }
