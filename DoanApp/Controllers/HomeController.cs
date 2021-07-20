@@ -517,7 +517,7 @@ namespace DoanApp.Controllers
             {
                 link = Url.Action("VerifyEmail", "Home", new { userId = user.Id, token, check = 3 }, Request.Scheme);
             }
-            _userService.SendEmail(user, link);
+              _userService.SendEmail(user, link);
         }
         
         public async Task<IActionResult> VerifyEmail(string userId, string token, int check)
