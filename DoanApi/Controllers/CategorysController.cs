@@ -1,7 +1,10 @@
-﻿using DoanApp.Models;
+﻿using DoanApp.Commons;
+using DoanApp.Models;
 using DoanApp.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,6 +14,7 @@ namespace DoanApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class CategorysController : ControllerBase
     {
         private readonly ICategoryService _categoryService;
@@ -20,9 +24,16 @@ namespace DoanApi.Controllers
         }
         //localhost:port/category
         [HttpGet]
-        public async Task<IActionResult> GetAll()
+        public async Task<IActionResult> GetAll(string nameSearch=null)
         {
-            return Ok(await _categoryService.GetAll());
+            var getall = await _categoryService.GetAllApi();
+            if(nameSearch!=null)
+            {
+                nameSearch = ConvertUnSigned.convertToUnSign(nameSearch).ToLower();
+                getall = getall.Where(x => ConvertUnSigned.convertToUnSign(x.Name).ToLower().Contains(nameSearch)).ToList();
+
+            }
+            return Ok(JsonConvert.SerializeObject(getall));
         }
 
         //localhost:port/category/1
@@ -34,7 +45,7 @@ namespace DoanApi.Controllers
             return BadRequest("Cannot category in database");
         }
         [HttpPost]
-        public async Task<IActionResult> Create([FromForm]CategoryRequest request)
+        public async Task<IActionResult> Create([FromBody]CategoryRequest request)
         {
             var result =await  _categoryService.CreateAsync(request);
             if (result > 0)
@@ -47,7 +58,7 @@ namespace DoanApi.Controllers
 
         }
         [HttpPut]
-        public async Task<IActionResult> Update([FromForm]CategoryRequest request)
+        public async Task<IActionResult> Update([FromBody]CategoryRequest request)
         {
             var result = await _categoryService.UpdateAsync(request);
             if (result > 0)
@@ -57,7 +68,7 @@ namespace DoanApi.Controllers
             return BadRequest("Update No Success");
 
         }
-        [HttpDelete("{categoryid}")]
+        [HttpDelete]
         public async Task<IActionResult> Delete(int categoryid)
         {
             var result = await _categoryService.DeleteAsync(categoryid);

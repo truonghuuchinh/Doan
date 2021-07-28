@@ -29,6 +29,7 @@ namespace DoanApp.Services
         Task<bool> Register(AppUserRequest model, IFormFile avartarFile);
         Task<AppUser> SetAttributeUser(ExternalLoginInfo info);
         Task<AppUser> FindUser(string email);
+        Task<string> AuthenticatedApi(AppUserRequest request);
 
     }
 }

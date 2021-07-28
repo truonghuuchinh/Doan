@@ -22,13 +22,21 @@ namespace DoanApp.Areas.Identity
                 {
                     options.SignIn.RequireConfirmedEmail = true;
                     options.Password.RequireUppercase = false;
-                    
-                   
+                    options.User.RequireUniqueEmail = true;
                 });
                 services.ConfigureApplicationCookie(options =>
                 {
                     options.LoginPath = "/Home/Login";
                     options.AccessDeniedPath = "/Administration/Home/Login";
+                 
+                });
+                services.AddDistributedMemoryCache();
+
+                services.AddSession(options =>
+                {
+                    options.IdleTimeout = TimeSpan.FromMinutes(30);
+                    options.Cookie.HttpOnly = true;
+                    options.Cookie.IsEssential = true;
                 });
             });
         }

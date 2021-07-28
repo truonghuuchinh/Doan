@@ -29,7 +29,8 @@ namespace DoanApp.Services
             var category = _context.Category.FirstOrDefault(x => x.Id == id);
             if (category != null)
             {
-                _context.Remove(category);
+                category.Status = category.Status ? false : true;
+                _context.Update(category);
                 return await _context.SaveChangesAsync();
             }
             return -1;
@@ -44,6 +45,12 @@ namespace DoanApp.Services
         public async Task<List<Category>> GetAll()
         {
             var list = await _context.Category.Where(x=>x.Status).ToListAsync();
+            return list;
+        }
+
+        public async Task<List<Category>> GetAllApi()
+        {
+            var list = await _context.Category.ToListAsync();
             return list;
         }
 

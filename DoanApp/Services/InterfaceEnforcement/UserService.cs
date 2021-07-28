@@ -8,12 +8,16 @@ using MailKit.Security;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.IdentityModel.Tokens;
 using MimeKit;
 using System;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using System.IO;
 using System.Linq;
 using System.Security.Claims;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace DoanApp.Services
@@ -22,13 +26,40 @@ namespace DoanApp.Services
     {
         private readonly UserManager<AppUser> _userManager;
         private readonly SignInManager<AppUser> _signInManager;
+        private readonly RoleManager<AppRole> _roleManager;
         private readonly DpContext _context;
+        private readonly IConfiguration _config;
         public UserService(UserManager<AppUser> userManager,
-            SignInManager<AppUser> signInManager, DpContext context)
+            SignInManager<AppUser> signInManager, DpContext context,RoleManager<AppRole> role,
+            IConfiguration config)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _context = context;
+            _roleManager = role;
+            _config = config;
+        }
+
+        public async Task<string> AuthenticatedApi(AppUserRequest request)
+        {
+            var user =await _userManager.FindByEmailAsync(request.Email);
+            if (user== null) return "-1";
+            //var result =await _signInManager.PasswordSignInAsync(request.Email, request.PasswordHash, request.RememberMe, true);
+            var role =await  _userManager.GetRolesAsync(user);
+            if (user==null) return "0";
+            var claims = new[]
+            {
+                new Claim(ClaimTypes.Email,user.Email),
+                new Claim(ClaimTypes.Name,user.FirtsName),
+                new Claim(ClaimTypes.Role,string.Join(';',role)),
+                new Claim(ClaimTypes.Name,user.FirtsName+" "+user.LastName)
+            };
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Tokens:Key"]));
+            var credential = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+            var token = new JwtSecurityToken(_config["Tokens:Issuer"], _config["Tokens:Issuer"],
+                claims, expires: DateTime.Now.AddHours(1), signingCredentials: credential);
+
+            return new JwtSecurityTokenHandler().WriteToken(token);
         }
 
         public async Task<int> Delete(int id)

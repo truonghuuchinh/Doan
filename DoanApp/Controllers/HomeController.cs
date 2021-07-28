@@ -23,6 +23,7 @@ using Newtonsoft.Json;
 using DoanApp.Services;
 using X.PagedList;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using DoanApp.ServiceApi;
 
 namespace DoanApp.Controllers
 {
@@ -39,6 +40,7 @@ namespace DoanApp.Controllers
         private readonly IPlayListService _playListService;
         private readonly IDetailVideoService _detaivideo;
         private readonly INotificationService _notificationService;
+        private readonly IUserApiCient _userApiClient;
         static int countLockout = 0;
         static string userEmail = "";
         public HomeController(UserManager<AppUser> userManager,
@@ -47,7 +49,7 @@ namespace DoanApp.Controllers
             ICommentService commentService, ILikeVideoService likeVideo,
             IFollowChannelService channelService,ICategoryService categoryService,
             IPlayListService playListService,IDetailVideoService detailVideo,
-            INotificationService notificationService
+            INotificationService notificationService, IUserApiCient userApiClient
         )
         {
             _userManager = userManager;
@@ -61,6 +63,7 @@ namespace DoanApp.Controllers
             _playListService = playListService;
             _detaivideo = detailVideo;
             _notificationService = notificationService;
+            _userApiClient = userApiClient;
 
         }
         public async Task<IActionResult> Index(int? page)
@@ -391,6 +394,13 @@ namespace DoanApp.Controllers
 
                     if (reusult)
                     {
+                        var login = new LoginRequest
+                        {
+                            Email=model.Email,
+                            PasswordHash=model.PasswordHash
+                        };
+                        var token=await  _userApiClient.Authenticated(login);
+                        HttpContext.Session.SetString("Token",token);
                         return RedirectToAction("Index", "Home");
                     }
                     else

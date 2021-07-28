@@ -1,5 +1,6 @@
 ﻿using DoanApp.Commons;
 using DoanApp.Models;
+using DoanApp.ServiceApi;
 using DoanApp.Services;
 using DoanData.Models;
 using Microsoft.AspNetCore.Http;
@@ -17,32 +18,48 @@ namespace DoanApp.Areas.Administration.Controllers
     public class CategoryController : BaseController
     {
         private readonly ICategoryService _categoryService;
-        public CategoryController(ICategoryService categoryService)
+        private readonly ICategoryApiClient _categoryApi;
+        private readonly IUserApiCient _userClient;
+        public CategoryController(ICategoryService categoryService,ICategoryApiClient categoryApi,
+            IUserApiCient userApi,IUserApiCient userApiCient)
         {
             _categoryService = categoryService;
+            _categoryApi = categoryApi;
+            _userClient = userApiCient;
         }
         // GET: CategoryController
-        public IActionResult Index(int? page)
+        public async Task<IActionResult> Index(int? page)
         {
             ViewBag.Active = 2;
             if (page == null) page = 1;
             var pageSize = 6;
             var pageNumber = page ?? 1;
-            var  list = _categoryService.GetAll().Result.OrderByDescending(x => x.Id).ToPagedList(pageNumber, pageSize);
+            var Token = HttpContext.Session.GetString("Token");
+           if(_userClient.CheckToken(Token,User.Identity.Name)==null)
+                return Redirect("/Administration/Home/Login");
+           else
+            {
+                if (Token == null)
+                    Token = await _userClient.CheckToken(Token, User.Identity.Name);
+            }
+            var  list = _categoryApi.GetAll(Token).Result.OrderByDescending(x => x.Id).ToPagedList(pageNumber, pageSize);
             return View(list);
         }
-        public IActionResult Index_Partial(int? page, string name = null)
+        public async Task<IActionResult> Index_Partial(int? page, string name = null)
         {
             ViewBag.Active = 2;
             if (page == null) page = 1;
             var pageSize = 6;
             var pageNumber = page ?? 1;
-            var list = _categoryService.GetAll().Result.OrderByDescending(x => x.Id).ToList();
-            if (name != null)
+            var Token = HttpContext.Session.GetString("Token");
+            if (_userClient.CheckToken(Token, User.Identity.Name) == null)
+                return Redirect("/Administration/Home/Login");
+            else
             {
-                name = ConvertUnSigned.convertToUnSign(name).ToLower();
-                list = list.Where(x => ConvertUnSigned.convertToUnSign(x.Name).ToLower().Contains(name)).OrderByDescending(x => x.Id).ToList();
+                if (Token == null)
+                    Token = await _userClient.CheckToken(Token, User.Identity.Name);
             }
+            var list = _categoryApi.GetAll(Token, name).Result.OrderByDescending(x => x.Id).ToList();
             return View(list.ToPagedList(pageNumber, pageSize));
         }
         // GET: CategoryController/Create
@@ -58,7 +75,15 @@ namespace DoanApp.Areas.Administration.Controllers
         {
             if (categoryRequest.Name!=null)
             {
-                var result = await _categoryService.CreateAsync(categoryRequest);
+                var Token = HttpContext.Session.GetString("Token");
+                if (_userClient.CheckToken(Token, User.Identity.Name) == null)
+                    return Redirect("/Administration/Home/Login");
+                else
+                {
+                    if (Token == null)
+                        Token = await _userClient.CheckToken(Token, User.Identity.Name);
+                }
+                var result = await _categoryApi.Create(Token, categoryRequest);
                 if (result > 0) return Redirect("Index");
             }
             return View();
@@ -78,7 +103,15 @@ namespace DoanApp.Areas.Administration.Controllers
         {
             if (ModelState.IsValid)
             {
-                var result = await _categoryService.UpdateAsync(categoryRequest);
+                var Token = HttpContext.Session.GetString("Token");
+                if (_userClient.CheckToken(Token, User.Identity.Name) == null)
+                    return Redirect("/Administration/Home/Login");
+                else
+                {
+                    if (Token == null)
+                        Token = await _userClient.CheckToken(Token, User.Identity.Name);
+                }
+                var result = await _categoryApi.Update(Token, categoryRequest);
                 if (result > 0) return Content("Success");
             }
             return Redirect("Index");
@@ -87,7 +120,15 @@ namespace DoanApp.Areas.Administration.Controllers
         // GET: CategoryController/Delete/5
         public async  Task<ActionResult> Delete(int id)
         {
-            var result = await _categoryService.DeleteAsync(id);
+            var Token = HttpContext.Session.GetString("Token");
+            if (_userClient.CheckToken(Token, User.Identity.Name) == null)
+                return Redirect("/Administration/Home/Login");
+            else
+            {
+                if (Token == null)
+                    Token = await _userClient.CheckToken(Token, User.Identity.Name);
+            }
+            var result = await _categoryApi.Delete(Token,id);
             if (result > 0) return Content("Success");
             else return Content("Error");
         }

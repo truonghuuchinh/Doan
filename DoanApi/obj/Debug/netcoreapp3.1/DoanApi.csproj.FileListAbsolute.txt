@@ -431,3 +431,8 @@ E:\HK5\Prepare Project Last Semester\DoanTotNghiep\DoanApi\bin\Debug\netcoreapp3
 E:\HK5\Prepare Project Last Semester\DoanTotNghiep\DoanApi\bin\Debug\netcoreapp3.1\Swashbuckle.AspNetCore.Swagger.dll
 E:\HK5\Prepare Project Last Semester\DoanTotNghiep\DoanApi\bin\Debug\netcoreapp3.1\Swashbuckle.AspNetCore.SwaggerGen.dll
 E:\HK5\Prepare Project Last Semester\DoanTotNghiep\DoanApi\bin\Debug\netcoreapp3.1\Swashbuckle.AspNetCore.SwaggerUI.dll
+E:\HK5\Prepare Project Last Semester\DoanTotNghiep\DoanApi\bin\Debug\netcoreapp3.1\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+E:\HK5\Prepare Project Last Semester\DoanTotNghiep\DoanApi\bin\Debug\netcoreapp3.1\FluentValidation.dll
+E:\HK5\Prepare Project Last Semester\DoanTotNghiep\DoanApi\bin\Debug\netcoreapp3.1\FluentValidation.AspNetCore.dll
+E:\HK5\Prepare Project Last Semester\DoanTotNghiep\DoanApi\bin\Debug\netcoreapp3.1\FluentValidation.DependencyInjectionExtensions.dll
+E:\HK5\Prepare Project Last Semester\DoanTotNghiep\DoanApi\bin\Debug\netcoreapp3.1\Microsoft.AspNetCore.Authentication.Certificate.dll

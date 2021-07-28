@@ -1,9 +1,13 @@
 
+using DoanApp.ServiceApi;
 using DoanApp.Hubs;
 using DoanApp.Services;
+using DoanApp.ValidatorModel;
 using DoanData.DoanContext;
 using DoanData.Models;
+using FluentValidation.AspNetCore;
 using IdentityModel;
+using Microsoft.AspNetCore.Authentication.Certificate;
 using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -16,6 +20,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authentication.Cookies;
 
 namespace DoanApp
 {
@@ -31,9 +36,33 @@ namespace DoanApp
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            //Add service call api
+            services.AddHttpClient();
+            /*services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+                .AddCookie(options =>
+                {
+                    options.LoginPath = "/Administration/Home/Login";
+                    options.AccessDeniedPath = "/Administration/Home/Login";
+                    options.ExpireTimeSpan = TimeSpan.FromMinutes(1);
+                });*/
+#if DEBUG
             IMvcBuilder builder = services.AddRazorPages();
-            builder.AddRazorRuntimeCompilation();
-            services.AddControllersWithViews();
+            var environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
+            if(environment==Environments.Development)
+                builder.AddRazorRuntimeCompilation();
+#endif
+
+            //Register Fluent for all validator
+            services.AddControllersWithViews()  
+            .AddFluentValidation(x => x.RegisterValidatorsFromAssemblyContaining<LoginValidator>()); ;
+            services.AddDistributedMemoryCache();
+
+            services.AddSession(options =>
+            {
+                options.IdleTimeout = TimeSpan.FromMinutes(30);
+                options.Cookie.HttpOnly = true;
+                options.Cookie.IsEssential = true;
+            });
             services.AddRazorPages();
             services.AddDbContext<DpContext>(options=>options.UseSqlServer(Configuration.GetConnectionString("DpContext")), ServiceLifetime.Transient);
             services.AddTransient<ICategoryService, CategoryService>();
@@ -49,12 +78,9 @@ namespace DoanApp
             services.AddTransient<INotificationService, NotificationService>();
             services.AddTransient<IVideoWatchedService, VideoWatchedService>();
             services.AddTransient<IMessageService, MessageService>();
-            services.AddSession(options =>
-            {
-                options.IdleTimeout = TimeSpan.FromMinutes(2);
-                options.Cookie.HttpOnly = true;
-                options.Cookie.IsEssential = true;
-            });
+            services.AddTransient<IUserApiCient, UserApiClient>();
+            services.AddTransient<IReportApiClient, ReportApiClient>();
+            services.AddTransient<ICategoryApiClient, CategoryApiClient>();
             services.AddAuthentication()
                  .AddFacebook(options =>
                  {
@@ -105,10 +131,12 @@ namespace DoanApp
                 app.UseHsts();
             }
             app.UseHttpsRedirection();
+           
             app.UseStaticFiles();
 
-            app.UseRouting();
             app.UseAuthentication();
+            app.UseRouting();
+            
             app.UseAuthorization();
             app.UseSession();
             app.UseSignalR(x =>
@@ -119,12 +147,15 @@ namespace DoanApp
             {
                 endpoints.MapRazorPages();
                
-                endpoints.MapControllerRoute(
+              /*  endpoints.MapControllerRoute(
                  name: "Administration",
-                 pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
+                 pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");*/
                 endpoints.MapControllerRoute(
-                 name: "areadefault",
+                 name: "areadefaultLogin",
                  pattern: "{area:exists}/{controller=Home}/{action=Login}/{id?}");
+                endpoints.MapControllerRoute(
+               name: "areadefault",
+               pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
                 endpoints.MapControllerRoute(
                  name: "default",
                  pattern: "{controller=Home}/{action=Index}/{id?}");

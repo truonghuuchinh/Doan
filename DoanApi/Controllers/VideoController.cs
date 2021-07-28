@@ -1,5 +1,6 @@
 ﻿using DoanApp.Models;
 using DoanApp.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -11,6 +12,7 @@ namespace DoanApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class VideoController : ControllerBase
     {
         private readonly IVideoService _videoService;

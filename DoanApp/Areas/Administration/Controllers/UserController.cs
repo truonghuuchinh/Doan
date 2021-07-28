@@ -1,4 +1,5 @@
 ﻿using DoanApp.Commons;
+using DoanApp.ServiceApi;
 using DoanApp.Services;
 using DoanData.Models;
 using Microsoft.AspNetCore.Http;
@@ -23,8 +24,10 @@ namespace DoanApp.Areas.Administration.Controllers
         private readonly IVideoService _videoService;
         private readonly IReportVideoService _reportService;
         private readonly ICategoryService _categoryService;
+        private readonly IUserApiCient _userApiClient;
         public UserController(IUserService userService,UserManager<AppUser> user,IFollowChannelService follow,
-            IVideoService video,IReportVideoService report,ICategoryService category)
+            IVideoService video,IReportVideoService report,ICategoryService category,
+            IUserApiCient userApi)
         {
             _userService = userService;
             _usermanager = user;
@@ -32,6 +35,7 @@ namespace DoanApp.Areas.Administration.Controllers
             _videoService = video;
             _reportService = report;
             _categoryService = category;
+            _userApiClient = userApi;
         }
         public IActionResult AnalysisUser(int id)
         {
@@ -81,13 +85,21 @@ namespace DoanApp.Areas.Administration.Controllers
             }
             return null;
         }
-        public IActionResult Index(int? page)
+        public async Task<IActionResult> Index(int? page)
         {
             int pageNumber = page ?? 1;
             int pageSize = 5;
 
             ViewBag.Active = 1;
-            var listUserAdmin = _userService.GetUserAdmin(User.Identity.Name);
+            var Token = HttpContext.Session.GetString("Token");
+            if (_userApiClient.CheckToken(Token, User.Identity.Name) == null)
+                return Redirect("/Administration/Home/Login");
+            else
+            {
+                if (Token == null)
+                    Token = await _userApiClient.CheckToken(Token, User.Identity.Name);
+            }
+            var listUserAdmin =  _userApiClient.GetAllUserAdmin(Token, User.Identity.Name).Result;
             return View(listUserAdmin.ToPagedList(pageNumber, pageSize));
         }
         public IActionResult Index_Partial(int? page, string name)
@@ -115,7 +127,15 @@ namespace DoanApp.Areas.Administration.Controllers
         {
             if (id != 0)
             {
-                var result = await _userService.Delete(id);
+                var Token = HttpContext.Session.GetString("Token");
+                if (_userApiClient.CheckToken(Token, User.Identity.Name) == null)
+                    return Redirect("/Administration/Home/Login");
+                else
+                {
+                    if (Token == null)
+                        Token = await _userApiClient.CheckToken(Token, User.Identity.Name);
+                }
+                var result = await _userApiClient.Delete(Token,id);
                 if (result > 0) return Content("Success");
 
             }

@@ -33,8 +33,12 @@ namespace DoanApp.Services
         public async Task<int> Delete(int id)
         {
             var like = _context.LikeVideoDetail.FirstOrDefault(X => X.Id == id);
-            _context.Remove(like);
-            return await _context.SaveChangesAsync();
+            if (like != null)
+            {
+                _context.Remove(like);
+                return await _context.SaveChangesAsync();
+            }
+            return -1;
         }
 
         public async  Task<LikeVideoDetail> FindAsync(int userId,int videoId)
