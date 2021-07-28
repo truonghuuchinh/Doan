@@ -21,19 +21,20 @@
 </style>
 <div class="row">
     <div class="col-md-12">
-       
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input id="idEdit" type="hidden" asp-for="Id" class="form-control" />
-            <div class="form-group">
-                <label asp-for="Name" class="control-label"></label>
-                <input id="nameEdit" asp-for="Name" class="form-control" />
-                <span asp-validation-for="Name" class="text-danger"></span>
-            </div>
-            <br />
-            <div class="modal-footer">
-                <input  type="button" value="Lưu" class="btn btn-primary repairCate" />
-            </div>
-        
+
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <input id="idEdit" type="hidden" asp-for="Id" class="form-control" />
+        <input id="status" type="hidden" asp-for="Status" class="form-control" />
+        <div class="form-group">
+            <label asp-for="Name" class="control-label"></label>
+            <input id="nameEdit" asp-for="Name" class="form-control" />
+            <span asp-validation-for="Name" class="text-danger"></span>
+        </div>
+        <br />
+        <div class="modal-footer">
+            <input type="button" value="Lưu" class="btn btn-primary repairCate" />
+        </div>
+
     </div>
 </div>
 
@@ -41,8 +42,10 @@
     $(".repairCate").click(function () {
         var data = {
             Name: $("#nameEdit").val(),
-            Id: $("#idEdit").val()
+            Id: $("#idEdit").val(),
+            Status: $("#status").val()
         };
+        console.log(data);
         $.post("/Administration/Category/Edit", { categoryRequest: data }, function (respone) {
             if (respone == "Success") {
                 $(".name-" + $("#idEdit").val()).text($("#nameEdit").val());

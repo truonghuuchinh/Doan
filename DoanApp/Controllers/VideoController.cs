@@ -258,6 +258,7 @@ namespace DoanApp.Controllers
                 //kết thúc
                 ViewBag.CountUserFollow = _followChannel.GetAll().Where(x => x.FromUserId == user.Id).Count();
                 ViewBag.CountVideoUpload = _videoService.GetAll().Where(x => x.AppUserId == user.Id).Count();
+                ViewBag.CountDetailPlayList = _detailService.GetDetailPlayList(user, null).Count;
                 ViewBag.DetailPlayList = _detailService.GetDetailPlayList(user, null).ToPagedList(1,4);
                 return View(listvideo_vm);
             }

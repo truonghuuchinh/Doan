@@ -31,10 +31,19 @@ namespace DoanApp.Services
             var category = _context.Category.FirstOrDefault(x => x.Id == id);
             if (category != null)
             {
+<<<<<<< HEAD
                 _context.Remove(category);
                 return await _context.SaveChangesAsync();
             }
             return -1;
+=======
+                category.Status = category.Status ? false : true;
+                _context.Update(category);
+                return await _context.SaveChangesAsync();
+            }
+            return -1;
+            
+>>>>>>> feature/Create_Api
         }
 
         public async Task<Category> FinByIdAsync(int id)
@@ -48,14 +57,29 @@ namespace DoanApp.Services
             return list;
         }
 
+        public async Task<List<Category>> GetAllApi()
+        {
+            var list = await _context.Category.ToListAsync();
+            return list;
+        }
+
         public async Task<int> UpdateAsync(CategoryRequest categoryRequest)
         {
+<<<<<<< HEAD
             var caegory = _context.Category.FirstOrDefault(x => x.Id == categoryRequest.Id);
             if (caegory != null)
             {
                 caegory.Name = categoryRequest.Name;
                 caegory.Status = categoryRequest.Status;
                 _context.Update(caegory);
+=======
+            var category = _context.Category.FirstOrDefault(x => x.Id == categoryRequest.Id);
+            if (category != null)
+            {
+                category.Name = categoryRequest.Name;
+                category.Status = categoryRequest.Status;
+                _context.Update(category);
+>>>>>>> feature/Create_Api
                 return await _context.SaveChangesAsync();
             }
             return -1;

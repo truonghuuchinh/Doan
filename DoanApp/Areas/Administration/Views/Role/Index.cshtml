@@ -4,6 +4,8 @@
 @{
     int count = 0;
     int totalUser = ViewBag.ListUser.Count;
+    string[] role = new string[] {"Admin","Manager","User" };
+   
 }
 
 
@@ -51,7 +53,10 @@
                                 {
                                     <span class="role member">@item.Name</span>
                                 }
-
+                                @if (!role.Contains(item.Name))
+                                {
+                                    <span class="role " style="background: #a7a7a7; width: 35%; text-align: center; ">@item.Name</span>
+                                }
                             </td>
                             <td>
                                 @if (User.IsInRole("Admin"))
