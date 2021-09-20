@@ -73,9 +73,13 @@ namespace DoanApp.Services
         public async Task<int> Delete(int id)
         {
             var video = await FinVideoAsync(id);
-            video.Status = false;
-            _context.Update(video);
-            return await _context.SaveChangesAsync();
+            if (video != null)
+            {
+                video.Status = false;
+                _context.Update(video);
+                return await _context.SaveChangesAsync();
+            }
+            return -1;
         }
 
         public async Task<int> DeleteVideoFavorite(int id)

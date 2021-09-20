@@ -23,6 +23,7 @@ using Newtonsoft.Json;
 using DoanApp.Services;
 using X.PagedList;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using DoanApp.ServiceApi;
 
 namespace DoanApp.Controllers
 {
@@ -39,6 +40,7 @@ namespace DoanApp.Controllers
         private readonly IPlayListService _playListService;
         private readonly IDetailVideoService _detaivideo;
         private readonly INotificationService _notificationService;
+        private readonly IUserApiCient _userApiClient;
         static int countLockout = 0;
         static string userEmail = "";
         public HomeController(UserManager<AppUser> userManager,
@@ -47,7 +49,7 @@ namespace DoanApp.Controllers
             ICommentService commentService, ILikeVideoService likeVideo,
             IFollowChannelService channelService,ICategoryService categoryService,
             IPlayListService playListService,IDetailVideoService detailVideo,
-            INotificationService notificationService
+            INotificationService notificationService, IUserApiCient userApiClient
         )
         {
             _userManager = userManager;
@@ -61,6 +63,7 @@ namespace DoanApp.Controllers
             _playListService = playListService;
             _detaivideo = detailVideo;
             _notificationService = notificationService;
+            _userApiClient = userApiClient;
 
         }
         public async Task<IActionResult> Index(int? page)
@@ -81,7 +84,6 @@ namespace DoanApp.Controllers
                 ViewBag.PlayList = null;
                 ViewBag.ListNotification = null;
                 ViewBag.CountNotifi = 0;
-                ViewBag.UserFollow = null;
                 ViewBag.UserFollow = _userService.GetChannel();
             }
             ViewBag.LinkActive = "/Home/Index";
@@ -172,8 +174,8 @@ namespace DoanApp.Controllers
                 ViewBag.PlayList = _playListService.GetAll().Where(x => x.UserId == ViewBag.IdUser).ToList();
                 ViewBag.UserFollow = _userService.GetUserFollow(user.UserName);
             }
-            else ViewBag.UserFollow = null;
-            
+            else ViewBag.UserFollow = _userService.GetChannel();
+
             GetNotificationHome();
             if (page == null) page = 1;
             var pageNumber = page ?? 1;
@@ -392,6 +394,13 @@ namespace DoanApp.Controllers
 
                     if (reusult)
                     {
+                        var login = new LoginRequest
+                        {
+                            Email=model.Email,
+                            PasswordHash=model.PasswordHash
+                        };
+                        var token=await  _userApiClient.Authenticated(login);
+                        HttpContext.Session.SetString("Token",token);
                         return RedirectToAction("Index", "Home");
                     }
                     else
@@ -518,7 +527,7 @@ namespace DoanApp.Controllers
             {
                 link = Url.Action("VerifyEmail", "Home", new { userId = user.Id, token, check = 3 }, Request.Scheme);
             }
-            _userService.SendEmail(user, link);
+              _userService.SendEmail(user, link);
         }
         
         public async Task<IActionResult> VerifyEmail(string userId, string token, int check)

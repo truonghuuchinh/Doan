@@ -28,8 +28,12 @@ namespace DoanApp.Services
         public async Task<int> Delete(int fromUserId,int toUserId)
         {
             var flChannel = _contex.FollowChannel.FirstOrDefault(X => X.FromUserId==fromUserId&&X.ToUserId==toUserId);
-            _contex.Remove(flChannel);
-            return await _contex.SaveChangesAsync();
+            if (flChannel != null)
+            {
+                _contex.Remove(flChannel);
+                return await _contex.SaveChangesAsync();
+            }
+            return -1;
         }
 
 

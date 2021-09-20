@@ -35,7 +35,7 @@ namespace DoanApp.Services
                         notifi.Content = "đã tải lên:" + request.Content;
                         notifi.VideoId = request.VideoId;
                         notifi.Watched = true;
-                        notifi.CreateDate = DateTime.Now.ToString("MM-d-yyyy H:mm:ss");
+                        notifi.CreateDate = new GetDateNow().DateNow;
                         notifi.Status = request.Status;
                         notifi.UserName = request.UserName;
                         _context.Notification.Add(notifi);
@@ -84,7 +84,7 @@ namespace DoanApp.Services
                 notifi.Content = request.Content;
                 notifi.VideoId = request.VideoId;
                 notifi.Watched = true;
-                notifi.CreateDate = DateTime.Now.ToString("MM-d-yyyy H:mm:ss");
+                notifi.CreateDate = new GetDateNow().DateNow;
                 notifi.Status = request.Status;
                 notifi.UserName = "Admin";
                 _context.Notification.Add(notifi);
@@ -113,9 +113,6 @@ namespace DoanApp.Services
         {
             return _context.Notification.ToList();
         }
-
-        
-
         public List<Notification> GetNotification(AppUser user)
         {
             if (user != null)

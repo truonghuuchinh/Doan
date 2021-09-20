@@ -1,15 +1,48 @@
-﻿//-------------------Variable global-------------
+﻿
+
+//-------------------Variable global-------------
 var idPlaylist = 0;
 var idvideo = 0;
 var userId = $("#UserId").val();
 var videoId = $("#VideoId").val();
+var emailUserAuthenticated = $("#email_authenticated").val();
 var currentPage = 2;
 var idVideoReport = 0;
 var arrayNoLoaded = [];
 
+//Xử lý loading
 function imgLoading() {
     $(".img-loading").css("display", "block");
 }
+
+//----------------Xử lý Capture Webcame--------------
+//Webcam Properties settings
+Webcam.set({
+    width: 360,
+    height: 260,
+    image_format: 'png',
+    jpeg_quality: 100
+});
+function captureAvartarWebcam() {
+    Webcam.attach('#idWebcam');
+}
+ //capture camera
+$("#btnCapture").click(function () {
+    Webcam.snap(function (data_uri) {
+        $("#imgCapture")[0].src = data_uri;
+    });
+    Webcam.reset();
+});
+$("#btnCaptureReset").click(function () {
+    Webcam.attach('#idWebcam');
+});
+$("#btnUpdateCapture").click(function () {
+    Webcam.upload($("#imgCapture")[0].src, '/Video/UpdateAvartar', emailUserAuthenticated);
+    document.location.href = window.location.href;
+});
+
+
+//----------------End--------------------------------
 //----------------Xử lý tạo danh sách phát------------
 $(".btnPlaylist").click(function () {
     var inputname = $("#namePlayList").val();
@@ -40,21 +73,35 @@ $("#namePlayList").keyup(function () {
 //----------------Kết thúc---------------------------
 //----------------Xử lý cập nhật avartar---------------
 $(".repair_avartar").click(function () {
-    $("#upload_avartar").modal('show');
+    $("#chooseUpdateAvartar").modal('show');
+});
+$(".btnUpdateAvartar").click(function () {
+    $("#chooseUpdateAvartar").modal('hide');
+     $("#upload_avartar").modal('show');
     $("#updateImgAvartar").val('');
     $("#erroravartar").text('');
+});
+$(".btnCaptureAvartar").click(function () {
+    captureAvartarWebcam();
+    $("#chooseUpdateAvartar").modal('hide');
+    $("#updateAvartarCapture").modal('show');
 });
 $("#updateImgAvartar").change(function (event) {
     $("#erroravartar").text('');
     var imgReview = document.querySelector("#img_review__avartar");
-    imgReview.src = URL.createObjectURL(event.target.files[0]);
-    imgReview.onload = function () {
-        URL.revokeObjectURL(imgReview.src);
+    if (event.target.files[0] != undefined) {
+        imgReview.src = URL.createObjectURL(event.target.files[0]);
+        imgReview.onload = function () {
+            URL.revokeObjectURL(imgReview.src);
+        }
+         fileTempAvartar = event.target.files;
+    } else {
+        this.files = fileTempAvartar;
     }
-});
+}); 
 $("#fUploadAvartar").submit(function (e) {
     $("#emailUser").val($("#email_authenticated").val());
-    if ($("#updateImgAvartar").val() != '') return;
+    if (!$("#img_review__avartar")[0].src.includes("default_image.png")) return;
     $("#erroravartar").text('(Vui lòng chọn ảnh)');
     e.preventDefault();
 });

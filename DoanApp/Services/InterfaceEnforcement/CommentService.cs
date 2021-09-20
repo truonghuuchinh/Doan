@@ -166,13 +166,11 @@ namespace DoanApp.Services
             if (cmRequest != null)
             {
                 comment.Content = cmRequest.Content;
-                comment.CreateDate = DateTime.Now.ToString("MM-d-yyyy H:mm:s");
                 comment.UserId = cmRequest.UserId;
                 comment.CommentId = cmRequest.CommentId;
                 comment.VideoId = cmRequest.VideoId;
                 comment.Like = cmRequest.Like;
                 comment.DisLike = cmRequest.DisLike;
-                
                 _context.Update(comment);
                 return await _context.SaveChangesAsync();
             }

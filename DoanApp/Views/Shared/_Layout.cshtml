@@ -18,7 +18,8 @@
     <link href="~/css/alert_css.css" rel="stylesheet" />
     <link href="~/css/toastifier.min.css" rel="stylesheet" />
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
-
+    <script src="~/js/webcam.js"></script>
+    <script src="~/js/site.js"></script>
 </head>
 <body>
     <div class="warpper">
@@ -300,7 +301,7 @@
                             </div>
                         </li>
                     </a>
-                    <a class="move_page" asp-action="MyChannel" asp-controller="Video" >
+                    <a class="move_page" asp-action="MyChannel" asp-controller="Video">
                         <li class="text-white sidebar-item sidebar-menu @(ViewBag.ForCus ==5?"forcus__item":"")">
                             <div class="row">
                                 <i class="icon-sidebar-item zmdi zmdi-collection-case-play"></i>
@@ -323,18 +324,21 @@
                 {
                     <div class="hearer_container_text">Kênh đề xuất</div>
                     <div class="xohangall">
-
-                        @foreach (var item in ViewBag.UserFollow)
+                        @if (ViewBag.UserFollow != null)
                         {
-                            <a class="move_page" asp-action="MyPage" asp-controller="Video" asp-route-idUser="@item.Id">
-                                <li class="text-white sidebar-item sidebar-menu fix_texts_count">
-                                    <div class="row">
-                                        <img class="icon-sidebar-item img_follow" alt="" src="@(item.LoginExternal ? item.Avartar : "/Client/avartar/" + item.Avartar)">
-                                        <span class="text-sidebar-item fix_texts">@item.FirtsName @item.LastName</span>
-                                    </div>
-                                </li>
-                            </a>
+                            @foreach (var item in ViewBag.UserFollow)
+                            {
+                                <a class="move_page" asp-action="MyPage" asp-controller="Video" asp-route-idUser="@item.Id">
+                                    <li class="text-white sidebar-item sidebar-menu fix_texts_count">
+                                        <div class="row">
+                                            <img class="icon-sidebar-item img_follow" alt="" src="@(item.LoginExternal ? item.Avartar : "/Client/avartar/" + item.Avartar)">
+                                            <span class="text-sidebar-item fix_texts">@item.FirtsName @item.LastName</span>
+                                        </div>
+                                    </li>
+                                </a>
+                            }
                         }
+
                     </div>
                     <div class="collapses hover">
                         Xem thêm
@@ -415,7 +419,7 @@
                                       class="au-form-icon" asp-action="Create" asp-controller="Message">
                                     <input type="hidden" name="SenderId" value="@user.Id" />
                                     <input type="hidden" name="ReceiverId" id="ReceiverId" />
-                                     <input type="hidden" name="admin" value="false" />
+                                    <input type="hidden" name="admin" value="false" />
                                     <input type="hidden" name="LoginExternal" value="@(user.LoginExternal?"true":"false")" id="LoginExternal" />
                                     <input type="hidden" name="Avartar" value="@user.Avartar" id="Avartar" />
                                     <input type="hidden" name="UserName" id="UserName" value="@(user.FirtsName+" "+user.LastName)" />
@@ -427,7 +431,7 @@
                                     </div>
 
                                 </form>
-                             }
+                            }
 
                         </div>
                     </div>
@@ -541,11 +545,6 @@
     <!--Modal upload Avartar-->
     <div class="modal" id="upload_avartar">
         <div class="modal_upload_img">
-            <div class="header_videodau">
-                <div class="benphaiheader_videodau">
-
-                </div>
-            </div>
             <div class="content_videodau">
                 <form asp-action="UpdateAvartar" id="fUploadAvartar" asp-controller="Video" method="post" enctype="multipart/form-data">
                     <div class="na_tieude">
@@ -570,15 +569,68 @@
 
         </div>
     </div>
+    <!-- Modal choose update avartar -->
+    <div class="modal" id="chooseUpdateAvartar" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-dialog-centered modalChooseUpdate" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Lựa chọn cập nhật</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <button class="btn btn-primary btnUpdateAvartar">Chọn ảnh có sẵn</button>
+                    <button class="btn btn-danger btnCaptureAvartar">Chụp ảnh</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal choose update avartar -->
+    <div class="modal" id="updateAvartarCapture" tabindex="-1" role="dialog">
+        <div class="modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header headerCapture">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Chụp ảnh đại diện</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <table class="table table-striped">
+                        <tr>
+                            <td>Ảnh chụp</td>
+                            <td>Xem trước</td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div id="idWebcam"></div>
+                            </td>
+                            <td><img id="imgCapture" src="" alt="Ảnh xem trước" /></td>
+                        </tr>
+                        <tr>
+                            <td><button id="btnCapture" class="btn btn-info">Chụp ảnh</button></td>
+                            <td><button id="btnCaptureReset" class="btn btn-secondary">Chụp lại</button></td>
+                           
+                        </tr>
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <button data-dismiss="modal" class="btn btn-danger">Hủy</button>
+                    <button id="btnUpdateCapture"  class="btn btn-primary">Cập nhật</button>
+                </div>
+            </div>
+        </div>
+    </div>
     <!--kết thúc-->
-    <script src="~/js/site.js"></script>
+  
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-ajax-unobtrusive/3.2.6/jquery.unobtrusive-ajax.min.js"></script>
     <script src="~/lib/signalr/dist/browser/signalr.min.js"></script>
     <script src="~/js/chat.js"></script>
     <script src="~/js/signalRHandler.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.min.js"></script>
     <script src="~/select2/js/select2.min.js"></script>
-    <script src="~/js/signalr/signalr.min.js"></script>
     <script src="~/Client/js/site.js"></script>
     @RenderSection("Scripts", false)
 

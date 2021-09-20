@@ -4,32 +4,38 @@
     int count = 1;
 }
 <style>
-    .detail_right  {
-        position:relative;
-        width:250px;
+    .detail_right {
+        position: relative;
+        width: 250px;
     }
-    .add_playlist{
-        position:absolute;
-        margin-left:240px;
+
+    .add_playlist {
+        position: absolute;
+        margin-left: 240px;
     }
-    .container22{
-        height:260px;
+
+    .container22 {
+        height: 260px;
     }
-    .container222, .container222_end{
-        background:white;
+
+    .container222, .container222_end {
+        background: white;
     }
-    .time__duration{
-        margin-top:-135px;
+
+    .time__duration {
+        margin-top: -135px;
     }
-    .site-layout{
-        background:white;
+
+    .site-layout {
+        background: white;
     }
+
     .contentBody {
         background: white;
     }
 </style>
 <div class="col site-layout">
-    <input type="hidden" id="idChannel"  value="@ViewBag.UserMyPage.Id" />
+    <input type="hidden" id="idChannel" value="@ViewBag.UserMyPage.Id" />
     <input type="hidden" id="idUser" value=" @ViewBag.IdUser" />
     <div class="img_kenhcuaban_noidung">
         <img src="@(ViewBag.UserMyPage.ImgChannel==null?"/Client/img/imgChannel.jpg":"/Client/imgChannel/"+ViewBag.UserMyPage.ImgChannel)" alt="Cinque Terre" width="1200" height="250">
@@ -141,17 +147,13 @@
 </div>
 <div class="modal" id="upload_img">
     <div class="modal_upload_img">
-        <div class="header_videodau">
-            <div class="benphaiheader_videodau">
-
-            </div>
-        </div>
+        
         <div class="content_videodau">
             <form asp-action="UpdateImgChannel" id="fUpload" asp-controller="Video" method="post" enctype="multipart/form-data">
                 <div class="na_tieude">
-                Vui lòng chọn ảnh <span class="text-danger errorimg" id="errorimg"></span>
+                    Vui lòng chọn ảnh <span class="text-danger errorimg" id="errorimg"></span>
                 </div>
-                
+
                 <div class="custom-file">
                     <input type="file" class="custom-file-input" name="fileUpload" id="updateImgChannel">
                     <label class="custom-file-label">Chọn Ảnh</label>
@@ -163,17 +165,20 @@
                     <div type="button" class="btn btn-danger" data-dismiss="modal">Hủy</div>
                     <button type="submit" class="btn btn-primary">Xác nhận</button>
                 </div>
-                
+
             </form>
-            
+
         </div>
 
     </div>
 </div>
+
 <script>
 
-   
+
     $(document).ready(function () {
+        //Variable temp of avartar when  click choose avartar but not choose image
+        var fileTempAvartar = {};
         setTimeout(function () {
             loadDurationTime();
         }, 2000);
@@ -212,7 +217,7 @@
         //-------Load list search--------
         $.get("/Video/ListVideoJson/?id=" + $('#idChannel').val(), function (respone) {
             respone = JSON.parse(respone);
-           
+
             $("#search_name_video").select2({
                 them: 'clasic',
                 placeholder: 'Tìm kiếm......',
@@ -237,10 +242,10 @@
                 inputSearch = null;
             $.get("/Video/MyPage_Partial/?id=" + $("#idChannel").val() + "&page=" + currentPage + "&nameSearch=" + inputSearch,
                 function (respone) {
-                $('.content_video').append(respone);
-                loadSecondVideo();
-                LoadEventMoseLeave();
-            });
+                    $('.content_video').append(respone);
+                    loadSecondVideo();
+                    LoadEventMoseLeave();
+                });
         }
         //----------End-----------------
     });

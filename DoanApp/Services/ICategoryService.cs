@@ -9,6 +9,7 @@ namespace DoanApp.Services
 {
     public interface ICategoryService
     {
+        Task<List<Category>> GetAllApi();
         Task<List<Category>> GetAll();
         Task<Category> FinByIdAsync(int id);
         Task<int> CreateAsync(CategoryRequest functionRequest);

@@ -582,3 +582,7 @@ E:\HK5\Prepare Project Last Semester\DoanTotNghiep\DoanApp\obj\Debug\netcoreapp3
 E:\HK5\Prepare Project Last Semester\DoanTotNghiep\DoanApp\obj\Debug\netcoreapp3.1\Razor\Areas\Administration\Views\Video\Index_Partial.cshtml.g.cs
 E:\HK5\Prepare Project Last Semester\DoanTotNghiep\DoanApp\obj\Debug\netcoreapp3.1\Razor\Views\Message\MessageList_Partial.cshtml.g.cs
 E:\HK5\Prepare Project Last Semester\DoanTotNghiep\DoanApp\obj\Debug\netcoreapp3.1\Razor\Views\Message\Message_Partial.cshtml.g.cs
+E:\HK5\Prepare Project Last Semester\DoanTotNghiep\DoanApp\bin\Debug\netcoreapp3.1\FluentValidation.dll
+E:\HK5\Prepare Project Last Semester\DoanTotNghiep\DoanApp\bin\Debug\netcoreapp3.1\FluentValidation.AspNetCore.dll
+E:\HK5\Prepare Project Last Semester\DoanTotNghiep\DoanApp\bin\Debug\netcoreapp3.1\FluentValidation.DependencyInjectionExtensions.dll
+E:\HK5\Prepare Project Last Semester\DoanTotNghiep\DoanApp\bin\Debug\netcoreapp3.1\Microsoft.AspNetCore.Authentication.Certificate.dll

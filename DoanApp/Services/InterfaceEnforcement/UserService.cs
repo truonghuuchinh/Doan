@@ -4,15 +4,20 @@ using DoanApp.Models;
 using DoanData.DoanContext;
 using DoanData.Models;
 using MailKit.Net.Smtp;
+using MailKit.Security;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.IdentityModel.Tokens;
 using MimeKit;
 using System;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using System.IO;
 using System.Linq;
 using System.Security.Claims;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace DoanApp.Services
@@ -21,13 +26,40 @@ namespace DoanApp.Services
     {
         private readonly UserManager<AppUser> _userManager;
         private readonly SignInManager<AppUser> _signInManager;
+        private readonly RoleManager<AppRole> _roleManager;
         private readonly DpContext _context;
+        private readonly IConfiguration _config;
         public UserService(UserManager<AppUser> userManager,
-            SignInManager<AppUser> signInManager, DpContext context)
+            SignInManager<AppUser> signInManager, DpContext context,RoleManager<AppRole> role,
+            IConfiguration config)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _context = context;
+            _roleManager = role;
+            _config = config;
+        }
+
+        public async Task<string> AuthenticatedApi(AppUserRequest request)
+        {
+            var user =await _userManager.FindByEmailAsync(request.Email);
+            if (user== null) return "-1";
+            //var result =await _signInManager.PasswordSignInAsync(request.Email, request.PasswordHash, request.RememberMe, true);
+            var role =await  _userManager.GetRolesAsync(user);
+            if (user==null) return "0";
+            var claims = new[]
+            {
+                new Claim(ClaimTypes.Email,user.Email),
+                new Claim(ClaimTypes.Name,user.FirtsName),
+                new Claim(ClaimTypes.Role,string.Join(';',role)),
+                new Claim(ClaimTypes.Name,user.FirtsName+" "+user.LastName)
+            };
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Tokens:Key"]));
+            var credential = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+            var token = new JwtSecurityToken(_config["Tokens:Issuer"], _config["Tokens:Issuer"],
+                claims, expires: DateTime.Now.AddHours(1), signingCredentials: credential);
+
+            return new JwtSecurityTokenHandler().WriteToken(token);
         }
 
         public async Task<int> Delete(int id)
@@ -181,25 +213,31 @@ namespace DoanApp.Services
             return false;
         }
 
-        public void SendEmail(AppUser user,string link)
+        public async void SendEmail(AppUser user,string link)
         {
 
             var message = new MimeMessage();
-            message.From.Add(new MailboxAddress("Confirm Email", "khleson79929@gmail.com"));
-            message.To.Add(new MailboxAddress("test", user.Email));
-            message.Subject = "Confirm Email Register";
+            message.From.Add(new MailboxAddress("QUANTRIHETHONG", "khleson79929@gmail.com"));
+            message.To.Add(new MailboxAddress("XACNHANEMAIL", user.Email));
+            message.Subject = "Confirm Email";
 
             message.Body = new TextPart(MimeKit.Text.TextFormat.Html)
             {
-                Text = "<a href=\"" + link + "\">Vui lòng xác nhận email</a>"
+                Text = "<div>" +
+               
+                "<h4 style=\" margin-top:25px; margin-left:10px;\">Tài khoản của bạn đã được tạo thành công vui lòng xác nhận Email để hoàn thành việc đăng ký</h3>" +
+                "<div style=\"background: #1da1f2;width: 150px;height: 86px;margin: 11px;margin-left: 140px;border-radius: 10px;padding-top: 63px;padding-left: 40px;\">" +
+                "<a style=\"font-size:16px; text-decoration:none; color:white;\" href=\"" + link + "\">Xác nhận email</a>" +
+                "</div>" +
+                "</div>"
             };
             using (var client = new SmtpClient())
             {
                 //587 hoặc 465
-                client.Connect("smtp.gmail.com", 465,true);
+                client.Connect("smtp.gmail.com", 587, SecureSocketOptions.StartTls);
                 client.Timeout = 100000;
                 client.Authenticate("khleson79929@gmail.com", "phlakkmxjeceukbu");
-                client.Send(message);
+                await client.SendAsync(message);
                 client.Disconnect(true);
             }
         }
@@ -291,9 +329,13 @@ namespace DoanApp.Services
         public async Task<int> UpdateLockout(AppUser user)
         {
             var users = _context.Users.FirstOrDefault(x => x.Id == user.Id);
-            user.LockoutEnabled = user.LockoutEnabled ? false : true;
-            _context.Update(users);
-            return await _context.SaveChangesAsync();
+            if (users != null)
+            {
+                user.LockoutEnabled = user.LockoutEnabled ? false : true;
+                _context.Update(users);
+                return await _context.SaveChangesAsync();
+            }
+            return -1;
         }
     }
 }

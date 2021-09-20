@@ -52,6 +52,11 @@
 </div>
 @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 <script>
+    $("#password").change(function () {
+        if ($(this).val() != '')
+            $("#errorPasswords").text('');
+    });
+
     $("#confirmPassword").change(function () {
         $("#errorPassword").text('');
         if ($("#password").val() != $(this).val()) {

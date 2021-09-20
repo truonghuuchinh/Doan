@@ -924,6 +924,7 @@ a {
     max-width: 668px !important;
 }
 
+
 .modal-content {
     width: 525px;
     height: auto;
@@ -2023,6 +2024,24 @@ tbody {
     margin-top: 0%;
     margin-left: 41%;
 }
+.btnUpdateAvartar {
+    background-color: #3876b9;
+    border-color: #9f9f9f;
+}
+.btnCaptureAvartar {
+    background-color: #dc3545;
+    border-color: #b2bac1;
+}
+.modalChooseUpdate {
+    margin-left: 37%;
+}
+.modalChooseUpdate .modal-content .modal-header,.headerCapture{
+    background: #ebebeb;
+    height: 50px;
+}
+.modalChooseUpdate .modal-content{
+    width:288px;
+}
 
 .kich_thuoc_check {
     width: 25px;
@@ -2785,10 +2804,11 @@ tbody {
 
 .modal_upload_img {
     width: 600px;
-    height: 500px;
+    height: 440px;
     background: white;
-    margin-top: 5.5%;
+    margin-top: 7.5%;
     margin-left: 32%;
+    border-radius:5px;
     position: relative;
 }
 .upload_avartar {
@@ -3321,6 +3341,7 @@ option {
 }
 
 .content_videodau {
+    border-radius:5px;
     height: 120px;
     background:white;
 }
@@ -5441,3 +5462,15 @@ a:hover, a:focus, a:active {
     outline:0;
 }
 /*Kết thúc message*/
+
+/*Fix bug and add function*/
+#updateAvartarCapture .modal-dialog-centered {
+    margin-left: 19%;
+}
+#updateAvartarCapture .modal-dialog-centered .modal-content {
+   width:835px;
+}
+#imgCapture{
+    width:360px;
+    height:260px;
+}

@@ -1,5 +1,6 @@
 ﻿using DoanApp.Commons;
 using DoanApp.Models;
+using DoanApp.ServiceApi;
 using DoanApp.Services;
 using DoanData.Models;
 using Microsoft.AspNetCore.Authorization;
@@ -26,11 +27,13 @@ namespace DoanApp.Areas.Administration.Controllers
         private readonly IVideoService _videoService;
         private readonly IReportVideoService _reportService;
         private readonly ICategoryService _categoryService;
+        private readonly IUserApiCient _userApiClient;
 
         static int countLockoutAdmin = 0;
         public HomeController(IUserService userService,
             SignInManager<AppUser> signInManager, UserManager<AppUser> usermanager,
-            IVideoService service, IReportVideoService report, ICategoryService category)
+            IVideoService service, IReportVideoService report, ICategoryService category,
+            IUserApiCient userApiClient)
         {
             _userService = userService;
             _signInManager = signInManager;
@@ -38,9 +41,10 @@ namespace DoanApp.Areas.Administration.Controllers
             _videoService = service;
             _reportService = report;
             _categoryService = category;
+            _userApiClient = userApiClient;
         }
 
-        [Authorize(Roles ="Admin,Manager")]
+        [Authorize(Roles = "Admin,Manager")]
         public IActionResult Index()
         {
             ViewBag.Active = 0;
@@ -58,20 +62,20 @@ namespace DoanApp.Areas.Administration.Controllers
             var arrayDate = GetDateWeek.CaculatorDate(week, int.Parse(dateNow[1]), int.Parse(dateNow[0])).ToArray();
             var list = _reportService.GetAll().GroupBy(x => x.CreateDate.Split('-')[1]).Select(x => new
             {
-                Name=x.Key,
-                Count=x.Count()
+                Name = x.Key,
+                Count = x.Count()
             }).ToArray();
 
             for (int i = 0; i < arrayDate.Length; i++)
             {
                 var flag = false;
                 var tam = 0;
-                for (int j = 0; j <list.Length ; j++)
+                for (int j = 0; j < list.Length; j++)
                 {
                     if (arrayDate[i].Day == int.Parse(list[j].Name))
                     {
                         flag = true;
-                        tam =(list[j].Count);
+                        tam = (list[j].Count);
                     }
                 }
                 if (flag)
@@ -134,6 +138,9 @@ namespace DoanApp.Areas.Administration.Controllers
         }
         public IActionResult Login()
         {
+            if (User.Identity.IsAuthenticated&&(User.IsInRole("Admin")|| User.IsInRole("Manager"))) {
+                return Redirect("/Administration/Home/Index");
+            }
             countLockoutAdmin = 0;
             return View();
         }
@@ -270,7 +277,16 @@ namespace DoanApp.Areas.Administration.Controllers
 
                 await _signInManager.SignInAsync(user, false);
                 if (await _userManager.IsInRoleAsync(user, "Admin") || await _userManager.IsInRoleAsync(user, "Manager"))
+                {
+                    var loginRequest = new LoginRequest
+                    {
+                        Email=appUser.Email,
+                        PasswordHash=appUser.PasswordHash
+                    };
+                    var token = await _userApiClient.Authenticated(loginRequest);
+                    HttpContext.Session.SetString("Token", token);
                     return RedirectToAction("Index", "Home");
+                }
                 else
                 {
                     await _signInManager.SignOutAsync();
