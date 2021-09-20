@@ -2,6 +2,11 @@
 var senderIds = 0;
 var receiverIds = 0;
 var countChange = 0;
+
+//Xử lý loading
+function imgLoading() {
+    $(".img-loading").css("display", "block");
+}
 //------------------------Xử lý Update and Delete Message---------//
 function deleteMessage(id) {
     var ms = new Message();
