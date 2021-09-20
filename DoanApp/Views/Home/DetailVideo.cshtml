@@ -22,8 +22,7 @@
     <link href="~/css/alert_css.css" rel="stylesheet" />
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.min.js"></script>
-    <script src="~/js/webcam.js"></script>
-    <script src="~/js/site.js"></script>
+   
     <style>
         .details_lerfts {
             width: 50px;
@@ -62,7 +61,7 @@
                                     <i class="zmdi zmdi-comment-more"></i>
                                     <span class="message__count">0</span>
                                 </div>
-                                <a  asp-action="MyChannel" asp-controller="Video" class="move_page">
+                                <a asp-action="MyChannel" asp-controller="Video" class="move_page">
                                     <div class="create click_create">
                                         <i class="material-icons">&#xe070;</i>
                                     </div>
@@ -286,14 +285,14 @@
                                             <i title=" Tôi không Thích video này" class="zmdi zmdi-thumb-down dislikeVideo" style=""></i>
                                             <span id="countDisLike" class="text-sidebar-item_content">@Model.DisLike</span>
                                         </div>
-                                       
+
                                         <div id="Share" class="unlike acount_share hover">
                                             <a class="dowload" download href="/Client/video/@Model.LinkVideo">
                                                 <i style="margin-top:1px;" title="Chia sẻ video này" class="icon-sidebar-item_content zmdi zmdi-download"></i>
                                                 <span class="text-sidebar-item_content">Tải xuống</span>
                                             </a>
                                         </div>
-                                       
+
                                     </div>
                                 </div>
                                 <div class="cut"></div>
@@ -679,7 +678,7 @@
                     </a>
                     @if (User.Identity.IsAuthenticated)
                     {
-                        <a class="move_page" asp-action="MyChannel" asp-controller="Video" >
+                        <a class="move_page" asp-action="MyChannel" asp-controller="Video">
                             <li class="text-white sidebar-item sidebar-menu @(ViewBag.ForCus ==5?"forcus__item":"")">
                                 <div class="row">
                                     <i class="icon-sidebar-item zmdi zmdi-collection-case-play"></i>
@@ -878,12 +877,14 @@
         </div>
     </div>
     <!--Kết thúc-->
+    <script src="~/js/webcam.js"></script>
+    <script src="~/js/site.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-ajax-unobtrusive/3.2.6/jquery.unobtrusive-ajax.min.js"></script>
     <script src="~/lib/signalr/dist/browser/signalr.min.js"></script>
     <script src="~/js/chat.js"></script>
     <script src="~/js/signalRHandler.js"></script>
     <script src="https://cdn.plyr.io/3.6.2/demo.js" crossorigin="anonymous"></script>
-     <script src="~/Client/js/site.js"></script>
+    <script src="~/Client/js/site.js"></script>
     <script>
         //--------------------Xử lý số bình luận-------------
         $(document).ready(function () {
