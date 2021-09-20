@@ -54,7 +54,7 @@ namespace DoanApp
 
             //Register Fluent for all validator
             services.AddControllersWithViews()  
-            .AddFluentValidation(x => x.RegisterValidatorsFromAssemblyContaining<LoginValidator>()); ;
+            .AddFluentValidation(x => x.RegisterValidatorsFromAssemblyContaining<LoginValidator>()); 
             services.AddDistributedMemoryCache();
 
             services.AddSession(options =>

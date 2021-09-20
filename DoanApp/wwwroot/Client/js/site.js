@@ -47,14 +47,18 @@ $(".repair_avartar").click(function () {
 $("#updateImgAvartar").change(function (event) {
     $("#erroravartar").text('');
     var imgReview = document.querySelector("#img_review__avartar");
-    imgReview.src = URL.createObjectURL(event.target.files[0]);
-    imgReview.onload = function () {
-        URL.revokeObjectURL(imgReview.src);
+    if (event.target.files[0] != null) {
+        imgReview.src = URL.createObjectURL(event.target.files[0]);
+        imgReview.onload = function () {
+            URL.revokeObjectURL(imgReview.src);
+        }
     }
-});
+  
+}); 
 $("#fUploadAvartar").submit(function (e) {
     $("#emailUser").val($("#email_authenticated").val());
-    if ($("#updateImgAvartar").val() != '') return;
+    console.log($("#img_review__avartar")[0].src);
+    if (!$("#img_review__avartar")[0].src.includes("default_image.png")) return;
     $("#erroravartar").text('(Vui lòng chọn ảnh)');
     e.preventDefault();
 });

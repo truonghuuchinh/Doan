@@ -436,3 +436,4 @@ E:\HK5\Prepare Project Last Semester\DoanTotNghiep\DoanApi\bin\Debug\netcoreapp3
 E:\HK5\Prepare Project Last Semester\DoanTotNghiep\DoanApi\bin\Debug\netcoreapp3.1\FluentValidation.AspNetCore.dll
 E:\HK5\Prepare Project Last Semester\DoanTotNghiep\DoanApi\bin\Debug\netcoreapp3.1\FluentValidation.DependencyInjectionExtensions.dll
 E:\HK5\Prepare Project Last Semester\DoanTotNghiep\DoanApi\bin\Debug\netcoreapp3.1\Microsoft.AspNetCore.Authentication.Certificate.dll
+E:\HK5\Prepare Project Last Semester\DoanTotNghiep\DoanApi\bin\Debug\netcoreapp3.1\DoanApp.StaticWebAssets.xml
