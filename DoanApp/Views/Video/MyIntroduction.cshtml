@@ -1,0 +1,231 @@
+﻿@{
+    var ngay = ViewBag.UserMyPage.CreateDate.Split('-')[1] + " tháng " + ViewBag.UserMyPage.CreateDate.Split('-')[0] + " năm " +
+        ViewBag.UserMyPage.CreateDate.Split('-')[2].Split(" ")[0];
+}
+<style>
+    .detail_right {
+        position: relative;
+        width: 250px;
+    }
+
+    .add_playlist {
+        position: absolute;
+        margin-left: 240px;
+    }
+
+    .container22 {
+        height: 260px;
+    }
+
+    .container222, .container222_end {
+        background: white;
+    }
+
+    .time__duration {
+        margin-top: -135px;
+    }
+
+    .site-layout {
+        background: white;
+    }
+
+    .contentBody {
+        background: white;
+    }
+</style>
+<input type="hidden" id="idChannel" value="@ViewBag.UserMyPage.Id" />
+<input type="hidden" id="idUser" value="@ViewBag.IdUser" />
+<div class="col site-layout">
+
+    <div class="img_kenhcuaban_noidung">
+        <img src="@(ViewBag.UserMyPage.ImgChannel==null?"/Client/img/imgChannel.jpg":"/Client/imgChannel/"+ViewBag.UserMyPage.ImgChannel)" alt="Cinque Terre" width="1200" height="250">
+        @if (ViewBag.FollowUser == false)
+        {
+            <div class="repair_img hover">
+                <img src="/Client/img/camera.png" alt="Alternate Text" />
+            </div>
+        }
+
+    </div>
+
+    <div class="pass_kenhcuaban">
+        <div class="pass_kenhcuaban_left">
+            <img class="icon-sidebar-item_heiht" alt="" src="@(ViewBag.UserMyPage.LoginExternal?ViewBag.UserMyPage.Avartar:"/Client/avartar/"+ViewBag.UserMyPage.Avartar)">
+            @if (ViewBag.FollowUser == false)
+            {
+                <div class="repair_avartar hover">
+                    <img src="/Client/img/camera.png" alt="Alternate Text" />
+                </div>
+            }
+
+        </div>
+        <div class="pass_kenhcuaban_right">
+            <div class="pass_kenhcuaban_rights">@ViewBag.UserMyPage.FirtsName @ViewBag.UserMyPage.LastName</div>
+            <div class="sub_dangkykenh">@ViewBag.CountUserFollow người đăng ký</div>
+        </div>
+    </div>
+    <div class="danhsach_tible">
+        <a asp-action="MyPage" asp-route-idUser="@ViewBag.UserMyPage.Id" class="khichthuoc_kenhcb " style="border-bottom: none;">
+            <div class="video_kenhcb">VIDEO</div>
+        </a>
+        <a asp-action="MyIntroduction" asp-route-idUser="@ViewBag.UserMyPage.Id" class="khichthuoc_kenhcb @(ViewBag.BottomPage?"cbs_cb":"")">
+            <div class="gioithieu_kenhcb">GIỚI THIỆU</div>
+        </a>
+        <div class="search_kencb">
+            <div class="chuyenphai_kenhcb">
+                <select id="search_name_video">
+                    <option value="value">Tìm kiếm</option>
+                </select>
+                <div class="click_search_kenhcb hover">
+                    <i style="margin:10px 0px 0px 10px;" class="fas fa-search"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="video_tailenS">
+
+        <div class="content_video">
+            <div class="cards">
+                <div class="cards__description">
+                    <div class="card__title">
+                        <h5>Mô tả kênh</h5>
+                        @if (ViewBag.FollowUser == false)
+                        {
+                            <i id="card__repair" title="Chỉnh sửa mô tả" class="fas fa-pencil-alt hover"></i>
+                        }
+
+
+                        <div class="cards__input">
+                            <div>Nhập mô tả kênh  <span class="card__input--error text-danger"></span></div>
+
+                            <textarea class="cards__textarea"></textarea>
+                            <div id="cards_cancel" class="btn btn-danger hover">Hủy</div>
+                            <div id="cards_success" class="btn btn-primary hover">Cập nhật</div>
+                        </div>
+                    </div>
+                    <pre class="card__content">
+                        @("\r\n"+ViewBag.UserMyPage.DescriptionChannel)
+                    </pre>
+                </div>
+                <div class="cards__information">
+                    <h5>Thống kê</h5>
+                    <hr class="hr_class" />
+                    <div>Đã tham gia lúc <span class="count_register span_right">@ngay</span></div>
+                    <hr class="hr_class" />
+                    <div>Lượt xem kênh <span class="count_videoUpload span_right">@ViewBag.CountView.ToString("#,##0")</span></div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal" id="upload_img">
+    <div class="modal_upload_img">
+        <div class="content_videodau">
+            <form asp-action="UpdateImgChannel" id="fUpload" asp-controller="Video" method="post" enctype="multipart/form-data">
+                <div class="na_tieude">
+                    Vui lòng chọn ảnh <span class="text-danger errorimg" id="errorimg"></span>
+                </div>
+
+                <div class="custom-file">
+                    <input type="file" class="custom-file-input" name="fileUpload" id="updateImgChannel">
+                    <label class="custom-file-label">Chọn Ảnh</label>
+                    <input type="hidden" name="emailUser" value="@ViewBag.UserMyPage.Email" />
+
+                </div>
+                <div><img src="~/Client/img/default_image.png" class="imgReview" id="img_review" /></div>
+                <div class="sangphai_header_videodauu" style="margin-top:50px;">
+                    <div type="button" class="btn btn-danger" data-dismiss="modal">Hủy</div>
+                    <button type="submit" class="btn btn-primary">Xác nhận</button>
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+
+        //-------Process update image of page-------
+        $(".repair_img").click(function () {
+            $("#upload_img").modal('show');
+            $("#errorimg").text('');
+            $("#updateImgChannel").val('');
+
+        });
+        $("#updateImgChannel").change(function (event) {
+            $("#errorimg").text('');
+            var imgReview = document.querySelector("#img_review");
+            imgReview.src = URL.createObjectURL(event.target.files[0]);
+            imgReview.onload = function () {
+                URL.revokeObjectURL(imgReview.src);
+            }
+        });
+        $("#fUpload").submit(function (e) {
+            if ($("#updateImgChannel").val() != '') return;
+            $("#errorimg").text('(Vui lòng chọn ảnh)');
+            e.preventDefault();
+        });
+        //-------End-------------------------------
+        //-------Process search Video----
+        $(".click_search_kenhcb").click(function () {
+            var nameSearch = $("#select2-search_name_video-container").text();
+            $.get("/Video/MyPage_Partial/?nameSearch=" + nameSearch + "&id=" + $('#idChannel').val(), function (respone) {
+                $(".content_video").html(respone);
+                loadSecondVideo();
+                setTimeout(function () {
+                    loadDurationTime();
+                }, 1000);
+            });
+        });
+        //-------End-----------------
+
+        //-------Load list search--------
+        $.get("/Video/ListVideoJson/?id=" + $('#idChannel').val(), function (respone) {
+            respone = JSON.parse(respone);
+
+            $("#search_name_video").select2({
+                them: 'clasic',
+                placeholder: 'Tìm kiếm......',
+                data: respone
+            });
+        })
+        //-------End--------------------
+
+        //------Xử lý update Description---
+        $("#card__repair").click(function () {
+            $(".card__input--error").text('');
+            $(".cards__input").toggleClass("cards--display");
+            $(".cards__textarea").focus();
+        });
+        $("#cards_cancel").click(function () {
+            $(".cards__input").toggleClass("cards--display");
+        });
+        $("#cards_success").click(function () {
+            var idUser = $("#idChannel").val();
+            var mota = $(".cards__textarea").val();
+            if (idUser != '' && mota != null && mota != '') {
+                var data = {
+                    "Id": idUser,
+                    "DescriptionChannel": mota
+                };
+                $.post("/Home/UpdateDescription", { request: data }, function (respone) {
+                    if (respone == "Success") {
+                        $(".cards__input").toggleClass("cards--display");
+                        $(".card__content").text(mota);
+
+                    }
+                });
+            } else {
+                $(".card__input--error").text("(Vui lòng nhập mô tả)");
+            }
+
+
+        });
+        //-----------Kết thúc----------------
+
+    });
+</script>

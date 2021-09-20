@@ -1,0 +1,165 @@
+﻿@model List<Video>
+@{
+    int count = 1;
+}
+<div class="row">
+    <div class="main-headers">
+        <div class="mobile-toggle" id="mobile-toggle">
+            <i class="bx bx-menu-alt-right"></i>
+        </div>
+        <div class="main-title">
+            Bảng điều khiển
+        </div>
+    </div>
+    <div class="col-3 col-md-6 col-sm-12">
+        <div class="box box-hover">
+            <a asp-action="Index" asp-controller="User">
+                <div class="counter  overview-item overview-item--c1 hover " title="Click để xem chi tiết">
+                    <div class="counter__icon">
+                        <i class="zmdi zmdi-account"></i>
+                    </div>
+                    <div>
+                        <div class="counter-title">
+                            Tổng số thành viên
+                        </div>
+                        <div class="counter-info">
+                            <div class="counter-count">
+                                @ViewBag.TotalUser
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+            </a>
+        </div>
+    </div>
+    <div class="col-3 col-md-6 col-sm-12">
+        <div class="box box-hover">
+            <a asp-action="Index" asp-controller="Video">
+                <div class="counter  overview-item overview-item--c2 hover" title="Click để xem chi tiết">
+                    <div class="counter__icon">
+                        <i class="zmdi zmdi-videocam"></i>
+                    </div>
+                    <div>
+                        <div class="counter-title">
+                            Tổng số Video
+                        </div>
+                        <div class="counter-info">
+                            <div class="counter-count">
+                                @ViewBag.TotalVideo
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </a>
+        </div>
+    </div>
+    <div class="col-3 col-md-6 col-sm-12">
+        <div class="box box-hover">
+
+            <a asp-action="Index" asp-controller="ReportVideo">
+                <div class="counter  overview-item overview-item--c3 hover" title="Click để xem chi tiết">
+                    <div class="counter__icon">
+                        <i class="zmdi zmdi-flag"></i>
+                    </div>
+                    <div>
+                        <div class="counter-title">
+                            Tổng lượt báo cáo
+                        </div>
+                        <div class="counter-info">
+                            <div class="counter-count">
+                                @ViewBag.TotalReport
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+            </a>
+        </div>
+    </div>
+    <div class="col-3 col-md-6 col-sm-12">
+        <div class="box box-hover">
+            <a asp-action="Index" asp-controller="Category">
+                <div class="counter  overview-item overview-item--c4 hover" title="Click để xem chi tiết">
+                    <div class="counter__icon">
+                        <i class="zmdi zmdi-view-toc"></i>
+                    </div>
+                    <div>
+                        <div class="counter-title">
+                            Tổng số Thể loại
+                        </div>
+                        <div class="counter-info">
+                            <div class="counter-count">
+                                @ViewBag.TotalCategory
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+            </a>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-lg-12">
+        <div class="au-card m-b-30">
+            <div class="au-card-inner">
+                <h3 class="title-2 m-b-40">Thống Kê Người Dùng Đăng Ký Và Đăng Video</h3>
+                <canvas id="lineChart"></canvas>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-6">
+        <div class="au-card m-b-30">
+            <div class="au-card-inner">
+                <h3 class="title-2 m-b-40">Thống Kê Thể Loại</h3>
+                <canvas id="polarChart"></canvas>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-6">
+        <div class="au-card m-b-30">
+            <div class="au-card-inner">
+                <h3 class="title-2 m-b-40">Thống Kê báo cáo Trong Tuần</h3>
+                <canvas id="singelBarChart"></canvas>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-12">
+        <!-- DATA TABLE-->
+        <div class="topVideo">Top 10 các video thịnh hành </div>
+        <div class="table-responsive m-b-40">
+            <table class="table table-borderless table-data3">
+                <thead>
+                    <tr>
+                        <th>Xếp hạng</th>
+                        <th>Tên video</th>
+                        <th>Ngày đăng</th>
+                        <th>Lượt xem</th>
+                        <th>Lượt Like</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    @foreach (var item in Model)
+                    {
+                        <tr title="Click vào để xem chi tiết" >
+                            <td>#@count</td>
+                            <td><div class="nameVideo__popular">@item.Name</div></td>
+                            <td>@item.CreateDate.Split(' ')[0]</td>
+                            <td class="process">@ConvertViewCount.ConvertView(item.ViewCount) lượt xem</td>
+                            <td>@item.Like</td>
+                        </tr>
+                        count++;
+                    }
+
+                </tbody>
+            </table>
+        </div>
+        <!-- END DATA TABLE-->
+    </div>
+</div>

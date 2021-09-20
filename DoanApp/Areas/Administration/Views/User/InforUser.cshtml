@@ -1,0 +1,80 @@
+﻿@model AppUser
+  
+    <div class="row" style="padding:20px;">
+        <div class="col-12">
+            <div class="box">
+                <form asp-action="Update" asp-controller="User" enctype="multipart/form-data" method="post"></form>
+                <div class="tongthongtinx">
+                    <div class="tongthongtinxleft">
+                        <div class="bopthongtintaikhoan">
+                            <div class="bopthongtintaikhoanleft">
+                                <div class="textemail">Email</div>
+                            </div>
+                            <div class="bopthongtintaikhoanright">
+                                <input readonly class="tenemail" value="@Model.NormalizedUserName"/>
+                            </div>
+                        </div>
+                        <div class="bopthongtintaikhoan">
+                            <div class="bopthongtintaikhoanleft">
+                                <div class="texthoten">Họ và tên</div>
+                            </div>
+                            <div class="bopthongtintaikhoanright">
+                                <input readonly type="text" name="ho__ten" class="texthotenacount" value="@(Model.FirtsName+" "+Model.LastName)" required="">
+                            </div>
+                        </div>
+                        <div class="bopthongtintaikhoan">
+                            <div class="bopthongtintaikhoanleft">
+                                <div class="texthoten">Email đăng nhập</div>
+                            </div>
+                            <div class="bopthongtintaikhoanright">
+                                <input readonly ="text" name="ho__ten" class="texthotenacountdn" value="@Model.Email" required="">
+                            </div>
+                        </div>
+                        <div class="bopthongtintaikhoan">
+                            <div class="bopthongtintaikhoanleft">
+                                <div class="texthoten">Số điện thoại</div>
+                            </div>
+                            <div class="bopthongtintaikhoanright">
+                                <input readonly type="text" name="ho__ten" class="texthotenacountdn" value="@(Model.PhoneNumber==null?"không có":Model.PhoneNumber)" required="">
+                            </div>
+                        </div>
+                        <div class="bopthongtintaikhoan">
+                            <div class="bopthongtintaikhoanleft">
+                                <div class="texthoten">Trạng thái </div>
+                            </div>
+                            <div class="bopthongtintaikhoanright">
+                                <div class="btn @(Model.LockoutEnabled?" btn-success":"btn-danger")">@(Model.LockoutEnabled?"Hoạt động":"Khóa")</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tongthongtinxright" style="position:relative">
+                        <form asp-action="UpdateAvartar" method="post" enctype="multipart/form-data">
+                            <label class="editImage helloimg" for="uploadImage">
+                                <img  class="hover" id="previewImages" src="@(Model.LoginExternal?Model.Avartar:"/Client/avartar/"+@Model.Avartar)" alt="Alternate Text" />
+                            </label>
+                            <label for="fileupload" class="fileUpload">
+                                <i class="zmdi zmdi-camera hover"></i>
+                                <input type="file" name="fileupload" id="fileupload" />
+                                <input type="hidden" name="emailUser" value="@Model.Email"  />
+                            </label>
+                            <button disabled  type="submit" class="btn btn-primary updateAvartar">Cập nhật</button>
+                        </form>
+                    </div>
+                </div>
+              
+            </div>
+        </div>
+    </div>
+    
+<script>
+   
+    $("#fileupload").change(function (event) {
+        $(".updateAvartar").prop("disabled", false);
+        var imgReview = document.querySelector("#previewImages");
+        imgReview.src = URL.createObjectURL(event.target.files[0]);
+        imgReview.onload = function () {
+            URL.revokeObjectURL(imgReview.src);
+        }
+    });
+
+</script>

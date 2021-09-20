@@ -1,0 +1,19 @@
+{
+  "version": "1.0",
+  "defaultProvider": "cdnjs",
+  "libraries": [
+    {
+      "library": "select2@4.0.13",
+      "destination": "wwwroot/select2/",
+      "files": [
+        "js/select2.min.js",
+        "css/select2.css",
+        "css/select2.min.css"
+      ]
+    },
+    {
+      "library": "aspnet-signalr@1.0.27",
+      "destination": "wwwroot/js/signalr/"
+    }
+  ]
+}

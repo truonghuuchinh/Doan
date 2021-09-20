@@ -1,0 +1,46 @@
+﻿@model IPagedList<Video_vm>
+@using X.PagedList;
+@{
+    int count = 0;
+    Layout = null;
+}
+@foreach (var item in Model)
+{
+    <tr  id="linkVideo-@item.Id" class="tr-shadow removeItem-@item.Id">
+        <td class="col-3">
+            <video class="secondVideo" style="width:180px; height:120px;" controls="controls">
+                <source src="/Client/video/@item.LinkVideo" type="video/mp4" />
+            </video>
+            <div style="width:200px;">@item.Name</div>
+        </td>
+        <td>
+            <span class="block-email">@item.CreateDate.Split(' ')[0]</span>
+        </td>
+        <td class="desc">@ConvertViewCount.ConvertView(item.ViewCount) lượt xem</td>
+        <td>@ViewBag.ListCountComment[count].Count</td>
+        <td>
+            <span class="status--process">@item.Like lượt thích</span>
+        </td>
+        <td class="imgAvartar">
+            <img src="@(item.LoginExternal?item.Avartar:"/Client/avartar/"+item.Avartar)" alt="Alternate Text" />
+            <div>@item.FirtsName @item.LastName</div>
+        </td>
+        <td>
+            <div class="table-data-feature">
+
+                <button onclick="revertStatusFunction(@item.Id)" class="item item-@item.Id" data-toggle="tooltip" data-placement="top" title="Ẩn">
+                    <i class="zmdi @(item.HidenVideo?"zmdi-eye":"zmdi-eye-off") update-@item.Id"></i>
+                </button>
+                @if (User.IsInRole("Admin"))
+                {
+                    <button onclick="deleteFunction(@item.Id)" class="item" data-toggle="tooltip" data-placement="top" title="Xóa">
+                        <i class="zmdi zmdi-delete"></i>
+                    </button>
+                }
+
+            </div>
+        </td>
+    </tr>
+    <tr class="spacer"></tr>
+    count++;
+}

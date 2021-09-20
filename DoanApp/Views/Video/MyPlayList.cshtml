@@ -1,0 +1,323 @@
+﻿@model IPagedList<DetailPlayListVideo>
+@using X.PagedList;
+@{
+    Layout = "/Views/Shared/_Layout_1.cshtml";
+}
+<div class="mainplaylist">
+    <div class="mainplaylist__item1">
+        <h4>Danh sách phát của kênh</h4>
+    </div>
+    <div class="mainplaylist__item2">
+        <div class="item2">
+            <div class="mainplaylist__item1__create hover" data-target="#modalCreatePlayList" data-toggle="modal"><i class="fas fa-plus-circle"></i>  Tạo danh sách</div>
+            <div class="mainplaylist__item2__search">
+                <input placeholder="Tìm kiếm tên danh sách" class="search__modifier" type="search" id="timten" value="" />
+                <div class=" hover btn btn-primary mainplaylist__item2__primary"><i class="fas fa-search"></i></div>
+            </div>
+        </div>
+        <div class="mainplaylist__item2__playlist">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th scope="col">Danh sách phát</th>
+                        <th scope="col">Ngày tạo</th>
+                        <th scope="col">Số Video</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model.Count>0)
+                    {
+                        @foreach (var item in Model)
+                        {
+                            <tr class="remove-@item.Id">
+                                <td class="hover">
+                                    <div class="table__playlist" onclick="showAllPlayList(@item.Id)">
+                                        <img class="table__playlist__more" onclick="showoptionPlaylist(event,@item.Id)" src="/Client/img/more.png" alt="Alternate Text" />
+                                        <div class="name__playlist" id="name__playlist-@item.Id">@item.Name</div>
+                                        <img class="table__playlist__item1 table__playlist__item1-@item.Id" src="@(item.PosterVideo!=null?"/Client/imgPoster/"+item.PosterVideo:"/Client/img/no_playlist.PNG")" alt="Alternate Text" />
+                                        <div class="table__playlist__item2">
+                                            <div class="item2__count item2__count-@item.Id">@item.CountItem</div>
+                                            <img class="item2__playlist" src="/Client/img/add_playlist.png" alt="Alternate Text" />
+                                        </div>
+                                        <div class="more__option " id="more__opiton-@item.Id">
+                                            <div class="more__option__changename hover" onclick="changeName(event,@item.Id)"><i class="fas fa-pencil-alt"></i> Đổi tên</div>
+                                            <div class="more__option__delete hover" onclick="xoaDanhsach(event,@item.Id)"><i class="fas fa-trash"></i> Xóa</div>
+                                        </div>
+
+                                    </div>
+                                </td>
+                                <td class="modifier__td">@item.CreateDate.Split(" ")[0]</td>
+                                <td class="modifier__td modifier__td-@item.Id">@item.CountItem</td>
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                         <tr class="textNovideo">
+                              <td colspan="3">
+                                    <h6 style="opacity: 0.6; margin-top:10px; text-align:center; font-style: italic;">Danh sách phát của bạn sẽ xuất hiện tại đây</h6>
+                              </td>
+                         </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!--Kết thúc-->
+<!--Modal Create Playlist -->
+<div class="modal" id="modalCreatePlayList" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Tạo danh sách mới</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <label for="nameCreate">Tên danh sách</label>
+                <input id="nameCreate" type="text" class="name__Create" value="" />
+                <span class="errorPlaylist text-danger" style="font-size:14px;"></span>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary createList">Tạo</button>
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Hủy</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--Modal delete danh sách-->
+<div class="modal fade" id="modalDelete" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-body">
+                Bạn chắc muốn xóa danh sách này
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Hủy</button>
+                <button type="button" id="cancelRegister" class="btn btn-primary xoadanhsach">Xác nhận</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+<!--Modal change name-->
+<div class="modal fade" id="modalChangeName" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-body">
+                <div style="display:inline-flex">
+                    <label for="intput__changename">Nhập tên mới</label>
+                    <span class="text-danger errorChangename" style="font-size:13px; margin-top: 2px; margin-left: 5px;"></span>
+                </div>
+                <input type="text" id="intput__changename" />
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Hủy</button>
+                <button type="button" id="cancelRegister" class="btn btn-primary changeName">Xác nhận</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+<!--Kết thúc-->
+@section Scripts{
+    <script>
+        //-----------------Kết thúc-----------------------------------------
+
+        //------------------Xử lý choose option detele and changename-------
+        $(".changeName").click(function () {
+            var input = $("#intput__changename").val();
+            if (input == '') $(".errorChangename").text("(Vui lòng nhập tên!)");
+            else {
+                var data = {
+                    "Id": idPlaylist,
+                    "Name": input
+                };
+                $.post("/PlayListVideo/UpdateName", { request: data }, function (respone) {
+                    if (respone == "Success") {
+                        $("#modalChangeName").modal('hide');
+                        $("#intput__changename").val('');
+                        $(".errorChangename").text('');
+                        $("#name__playlist-" + idPlaylist).text(input);
+                        toast('Cập nhật thành công', '/Client', {
+                            type: 'success',
+                            animation: 'zoom',
+                            position: 'bottom-right'
+                        });
+                    }
+                });
+            }
+
+        });
+        $(".xoadanhsach").click(function () {
+            $.get("/PlayListVideo/Delete/?id=" + idPlaylist, function (respone) {
+                if (respone == "Success") {
+                    $(".remove-" + idPlaylist).remove();
+                    toast('Đã xóa', '/Client', {
+                        type: 'success',
+                        animation: 'zoom',
+                        position: 'bottom-right'
+                    });
+                    $("#modalDelete").modal('hide');
+                }
+            });
+        });
+        function xoaDanhsach(event, id) {
+            event.stopPropagation();
+            idPlaylist = id;
+            $("#modalDelete").modal('show');
+        };
+        function changeName(event, id) {
+            event.stopPropagation();
+            idPlaylist = id;
+            $("#modalChangeName").modal('show');
+
+            $("#intput__changename").val($("#name__playlist-" + id).text());
+            
+            setTimeout(function () { $("#intput__changename").focus();}, 500);
+            $(".errorChangename").text('');
+        }
+        //------------------Kết thúc-------------------------
+        //------------------Xử lý choose option--------------
+        MouseLeave();
+        function showoptionPlaylist(event, id) {
+            event.stopPropagation();
+            idPlaylist = id;
+            $('#more__opiton-' + id).toggleClass("displayBlock");
+        }
+        function MouseLeave() {
+            document.querySelectorAll(".table__playlist").forEach(item => {
+                item.addEventListener('mouseleave', function () {
+                    document.querySelectorAll(".more__option").forEach(item => {
+                        if (item.classList.contains("displayBlock")) {
+                            item.classList.remove("displayBlock");
+                        }
+                    });
+
+                });
+            });
+
+        }
+        //------------------Kết thúc-------------------------
+        $(".mainplaylist__item1__create").click(function () {
+            setTimeout(function () { $('#nameCreate').focus(); }, 1000);
+        });
+
+        //-------------------Xử lý tìm kiếm---------------------
+        $(".mainplaylist__item2__primary").click(function () {
+            var inputSearch = $("#timten").val();
+
+            if (inputSearch != '') {
+                currentPage = 1;
+                loadData();
+            }
+        });
+        //-------------------Kết thúc---------------------------
+        //-------------------Xử lý tạo danh sách----------------
+        $(".createList").click(function () {
+            var input = $("#nameCreate").val();
+
+            if (input == '')
+                $(".errorPlaylist").text("(Vui lòng nhập tên danh sách)");
+            else {
+                var data = {
+                    "UserId": $("#user_authenticated").val(),
+                    "Name": input
+                };
+                $.post("/PlayListVideo/Create", { request: data }, function (respone) {
+                    respone = JSON.parse(respone);
+                    if (document.querySelector(".textNovideo") != null)
+                        $(".textNovideo").remove();
+                    $("tbody").prepend(`
+                        <tr class="remove-${respone.Id}">
+                            <td class="hover">
+                                <div class="table__playlist" onclick="showAllPlayList(${respone.Id})">
+                                    <img class="table__playlist__more"  onclick="showoptionPlaylist(event,${respone.Id})" src="/Client/img/more.png" alt="Alternate Text" />
+                                    <div class="name__playlist" id="name__playlist-${respone.Id}">${respone.Name}</div>
+                                    <img class="table__playlist__item1 table__playlist__item1-${respone.Id}" src="/Client/img/no_playlist.png" alt="Alternate Text" />
+                                    <div class="table__playlist__item2">
+                                        <div class="item2__count item2__count-${respone.Id}">${respone.CountItem}</div>
+                                        <img class="item2__playlist" src="/Client/img/add_playlist.png" alt="Alternate Text" />
+                                    </div>
+                                        <div class="more__option" id="more__opiton-${respone.Id}">
+                                        <div class="more__option__changename hover" onclick="changeName(event,${respone.Id})"><i class="fas fa-pencil-alt"></i> Đổi tên</div>
+                                        <div class="more__option__delete hover" onclick="xoaDanhsach(event,${respone.Id})"><i class="fas fa-trash"></i> Xóa</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="modifier__td">${respone.CreateDate.split(' ')[0]}</td>
+                            <td class="modifier__td" modifier__td-${respone.Id}>${respone.CountItem}</td>
+                        </tr>
+                    `);
+                    $("#modalCreatePlayList").modal('hide');
+                    $("#nameCreate").val('')
+                    
+                    MouseLeave();
+                });
+            }
+        });
+
+        //------------Kết thúc-------------------------------------
+        //-------------Xử lý phân trang-----------------------------
+        $('.mainplaylist').on('scroll', function () {
+            let div = $(this).get(0);
+            if (div.scrollTop + div.clientHeight >= div.scrollHeight) {
+                loadData();
+                currentPage += 1;
+            }
+        });
+        function loadData() {
+            var getData = '';
+            $.get("/PlayListVideo/ListJsonPlayList/?page=" + currentPage + "&searchList=" + $("#timten").val(),
+                function (respone) {
+                    console.log(respone);
+                    if (respone != undefined) {
+                        respone = JSON.parse(respone);
+                        $.each(respone, function (index, item) {
+                            if (document.querySelector(".remove-" + item.Id) == null || $("#timten").val()!='') {
+                                getData += ` <tr class="remove-${item.Id}">
+                                <td class="hover">
+                                        <div class="table__playlist" onclick="showAllPlayList(${item.Id})" >
+                                                <img class="table__playlist__more"  onclick="showoptionPlaylist(event,${item.Id})" src="/Client/img/more.png" alt="Alternate Text" />
+                                            <div class="name__playlist" id="name__playlist-${item.Id}">${item.Name}</div>
+                                            <img class="table__playlist__item1 table__playlist__item1-${item.Id}" src="${item.PosterVideo != null ? "/Client/imgPoster/" + item.PosterVideo : "/Client/img/no_playlist.png"}" alt="Alternate Text" />
+                                            <div class="table__playlist__item2">
+                                                <div class="item2__count item2__count-${item.Id}">${item.CountItem}</div>
+                                                <img class="item2__playlist" src="/Client/img/add_playlist.png" alt="Alternate Text" />
+                                            </div>
+                                                <div class="more__option" id="more__opiton-${item.Id}">
+                                        <div class="more__option__changename hover" onclick="changeName(event,${item.Id})"><i class="fas fa-pencil-alt"></i> Đổi tên</div>
+                                        <div class="more__option__delete hover" onclick="xoaDanhsach(event,${item.Id})"><i class="fas fa-trash"></i> Xóa</div>
+                                    </div>
+                                        </div>
+                                    </td>
+                                    <td class="modifier__td">${item.CreateDate.split(' ')[0]}</td>
+                                    <td class="modifier__td modifier__td-${item.Id}">${item.CountItem}</td>
+                                </tr>`;
+                            }
+                        
+                        });
+                        if ($("#timten").val() != '' && currentPage <= 1)
+                            $('tbody').html(getData);
+                        else $('tbody').append(getData);
+                        MouseLeave();
+                    }
+                    else {
+                        toast('Danh sách bạn tìm không có vui lòng thử lại!', '/Client', {
+                            type: 'warn',
+                            animation: 'zoom',
+                            position: 'bottom-right'
+                        });
+                    }
+                });
+        }
+        //------------------------Kết thúc------------------------------------
+    </script>
+}
+
+

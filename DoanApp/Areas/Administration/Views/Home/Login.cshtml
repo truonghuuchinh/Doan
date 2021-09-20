@@ -1,0 +1,132 @@
+﻿@{ 
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Đăng nhập Admin</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!--===============================================================================================-->
+    <link rel="icon" type="image/png" href="~/Administration/assets/login/images/icons/favicon.ico" />
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="~/Administration/assets/login/vendor/bootstrap/css/bootstrap.min.css">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="~/Administration/assets/login/fonts/font-awesome-4.7.0/css/font-awesome.min.css">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="~/Administration/assets/login/fonts/iconic/css/material-design-iconic-font.min.css">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="~/Administration/assets/login/css/util.css">
+    <link rel="stylesheet" type="text/css" href="~/Administration/assets/login/css/main.css">
+    <style>
+        .hover{
+            cursor:pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="limiter">
+        <div class="container-login100" style="background-image: url('/Administration/assets/login/images/bg-01.jpg'); ">
+            <div class="wrap-login100">
+                <form class="login100-form validate-form" asp-action="Login" method="post">
+
+                    <span class="login100-form-logo">
+                        <i class="zmdi zmdi-landscape"></i>
+                    </span>
+
+                    <span class="login100-form-title p-b-34 p-t-27">
+                        Đăng nhập Admin
+                    </span>
+                    <div asp-validation-summary="ModelOnly" class="text-center" style="color:white;"></div>
+                    <br />
+                    <div  class="wrap-input100 validate-input" data-validate="Enter username">
+                        <input class="input100" value="@Context.Request.Cookies["userName"]" type="text" id="email" name="Email" placeholder="Username">
+                        <span class="focus-input100" data-placeholder="&#xf207;"></span>
+
+                    </div>
+                    <span style="color:white" id="errorEmail"></span>
+                    <div  class="wrap-input100 validate-input" data-validate="Enter password">
+                        <input class="input100"  value="@Context.Request.Cookies["password"]" id="password" type="password" name="PasswordHash" placeholder="Password">
+                        <span class="focus-input100" data-placeholder="&#xf191;"></span>
+                    </div>
+                    <span class="text-danger" id="errorPassword"></span>
+
+                    <div class="contact100-form-checkbox">
+                        @if (Context.Request.Cookies["userName"] != null)
+                        {
+                            <input checked class="input-checkbox100" id="ckb1" type="checkbox" name="RememberMe">
+                        }
+                        else
+                        {
+                            <input class="input-checkbox100" id="ckb1" type="checkbox" name="RememberMe">
+                        }
+                        <label class="label-checkbox100" for="ckb1">
+                            Remember me
+                        </label>
+                    </div>
+
+                    <div class="container-login100-form-btn">
+                        <button style="width:150px;" class="login100-form-btn">
+                            Đăng nhập
+                        </button>
+                    </div>
+
+                    <div class="text-center p-t-90">
+                        <a asp-action="ForgotPassword" class="txt1 hover" id="ForgotPassword">
+                            Forgot Password?
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+   @* Modal*@
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog"
+         aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content height_content_user" id="mdcontentUPMT">
+
+
+                <div class="modal-header-UPMT ">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="ModalTitle">
+                        </h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                </div>
+                <div class="modal-body-UPMT">
+                    <div class="col-lg-1-12 " id="ModalContent">
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="~/Administration/assets/login/vendor/jquery/jquery-3.2.1.min.js"></script>
+    <script src="~/js/site.js"></script>
+    <script>
+        $("#ForgotPassword").click(function () {
+            OpenPopUp("Quên mật khẩu", "/Administration/Home/ForgotPassword");
+        });
+        $(".login100-form").submit(function (event) {
+
+            if ($("#email").val() != '' && $("#password").val() != '') {
+                return;
+            } else {
+                if ($("#email").val() == '')
+                    $("#errorEmail").text("Vui lòng nhập Email!");
+                else $("#errorPassword").text("Vui lòng nhập Password!");
+            }
+            event.preventDefault();
+        });
+        $("#email").keypress(function () {
+            $("#errorEmail").text("");
+        });
+        $("#password").keypress(function () {
+            $("#errorPassword").text("");
+        });
+    </script>
+</body>
+</html>

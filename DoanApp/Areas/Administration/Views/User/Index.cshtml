@@ -1,0 +1,113 @@
+﻿@model IPagedList<UserAdmin>
+@using X.PagedList;
+@{ 
+    var users = UserAuthenticated.GetUser(User.Identity.Name);
+}
+    <div class="row">
+            <div class="box">
+                <div class="box-header" style="display:flex;">
+                    <div>
+                        Danh sách thành viên
+                    </div>
+                    <span class="box-header__note">(*Lưu ý bạn muốn xem các thông số của kênh Click vào tên kênh  để xem ngay*)</span>
+                </div>
+                <div class="box-body overflow-scroll">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Tên thành viên</th>
+                                <th>Ngày thành lập</th>
+                                <th>Số lượng video</th>
+                                <th>Tổng lượt xem</th>
+                               
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody class="tbodyUser">
+                            @foreach (var item in Model)
+                            {
+                                <tr class="thongtinkh removeUser-@item.Id">
+                                
+                                        <td>#@item.Id</td>
+                                        <td>
+                                            <a asp-action="AnalysisUser" asp-route-id="@item.Id" title="Click vào để xem chi tiết">
+                                                <div class="order-owner">
+                                                    <img src="@(item.LoginExternal?item.Avartar:"/Client/avartar/"+item.Avartar)" alt="user image">
+                                                    <span>@item.Name</span>
+                                                 </div>
+                                            </a>
+                                            
+                                        </td>
+                                        <td>@item.CreateDate.Split(' ')[0]</td>
+                                        <td>
+                                            @item.TotalVideo
+                                        </td>
+                                        <td>
+                                            <span>@ConvertViewCount.ConvertView(item.TotalView) lượt xem</span>
+                                        </td>
+
+
+                                        <td>
+                                            <div class="table-data-feature">
+                                                @if (users.Id != item.Id)
+                                                {
+                                                    <button onclick="contactUser(@users.Id,@item.Id)" class="item contactUser" title="Liên hệ">
+                                                        <i class="zmdi zmdi-comment-more"></i>
+                                                    </button>
+                                                }
+                                                @if (User.IsInRole("Admin"))
+                                                {
+                                                    <button onclick="deleteUser(@item.Id)" class="item deleteUser" data-toggle="tooltip" data-placement="top" title="Xóa">
+                                                        <i class="zmdi zmdi-delete"></i>
+                                                    </button>
+                                                }
+
+                                                <button onclick="lockUser(@item.Id)" class="item" data-toggle="tooltip" data-placement="top" title="Khóa">
+                                                    <i class=" lockUser-@item.Id zmdi @(item.LockOutEnabled?"zmdi-lock-open":"zmdi-lock")"></i>
+                                                </button>
+                                            </div>
+                                        </td>
+                                </tr>
+                            }
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+    </div>
+@section Scripts{ 
+    <script>
+        searchAll("/Administration/User/Index_Partial/");
+        PaginationPage("/Administration/User/Index_Partial/", ".tbodyUser");
+        function deleteUser(id) {
+           
+            var confm = confirm("Bạn chắc muốn xóa Kênh này?");
+            if (confm) {
+                $.post("/Administration/User/Delete", { id: id }, function (respone) {
+                    if (respone == "Success") {
+                        $(".removeUser-" + id).remove();
+                        alertSuccess("Xóa thành công");
+                    }
+                });
+            }
+        }
+        function lockUser(id) {
+            $.post("/Administration/User/UpdateLock", { id: id }, function (respone) {
+                if (respone == "Success") {
+                    if ($(".lockUser-" + id).hasClass("zmdi-lock-open")) {
+                        $(".lockUser-" + id).removeClass("zmdi-lock-open");
+                        $(".lockUser-" + id).addClass("zmdi-lock");
+                        $(".lockUser-" + id).prop("title", "Mở khóa");
+                    } else {
+                        $(".lockUser-" + id).addClass("zmdi-lock-open");
+                        $(".lockUser-" + id).removeClass("zmdi-lock");
+                        $(".lockUser-" + id).prop("title", "Khóa");
+                    }
+                    alertSuccess("Đã cập nhật");
+                }
+            });
+        }
+
+    </script>
+}

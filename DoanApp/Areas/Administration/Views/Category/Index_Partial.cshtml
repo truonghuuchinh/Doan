@@ -1,0 +1,28 @@
+﻿@model IPagedList<Category>
+@using X.PagedList;
+@{ 
+    Layout = null;
+}
+@foreach (var item in Model)
+{
+    <tr class="tr-shadow">
+        <td>
+            @item.Name
+        </td>
+        <td>
+            <div class="check__status changeText-@item.Id btn @(item.Status?"btn-primary":"btn-danger")">@(item.Status?"Hoạt động":"Không hoạt động")</div>
+        </td>
+        <td>
+            <div class="table-data-feature">
+
+                <button class="item" data-toggle="tooltip" data-placement="top" title="Sửa" onclick="editFunction(@item.Id)">
+                    <i class="zmdi zmdi-edit"></i>
+                </button>
+                <button class="item" data-toggle="tooltip" data-placement="top" title="Khóa" onclick="deleteFunction(@item.Id)">
+                    <i class="changeIcon-@item.Id zmdi @(item.Status?"zmdi-lock-open":"zmdi-lock")"></i>
+                </button>
+            </div>
+        </td>
+    </tr>
+    <tr class="spacer"></tr>
+}

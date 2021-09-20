@@ -1,0 +1,83 @@
+﻿@model AppUser
+@{
+    Layout = "~/Views/Shared/_Layout_Login.cshtml";
+}
+<style>
+    .col-md-5 {
+        height: 500px !important;
+    }
+
+    form {
+        margin-top: 30px;
+        margin-left: 130px;
+    }
+    .form-group{
+        display: block !important;
+    }
+    h3 {
+        font-weight: bold;
+        box-sizing: content-box;
+        padding: 16px;
+        text-align: center;
+    }
+  
+</style>
+
+<div id="content">
+    @if (ViewBag.Flag == true)
+    {
+        <h3 style="margin-top:200px;"><a asp-action="Index" asp-controller="Home">Đăng ký thành công, trở về trang chủ</a></h3>
+    }
+    else
+    {
+        <h3>Đã xác nhận Email, vui lòng nhập mật khẩu mới</h3>
+        <br />
+        <hr />
+        <form method="post" asp-action="UpdatePassword" id="submitForm">
+            <div asp-validation-summary="ModelOnly"></div>
+            <input type="hidden" asp-for="Email" value="@Model.Email" />
+            <div class="form-group mb-4">
+                <label asp-for="PasswordHash" class="sr-only">Password</label>
+                <input type="password" asp-for="PasswordHash" id="password" class="form-control" placeholder="Password...." style="width:100%;">
+                <span id="errorPasswords" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label for="passwordConfirm" class="sr-only">Confirm Password</label>
+                <input type="password" id="confirmPassword" class="form-control" placeholder="Confirm password...." style="width:100%;">
+                <span id="errorPassword" class="text-danger"></span>
+            </div>
+            <input id="update" class="btn btn-block login-btn mb-4" type="submit" value="Cập nhật">
+        </form>
+    }
+</div>
+@{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+<script>
+    $("#password").change(function () {
+        if ($(this).val() != '')
+            $("#errorPasswords").text('');
+    });
+
+    $("#confirmPassword").change(function () {
+        $("#errorPassword").text('');
+        if ($("#password").val() != $(this).val()) {
+            $("#errorPassword").text("Vui lòng nhập đúng mật khẩu!");
+        }
+    });
+    $("#submitForm").submit(function (event) {
+
+        if ($("#errorPassword").text() == '') {
+            if ($("#password").val() != '') {
+                if ($("#password").val() != $("#confirmPassword").val()) {
+                    $("#errorPassword").text("Vui lòng nhập đúng mật khẩu!");
+                }
+                else {
+                    return;
+                }
+            }
+            else {
+                $("#errorPasswords").text("Vui lòng nhập mật khẩu!");
+            }
+        }
+        event.preventDefault();
+    });
+</script>

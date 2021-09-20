@@ -1,0 +1,100 @@
+﻿@model IPagedList<Category>
+@using X.PagedList;
+
+<div class="row">
+    <div class="box">
+        <div class="box-header displayFlex">
+            <div>Danh sách Thể loại</div>
+            <div class="btn btn-primary displayFlex " id="showCreate"> <i style="margin-right:7px;" class="zmdi zmdi-plus-circle"></i>   Thêm</div>
+        </div>
+        <div class="box-body overflow-scroll">
+            <table>
+                <thead>
+                    <tr>
+
+                        <th>Tên Chủ đề</th>
+                        <th>Trạng thái</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody id="parentCategory">
+
+                    @foreach (var item in Model)
+                    {
+                        <tr class="tr-shadow">
+                            <td class="name-@item.Id">
+                                @item.Name
+                            </td>
+                            <td>
+                                <div class="check__status changeText-@item.Id btn @(item.Status?"btn-primary":"btn-danger")">@(item.Status?"Hoạt động":"Không hoạt động")</div>
+                            </td>
+                            <td>
+                                <div class="table-data-feature">
+
+                                    <button class="item" data-toggle="tooltip" data-placement="top" title="Sửa" onclick="editFunction(@item.Id)">
+                                        <i class="zmdi zmdi-edit"></i>
+                                    </button>
+                                    <button class="item" data-toggle="tooltip" data-placement="top" title="Khóa" onclick="deleteFunction(@item.Id)">
+                                        <i class="changeIcon-@item.Id zmdi @(item.Status?"zmdi-lock-open":"zmdi-lock")"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr class="spacer"></tr>
+                    }
+
+
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts{
+    
+    <script>
+        var idRepairCate = 0;
+        searchAll("/Administration/Category/Index_Partial/");
+        PaginationPage("/Administration/Category/Index_Partial/","#parentCategory");
+        $("#showCreate").click(function () {
+            OpenPopUp2("Thêm Chủ đề", "/Administration/Category/Create");
+        });
+        function editFunction(id) {
+            OpenPopUp2("Cập nhật Chủ đề", "/Administration/Category/Edit/?id=" + id);
+            idRepairCate = id;
+            setTimeout(() => {
+                $("#nameEdit").focus();
+            }, 500);
+        }
+       
+        function deleteFunction(id) {
+            var isDelete = confirm("Bạn có chắc muốn thay đổi");
+            if (isDelete) {
+                $.get("/Administration/Category/Delete/?id=" + id, function (respone) {
+                    if (respone == "Success") {
+
+                        if ($(".changeText-" + id).hasClass("btn-primary")) {
+                            $(".changeText-" + id).removeClass("btn-primary");
+                            $(".changeText-" + id).addClass("btn-danger");
+                            $(".changeIcon-" + id).removeClass("zmdi-lock-open");
+                            $(".changeIcon-" + id).addClass("zmdi-lock");
+                            $(".changeText-" + id).text("Không hoạt động");
+                        } else {
+                            $(".changeText-" + id).addClass("btn-primary");
+                            $(".changeText-" + id).removeClass("btn-danger");
+                            $(".changeIcon-" + id).addClass("zmdi-lock-open");
+                            $(".changeIcon-" + id).removeClass("zmdi-lock");
+                            $(".changeText-" + id).text("Hoạt động");
+                        }
+                        alertSuccess("Đã cập nhật");
+                    }
+                });
+            }
+        }
+    </script>
+}
+
+
+

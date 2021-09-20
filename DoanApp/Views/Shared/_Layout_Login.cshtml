@@ -1,0 +1,81 @@
+﻿
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>@ViewBag.Titles</title>
+
+    <link href="~/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="~/Client/css/login.css">
+    <link href="~/Client/css/styleRegister.css" rel="stylesheet" />
+
+    <link href="~/Client/fonts/fontawesome/css/all.min.css" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/material-design-iconic-font/2.2.0/css/material-design-iconic-font.min.css">
+    <link href="~/css/toastifier.min.css" rel="stylesheet" />
+    <link href="~/Client/css/style.css" rel="stylesheet" />
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/js/site.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.min.js"></script>
+
+
+</head>
+<body>
+
+    <h1 class="body__title">Chào mừng bạn đến với YOUTUBE TV</h1>
+
+    <hr />
+    <main class="d-flex align-items-center min-vh-100 py-3 py-md-0">
+
+        <div class="container">
+            <div class="card login-card">
+                <div class="row no-gutters">
+                    <div class="col-md-5">
+                        <img src="~/Client/img/logo2.jpg" alt="login" class="login-card-img">
+                    </div>
+                    <div class="col-md-7">
+                        @RenderBody()
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog"
+         aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content height_content_user" id="mdcontentUPMT">
+                <div class="modal-header-UPMT ">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="ModalTitle">
+                        </h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                </div>
+                <div class="modal-body-UPMT">
+                    <div class="col-lg-1-12 " id="ModalContent">
+
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+    <div class="img-loading">
+        <div>
+            <span class="spinner-border spinner-border-sm"></span>
+            Loading.....
+        </div>
+    </div>
+    @RenderSection("Scripts", false)
+</body>
+</html>
+
+

@@ -1,0 +1,52 @@
+﻿@{
+    Layout = "/Views/Shared/_Layout_1.cshtml";
+
+    var user = UserAuthenticated.GetUser(User.Identity.Name);
+}
+<div class="tongquankenh">Trang tổng quan của kênh</div>
+<div class="all_tongquankenh">
+    <div class="alltongquankenh_left">
+        <div class="padding_tongquankenh">
+            <div class="tramfom_img_tongquankenh">
+                <img class="img_overView" src="~/Client/img/img__Upload.PNG" alt="Alternate Text" />
+            </div>
+        </div>
+        <div class="name_tongquan_taivieo">Bạn có muốn xem các chỉ số cho video gần đây của mình không?</div>
+        <div class="name_tongquan_taivieo2">Hãy đăng tải và xuất bản một video để bắt đầu.</div>
+        <div class="a_center_click">
+            <a asp-action="MyChannel" asp-controller="Video"  class="move_page"><button class="click_create_video_tongquan">Tải video lên</button></a>
+        </div>
+    </div>
+    <div class="alltongquankenh_right">
+        <div class="name_solieuphantich">Số liệu phân tích về kênh</div>
+        <div class="songuoidangkyhientai">Số người đăng ký hiện tại</div>
+        <div class="soluong_subhientai">@ViewBag.CountUserFollow người đăng ký</div>
+        <div class="kengang_hietai"></div>
+        <div class="name_solieuphantich">Tóm tắt</div>
+        <div class="all_soluotxem_time_xem">
+            <div class="all_soluotxem_time_xem_left">Số lượt xem</div>
+            <div class="all_soluotxem_time_xem_right">
+                <div class="sangphai_hientai">@ViewBag.CountView.ToString("#,##0") lượt xem</div>
+            </div>
+        </div>
+        <div class="all_soluotxem_time_xemtime">
+            <div class="all_soluotxem_time_xem_left">Tổng số Video</div>
+            <div class="all_soluotxem_time_xem_right">
+                <div class="sangphai_hientai_time">@ViewBag.CountVideo </div>
+            </div>
+        </div>
+        <div class="all_soluotxem_time_xemtime">
+            <div class="all_soluotxem_time_xem_left">Tổng số bình luận</div>
+            <div class="all_soluotxem_time_xem_right">
+                <div class="sangphai_hientai_time">@ViewBag.CountComment</div>
+            </div>
+        </div>
+        <div class="all_soluotxem_time_xemtime">
+            <div class="all_soluotxem_time_xem_left">Tổng số lượt thích</div>
+            <div class="all_soluotxem_time_xem_right">
+                <div class="sangphai_hientai_time">@ViewBag.CountLike</div>
+            </div>
+        </div>
+        
+    </div>
+</div>

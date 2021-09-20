@@ -1,0 +1,252 @@
+﻿@model IPagedList<Video_vm>
+@using X.PagedList;
+@{
+    int count = 1;
+}
+<style>
+    .detail_right {
+        position: relative;
+        width: 250px;
+    }
+
+    .add_playlist {
+        position: absolute;
+        margin-left: 240px;
+    }
+
+    .container22 {
+        height: 260px;
+    }
+
+    .container222, .container222_end {
+        background: white;
+    }
+
+    .time__duration {
+        margin-top: -135px;
+    }
+
+    .site-layout {
+        background: white;
+    }
+
+    .contentBody {
+        background: white;
+    }
+</style>
+<div class="col site-layout">
+    <input type="hidden" id="idChannel" value="@ViewBag.UserMyPage.Id" />
+    <input type="hidden" id="idUser" value=" @ViewBag.IdUser" />
+    <div class="img_kenhcuaban_noidung">
+        <img src="@(ViewBag.UserMyPage.ImgChannel==null?"/Client/img/imgChannel.jpg":"/Client/imgChannel/"+ViewBag.UserMyPage.ImgChannel)" alt="Cinque Terre" width="1200" height="250">
+        @if (ViewBag.FollowUser == false)
+        {
+            <div class="repair_img hover">
+                <img src="/Client/img/camera.png" alt="Alternate Text" />
+            </div>
+        }
+
+    </div>
+
+    <div class="pass_kenhcuaban">
+        <div class="pass_kenhcuaban_left">
+            <img class="icon-sidebar-item_heiht" alt="" src="@(ViewBag.UserMyPage.LoginExternal?ViewBag.UserMyPage.Avartar:"/Client/avartar/"+ViewBag.UserMyPage.Avartar)">
+            @if (ViewBag.FollowUser == false)
+            {
+                <div class="repair_avartar hover">
+                    <img src="/Client/img/camera.png" alt="Alternate Text" />
+                </div>
+            }
+
+        </div>
+        <div class="pass_kenhcuaban_right">
+            <div class="pass_kenhcuaban_rights">@ViewBag.UserMyPage.FirtsName @ViewBag.UserMyPage.LastName</div>
+            <div class="sub_dangkykenh">@ViewBag.CountUserFollow người đăng ký</div>
+        </div>
+    </div>
+    <div class="danhsach_tible">
+        <a asp-action="MyPage" asp-route-idUser="@ViewBag.UserMyPage.Id" class="khichthuoc_kenhcb @(ViewBag.BottomPage?"cbs_cb":"")">
+            <div class="video_kenhcb">VIDEO</div>
+        </a>
+        <a asp-action="MyIntroduction" asp-route-idUser="@ViewBag.UserMyPage.Id" class="khichthuoc_kenhcb" style="border-bottom: none;">
+            <div class="gioithieu_kenhcb">GIỚI THIỆU</div>
+        </a>
+        <div class="search_kencb">
+            <div class="chuyenphai_kenhcb">
+                <select id="search_name_video">
+                    <option value="value">Tìm kiếm</option>
+                </select>
+                <div class="click_search_kenhcb hover">
+                    <i style="margin:10px 0px 0px 10px;" class="fas fa-search"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="video_tailenS">
+        <div class="name_chu__de">
+            <div class="name_chu__de_text">Video tải lên</div>
+        </div>
+        <div class="content_video">
+            @if (Model != null && Model.Count != 0)
+            {
+                @foreach (var item in Model)
+                {
+                    <div class="container22">
+                        <a id="movepage_detail-@item.Id" asp-action="DetailVideo" asp-controller="Home" asp-route-id="@item.Id">
+                            <div class="container222">
+                                <video width="261" height="165" onmouseover="viewBefore(@item.Id)" onmouseout="clearBefore(@item.Id)" src="~/Client/video/@item.LinkVideo" title="YouTube video player" class=" nextSecond nextSecond-@item.Id">
+                                </video>
+                            </div>
+
+                            <div class="container222_end">
+                                <div class="detail_video">
+                                    <div class="detail_rights">
+                                        <span class="detail_right  text-sidebar-item_video">
+                                            <p class="titleName">@item.Name </p>
+                                            <img id="addplaylist-@item.Id" onclick="addPlayList(@item.Id)" class="icon-more add_playlist" src="/Client/img/more.png" alt="Alternate Text" />
+                                        </span>
+                                        <div class="text_color">@item.FirtsName @item.LastName</div>
+                                        <div class="text_color_check">
+                                            @ConvertViewCount.ConvertView(item.ViewCount) lượt xem • @CaculatorHours.Caculator(item.CreateDate)
+                                        </div>
+
+                                    </div>
+
+                                </div>
+                            </div>
+                        </a>
+                        <span class="time__duration"></span>
+                        <div class="playlist_option playlist-@item.Id">
+                            <div class="option_playlist hover into_playlist-@item.Id" onclick="showPlayList(@item.Id)">
+                                <i class="fa fa-list-alt"></i> Thêm vào danh sách phát
+                            </div>
+                            <div class="option_playlist hover report_video" onclick="reportVideo(@item.Id)">
+                                <i class="fa fa-flag"></i> Báo cáo vi phạm
+                            </div>
+                        </div>
+                    </div>
+                    if (count > 4)
+                    {
+                        count = 1;
+                        <br />}
+                }
+            }
+            else
+            {
+                if (ViewBag.FollowUser == false)
+                {
+                    <div class="noneVideo">
+                        <h3 style="color: darkolivegreen; margin-left:17px;">Kênh chưa có video</h3>
+                        <a asp-action="MyChannel" asp-controller="Video"><h6 class="btn btn-primary">Tải lên ngay</h6></a>
+                    </div>
+                }
+            }
+        </div>
+
+    </div>
+</div>
+<div class="modal" id="upload_img">
+    <div class="modal_upload_img">
+        
+        <div class="content_videodau">
+            <form asp-action="UpdateImgChannel" id="fUpload" asp-controller="Video" method="post" enctype="multipart/form-data">
+                <div class="na_tieude">
+                    Vui lòng chọn ảnh <span class="text-danger errorimg" id="errorimg"></span>
+                </div>
+
+                <div class="custom-file">
+                    <input type="file" class="custom-file-input" name="fileUpload" id="updateImgChannel">
+                    <label class="custom-file-label">Chọn Ảnh</label>
+                    <input type="hidden" name="emailUser" value="@ViewBag.UserMyPage.Email" />
+
+                </div>
+                <div><img src="~/Client/img/default_image.png" class="imgReview" id="img_review" /></div>
+                <div class="sangphai_header_videodauu" style="margin-top:50px;">
+                    <div type="button" class="btn btn-danger" data-dismiss="modal">Hủy</div>
+                    <button type="submit" class="btn btn-primary">Xác nhận</button>
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+</div>
+
+<script>
+
+
+    $(document).ready(function () {
+        //Variable temp of avartar when  click choose avartar but not choose image
+        var fileTempAvartar = {};
+        setTimeout(function () {
+            loadDurationTime();
+        }, 2000);
+        //-------Process update image of page-------
+        $(".repair_img").click(function () {
+            $("#upload_img").modal('show');
+            $("#updateImgChannel").val('');
+            $("#errorimg").text('');
+        });
+        $("#updateImgChannel").change(function (event) {
+            $("#errorimg").text('');
+            var imgReview = document.querySelector("#img_review");
+            imgReview.src = URL.createObjectURL(event.target.files[0]);
+            imgReview.onload = function () {
+                URL.revokeObjectURL(imgReview.src);
+            }
+        });
+        $("#fUpload").submit(function (e) {
+            if ($("#updateImgChannel").val() != '') return;
+            $("#errorimg").text('(Vui lòng chọn ảnh)');
+            e.preventDefault();
+        });
+        //-------End-------------------------------
+        //-------Process search Video----
+        $(".click_search_kenhcb").click(function () {
+            var nameSearch = $("#select2-search_name_video-container").text();
+            $.get("/Video/MyPage_Partial/?nameSearch=" + nameSearch + "&id=" + $('#idChannel').val(), function (respone) {
+                $(".content_video").html(respone);
+                loadSecondVideo();
+                setTimeout(function () {
+                    loadDurationTime();
+                }, 2000);
+            });
+        });
+        //-------End-----------------
+        //-------Load list search--------
+        $.get("/Video/ListVideoJson/?id=" + $('#idChannel').val(), function (respone) {
+            respone = JSON.parse(respone);
+
+            $("#search_name_video").select2({
+                them: 'clasic',
+                placeholder: 'Tìm kiếm......',
+                data: respone
+            });
+        })
+        //-------End--------------------
+        //----------Pagination----------
+        $('.site-layout').on('scroll', function () {
+            let div = $(this).get(0);
+            if (div.scrollTop + div.clientHeight >= div.scrollHeight) {
+                loadData();
+                setTimeout(function () {
+                    loadDurationTime();
+                }, 1000);
+                currentPage += 1;
+            }
+        });
+        function loadData() {
+            var inputSearch = $("#select2-search_name_video-container").text();
+            if (inputSearch == "Tìm kiếm")
+                inputSearch = null;
+            $.get("/Video/MyPage_Partial/?id=" + $("#idChannel").val() + "&page=" + currentPage + "&nameSearch=" + inputSearch,
+                function (respone) {
+                    $('.content_video').append(respone);
+                    loadSecondVideo();
+                    LoadEventMoseLeave();
+                });
+        }
+        //----------End-----------------
+    });
+</script>

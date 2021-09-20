@@ -1,0 +1,39 @@
+﻿@model IPagedList<UserAdmin>
+@using X.PagedList;
+@{ 
+    Layout = null;
+}
+@foreach (var item in Model)
+{
+<tr class="thongtinkh" onclick="thongtinkkhang()">
+
+    <td>#@item.Id</td>
+    <td>
+        <div class="order-owner">
+            <img src="@(item.LoginExternal?item.Avartar:"/Client/avartar/"+item.Avartar)" alt="user image">
+            <span>Huu Chinh</span>
+        </div>
+    </td>
+    <td>@item.CreateDate.Split(' ')[0]</td>
+    <td>
+        @item.TotalVideo
+    </td>
+    <td>
+        <span>@ConvertViewCount.ConvertView(item.TotalView)</span>
+    </td>
+    <td>
+        <div class="table-data-feature">
+            @if (User.IsInRole("Admin"))
+            {
+                <button onclick="deleteUser(@item.Id)" class="item deleteUser" data-toggle="tooltip" data-placement="top" title="Xóa">
+                    <i class="zmdi zmdi-delete"></i>
+                </button>
+            }
+
+            <button onclick="lockUser(@item.Id)" class="item" data-toggle="tooltip" data-placement="top" title="Khóa">
+                <i class=" lockUser-@item.Id zmdi @(item.LockOutEnabled?"zmdi-lock-open":"zmdi-lock")"></i>
+            </button>
+        </div>
+    </td>
+</tr>
+}
