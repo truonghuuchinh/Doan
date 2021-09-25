@@ -2,12 +2,22 @@
 @using X.PagedList;
 @using X.PagedList.Mvc.Core;
 @{
-    int count = 0;
-    int totalUser = ViewBag.ListUser.Count;
+    string user = null;
     string[] role = new string[] {"Admin","Manager","User" };
-   
-}
 
+}
+@section Style{ 
+    <style>
+        .modal-content {
+            width: 69%;
+            margin-left:20%;
+        }
+        .bg-info {
+            color: white;
+            text-shadow: 1px 1px black;
+        }
+    </style>
+}
 
 
 <div class="row">
@@ -35,10 +45,21 @@
 
                     @foreach (var item in Model)
                     {
+                        user = " ";
                         <tr class="tr-shadow remove-@item.Id">
-
                             <td>
-                                <textarea class="tr-shadow__textarea" readonly> @(count<totalUser? ViewBag.ListUser[count]:"không có User")</textarea>
+                                <textarea class="tr-shadow__textarea" readonly>
+                                      @foreach (var memberUser in ViewBag.ListUser)
+                                      {
+                                          
+                                          if (memberUser.Split('|')[0].Contains(item.Name))
+                                          {
+                                              user = memberUser.Split('|')[1];
+                                              break;
+                                          }
+                                      }
+                                    @(user!=" "?user:"Không có user trong vai trò này")
+                                </textarea>
                             </td>
                             <td>
                                 @if (item.Name.Contains("Admin"))
@@ -74,7 +95,6 @@
                             </td>
                         </tr>
                         <tr class="spacer"></tr>
-                        count++;
                     }
 
 

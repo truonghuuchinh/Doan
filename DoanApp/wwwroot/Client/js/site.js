@@ -166,7 +166,7 @@ function loadDataList(id, message, search) {
                                 </div>
                                 <div class="bodyContent__right">
                                    <a class="a__playlist" href="/Home/DetailVideo/${item.Id}"><i style="color:#5252fc;" class="far fa-play-circle hover" title="Phát video"></i></a>
-                                    <i class="fas fa-trash hover" onclick="deleteInPlayList(${item.Id})" title="Xóa khỏi danh sách"></i>
+                                    <i style="color: #e90505;" class="fas fa-trash hover" onclick="deleteInPlayList(${item.Id})" title="Xóa khỏi danh sách"></i>
                                 </div>
                             </div>
                         <hr class="removeHr-${item.Id}" />

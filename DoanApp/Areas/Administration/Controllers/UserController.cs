@@ -1,4 +1,5 @@
-﻿using DoanApp.Commons;
+﻿using DoanApp.Areas.Administration.Models;
+using DoanApp.Commons;
 using DoanApp.ServiceApi;
 using DoanApp.Services;
 using DoanData.Models;
@@ -99,7 +100,12 @@ namespace DoanApp.Areas.Administration.Controllers
                 if (Token == null)
                     Token = await _userApiClient.CheckToken(Token, User.Identity.Name);
             }
-            var listUserAdmin =  _userApiClient.GetAllUserAdmin(Token, User.Identity.Name).Result;
+            var listUserAdmin = await _userApiClient.GetAllUserAdmin(Token, User.Identity.Name);
+            foreach (var item in listUserAdmin)
+            {
+                var us = new AppUser();
+            }
+
             return View(listUserAdmin.ToPagedList(pageNumber, pageSize));
         }
         public IActionResult Index_Partial(int? page, string name)

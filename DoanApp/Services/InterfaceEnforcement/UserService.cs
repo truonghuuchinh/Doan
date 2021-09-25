@@ -57,7 +57,7 @@ namespace DoanApp.Services
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Tokens:Key"]));
             var credential = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
             var token = new JwtSecurityToken(_config["Tokens:Issuer"], _config["Tokens:Issuer"],
-                claims, expires: DateTime.Now.AddHours(1), signingCredentials: credential);
+                claims, expires: DateTime.Now.AddMinutes(30), signingCredentials: credential);
 
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
@@ -112,7 +112,7 @@ namespace DoanApp.Services
                 TotalView = y.Sum(x => x.ViewCount)
             });
             var userNovideo = GetAll().Where(x => !_context.Video.Any(y => y.AppUserId == x.Id)&&x.UserName!=name).ToList();
-            var userAdmin = (from user in GetAll().Where(x=>x.UserName!=name).ToList()
+            var userAdmin = (from user in GetAll().Where(x=>x.UserName!=name&& !_userManager.IsInRoleAsync(x, "Admin").Result).ToList()
                              join vd in video on user.Id equals vd.Key
                              select new
                              {

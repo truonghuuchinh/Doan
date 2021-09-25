@@ -32,7 +32,7 @@ namespace DoanApp.Areas.Administration.Controllers
             var listRole = _roleManager.Roles.ToPagedList(pageNumber, pageSize);
             foreach (var item in listRole)
             {
-                string user = null;
+                string user = item.Name+"|";
                 var list = _userManager.GetUsersInRoleAsync(item.Name).Result;
                 if (list.Count > 0)
                 {
