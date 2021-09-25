@@ -514,11 +514,6 @@ E:\HK5\Prepare Project Last Semester\DoanTotNghiep\DoanApp\bin\Debug\netcoreapp3
 E:\HK5\Prepare Project Last Semester\DoanTotNghiep\DoanApp\obj\Debug\netcoreapp3.1\Razor\Areas\Administration\Views\Shared\_LoginPartial.cshtml.g.cs
 E:\HK5\Prepare Project Last Semester\DoanTotNghiep\DoanApp\obj\Debug\netcoreapp3.1\Razor\Areas\Administration\Views\Shared\_ViewImports.cshtml.g.cs
 E:\HK5\Prepare Project Last Semester\DoanTotNghiep\DoanApp\obj\Debug\netcoreapp3.1\Razor\Areas\Administration\Views\Shared\_ViewStart.cshtml.g.cs
-E:\HK5\Prepare Project Last Semester\DoanTotNghiep\DoanApp\obj\Debug\netcoreapp3.1\Razor\Areas\Identity\Pages\Account\Logout.cshtml.g.cs
-E:\HK5\Prepare Project Last Semester\DoanTotNghiep\DoanApp\obj\Debug\netcoreapp3.1\Razor\Areas\Identity\Pages\Account\_ViewImports.cshtml.g.cs
-E:\HK5\Prepare Project Last Semester\DoanTotNghiep\DoanApp\obj\Debug\netcoreapp3.1\Razor\Areas\Identity\Pages\_ValidationScriptsPartial.cshtml.g.cs
-E:\HK5\Prepare Project Last Semester\DoanTotNghiep\DoanApp\obj\Debug\netcoreapp3.1\Razor\Areas\Identity\Pages\_ViewImports.cshtml.g.cs
-E:\HK5\Prepare Project Last Semester\DoanTotNghiep\DoanApp\obj\Debug\netcoreapp3.1\Razor\Areas\Identity\Pages\_ViewStart.cshtml.g.cs
 E:\HK5\Prepare Project Last Semester\DoanTotNghiep\DoanApp\obj\Debug\netcoreapp3.1\Razor\Views\Home\VerifyEmail.cshtml.g.cs
 E:\HK5\Prepare Project Last Semester\DoanTotNghiep\DoanApp\bin\Debug\netcoreapp3.1\IdentityModel.dll
 E:\HK5\Prepare Project Last Semester\DoanTotNghiep\DoanApp\bin\Debug\netcoreapp3.1\Microsoft.AspNetCore.Authentication.Facebook.dll

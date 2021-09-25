@@ -16,18 +16,7 @@ namespace DoanApp.ServiceApi
     public class UserApiClient : IUserApiCient
     {
         private HttpClient client = HttpClientSigleton.Instance.Client();
-       /* private readonly HttpClientHandler _handler;
-        private readonly HttpClient client;
-        public UserApiClient()
-        {
-            _handler = new HttpClientHandler
-            {
-                ClientCertificateOptions = ClientCertificateOption.Manual,
-                ServerCertificateCustomValidationCallback = (httpRequestMessage, cert, cetChain, policyErrors) => true
-            };
-            client = new HttpClient(_handler);
-            client.BaseAddress = new Uri(LinkServerApi.link);
-        }*/
+
         public async Task<string> Authenticated(LoginRequest request)
         {
           

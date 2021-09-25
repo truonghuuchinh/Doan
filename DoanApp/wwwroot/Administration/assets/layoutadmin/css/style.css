@@ -1321,9 +1321,9 @@ button{
     margin-top:-18px;
 }
 .secondVideo {
-    width: 180px;
-    height: 120px;
-    border-radius: 14px 14px 5px 5px;
+    width: 190px;
+    height: 106px;
+    border-radius: 15px;
 }
 .img-loading {
     position: absolute;
