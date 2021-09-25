@@ -242,8 +242,8 @@ namespace DoanApp.Controllers
             }
             else
             {
-                ViewBag.UserFollow=null;
-                ViewBag.PlayList = null;
+                 ViewBag.UserFollow = _userService.GetChannel();
+                 ViewBag.PlayList = null;
             }
             ViewBag.UserLogin = userLogin == null ? null : userLogin;
             var userIdLogin = userLogin == null ? 0 : userLogin.Id;

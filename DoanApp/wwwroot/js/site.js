@@ -20,13 +20,11 @@ function deleteMessage(id) {
         }
     });
 }
-/*function updateMessage(id) {
 
-}*/
 //------------------------Kết thúc--------------------------------//
 //------------------------Xử lý cập nhật đếm tin nhắn--------------//
 var user__Logins = $("#user_authenticated").val();
-if (user__Logins != '') {
+if (user__Logins != '' && user__Logins != undefined) {
 
     $.get("/Message/GetNotifyMessage/?id=" + user__Logins, function (respone) {
         if (respone != 0) {

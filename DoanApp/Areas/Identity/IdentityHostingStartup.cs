@@ -26,7 +26,7 @@ namespace DoanApp.Areas.Identity
                 });
                 services.ConfigureApplicationCookie(options =>
                 {
-                    options.LoginPath = "/Home/Login";
+                    options.LoginPath = "/Administration/Home/Login";
                     options.AccessDeniedPath = "/Administration/Home/Login";
                  
                 });

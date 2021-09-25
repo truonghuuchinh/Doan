@@ -36,7 +36,7 @@
         <div class="input-group mb-3 form-group">
             <div class="custom-file">
                 <input  accept=".png, .jpg, .jpeg" name="avartarFile" type="file" class="custom-file-input" id="inputAvartar">
-                <label class="custom-file-label" for="inputAvartar">Chọn Avartar</label>
+                <label class="custom-file-label" id="labelInputAvartar" for="inputAvartar">Chọn Avartar</label>
                
             </div>
         </div>
@@ -55,6 +55,9 @@
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 <script>
+    $("#inputAvartar").change(function (event) {
+        $("#labelInputAvartar").text(event.target.files[0].name);                          
+    });
     $("#confirmPassword").change(function () {
         $("#errorPassword").text('');
         if ($("#password").val() != $(this).val()) {

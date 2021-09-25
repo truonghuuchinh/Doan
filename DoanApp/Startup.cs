@@ -38,13 +38,7 @@ namespace DoanApp
         {
             //Add service call api
             services.AddHttpClient();
-            /*services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
-                .AddCookie(options =>
-                {
-                    options.LoginPath = "/Administration/Home/Login";
-                    options.AccessDeniedPath = "/Administration/Home/Login";
-                    options.ExpireTimeSpan = TimeSpan.FromMinutes(1);
-                });*/
+            
 #if DEBUG
             IMvcBuilder builder = services.AddRazorPages();
             var environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
