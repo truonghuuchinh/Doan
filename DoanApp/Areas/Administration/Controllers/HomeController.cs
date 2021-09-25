@@ -190,8 +190,6 @@ namespace DoanApp.Areas.Administration.Controllers
         [HttpPost]
         public IActionResult ConfirmPassword(string Email)
         {
-
-
             if (ModelState.IsValid)
             {
                 var user = _userService.FindUser(Email).Result;
