@@ -46,7 +46,10 @@ namespace DoanApp.Commons
             for (int i = 0; i < date31.Length; i++)
             {
                 if (date31[i] == month) return 31;
-                if (date30[i] == month) return 30;
+                if (date30.Length> i)
+                {
+                    if (date30[i] == month) return 30;
+                }
             }
             return 28;
         }

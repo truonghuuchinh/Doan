@@ -8,6 +8,8 @@ function imgLoading() {
     $(".img-loading").css("display", "block");
 }
 //------------------------Xử lý Update and Delete Message---------//
+
+
 function deleteMessage(id) {
     var ms = new Message();
     ms.id = id;

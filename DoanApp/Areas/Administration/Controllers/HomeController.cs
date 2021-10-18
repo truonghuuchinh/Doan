@@ -190,9 +190,9 @@ namespace DoanApp.Areas.Administration.Controllers
         [HttpPost]
         public IActionResult ConfirmPassword(string Email)
         {
-            if (ModelState.IsValid)
+            var user = _userService.FindUser(Email).Result;
+            if (user!=null)
             {
-                var user = _userService.FindUser(Email).Result;
                 GenerationTokenEmail(user, ConfirmEmailAccount.ForgotPassword.ToString(), false);
                 var url = Url.RouteUrl(new { action = "EmailVerification", controller = "Home", area = "" });
                 return Redirect(url);

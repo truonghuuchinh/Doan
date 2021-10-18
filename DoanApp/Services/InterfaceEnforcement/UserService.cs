@@ -288,7 +288,32 @@ namespace DoanApp.Services
             }
             return false;
          }
+        public async Task<int> UpdateNameChannel(UpdateNameChannel request)
+        {
+            var user = await _userManager.FindByEmailAsync(request.Email);
+            if (user != null)
+            {
+                var names = request.Name.Split(' ');
+                user.FirtsName = names[0];
+                if (names.Length == 1)
+                    user.LastName = "";
+                else
+                {
+                    user.LastName = "";
+                    for (var i=1;i<names.Length; i++)
+                    {
+                        user.LastName += " "+names[i];
+                    }
+                }
 
+                //Update user in list static of system
+                UserAuthenticated.UpdateNameChannel(user);
+
+                _context.Update(user);
+               return  await _context.SaveChangesAsync();
+            }
+            return -1;
+        }
         public async Task<int> UpdateAvartar(int id,string avartar)
         {
             var user = await FindUserId(id);

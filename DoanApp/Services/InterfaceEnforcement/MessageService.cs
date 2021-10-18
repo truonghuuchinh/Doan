@@ -298,7 +298,8 @@ namespace DoanApp.Services
         public List<Message_Vm> GetUserNoneChat(List<Message_Vm> message_Vms,int userId,List<AppUser> users)
         {
             var listMessage_Vm = new List<Message_Vm>();
-            var listUser = _context.AppUser.Where(x => x.Status && x.Id != userId).ToList();
+            var listUserFollow = _context.FollowChannel.Where(X => X.FromUserId == userId);
+            var listUser = _context.AppUser.Where(x => x.Status && x.Id != userId&&listUserFollow.Any(y=>y.ToUserId==x.Id)).ToList();
             foreach (var item in users)
             {
                 foreach (var item1 in listUser)

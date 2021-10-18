@@ -4,21 +4,22 @@
 
 }
 
-    <div class="tong_khungss_thongbao_all">
-        @if (Model == null || Model.Count() == 0)
+<div class="tong_khungss_thongbao_all">
+    @if (Model == null || Model.Count() == 0)
+    {
+        <div class="khung_thongbao_video">
+            <div class="none_notifi">Không có thông báo</div>
+        </div>
+    }
+    else
+    {
+        @foreach (var item in Model)
         {
-            <div class="khung_thongbao_video">
-                <div class="none_notifi">Không có thông báo</div>
-            </div>
-        }
-        else
-        {
-            @foreach (var item in Model)
-            {
+            <div class="item_notifi-@item.Id">
                 <input type="hidden" class="getIdNotifi" value="@item.Id" />
-
+                <input type="hidden" class="userid-@item.Id" value="@item.UserId" />
                 <div class="khung_thongbao_video">
-                    <a class="link_detail-@item.Id linkDetail"  asp-action="DetailVideo" asp-controller="Home" asp-route-id="@item.VideoId">
+                    <a class="link_detail-@item.Id linkDetail" asp-action="DetailVideo" asp-controller="Home" asp-route-id="@item.VideoId">
                         <div class="khung_thongbao_video_left_daucham">
                             @if (item.Watched)
                             {
@@ -30,7 +31,15 @@
                             }
                         </div>
                         <div class="khung_thongbao_video_img">
-                            <img class="img_trang__cuaban_thongbao" alt="" src="@(item.LoginExternal?item.AvartarUser:"/Client/avartar/"+item.AvartarUser)">
+                            @if (item.AvartarUser == "avartarDefault.jpg")
+                            {
+                                <img class="img_trang__cuaban_thongbao" alt="" src="/Client/avartar/@item.AvartarUser">
+                            }
+                            else
+                            {
+                                <img class="img_trang__cuaban_thongbao" alt="" src="@(item.LoginExternal?item.AvartarUser:"/Client/avartar/"+item.AvartarUser)">
+                            }
+
                         </div>
                         <div class="noidung_khungthongbaovideo_text">
                             <div class="noidung_khungthongbao_video__text"><strong>@item.UserName</strong> @item.Content</div>
@@ -43,29 +52,35 @@
                         </div>
                     </a>
                     <div class="daubacham_anthongbao hover" onclick="optionNotifi(event,@item.Id)">
-                        <div class="daubacham_anthongbao_video">
+                        <div class=" hover daubacham_anthongbao_video">
                             <img src="/Client/img/more.png" alt="" class="show_daubacham_anthongbao_video more-@item.Id">
                         </div>
                     </div>
-                    <div class="an_thongbaonay_all option_notifi-@item.Id">
+                    <div class="an_thongbaonay_all hover option_notifi-@item.Id">
                         <div class="kekhungheader"></div>
-                        <div class="class_nameimg_anthongbao">
+                        <div class=" hover class_nameimg_anthongbao">
                             <div class="khung_img_class_nameimg_anthongbo">
                                 <div class="img_class_nameimg_anthongbo"></div>
                             </div>
-                            <div class="noidung_class_nameimg_anthongbao hover">Ẩn thông báo này</div>
+                            <div onclick="revertStatus(event,@item.Id)" class="noidung_class_nameimg_anthongbao">Ẩn thông báo này</div>
                         </div>
                         @if (item.AvartarUser != "avartarDefault.jpg")
                         {
-                            <div class="class_nameimg_anthongbao">
+                            <div class=" hover class_nameimg_anthongbao">
                                 <div class="khung_img_class_nameimg_anthongbo">
-                                    <div class="img_offthongbao"></div>
+                                    <div class="img_offthongbao">
+                                        <i class="material-icons">&#xe7f6;</i>
+                                    </div>
                                 </div>
-                                <div class="noidung_class_nameimg_anthongbao hover">Tắt thông báo từ kênh </div>
+                                <div onclick="revertFollow(event,@item.Id)" class="noidung_class_nameimg_anthongbao">Tắt thông báo từ kênh </div>
+
                             </div>
                         }
                     </div>
+
                 </div>
-            }
+            </div>
+
         }
-    </div>
+    }
+</div>
