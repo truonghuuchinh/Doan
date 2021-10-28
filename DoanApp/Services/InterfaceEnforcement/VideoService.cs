@@ -58,7 +58,6 @@ namespace DoanApp.Services
                         using (var fileStream = new FileStream(Path.Combine(paths, name),
                          FileMode.Create, FileAccess.Write))
                         {
-
                             item.CopyTo(fileStream);
                         }
                     }
