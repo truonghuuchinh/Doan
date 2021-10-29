@@ -1,57 +1,82 @@
 body {
-  font-family: "Karla", sans-serif;
-  background-color: #d0d0ce;
-  min-height: 100vh; }
+    font-family: "Karla", sans-serif;
+    background-color: #d0d0ce;
+    min-height: 100vh;
+}
 
 .brand-wrapper {
-    margin-top:11px;
-  margin-bottom: 19px; }
-  .brand-wrapper .logo {
-    height: 60px; }
+    margin-top: 11px;
+    margin-bottom: 19px;
+}
+
+    .brand-wrapper .logo {
+        height: 60px;
+    }
 
 .login-card {
-  border: 0;
-  border-radius: 27.5px;
-  box-shadow: 0 10px 30px 0 rgba(172, 168, 168, 0.43);
-  overflow: hidden; }
-  .login-card-img {
+    border: 0;
+    border-radius: 27.5px;
+    box-shadow: 0 10px 30px 0 rgba(172, 168, 168, 0.43);
+    overflow: hidden;
+}
+
+.login-card-img {
     border-radius: 0;
     position: absolute;
     width: 100%;
     height: 100%;
     -o-object-fit: cover;
-       object-fit: cover; }
-  .login-card .card-body {
-    padding: 22px 60px 60px; }
-    @media (max-width: 422px) {
-      .login-card .card-body {
-        padding: 35px 24px; } }
-  .login-card-description {
+    object-fit: cover;
+}
+
+.login-card .card-body {
+    padding: 22px 60px 60px;
+}
+
+@media (max-width: 422px) {
+    .login-card .card-body {
+        padding: 35px 24px;
+    }
+}
+
+.login-card-description {
     font-size: 28px;
     color: #000;
     font-weight: normal;
-    margin-bottom: 23px; }
-  .login-card form {
-    max-width: 400px; }
-  .login-card .form-control {
+    margin-bottom: 23px;
+}
+
+.login-card .form-control {
     border: 1px solid #d5dae2;
     padding: 15px 25px;
     margin-bottom: 20px;
     min-height: 45px;
     font-size: 13px;
     line-height: 15;
-    font-weight: normal; }
+    font-weight: normal;
+}
+
     .login-card .form-control::-webkit-input-placeholder {
-      color: #919aa3; }
+        color: #919aa3;
+    }
+
     .login-card .form-control::-moz-placeholder {
-      color: #919aa3; }
+        color: #919aa3;
+    }
+
     .login-card .form-control:-ms-input-placeholder {
-      color: #919aa3; }
+        color: #919aa3;
+    }
+
     .login-card .form-control::-ms-input-placeholder {
-      color: #919aa3; }
+        color: #919aa3;
+    }
+
     .login-card .form-control::placeholder {
-      color: #919aa3; }
-  .login-card .login-btn {
+        color: #919aa3;
+    }
+
+.login-card .login-btn {
     padding: 13px 20px 12px;
     background-color: #000;
     border-radius: 4px;
@@ -59,25 +84,36 @@ body {
     font-weight: bold;
     line-height: 20px;
     color: #fff;
-    margin-bottom: 24px; }
+    margin-bottom: 24px;
+}
+
     .login-card .login-btn:hover {
-      border: 1px solid #000;
-      background-color: transparent;
-      color: #000; }
-  .login-card .forgot-password-link {
+        border: 1px solid #000;
+        background-color: transparent;
+        color: #000;
+    }
+
+.login-card .forgot-password-link {
     font-size: 14px;
     color: #919aa3;
-    margin-bottom: 12px; }
-  .login-card-footer-text {
+    margin-bottom: 12px;
+}
+
+.login-card-footer-text {
     font-size: 16px;
     color: #0d2366;
-     }
-    @media (max-width: 767px) {
-      .login-card-footer-text {
-        margin-bottom: 24px; } }
-  .login-card-footer-nav a {
+}
+
+@media (max-width: 767px) {
+    .login-card-footer-text {
+        margin-bottom: 24px;
+    }
+}
+
+.login-card-footer-nav a {
     font-size: 14px;
-    color: #919aa3; }
+    color: #919aa3;
+}
 /* Modal add new user */
 
 .modal-dialog {
@@ -87,7 +123,7 @@ body {
 .modal-content {
     width: 80% !important;
     height: auto;
-    margin-left:85px;
+    margin-left: 85px;
 }
 
 .modal_pasue_selete_user {
@@ -182,17 +218,13 @@ body {
     border-right: none;
 }
 
-.input-group.date input::placeholder {
-    color: #757575 !important;
-}
+    .input-group.date input::placeholder {
+        color: #757575 !important;
+    }
 /*# sourceMappingURL=login.css.map */
 
 
 
 .container {
-    margin-top: -40px;
-}
-
-#external-account{
-    margin-top:23px;
+    margin-top: -20px;
 }

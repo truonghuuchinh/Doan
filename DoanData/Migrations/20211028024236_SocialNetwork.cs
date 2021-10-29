@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace DoanData.Migrations
 {
-    public partial class Initial : Migration
+    public partial class SocialNetwork : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -20,20 +20,6 @@ namespace DoanData.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Category", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Function",
-                columns: table => new
-                {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(maxLength: 250, nullable: true),
-                    Status = table.Column<bool>(nullable: false, defaultValue: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Function", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -71,36 +57,19 @@ namespace DoanData.Migrations
                     LockoutEnd = table.Column<DateTimeOffset>(nullable: true),
                     LockoutEnabled = table.Column<bool>(nullable: false),
                     AccessFailedCount = table.Column<int>(nullable: false),
-                    Address = table.Column<string>(nullable: true),
                     FirtsName = table.Column<string>(nullable: true),
                     LastName = table.Column<string>(nullable: true),
                     LastLogin = table.Column<string>(nullable: true),
+                    LoginExternal = table.Column<bool>(nullable: false, defaultValue: false),
+                    ImgChannel = table.Column<string>(nullable: true),
                     Avartar = table.Column<string>(nullable: true, defaultValue: "/wwwroot/Server/AvartarDefault.jpg"),
+                    CreateDate = table.Column<string>(nullable: true),
+                    DescriptionChannel = table.Column<string>(nullable: true),
                     Status = table.Column<bool>(nullable: false, defaultValue: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_User", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Action",
-                columns: table => new
-                {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(maxLength: 250, nullable: false),
-                    FunctionsId = table.Column<int>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Action", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Action_Function_FunctionsId",
-                        column: x => x.FunctionsId,
-                        principalTable: "Function",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -216,6 +185,7 @@ namespace DoanData.Migrations
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     FromUserId = table.Column<int>(nullable: false),
+                    Notifications = table.Column<bool>(nullable: false),
                     ToUserId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
@@ -232,27 +202,6 @@ namespace DoanData.Migrations
                         column: x => x.ToUserId,
                         principalTable: "User",
                         principalColumn: "Id");
-                });
-
-            migrationBuilder.CreateTable(
-                name: "LikeVideoDetail",
-                columns: table => new
-                {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Reaction = table.Column<int>(nullable: false),
-                    CreateDate = table.Column<string>(nullable: true, defaultValue: "00/00/00 00:00:00"),
-                    UserId = table.Column<int>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_LikeVideoDetail", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_LikeVideoDetail_User_UserId",
-                        column: x => x.UserId,
-                        principalTable: "User",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -276,22 +225,32 @@ namespace DoanData.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Notification",
+                name: "Message",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(nullable: true),
+                    UserName = table.Column<string>(nullable: true),
                     Content = table.Column<string>(nullable: true),
-                    CreateDate = table.Column<string>(nullable: true, defaultValue: "00/00/00 00:0:00"),
-                    UserId = table.Column<int>(nullable: false)
+                    CreateDate = table.Column<string>(nullable: true),
+                    Avartar = table.Column<string>(nullable: true),
+                    LoginExternal = table.Column<bool>(nullable: false),
+                    CheckWatched = table.Column<bool>(nullable: false),
+                    Watched = table.Column<bool>(nullable: false),
+                    SenderId = table.Column<int>(nullable: false),
+                    ReceiverId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Notification", x => x.Id);
+                    table.PrimaryKey("PK_Message", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Notification_User_UserId",
-                        column: x => x.UserId,
+                        name: "FK_Message_User_ReceiverId",
+                        column: x => x.ReceiverId,
+                        principalTable: "User",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_Message_User_SenderId",
+                        column: x => x.SenderId,
                         principalTable: "User",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -333,6 +292,7 @@ namespace DoanData.Migrations
                     ViewCount = table.Column<int>(nullable: false),
                     CreateDate = table.Column<string>(nullable: true, defaultValue: "00/00/00 00:0:00"),
                     HidenVideo = table.Column<bool>(nullable: false),
+                    PosterImg = table.Column<string>(nullable: true),
                     Status = table.Column<bool>(nullable: false, defaultValue: true),
                     CategorysId = table.Column<int>(nullable: false),
                     AppUserId = table.Column<int>(nullable: false)
@@ -355,34 +315,6 @@ namespace DoanData.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "UserRole",
-                columns: table => new
-                {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    RoleName = table.Column<string>(nullable: true),
-                    CreateDate = table.Column<string>(nullable: true, defaultValue: "00/00/00 00:0:00"),
-                    UserId = table.Column<int>(nullable: false),
-                    ActionId = table.Column<int>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_UserRole", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_UserRole_Action_ActionId",
-                        column: x => x.ActionId,
-                        principalTable: "Action",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_UserRole_User_UserId",
-                        column: x => x.UserId,
-                        principalTable: "User",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Comment",
                 columns: table => new
                 {
@@ -390,10 +322,12 @@ namespace DoanData.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Content = table.Column<string>(nullable: true),
                     CommentId = table.Column<int>(nullable: false),
+                    ReplyFor = table.Column<string>(nullable: true),
                     CreateDate = table.Column<string>(nullable: true, defaultValue: "00/00/00 00:0:00"),
                     Like = table.Column<int>(nullable: false),
                     DisLike = table.Column<int>(nullable: false),
                     Status = table.Column<bool>(nullable: false, defaultValue: true),
+                    ReplyForId = table.Column<int>(nullable: false),
                     UserId = table.Column<int>(nullable: false),
                     VideoId = table.Column<int>(nullable: false)
                 },
@@ -420,7 +354,6 @@ namespace DoanData.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Status = table.Column<bool>(nullable: false, defaultValue: true),
                     PlayListId = table.Column<int>(nullable: false),
                     VideoId = table.Column<int>(nullable: false)
                 },
@@ -435,6 +368,98 @@ namespace DoanData.Migrations
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_DetailVideo_Video_VideoId",
+                        column: x => x.VideoId,
+                        principalTable: "Video",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "LikeCommentDetail",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Reaction = table.Column<string>(nullable: true, defaultValue: "NoAction"),
+                    Comment = table.Column<int>(nullable: false),
+                    UserId = table.Column<int>(nullable: false),
+                    VideoId = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_LikeCommentDetail", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_LikeCommentDetail_User_UserId",
+                        column: x => x.UserId,
+                        principalTable: "User",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_LikeCommentDetail_Video_VideoId",
+                        column: x => x.VideoId,
+                        principalTable: "Video",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "LikeVideoDetail",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Reaction = table.Column<string>(nullable: true),
+                    VideoId = table.Column<int>(nullable: false),
+                    UserId = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_LikeVideoDetail", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_LikeVideoDetail_User_UserId",
+                        column: x => x.UserId,
+                        principalTable: "User",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_LikeVideoDetail_Video_VideoId",
+                        column: x => x.VideoId,
+                        principalTable: "Video",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Notification",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Content = table.Column<string>(nullable: true),
+                    UserName = table.Column<string>(nullable: true),
+                    CreateDate = table.Column<string>(nullable: true, defaultValue: "28-10-2021 9:42:35"),
+                    AvartarUser = table.Column<string>(nullable: true),
+                    LoginExternal = table.Column<bool>(nullable: false),
+                    PoterImg = table.Column<string>(nullable: true),
+                    Watched = table.Column<bool>(nullable: false, defaultValue: true),
+                    Status = table.Column<bool>(nullable: false),
+                    VideoId = table.Column<int>(nullable: false),
+                    FromUserId = table.Column<int>(nullable: false),
+                    UserId = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Notification", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Notification_User_FromUserId",
+                        column: x => x.FromUserId,
+                        principalTable: "User",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_Notification_User_UserId",
+                        column: x => x.UserId,
+                        principalTable: "User",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Notification_Video_VideoId",
                         column: x => x.VideoId,
                         principalTable: "Video",
                         principalColumn: "Id");
@@ -468,10 +493,30 @@ namespace DoanData.Migrations
                         onDelete: ReferentialAction.Restrict);
                 });
 
-            migrationBuilder.CreateIndex(
-                name: "IX_Action_FunctionsId",
-                table: "Action",
-                column: "FunctionsId");
+            migrationBuilder.CreateTable(
+                name: "VideoWatched",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    UserId = table.Column<int>(nullable: false),
+                    VideoId = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_VideoWatched", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_VideoWatched_User_UserId",
+                        column: x => x.UserId,
+                        principalTable: "User",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_VideoWatched_Video_VideoId",
+                        column: x => x.VideoId,
+                        principalTable: "Video",
+                        principalColumn: "Id");
+                });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
@@ -524,9 +569,24 @@ namespace DoanData.Migrations
                 column: "ToUserId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_LikeCommentDetail_UserId",
+                table: "LikeCommentDetail",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_LikeCommentDetail_VideoId",
+                table: "LikeCommentDetail",
+                column: "VideoId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_LikeVideoDetail_UserId",
                 table: "LikeVideoDetail",
                 column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_LikeVideoDetail_VideoId",
+                table: "LikeVideoDetail",
+                column: "VideoId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ListVideoFavorite_UserId",
@@ -534,9 +594,29 @@ namespace DoanData.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Message_ReceiverId",
+                table: "Message",
+                column: "ReceiverId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Message_SenderId",
+                table: "Message",
+                column: "SenderId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Notification_FromUserId",
+                table: "Notification",
+                column: "FromUserId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Notification_UserId",
                 table: "Notification",
                 column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Notification_VideoId",
+                table: "Notification",
+                column: "VideoId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_PlayList_UserId",
@@ -573,16 +653,6 @@ namespace DoanData.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_UserRole_ActionId",
-                table: "UserRole",
-                column: "ActionId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_UserRole_UserId",
-                table: "UserRole",
-                column: "UserId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Video_AppUserId",
                 table: "Video",
                 column: "AppUserId");
@@ -591,6 +661,16 @@ namespace DoanData.Migrations
                 name: "IX_Video_CategorysId",
                 table: "Video",
                 column: "CategorysId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_VideoWatched_UserId",
+                table: "VideoWatched",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_VideoWatched_VideoId",
+                table: "VideoWatched",
+                column: "VideoId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -620,10 +700,16 @@ namespace DoanData.Migrations
                 name: "FollowChannel");
 
             migrationBuilder.DropTable(
+                name: "LikeCommentDetail");
+
+            migrationBuilder.DropTable(
                 name: "LikeVideoDetail");
 
             migrationBuilder.DropTable(
                 name: "ListVideoFavorite");
+
+            migrationBuilder.DropTable(
+                name: "Message");
 
             migrationBuilder.DropTable(
                 name: "Notification");
@@ -632,7 +718,7 @@ namespace DoanData.Migrations
                 name: "ReportVideo");
 
             migrationBuilder.DropTable(
-                name: "UserRole");
+                name: "VideoWatched");
 
             migrationBuilder.DropTable(
                 name: "Role");
@@ -644,16 +730,10 @@ namespace DoanData.Migrations
                 name: "Video");
 
             migrationBuilder.DropTable(
-                name: "Action");
-
-            migrationBuilder.DropTable(
                 name: "User");
 
             migrationBuilder.DropTable(
                 name: "Category");
-
-            migrationBuilder.DropTable(
-                name: "Function");
         }
     }
 }

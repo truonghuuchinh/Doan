@@ -26,7 +26,7 @@ Webcam.set({
 function captureAvartarWebcam() {
     Webcam.attach('#idWebcam');
 }
- //capture camera
+//capture camera
 $("#btnCapture").click(function () {
     Webcam.snap(function (data_uri) {
         $("#imgCapture")[0].src = data_uri;
@@ -50,7 +50,7 @@ $(".btnPlaylist").click(function () {
         "Name": inputname,
         "UserId": $("#idUser").val()
     };
-    $.post("/PlayListVideo/Create", { request: data}, function (respone) {
+    $.post("/PlayListVideo/Create", { request: data }, function (respone) {
         respone = JSON.parse(respone);
         if (respone != null) {
             $(".list__playlist").prepend(`
@@ -66,7 +66,7 @@ $(".btnPlaylist").click(function () {
     $(".add-playlist").css("display", "");
 });
 $("#namePlayList").keyup(function () {
-    if ($(this).val()=='')
+    if ($(this).val() == '')
         $(".btnPlaylist").prop("disabled", true);
     else $(".btnPlaylist").prop("disabled", false);
 });
@@ -77,7 +77,7 @@ $(".repair_avartar").click(function () {
 });
 $(".btnUpdateAvartar").click(function () {
     $("#chooseUpdateAvartar").modal('hide');
-     $("#upload_avartar").modal('show');
+    $("#upload_avartar").modal('show');
     $("#updateImgAvartar").val('');
     $("#erroravartar").text('');
 });
@@ -94,11 +94,11 @@ $("#updateImgAvartar").change(function (event) {
         imgReview.onload = function () {
             URL.revokeObjectURL(imgReview.src);
         }
-         fileTempAvartar = event.target.files;
+        fileTempAvartar = event.target.files;
     } else {
         this.files = fileTempAvartar;
     }
-}); 
+});
 $("#fUploadAvartar").submit(function (e) {
     $("#emailUser").val($("#email_authenticated").val());
     if (!$("#img_review__avartar")[0].src.includes("default_image.png")) return;
@@ -147,7 +147,7 @@ function loadDataList(id, message, search) {
     $.get("/Video/GetAllPlayList/?id=" + id + "&nameSearch=" + search, function (respone) {
         console.log(respone);
         if (respone != 'null') {
-            
+
             respone = JSON.parse(respone);
             var getdata = '';
             $.each(respone, function (index, item) {
@@ -165,7 +165,7 @@ function loadDataList(id, message, search) {
                                     <div class="bodyContent__createdate--noidung">${item.CreateDate.split(" ")[0]}</div>
                                 </div>
                                 <div class="bodyContent__right">
-                                   <a class="a__playlist" href="/Home/DetailVideo/${item.Id}"><i style="color:#5252fc;" class="far fa-play-circle hover" title="Phát video"></i></a>
+                                   <a target="blank" class="a__playlist" href="/Home/DetailVideo/${item.Id}"><i style="color:#5252fc;" class="far fa-play-circle hover" title="Phát video"></i></a>
                                     <i style="color: #e90505;" class="fas fa-trash hover" onclick="deleteInPlayList(${item.Id})" title="Xóa khỏi danh sách"></i>
                                 </div>
                             </div>
@@ -194,7 +194,7 @@ function loadDurationTime() {
 
 }
 function excuteDuration(array_video, array_textDuration) {
-   
+
     for (var i = 0; i < array_video.length; i++) {
         var tam = Math.floor(array_video[i].duration);
         var miniute = Math.floor(array_video[i].duration / 60);
@@ -218,7 +218,7 @@ function displayComment(id) {
     var text = $(".listChild__text-" + id).text();
     var countChild = $(".countChildComment-" + id).val();
     if (text == 'Xem thêm ' + countChild) {
-        $(".listchild-" + id).css('max-height', (listChild + 89 * parseInt(countChild))+"px");
+        $(".listchild-" + id).css('max-height', (listChild + 89 * parseInt(countChild)) + "px");
         $(".listChild__text-" + id).text("Ẩn đi " + countChild);
     } else {
         $(".listchild-" + id).css('max-height', '');
@@ -243,7 +243,7 @@ function confirmRepairComment(id) {
     };
     $.post("/Comment/UpdateContent", { request: data }, function (respone) {
         if (respone == "Success") {
-            cancelRepairComment(id,false);
+            cancelRepairComment(id, false);
             $(".content__Comment-" + id).text($(".repaircomment__input-" + id).val());
             $(".inputContent-" + id).val($(".repaircomment__input-" + id).val());
             alertSuccess("Đã chỉnh sửa");
@@ -264,14 +264,14 @@ function cancelRepairComment(id, flag) {
 function changeContent(id) {
     var content = $(".content__Comment-" + id).text().trim();
     var input = $(".repaircomment__input-" + id).val().trim();
-    
+
     if (input != content)
         $(".repaircomment__primary-" + id).prop('disabled', false);
     else {
         $(".repaircomment__primary-" + id).prop('disabled', true);
     }
 }
-      
+
 function repairComment(id) {
     if (userLoginSystem == '') {
         cuteAlert({
@@ -291,7 +291,7 @@ function repairComment(id) {
         $(".repaircomment__primary-" + id).prop('disabled', true);
     }
 }
-function deleteComment(Id,commentId) {
+function deleteComment(Id, commentId) {
 
     if (userLoginSystem == '' || userLoginSystem == undefined) {
         cuteAlert({
@@ -305,10 +305,10 @@ function deleteComment(Id,commentId) {
     } else {
         $.post("/Comment/Delete", { id: Id }, function (respone) {
             if (respone != "Error") {
-                
+
                 for (var i of JSON.parse(respone)) {
                     $(".removeComment-" + i).remove();
-                    var view = parseInt($(".count_comment").text()) -1;
+                    var view = parseInt($(".count_comment").text()) - 1;
                     $(".count_comment").text(view.toString() + " Bình luận");
                     var viewChild = parseInt($(".listChild__text-" + commentId).text().split(" ")[2]) - 1;
                     $(".listChild__text-" + commentId).text("Ẩn đi " + viewChild);
@@ -326,10 +326,10 @@ function deleteComment(Id,commentId) {
 
 function reportVideo(id) {
     idVideoReport = id;
-        $("#reportvideo").modal("show");
-        $("#valueReport").focus();
-        $("#errorReport").text('');
-        $("#valueReport").val('');
+    $("#reportvideo").modal("show");
+    $("#valueReport").focus();
+    $("#errorReport").text('');
+    $("#valueReport").val('');
 }
 $("#confirm_report").click(function () {
     var userId = $("#idUser").val();
@@ -388,8 +388,13 @@ $(".close").click(function () {
         item.checked = false;
     });
 });
+
+function showPlayListInDetail(id) {
+    addPlayList(id);
+    $("#modalPlayList").modal('show');
+}
 function showPlayList(id) {
-        $("#modalPlayList").modal('show');
+    $("#modalPlayList").modal('show');
 }
 function addPlayList(id) {
     idvideo = id;
@@ -419,7 +424,7 @@ function addPlayList(id) {
                 });
             }
         });
-        
+
         if ($(".playlist-" + id).css('display') == 'none') {
             $("#addplaylist-" + id).css("display", "block");
             $(".playlist-" + id).css("display", "block");
@@ -547,7 +552,7 @@ function loadSecondVideo() {
     var listVideo = Array.from(document.querySelectorAll(".nextSecond"));
     for (var i = 0; i < listVideo.length; i++) {
         listVideo[i].currentTime = 10;
-       
+
     }
 }
 function viewBefore(id) {
@@ -581,7 +586,7 @@ function convertViewCount(view) {
     else {
         if (view > 1000) {
             view = (view / 1000).toFixed(1);
-            if (view.split(".")[1]=='0') {
+            if (view.split(".")[1] == '0') {
                 view = view.split(".")[0];
             }
             viewConvert = view.toString() + " N";
@@ -815,7 +820,7 @@ function revertReactionComment(value, count, id) {
 
 //------------------------Xử lý Comment---------------------------
 
-function comment(checkComment, id, level,commentId) {
+function comment(checkComment, id, level, commentId) {
     var userId = '';
     var content = '';
     var videoId = '';
@@ -867,7 +872,7 @@ function comment(checkComment, id, level,commentId) {
                         $(".removeComment-" + id).append(`<input type="hidden" class="countChildComment-${id}" value="0" />`);
                         $(".listchild-" + id).css('max-height', "200px");
                         document.querySelector(".listchild__display-" + commentId).insertAdjacentHTML("afterend", respone);
-                      
+
                     }
                 } else {
                     var helloComment = document.getElementById("hello_coment");
@@ -1071,7 +1076,6 @@ $(document).click(function () {
     if ($(".all_nav_menus_as").hasClass('hien'))
         $(".all_nav_menus_as").toggleClass('hien');
 });
-
 function optionNotifi(event, id) {
     idNotifi = id;
     $('.option_notifi-' + id).toggleClass('displays');

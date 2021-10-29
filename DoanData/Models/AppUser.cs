@@ -30,7 +30,5 @@ namespace DoanData.Models
         public List<ReportVideo> ReportVideos { get; set; }
         public List<LikeCommentDetail> LikeComments { get; set; }
         public List<VideoWatched> VideoWatcheds { get; set; }
-        public List<Message> MessagesSender { get; set; }
-        public List<Message> MessagesReciever { get; set; }
     }
 }

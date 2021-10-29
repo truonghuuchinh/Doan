@@ -5,6 +5,7 @@ using DoanData.Commons;
 using DoanData.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System;
@@ -19,10 +20,13 @@ namespace DoanApp.Controllers
     {
         private readonly ILikeCommentService _likeService;
         private readonly ICommentService _commentService;
-        public LikeCommentController(ILikeCommentService likeService,ICommentService comment)
+        private readonly UserManager<AppUser> _userManager;
+        public LikeCommentController(ILikeCommentService likeService,ICommentService comment,
+            UserManager<AppUser> userManager)
         {
             _likeService = likeService;
             _commentService = comment;
+            _userManager = userManager;
         }
 
         // POST: LikeCommentController/Create
@@ -31,9 +35,12 @@ namespace DoanApp.Controllers
         {
             var like = JsonConvert.DeserializeObject<LikeCommentRequest>(dataLike);
             int result = 0;
+            var statusLike = "";
             if (like.Reaction == Reactions.DontLike.ToString() || like.Reaction == Reactions.DontDisLike.ToString())
             {
-                 var getLike = _likeService.FindLikeAsync(like.UserId, like.VideoId).Result;
+                if (like.Reaction == Reactions.DontLike.ToString()) statusLike = "Like";
+                else statusLike = "DisLike";
+                 var getLike =await _likeService.FindLikeAsync(like.IdComment, statusLike);
                 result = await _likeService.Delete(getLike.Id);
             }
             else
@@ -63,7 +70,7 @@ namespace DoanApp.Controllers
         {
             var like = JsonConvert.DeserializeObject<LikeCommentRequest>(dataLike);
             var results = await _commentService.UpdateLikeRevert(like.IdComment,like.Reaction);
-            var searchLike =  _likeService.FindLikeAsync(like.UserId, like.VideoId).Result;
+            var searchLike =await  _likeService.FindLikeAsync(like.IdComment,like.Reaction);
             var result = await _likeService.Delete(searchLike.Id);
 
             if (results > 0)
@@ -81,9 +88,15 @@ namespace DoanApp.Controllers
             }
             return Content("Error");
         }
-        public string ListJsonLikeComment()
+        public async Task<string> ListJsonLikeComment(int idVideo)
         {
-            return JsonConvert.SerializeObject(_likeService.GetAll());
+            var user = await _userManager.FindByNameAsync(User.Identity.Name);
+            if(user!=null)
+            {
+                var list = _likeService.GetAll().Where(x=>x.UserId==user.Id&&x.VideoId==idVideo).ToList();
+                return JsonConvert.SerializeObject(list);
+            }
+            return null;
         }
         // POST: LikeCommentController/Edit/5
     }

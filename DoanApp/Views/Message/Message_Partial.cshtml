@@ -42,15 +42,15 @@
                     <div style="position:relative;" class="send-mess-wrap delete-@item.Id hover check-@item.SenderId-@item.ReceiverId" >
                         <span class="mess-time time-@item.Id">@CaculatorHours.Caculator(item.CreateDate)</span>
                         <div class="send-mess__inner" onclick="showTime(@item.Id)">
-                            <div  class="send-mess-list">
+                            <div class="send-mess-list">
+                                <div onclick="deleteMessage(@item.Id)" class="optionMessage__delete" title="Xóa"> <i class="zmdi zmdi-delete"></i> </div>
                                 <div class="send-mess send-mess-@item.Id">@item.Content</div>
-                                
                             </div>
                         </div>
-                        <div class="optionMessage optionMessage__send">
+                       @* <div class="optionMessage optionMessage__send">
                             <div onclick="deleteMessage(@item.Id)" class="optionMessage__delete" title="Xóa"> <i class="zmdi zmdi-delete"></i> </div>
-                           @* <div onclick="updateMessage(@item.Id)" class="optionMessage__repair" title=" Sửa"> <i class="zmdi zmdi-edit"></i> </div>*@
-                        </div>
+                           <div onclick="updateMessage(@item.Id)" class="optionMessage__repair" title=" Sửa"> <i class="zmdi zmdi-edit"></i> </div>
+                        </div>*@
                     </div>
                 }
         }

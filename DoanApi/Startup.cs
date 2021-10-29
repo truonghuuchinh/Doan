@@ -46,6 +46,7 @@ namespace DoanApi
             services.AddTransient<IUserService, UserService>();
             services.AddTransient<IReportVideoService, ReportVideoService>();
             services.AddTransient<INotificationService, NotificationService>();
+            services.AddTransient<IMessageService, MessageService>();
             services.AddTransient<ICommentService, CommentService>();
             //Register Fluent for all validator
             services.AddControllers().AddFluentValidation(x=>x.RegisterValidatorsFromAssemblyContaining<LoginValidator>());

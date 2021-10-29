@@ -30,12 +30,12 @@ namespace DoanApp.Controllers
         private readonly IVideoWatchedService _videoWatched;
         private readonly IPlayListService _playListService;
         private readonly IDetailVideoService _detailService;
-        
+
         public VideoController(IVideoService videoService, IUserService userService,
-            ICategoryService category,IFollowChannelService channelService,ILikeVideoService likeservice,
-            IFollowChannelService followChannel,ICommentService commentService,
-            INotificationService notification,IVideoWatchedService videoWatched,
-            IPlayListService playList,IDetailVideoService detail)
+            ICategoryService category, IFollowChannelService channelService, ILikeVideoService likeservice,
+            IFollowChannelService followChannel, ICommentService commentService,
+            INotificationService notification, IVideoWatchedService videoWatched,
+            IPlayListService playList, IDetailVideoService detail)
         {
             _videoService = videoService;
             _userService = userService;
@@ -51,10 +51,10 @@ namespace DoanApp.Controllers
         }
         // GET: VideoController
         [AllowAnonymous]
-        public ActionResult MyPage(int? page,int? idUser)
+        public ActionResult MyPage(int? page, int? idUser)
         {
             GetNotificationHome();
-            
+
             var pageNumber = page ?? 1;
             List<Video_vm> listVideo_Vm;
             var listVideo = new List<Video>();
@@ -70,10 +70,10 @@ namespace DoanApp.Controllers
                 ViewBag.PlayList = null;
                 ViewBag.UserFollow = _userService.GetChannel();
             }
-          
+
             if (idUser != null)
             {
-                var user =  _userService.FindUserId((int)idUser).Result;
+                var user = _userService.FindUserId((int)idUser).Result;
                 ViewBag.CountUserFollow = _followChannel.GetAll().Where(x => x.ToUserId == user.Id).Count();
                 ViewBag.UserMyPage = user;
                 listVideo = _videoService.GetAll().Where(x => x.AppUserId == idUser).ToList();
@@ -85,16 +85,16 @@ namespace DoanApp.Controllers
                 ViewBag.UserMyPage = users;
                 listVideo = _videoService.GetAll().Where(x => x.AppUserId == users.Id).ToList();
             }
-            if (users==null||idUser != users.Id&&idUser!=null) ViewBag.FollowUser = true;
+            if (users == null || idUser != users.Id && idUser != null) ViewBag.FollowUser = true;
             else ViewBag.FollowUser = false;
             ViewBag.BottomPage = true;
-           var listUser = _userService.GetAll();
+            var listUser = _userService.GetAll();
             listVideo_Vm = _videoService.GetVideo_Vm(listVideo, listUser).
                 OrderByDescending(x => x.Id).Where(x => x.Status & x.HidenVideo).ToList();
             return View(listVideo_Vm.ToPagedList(pageNumber, 8));
         }
         [AllowAnonymous]
-        public ActionResult MyPage_Partial(int? id, int? page, string nameSearch =null)
+        public ActionResult MyPage_Partial(int? id, int? page, string nameSearch = null)
         {
             if (id == null) id = 0;
             var user = _userService.FindUserId((int)id).Result;
@@ -103,9 +103,9 @@ namespace DoanApp.Controllers
             List<Video_vm> listVideo_Vm;
 
             var listVideo = _videoService.GetAll().Where(x => x.AppUserId == user.Id).ToList();
-            if (nameSearch != null && nameSearch != "Tìm kiếm"&& nameSearch != "null")
+            if (nameSearch != null && nameSearch != "Tìm kiếm" && nameSearch != "null")
                 listVideo = listVideo.Where(x => x.Name.Contains(nameSearch)).ToList();
-            var listUser = _userService.GetAll().Where(x=>x.Id==id).ToList();
+            var listUser = _userService.GetAll().Where(x => x.Id == id).ToList();
             listVideo_Vm = _videoService.GetVideo_Vm(listVideo, listUser).
                 OrderByDescending(x => x.Id).Where(x => x.Status & x.HidenVideo).ToList();
 
@@ -113,29 +113,29 @@ namespace DoanApp.Controllers
             ViewBag.UserMyPage = user;
             return View(listVideo_Vm.ToPagedList(pageNumber, 8));
         }
-        public IActionResult GetAllPlayList(int id,string nameSearch=null)
+        public IActionResult GetAllPlayList(int id, string nameSearch = null)
         {
             var user = UserAuthenticated.GetUser(User.Identity.Name);
             if (id != 0)
             {
                 var playlist = _detailService.GetAll().Where(x => x.PlayListId == id).ToList();
                 var listVideo = (from plist in playlist
-                                join lvideo in _videoService.GetAll() on plist.VideoId equals lvideo.Id
-                                select lvideo).ToList();
+                                 join lvideo in _videoService.GetAll() on plist.VideoId equals lvideo.Id
+                                 select lvideo).ToList();
                 if (nameSearch != null)
                 {
-                    nameSearch = ConvertUnSigned.convertToUnSign(nameSearch).ToLower();
+                    nameSearch = ConvertUnSigned.convertToUnSign(nameSearch).ToLower().Trim();
                     listVideo = listVideo.Where(x => ConvertUnSigned.convertToUnSign(x.Name).
-                    ToLower().Contains(nameSearch)).ToList();
+                    ToLower().Trim().Contains(nameSearch)).ToList();
                 }
-                    
+
                 if (listVideo.Count > 0)
                 {
                     return Content(JsonConvert.SerializeObject(_videoService.GetAllVideoPlayList(listVideo, user)));
                 }
                 else return Content("null");
             }
-          
+
             return null;
         }
         public IActionResult MyPlayList()
@@ -143,8 +143,8 @@ namespace DoanApp.Controllers
             GetNotificationHome();
             ViewBag.ForCus = 2;
             var user = UserAuthenticated.GetUser(User.Identity.Name);
-            var listvm = _detailService.GetDetailPlayList(user,null).OrderByDescending(x => x.Id).ToList();
-                return View(listvm.ToPagedList(1,4));
+            var listvm = _detailService.GetDetailPlayList(user, null).OrderByDescending(x => x.Id).ToList();
+            return View(listvm.ToPagedList(1, 4));
         }
         [AllowAnonymous]
         public IActionResult MyIntroduction(int? idUser)
@@ -170,28 +170,28 @@ namespace DoanApp.Controllers
             }
             else
             {
-                
+
                 ViewBag.CountUserFollow = _followChannel.GetAll().Where(x => x.ToUserId == users.Id).Count();
                 ViewBag.UserMyPage = users;
                 ViewBag.CountView = _videoService.GetAll().Where(x => x.AppUserId == users.Id).Sum(x => x.ViewCount);
             }
-            if (users==null||idUser != users.Id) ViewBag.FollowUser = true;
-           else ViewBag.FollowUser = false;
+            if (users == null || idUser != users.Id) ViewBag.FollowUser = true;
+            else ViewBag.FollowUser = false;
             ViewBag.BottomPage = true;
             return View();
         }
-       [AllowAnonymous]
+        [AllowAnonymous]
         public string ListVideoJson(int id)
         {
             var listName = new List<string>();
-            var listVideo = _videoService.GetAll().Where(x => x.AppUserId == id&&x.HidenVideo).ToList();
+            var listVideo = _videoService.GetAll().Where(x => x.AppUserId == id && x.HidenVideo).ToList();
             foreach (var item in listVideo)
             {
                 listName.Add(item.Name);
             }
             return JsonConvert.SerializeObject(listName);
         }
-        public IActionResult FavoritedVideo(int? page,bool flag=false)
+        public IActionResult FavoritedVideo(int? page, bool flag = false)
         {
             ViewBag.ForCus = 6;
             if (page == null) page = 1;
@@ -205,7 +205,7 @@ namespace DoanApp.Controllers
                 ViewBag.UserFollow = _userService.GetUserFollow(userLogin.UserName);
                 ViewBag.IdUser = userLogin.Id;
                 ViewBag.PlayList = _playListService.GetAll().Where(x => x.UserId == ViewBag.IdUser).ToList();
-                var listLikeVideo = _likeService.GeAll().Where(x=>x.UserId==userLogin.Id&&x.Reaction=="Like").ToList();
+                var listLikeVideo = _likeService.GeAll().Where(x => x.UserId == userLogin.Id && x.Reaction == "Like").ToList();
                 var listVideo = (from video in _videoService.GetAll()
                                  join like in listLikeVideo on video.Id equals like.VideoId
                                  select video).ToList();
@@ -236,22 +236,22 @@ namespace DoanApp.Controllers
             GetNotificationHome();
             if (user != null)
             {
-              //Video watched
+                //Video watched
                 var listVideoWatched = _videoWatched.GetAll().
-                    OrderByDescending(X => X.Id).Where(x=>x.UserId==user.Id).Take(6).ToList();
+                    OrderByDescending(X => X.Id).Where(x => x.UserId == user.Id).Take(6).ToList();
 
                 var listvideo = (from video in _videoService.GetAll()
-                                    join watched in listVideoWatched on video.Id equals watched.VideoId
-                                    select video).ToList();
+                                 join watched in listVideoWatched on video.Id equals watched.VideoId
+                                 select video).ToList();
                 var listvideo_vm = _videoService.GetVideo_Vm(listvideo, _userService.GetAll()).
-                    OrderByDescending(x=>x.Id).ToPagedList(1,6);
+                    OrderByDescending(x => x.Id).ToPagedList(1, 6);
                 ViewBag.CountWatched = listVideoWatched.Count;
                 //-kết thúc
                 //Video đã thích
-                var listFovarited = _likeService.GeAll().Where(x => x.UserId == user.Id&&x.Reaction=="Like").ToList();
+                var listFovarited = _likeService.GeAll().Where(x => x.UserId == user.Id && x.Reaction == "Like").ToList();
                 var listvideos = (from fovarited in listFovarited
-                                 join video in _videoService.GetAll() on fovarited.VideoId equals video.Id
-                                 select video).ToList();
+                                  join video in _videoService.GetAll() on fovarited.VideoId equals video.Id
+                                  select video).ToList();
                 var listVideoVm = _videoService.GetVideo_Vm(listvideos, _userService.GetAll());
                 ViewBag.ListFovarited = listVideoVm.ToPagedList(1, 3);
                 ViewBag.CountFovarited = listFovarited.Count;
@@ -259,12 +259,12 @@ namespace DoanApp.Controllers
                 ViewBag.CountUserFollow = _followChannel.GetAll().Where(x => x.FromUserId == user.Id).Count();
                 ViewBag.CountVideoUpload = _videoService.GetAll().Where(x => x.AppUserId == user.Id).Count();
                 ViewBag.CountDetailPlayList = _detailService.GetDetailPlayList(user, null).Count;
-                ViewBag.DetailPlayList = _detailService.GetDetailPlayList(user, null).ToPagedList(1,4);
+                ViewBag.DetailPlayList = _detailService.GetDetailPlayList(user, null).ToPagedList(1, 4);
                 return View(listvideo_vm);
             }
             return View(null);
         }
-        public IActionResult SubscriptionChannel(int? page,bool flag=false)
+        public IActionResult SubscriptionChannel(int? page, bool flag = false)
         {
             ViewBag.ForCus = 2;
             GetNotificationHome();
@@ -284,7 +284,7 @@ namespace DoanApp.Controllers
                                  select video).ToList();
                 var listUser = _userService.GetAll();
                 listVideo_Vm = _videoService.GetVideo_Vm(listVideo, listUser).
-                    OrderByDescending(x=>x.Id).ToPagedList(pageNumber, pageSize);
+                    OrderByDescending(x => x.Id).ToPagedList(pageNumber, pageSize);
                 if (flag)
                 {
                     foreach (var item in listVideo_Vm)
@@ -296,7 +296,7 @@ namespace DoanApp.Controllers
                 return View(listVideo_Vm);
             }
             listVideo_Vm = null;
-           return View(listVideo_Vm);
+            return View(listVideo_Vm);
         }
         public IActionResult VideoWatched()
         {
@@ -326,14 +326,14 @@ namespace DoanApp.Controllers
         public IActionResult MyChannel(int? page)
         {
             GetNotificationHome();
-            ViewData["Category"] = new SelectList(_categoryService.GetAll().Result.Where(x=>x.Status).ToList(), "Id", "Name");
+            ViewData["Category"] = new SelectList(_categoryService.GetAll().Result.Where(x => x.Status).ToList(), "Id", "Name");
             ViewBag.ForCus = 5;
             if (page == null) page = 1;
             var pageSize = 6;
             var pageNumber = page ?? 1;
             var user = _userService.FindUser(User.Identity.Name).Result;
             var list = _videoService.GetAll().
-                Where(x=>x.AppUserId==user.Id).OrderByDescending(x=>x.Id).ToPagedList(pageNumber,pageSize);
+                Where(x => x.AppUserId == user.Id).OrderByDescending(x => x.Id).ToPagedList(pageNumber, pageSize);
             var listCountComment = (from video in _videoService.GetAll().Where(x => x.AppUserId == user.Id)
                                     join comment in _commentService.GetAll() on video.Id equals comment.VideoId
                                     orderby video.Id, comment.Id descending
@@ -342,7 +342,7 @@ namespace DoanApp.Controllers
             var listCount = new List<CountComment>();
             foreach (var item in listCountComment)
             {
-                var  count= new CountComment();
+                var count = new CountComment();
                 count.Id = item.Key;
                 count.Count = item.Count;
                 listCount.Add(count);
@@ -380,7 +380,7 @@ namespace DoanApp.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Create(VideoRequest videoRequest,
-            IFormFile PosterVideo,IFormFile LinkVideo,string HiddenVideo)
+            IFormFile PosterVideo, IFormFile LinkVideo, string HiddenVideo)
         {
             List<IFormFile> listPost = new List<IFormFile>();
             var user = await _userService.FindUser(User.Identity.Name);
@@ -395,8 +395,8 @@ namespace DoanApp.Controllers
                 {
                     videoRequest.AppUserId = user.Id;
                     videoRequest.HidenVideo = HiddenVideo.Contains("Public") ? true : false;
-                    var result = await _videoService.Create(videoRequest,listPost);
-                    if (result!=null)
+                    var result = await _videoService.Create(videoRequest, listPost);
+                    if (result != null)
                     {
                         var notifi = new NotificationRequest();
                         notifi.AvartarUser = user.Avartar;
@@ -406,8 +406,8 @@ namespace DoanApp.Controllers
                         notifi.VideoId = result.Id;
                         notifi.LoginExternal = user.LoginExternal;
                         notifi.UserName = user.FirtsName + " " + user.LastName;
-                        var resultsNoti = await _notificationService.Create(notifi,user.Id);
-                        if(resultsNoti>0) return Redirect("MyChannel");
+                        var resultsNoti = await _notificationService.Create(notifi, user.Id);
+                        if (resultsNoti > 0) return Redirect("MyChannel");
                     }
                 }
             }
@@ -420,14 +420,15 @@ namespace DoanApp.Controllers
         {
             if (id != 0)
             {
-                var result =await _videoService.UpdateView(id);
+                var result = await _videoService.UpdateView(id);
                 var video = await _videoService.FinVideoAsync(id);
                 return Content(video.ViewCount.ToString("#,##0"));
             }
             return Content("Error");
         }
         [HttpPost]
-        public async Task<IActionResult> UpdatePermission(string data) {
+        public async Task<IActionResult> UpdatePermission(string data)
+        {
             var video = JsonConvert.DeserializeObject<VideoRequest>(data);
             var result = await _videoService.UpdatePermission(video);
             if (result > 0)
@@ -457,7 +458,7 @@ namespace DoanApp.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> UploadPoster(IFormFile fileUpload,int idVideo)
+        public async Task<IActionResult> UploadPoster(IFormFile fileUpload, int idVideo)
         {
             if (fileUpload != null && idVideo != 0)
             {
@@ -478,25 +479,25 @@ namespace DoanApp.Controllers
                 videoRequest.Name = "";
                 videoRequest.Id = idVideo;
                 var result = await _videoService.Update(videoRequest);
-                if (result!=-1) return Redirect("MyChannel");
+                if (result != -1) return Redirect("MyChannel");
             }
-           
+
             return Content("Error");
         }
-        public async Task<IActionResult> UpdateCategory(int id,int idCategory)
+        public async Task<IActionResult> UpdateCategory(int id, int idCategory)
         {
             var result = await _videoService.UpdateCategory(id, idCategory);
-            if (result!= -1)
+            if (result != -1)
                 return Content("Success");
             return Content("Error");
         }
-       [HttpPost]
-       public async Task<IActionResult> UpdateImgChannel(string emailUser,IFormFile fileUpload)
+        [HttpPost]
+        public async Task<IActionResult> UpdateImgChannel(string emailUser, IFormFile fileUpload)
         {
             if (emailUser != null && fileUpload != null)
             {
                 var user = await _userService.FindUser(emailUser);
-               if(user.ImgChannel!=null) 
+                if (user.ImgChannel != null)
                     System.IO.File.Delete("wwwroot/Client/imgChannel/" + user.ImgChannel);
                 var filename = fileUpload.FileName.Split('.');
                 var name = user.Id.ToString() + "." + filename[filename.Length - 1].ToLower();
@@ -506,7 +507,7 @@ namespace DoanApp.Controllers
                 {
                     fileUpload.CopyTo(fileStream);
                 }
-                var result =await _userService.UpdateImgChannel(user.Id, name);
+                var result = await _userService.UpdateImgChannel(user.Id, name);
                 if (result > 0)
                 {
                     new UserAuthenticated().UpdateImgChannel(user.Id, name, null);
@@ -521,7 +522,7 @@ namespace DoanApp.Controllers
             if (emailUser != null && fileUpload != null)
             {
                 var user = await _userService.FindUser(emailUser);
-                if (user.Avartar != null&&user.LoginExternal==false)
+                if (user.Avartar != null && user.LoginExternal == false)
                     System.IO.File.Delete("wwwroot/Client/avartar/" + user.Avartar);
                 var filename = fileUpload.FileName.Split('.');
                 var name = user.Id.ToString() + "." + filename[filename.Length - 1].ToLower();
