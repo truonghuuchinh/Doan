@@ -28,16 +28,20 @@ namespace DoanApp.Services
         private readonly SignInManager<AppUser> _signInManager;
         private readonly RoleManager<AppRole> _roleManager;
         private readonly DpContext _context;
+        private readonly INotificationService _notificationService;
+        private readonly IMessageService _messageService;
         private readonly IConfiguration _config;
         public UserService(UserManager<AppUser> userManager,
             SignInManager<AppUser> signInManager, DpContext context,RoleManager<AppRole> role,
-            IConfiguration config)
+            IConfiguration config, IMessageService messageService, INotificationService notificationService)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _context = context;
             _roleManager = role;
             _config = config;
+            _messageService = messageService;
+            _notificationService = notificationService;
         }
 
         public async Task<string> AuthenticatedApi(AppUserRequest request)
@@ -309,6 +313,9 @@ namespace DoanApp.Services
                 //Update user in list static of system
                 UserAuthenticated.UpdateNameChannel(user);
 
+                var ntService = _notificationService.UpdateNameChannel(user.Id, request.Name.Trim());
+                var msService = _messageService.UpdateNameChannel(user.Id, request.Name.Trim());
+
                 _context.Update(user);
                return  await _context.SaveChangesAsync();
             }
@@ -322,7 +329,9 @@ namespace DoanApp.Services
                 user.Avartar = avartar;
                 user.LoginExternal = false;
                 _context.Update(user);
-                return await _context.SaveChangesAsync();
+                var ntService = _notificationService.UpdateAvartar(id, avartar);
+                var msService = _messageService.UpdateAvartar(id, avartar);
+              return await _context.SaveChangesAsync();
             }
             return -1;
         }

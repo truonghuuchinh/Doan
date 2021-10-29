@@ -287,7 +287,7 @@ a {
 .strong_headers {
     height: 88vh;
     overflow-y: auto;
-    border-right: 2px solid black;
+   
 }
 
 ::-webkit-scrollbar {
@@ -3545,7 +3545,7 @@ option {
 }
 
 .img_class_nameimg_anthongbo {
-    background-image: url(/Client/img/visibility.png);
+  
     width: 24px;
     height: 24px;
     margin-top: 3px;
@@ -3564,9 +3564,9 @@ option {
     height: 5px;
 }
 
-.img_offthongbao i {
-    font-size: 29px;
-    color: #919191;
+.img_offthongbao i, .img_class_nameimg_anthongbo i {
+    font-size: 19px;
+    color: #6c757d;
 }
 
 .class_nameimg_anthongbao:hover {

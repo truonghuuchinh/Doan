@@ -124,9 +124,9 @@ namespace DoanApp.Controllers
                                  select lvideo).ToList();
                 if (nameSearch != null)
                 {
-                    nameSearch = ConvertUnSigned.convertToUnSign(nameSearch).ToLower();
+                    nameSearch = ConvertUnSigned.convertToUnSign(nameSearch).ToLower().Trim();
                     listVideo = listVideo.Where(x => ConvertUnSigned.convertToUnSign(x.Name).
-                    ToLower().Contains(nameSearch)).ToList();
+                    ToLower().Trim().Contains(nameSearch)).ToList();
                 }
 
                 if (listVideo.Count > 0)

@@ -1,0 +1,171 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Messages>
+  <message id="1">
+    <Id>1</Id>
+    <UserName>False</UserName>
+    <Content>Hello nhật</Content>
+    <CreateDate>10-28-2021 20:18:17</CreateDate>
+    <Avartar>38.jpg</Avartar>
+    <LoginExternal>False</LoginExternal>
+    <CheckWatched>False</CheckWatched>
+    <Watched>True</Watched>
+    <SenderId>38</SenderId>
+    <ReceiverId>39</ReceiverId>
+  </message>
+  <message id="5">
+    <Id>5</Id>
+    <UserName>False</UserName>
+    <Content>hello tuik có thể giúp gì cho bạn :v</Content>
+    <CreateDate>10-28-2021 20:53:21</CreateDate>
+    <Avartar>38.jpg</Avartar>
+    <LoginExternal>False</LoginExternal>
+    <CheckWatched>False</CheckWatched>
+    <Watched>True</Watched>
+    <SenderId>38</SenderId>
+    <ReceiverId>43</ReceiverId>
+  </message>
+  <message id="9">
+    <Id>9</Id>
+    <UserName>False</UserName>
+    <Content>bạn hỏi gì</Content>
+    <CreateDate>10-28-2021 20:54:18</CreateDate>
+    <Avartar>38.jpg</Avartar>
+    <LoginExternal>False</LoginExternal>
+    <CheckWatched>False</CheckWatched>
+    <Watched>True</Watched>
+    <SenderId>38</SenderId>
+    <ReceiverId>43</ReceiverId>
+  </message>
+  <message id="10">
+    <Id>10</Id>
+    <UserName>Hoàng Long</UserName>
+    <Content>À mình tính hỏi về cách làm video </Content>
+    <CreateDate>10-28-2021 21:02:21</CreateDate>
+    <Avartar>43.jpg</Avartar>
+    <LoginExternal>False</LoginExternal>
+    <CheckWatched>False</CheckWatched>
+    <Watched>True</Watched>
+    <SenderId>43</SenderId>
+    <ReceiverId>38</ReceiverId>
+  </message>
+  <message id="11">
+    <Id>11</Id>
+    <UserName>False</UserName>
+    <Content>à ok bạn </Content>
+    <CreateDate>10-28-2021 21:02:43</CreateDate>
+    <Avartar>38.jpg</Avartar>
+    <LoginExternal>False</LoginExternal>
+    <CheckWatched>False</CheckWatched>
+    <Watched>True</Watched>
+    <SenderId>38</SenderId>
+    <ReceiverId>43</ReceiverId>
+  </message>
+  <message id="12">
+    <Id>12</Id>
+    <UserName>False</UserName>
+    <Content>bạn khỏe không</Content>
+    <CreateDate>10-29-2021 9:18:17</CreateDate>
+    <Avartar>38.jpg</Avartar>
+    <LoginExternal>False</LoginExternal>
+    <CheckWatched>False</CheckWatched>
+    <Watched>True</Watched>
+    <SenderId>38</SenderId>
+    <ReceiverId>39</ReceiverId>
+  </message>
+  <message id="13">
+    <Id>13</Id>
+    <UserName>Phạm Nhật</UserName>
+    <Content>mình khỏe bạn thì sao</Content>
+    <CreateDate>10-29-2021 9:19:37</CreateDate>
+    <Avartar>39.jpg</Avartar>
+    <LoginExternal>False</LoginExternal>
+    <CheckWatched>False</CheckWatched>
+    <Watched>True</Watched>
+    <SenderId>39</SenderId>
+    <ReceiverId>38</ReceiverId>
+  </message>
+  <message id="14">
+    <Id>14</Id>
+    <UserName>Phạm Nhật</UserName>
+    <Content>ban khỏe không</Content>
+    <CreateDate>10-29-2021 16:10:01</CreateDate>
+    <Avartar>39.jpg</Avartar>
+    <LoginExternal>False</LoginExternal>
+    <CheckWatched>False</CheckWatched>
+    <Watched>True</Watched>
+    <SenderId>39</SenderId>
+    <ReceiverId>38</ReceiverId>
+  </message>
+  <message id="15">
+    <Id>15</Id>
+    <UserName>False</UserName>
+    <Content>Hello admin</Content>
+    <CreateDate>10-29-2021 16:11:31</CreateDate>
+    <Avartar>38.jpg</Avartar>
+    <LoginExternal>False</LoginExternal>
+    <CheckWatched>False</CheckWatched>
+    <Watched>True</Watched>
+    <SenderId>38</SenderId>
+    <ReceiverId>36</ReceiverId>
+  </message>
+  <message id="16">
+    <Id>16</Id>
+    <UserName>Phạm Nhật</UserName>
+    <Content>Hello admin mình cần Support</Content>
+    <CreateDate>10-29-2021 18:56:14</CreateDate>
+    <Avartar>39.jpg</Avartar>
+    <LoginExternal>False</LoginExternal>
+    <CheckWatched>False</CheckWatched>
+    <Watched>True</Watched>
+    <SenderId>39</SenderId>
+    <ReceiverId>36</ReceiverId>
+  </message>
+  <message id="17">
+    <Id>17</Id>
+    <UserName>Admin</UserName>
+    <Content>Bạn cần hỗ trợ gì</Content>
+    <CreateDate>10-29-2021 18:57:16</CreateDate>
+    <Avartar>avartarDefault.jpg</Avartar>
+    <LoginExternal>False</LoginExternal>
+    <CheckWatched>False</CheckWatched>
+    <Watched>True</Watched>
+    <SenderId>36</SenderId>
+    <ReceiverId>39</ReceiverId>
+  </message>
+  <message id="18">
+    <Id>18</Id>
+    <UserName>Phạm Nhật</UserName>
+    <Content>How are you?</Content>
+    <CreateDate>10-29-2021 18:58:02</CreateDate>
+    <Avartar>39.jpg</Avartar>
+    <LoginExternal>False</LoginExternal>
+    <CheckWatched>False</CheckWatched>
+    <Watched>True</Watched>
+    <SenderId>39</SenderId>
+    <ReceiverId>38</ReceiverId>
+  </message>
+  <message id="19">
+    <Id>19</Id>
+    <UserName>Công  nghệ TV</UserName>
+    <Content>Thanks,I'm fine.</Content>
+    <CreateDate>10-29-2021 18:58:21</CreateDate>
+    <Avartar>38.jpg</Avartar>
+    <LoginExternal>False</LoginExternal>
+    <CheckWatched>False</CheckWatched>
+    <Watched>True</Watched>
+    <SenderId>38</SenderId>
+    <ReceiverId>39</ReceiverId>
+  </message>
+  <message id="20">
+    <Id>20</Id>
+    <UserName>Admin</UserName>
+    <Content>Helolo bạn bạn cần gì</Content>
+    <CreateDate>10-29-2021 19:10:08</CreateDate>
+    <Avartar>avartarDefault.jpg</Avartar>
+    <LoginExternal>False</LoginExternal>
+    <CheckWatched>False</CheckWatched>
+    <Watched>True</Watched>
+    <SenderId>36</SenderId>
+    <ReceiverId>38</ReceiverId>
+  </message>
+</Messages>

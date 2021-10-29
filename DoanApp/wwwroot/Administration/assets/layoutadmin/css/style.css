@@ -2456,4 +2456,15 @@ a:hover, a:focus, a:active {
 .send-mess-wrap:hover .optionMessage{
     display:inline-flex;
 }
+.send-mess-list {
+    display: flex;
+}
+.optionMessage__delete {
+    display: none;
+    margin-right: 10px;
+    margin-top: 8px;
+}
+.send-mess-list:hover .optionMessage__delete {
+    display:block;
+}
 /*Kết thúc message*/

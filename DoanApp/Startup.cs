@@ -69,6 +69,7 @@ namespace DoanApp
             //Add Service Idetity 
             services.AddIdentity<AppUser, AppRole>()
              .AddEntityFrameworkStores<DpContext>().AddDefaultTokenProviders();
+
             services.Configure<IdentityOptions>(options =>
             {
                 options.SignIn.RequireConfirmedEmail = true;
@@ -83,8 +84,10 @@ namespace DoanApp
             });
 
             //Add service Controller
-            services.AddTransient<ICategoryService, CategoryService>();
+            services.AddTransient<IMessageService, MessageService>();
+            services.AddTransient<INotificationService, NotificationService>();
             services.AddTransient<IUserService, UserService>();
+            services.AddTransient<ICategoryService, CategoryService>();
             services.AddTransient<IVideoService, VideoService>();
             services.AddTransient<ICommentService, CommentService>();
             services.AddTransient<ILikeVideoService, LikeVideoService>();
@@ -93,12 +96,11 @@ namespace DoanApp
             services.AddTransient<IPlayListService, PlayListService>();
             services.AddTransient<IDetailVideoService, DetailVideoService>();
             services.AddTransient<IReportVideoService, ReportVideoService>();
-            services.AddTransient<INotificationService, NotificationService>();
             services.AddTransient<IVideoWatchedService, VideoWatchedService>();
-            services.AddTransient<IMessageService, MessageService>();
             services.AddTransient<IUserApiCient, UserApiClient>();
             services.AddTransient<IReportApiClient, ReportApiClient>();
             services.AddTransient<ICategoryApiClient, CategoryApiClient>();
+
             services.AddAuthentication()
                  .AddFacebook(options =>
                  {

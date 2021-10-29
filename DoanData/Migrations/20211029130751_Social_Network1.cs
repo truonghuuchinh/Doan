@@ -2,35 +2,51 @@
 
 namespace DoanData.Migrations
 {
-    public partial class Initial5 : Migration
+    public partial class Social_Network1 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "Message");
+
             migrationBuilder.AlterColumn<string>(
                 name: "CreateDate",
                 table: "Notification",
                 nullable: true,
-                defaultValue: "10-07-2021 9:28:49",
+                defaultValue: "29-10-2021 20:07:50",
                 oldClrType: typeof(string),
                 oldType: "nvarchar(max)",
                 oldNullable: true,
-                oldDefaultValue: "20-06-2021 9:56:58");
+                oldDefaultValue: "28-10-2021 9:42:35");
+        }
+
+        protected override void Down(MigrationBuilder migrationBuilder)
+        {
+            migrationBuilder.AlterColumn<string>(
+                name: "CreateDate",
+                table: "Notification",
+                type: "nvarchar(max)",
+                nullable: true,
+                defaultValue: "28-10-2021 9:42:35",
+                oldClrType: typeof(string),
+                oldNullable: true,
+                oldDefaultValue: "29-10-2021 20:07:50");
 
             migrationBuilder.CreateTable(
                 name: "Message",
                 columns: table => new
                 {
-                    Id = table.Column<int>(nullable: false)
+                    Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    UserName = table.Column<string>(nullable: true),
-                    Content = table.Column<string>(nullable: true),
-                    CreateDate = table.Column<string>(nullable: true),
-                    Avartar = table.Column<string>(nullable: true),
-                    LoginExternal = table.Column<bool>(nullable: false),
-                    CheckWatched = table.Column<bool>(nullable: false),
-                    Watched = table.Column<bool>(nullable: false),
-                    SenderId = table.Column<int>(nullable: false),
-                    ReceiverId = table.Column<int>(nullable: false)
+                    Avartar = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CheckWatched = table.Column<bool>(type: "bit", nullable: false),
+                    Content = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CreateDate = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    LoginExternal = table.Column<bool>(type: "bit", nullable: false),
+                    ReceiverId = table.Column<int>(type: "int", nullable: false),
+                    SenderId = table.Column<int>(type: "int", nullable: false),
+                    UserName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Watched = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -57,22 +73,6 @@ namespace DoanData.Migrations
                 name: "IX_Message_SenderId",
                 table: "Message",
                 column: "SenderId");
-        }
-
-        protected override void Down(MigrationBuilder migrationBuilder)
-        {
-            migrationBuilder.DropTable(
-                name: "Message");
-
-            migrationBuilder.AlterColumn<string>(
-                name: "CreateDate",
-                table: "Notification",
-                type: "nvarchar(max)",
-                nullable: true,
-                defaultValue: "20-06-2021 9:56:58",
-                oldClrType: typeof(string),
-                oldNullable: true,
-                oldDefaultValue: "10-07-2021 9:28:49");
         }
     }
 }

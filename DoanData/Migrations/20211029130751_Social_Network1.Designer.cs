@@ -10,14 +10,14 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DoanData.Migrations
 {
     [DbContext(typeof(DpContext))]
-    [Migration("20210610074900_Initial2")]
-    partial class Initial2
+    [Migration("20211029130751_Social_Network1")]
+    partial class Social_Network1
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "3.1.15")
+                .HasAnnotation("ProductVersion", "3.1.1")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
@@ -68,6 +68,12 @@ namespace DoanData.Migrations
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CreateDate")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("DescriptionChannel")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Email")
@@ -197,6 +203,9 @@ namespace DoanData.Migrations
                     b.Property<string>("ReplyFor")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("ReplyForId")
+                        .HasColumnType("int");
+
                     b.Property<bool>("Status")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bit")
@@ -248,6 +257,9 @@ namespace DoanData.Migrations
 
                     b.Property<int>("FromUserId")
                         .HasColumnType("int");
+
+                    b.Property<bool>("Notifications")
+                        .HasColumnType("bit");
 
                     b.Property<int>("ToUserId")
                         .HasColumnType("int");
@@ -354,7 +366,13 @@ namespace DoanData.Migrations
                     b.Property<string>("CreateDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("nvarchar(max)")
-                        .HasDefaultValue("10-06-2021 14:48:59");
+                        .HasDefaultValue("29-10-2021 20:07:50");
+
+                    b.Property<int>("FromUserId")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("LoginExternal")
+                        .HasColumnType("bit");
 
                     b.Property<string>("PoterImg")
                         .HasColumnType("nvarchar(max)");
@@ -365,10 +383,20 @@ namespace DoanData.Migrations
                     b.Property<int>("UserId")
                         .HasColumnType("int");
 
+                    b.Property<string>("UserName")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int>("VideoId")
                         .HasColumnType("int");
 
+                    b.Property<bool>("Watched")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(true);
+
                     b.HasKey("Id");
+
+                    b.HasIndex("FromUserId");
 
                     b.HasIndex("UserId");
 
@@ -702,6 +730,12 @@ namespace DoanData.Migrations
 
             modelBuilder.Entity("DoanData.Models.Notification", b =>
                 {
+                    b.HasOne("DoanData.Models.AppUser", "fromAppUser")
+                        .WithMany("FromNotifications")
+                        .HasForeignKey("FromUserId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
                     b.HasOne("DoanData.Models.AppUser", "appUser")
                         .WithMany("Notifications")
                         .HasForeignKey("UserId")
