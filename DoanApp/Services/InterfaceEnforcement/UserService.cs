@@ -329,8 +329,8 @@ namespace DoanApp.Services
                 user.Avartar = avartar;
                 user.LoginExternal = false;
                 _context.Update(user);
-                var ntService = _notificationService.UpdateAvartar(id, avartar);
-                var msService = _messageService.UpdateAvartar(id, avartar);
+                var item1=await _notificationService.UpdateAvartar(id, avartar);
+                var item2 =await _messageService.UpdateAvartar(id, avartar);
               return await _context.SaveChangesAsync();
             }
             return -1;

@@ -1,39 +1,51 @@
 ﻿@model IPagedList<UserAdmin>
 @using X.PagedList;
-@{ 
+@{
     Layout = null;
+    var users = UserAuthenticated.GetUser(User.Identity.Name);
 }
 @foreach (var item in Model)
 {
-<tr class="thongtinkh" onclick="thongtinkkhang()">
+    <tr class="thongtinkh removeUser-@item.Id">
 
-    <td>#@item.Id</td>
-    <td>
-        <div class="order-owner">
-            <img src="@(item.LoginExternal?item.Avartar:"/Client/avartar/"+item.Avartar)" alt="user image">
-            <span>Huu Chinh</span>
-        </div>
-    </td>
-    <td>@item.CreateDate.Split(' ')[0]</td>
-    <td>
-        @item.TotalVideo
-    </td>
-    <td>
-        <span>@ConvertViewCount.ConvertView(item.TotalView)</span>
-    </td>
-    <td>
-        <div class="table-data-feature">
-            @if (User.IsInRole("Admin"))
-            {
-                <button onclick="deleteUser(@item.Id)" class="item deleteUser" data-toggle="tooltip" data-placement="top" title="Xóa">
-                    <i class="zmdi zmdi-delete"></i>
+        <td>#@item.Id</td>
+        <td>
+            <a asp-action="AnalysisUser" asp-route-id="@item.Id" title="Click vào để xem chi tiết">
+                <div class="order-owner">
+                    <img src="@(item.LoginExternal?item.Avartar:"/Client/avartar/"+item.Avartar)" alt="user image">
+                    <span>@item.Name</span>
+                </div>
+            </a>
+
+        </td>
+        <td>@item.CreateDate.Split(' ')[0]</td>
+        <td>
+            @item.TotalVideo
+        </td>
+        <td>
+            <span>@ConvertViewCount.ConvertView(item.TotalView) lượt xem</span>
+        </td>
+
+
+        <td>
+            <div class="table-data-feature">
+                @if (users.Id != item.Id)
+                {
+                    <button onclick="contactUser(@users.Id,@item.Id)" class="item contactUser" title="Liên hệ">
+                        <i class="zmdi zmdi-comment-more"></i>
+                    </button>
+                }
+                @if (User.IsInRole("Admin"))
+                {
+                    <button onclick="deleteUser(@item.Id)" class="item deleteUser" data-toggle="tooltip" data-placement="top" title="Xóa">
+                        <i class="zmdi zmdi-delete"></i>
+                    </button>
+                }
+
+                <button onclick="lockUser(@item.Id)" class="item" data-toggle="tooltip" data-placement="top" title="Khóa">
+                    <i class=" lockUser-@item.Id zmdi @(item.LockOutEnabled?"zmdi-lock-open":"zmdi-lock")"></i>
                 </button>
-            }
-
-            <button onclick="lockUser(@item.Id)" class="item" data-toggle="tooltip" data-placement="top" title="Khóa">
-                <i class=" lockUser-@item.Id zmdi @(item.LockOutEnabled?"zmdi-lock-open":"zmdi-lock")"></i>
-            </button>
-        </div>
-    </td>
-</tr>
+            </div>
+        </td>
+    </tr>
 }

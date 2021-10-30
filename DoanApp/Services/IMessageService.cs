@@ -17,12 +17,12 @@ namespace DoanApp.Services
         Task<int> Delete(int id);
         Task<int> Update(MessageRequest request);
         Task<int> UpdateWatched(int senderId, int receiverId,bool flag);
-        Task UpdateAvartar(int userId, string img);
+        Task<int> UpdateAvartar(int userId, string img);
         Task<Message> FindMessageAsync(int id);
         Task<bool> CreateXMLMessage(Message request);
        Task<IEnumerable<XElement>> FindElementById(int id, XDocument doc);
         int CheckIdMessage(string pathXML);
-        Task UpdateNameChannel(int userId, string username);
+        Task<int> UpdateNameChannel(int userId, string username);
 
     }
 }

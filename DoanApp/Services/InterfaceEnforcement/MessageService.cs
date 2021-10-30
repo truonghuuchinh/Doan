@@ -531,7 +531,7 @@ namespace DoanApp.Services
             return -1;
         }
 
-        public async Task UpdateAvartar(int userId,string img)
+        public async Task<int> UpdateAvartar(int userId,string img)
         {
             try
             {
@@ -548,15 +548,17 @@ namespace DoanApp.Services
                         });
                         doc.Save(PathXML);
                     }
+                    return 1;
                 }
             }
             catch (Exception e)
             {
                 Console.WriteLine(e);
             }
+            return 0;
         }
 
-        public async Task UpdateNameChannel(int userId,string username)
+        public async Task<int> UpdateNameChannel(int userId,string username)
         {
             try
             {
@@ -568,16 +570,18 @@ namespace DoanApp.Services
                     {
                         FindElementById(item.Id, doc).Result.ToList().ForEach(x =>
                         {
-                            x.Element("UserName").Value = false.ToString();
+                            x.Element("UserName").Value = username;
                         });
                         doc.Save(PathXML);
                     }
+                    return 1;
                 }
             }
             catch (Exception e)
             {
                 Console.WriteLine(e);
             }
+            return 0;
         }
         public async Task<int> UpdateWatched(int senderId, int receiverId, bool flag)
         {

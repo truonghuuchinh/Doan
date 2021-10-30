@@ -45,7 +45,7 @@ namespace DoanApp.Services
             }
             return -1;
         }
-        public async Task UpdateAvartar(int userId, string img)
+        public async Task<int> UpdateAvartar(int userId, string img)
         {
             var finNotification = GetAll().Where(x => x.UserId == userId);
 
@@ -55,11 +55,11 @@ namespace DoanApp.Services
                 {
                     item.AvartarUser = img;
                     item.LoginExternal = false;
-                    _context.Notification.Update(item);
-                    _context.SaveChanges();
+                    _context.Update(item);
                 }
-                
+               return await _context.SaveChangesAsync();
             }
+            return 0;
         }
 
         public async Task<int> CreateNotifiComment(Comment_vm video_user, Comment comment_fromUser, Video video)
@@ -169,19 +169,28 @@ namespace DoanApp.Services
             return 1;
         }
 
-        public async Task UpdateNameChannel(int userId, string username)
+        public async Task<int> UpdateNameChannel(int userId, string username)
         {
-            var notifi = _context.Notification.Where(X => X.UserId == userId);
-            if (notifi.Count()>0)
+            try
             {
-                foreach (var item in notifi)
+                var notifi = _context.Notification.Where(X => X.UserId == userId);
+                if (notifi.Count() > 0)
                 {
-                    item.UserName = username;
-                    _context.Notification.Update(item);
-                  
+                    foreach (var item in notifi)
+                    {
+                        item.UserName = username;
+                        _context.Update(item);
+                       
+                    }
+                    return await _context.SaveChangesAsync(); 
                 }
-               await _context.SaveChangesAsync();
+                
             }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+            }
+            return 0;
         }
     }
 }

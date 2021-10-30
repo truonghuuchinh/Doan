@@ -64,11 +64,12 @@ li:hover {
 .logo {
     background-image: url(/Client/img/youtube.jpg);
     background-size: 100%;
-    margin-top: 3px;
-    width: 60px;
-    height: 60px;
+    margin-top: 12px;
+    width: 47px;
+    height: 48px;
     margin-left: 20px;
     float: left;
+    background-repeat: no-repeat
 }
 
 .search {
