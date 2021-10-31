@@ -2,7 +2,7 @@
 <Messages>
   <message id="5">
     <Id>5</Id>
-    <UserName>Công  nghệ TV</UserName>
+    <UserName>Công   nghệ 3</UserName>
     <Content>hello tuik có thể giúp gì cho bạn :v</Content>
     <CreateDate>10-28-2021 20:53:21</CreateDate>
     <Avartar>38.jpg</Avartar>
@@ -14,7 +14,7 @@
   </message>
   <message id="9">
     <Id>9</Id>
-    <UserName>Công  nghệ TV</UserName>
+    <UserName>Công   nghệ 3</UserName>
     <Content>bạn hỏi gì</Content>
     <CreateDate>10-28-2021 20:54:18</CreateDate>
     <Avartar>38.jpg</Avartar>
@@ -38,7 +38,7 @@
   </message>
   <message id="11">
     <Id>11</Id>
-    <UserName>Công  nghệ TV</UserName>
+    <UserName>Công   nghệ 3</UserName>
     <Content>à ok bạn </Content>
     <CreateDate>10-28-2021 21:02:43</CreateDate>
     <Avartar>38.jpg</Avartar>
@@ -50,7 +50,7 @@
   </message>
   <message id="12">
     <Id>12</Id>
-    <UserName>Công  nghệ TV</UserName>
+    <UserName>Công   nghệ 3</UserName>
     <Content>bạn khỏe không</Content>
     <CreateDate>10-29-2021 9:18:17</CreateDate>
     <Avartar>38.jpg</Avartar>
@@ -86,7 +86,7 @@
   </message>
   <message id="15">
     <Id>15</Id>
-    <UserName>Công  nghệ TV</UserName>
+    <UserName>Công   nghệ 3</UserName>
     <Content>Hello admin</Content>
     <CreateDate>10-29-2021 16:11:31</CreateDate>
     <Avartar>38.jpg</Avartar>
@@ -134,7 +134,7 @@
   </message>
   <message id="19">
     <Id>19</Id>
-    <UserName>Công  nghệ TV</UserName>
+    <UserName>Công   nghệ 3</UserName>
     <Content>Thanks,I'm fine.</Content>
     <CreateDate>10-29-2021 18:58:21</CreateDate>
     <Avartar>38.jpg</Avartar>
@@ -158,7 +158,7 @@
   </message>
   <message id="21">
     <Id>21</Id>
-    <UserName>Công   nghệ TV</UserName>
+    <UserName>Công   nghệ 3</UserName>
     <Content>What time it's?</Content>
     <CreateDate>10-30-2021 19:57:46</CreateDate>
     <Avartar>38.jpg</Avartar>
@@ -197,6 +197,66 @@
     <UserName>Admin</UserName>
     <Content>Bạn cần giúp gì</Content>
     <CreateDate>10-30-2021 19:59:41</CreateDate>
+    <Avartar>avartarDefault.jpg</Avartar>
+    <LoginExternal>False</LoginExternal>
+    <CheckWatched>False</CheckWatched>
+    <Watched>True</Watched>
+    <SenderId>36</SenderId>
+    <ReceiverId>39</ReceiverId>
+  </message>
+  <message id="25">
+    <Id>25</Id>
+    <UserName>Phạm Nhật</UserName>
+    <Content>ok bạn</Content>
+    <CreateDate>10-31-2021 7:55:00</CreateDate>
+    <Avartar>39.jpg</Avartar>
+    <LoginExternal>False</LoginExternal>
+    <CheckWatched>False</CheckWatched>
+    <Watched>True</Watched>
+    <SenderId>39</SenderId>
+    <ReceiverId>38</ReceiverId>
+  </message>
+  <message id="27">
+    <Id>27</Id>
+    <UserName>Công    nghệ 3</UserName>
+    <Content>ok bạn</Content>
+    <CreateDate>10-31-2021 7:55:34</CreateDate>
+    <Avartar>38.jpg</Avartar>
+    <LoginExternal>False</LoginExternal>
+    <CheckWatched>False</CheckWatched>
+    <Watched>True</Watched>
+    <SenderId>38</SenderId>
+    <ReceiverId>39</ReceiverId>
+  </message>
+  <message id="28">
+    <Id>28</Id>
+    <UserName>Phạm Nhật</UserName>
+    <Content>Tui cần giúp</Content>
+    <CreateDate>10-31-2021 7:56:13</CreateDate>
+    <Avartar>39.jpg</Avartar>
+    <LoginExternal>False</LoginExternal>
+    <CheckWatched>False</CheckWatched>
+    <Watched>True</Watched>
+    <SenderId>39</SenderId>
+    <ReceiverId>36</ReceiverId>
+  </message>
+  <message id="29">
+    <Id>29</Id>
+    <UserName>Phạm Nhật</UserName>
+    <Content>Ban hãy hỗ trợ</Content>
+    <CreateDate>10-31-2021 7:57:15</CreateDate>
+    <Avartar>39.jpg</Avartar>
+    <LoginExternal>False</LoginExternal>
+    <CheckWatched>False</CheckWatched>
+    <Watched>True</Watched>
+    <SenderId>39</SenderId>
+    <ReceiverId>36</ReceiverId>
+  </message>
+  <message id="30">
+    <Id>30</Id>
+    <UserName>Admin</UserName>
+    <Content>ok bạn</Content>
+    <CreateDate>10-31-2021 7:57:27</CreateDate>
     <Avartar>avartarDefault.jpg</Avartar>
     <LoginExternal>False</LoginExternal>
     <CheckWatched>False</CheckWatched>

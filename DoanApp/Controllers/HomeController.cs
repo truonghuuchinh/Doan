@@ -588,7 +588,7 @@ namespace DoanApp.Controllers
                 GenerationTokenEmail(user, ConfirmEmailAccount.ForgotPassword.ToString());
                 return Redirect("EmailVerification");
             }
-            return BadRequest();
+            return RedirectToAction("Login");
         }
         [HttpPost]
         public async Task<IActionResult> UpdatePassword(AppUser userRequest)

@@ -313,8 +313,8 @@ namespace DoanApp.Services
                 //Update user in list static of system
                 UserAuthenticated.UpdateNameChannel(user);
 
-                var ntService = _notificationService.UpdateNameChannel(user.Id, request.Name.Trim());
-                var msService = _messageService.UpdateNameChannel(user.Id, request.Name.Trim());
+                var ntService =await  _notificationService.UpdateNameChannel(user.Id, request.Name.Trim());
+                var msService =await  _messageService.UpdateNameChannel(user.Id, request.Name.Trim());
 
                 _context.Update(user);
                return  await _context.SaveChangesAsync();
