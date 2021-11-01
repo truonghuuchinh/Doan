@@ -1260,6 +1260,9 @@ a {
     float: left;
     margin-right: 10px;
 }
+.like_binh_luan i,.disklike_binh_luan i{
+    color:gray;
+}
 
 .khung_hang_3 {
     display: flex;

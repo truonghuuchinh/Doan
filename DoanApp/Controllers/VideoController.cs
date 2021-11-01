@@ -374,6 +374,20 @@ namespace DoanApp.Controllers
             var user = _userService.FindUser(User.Identity.Name).Result;
             var list = _videoService.GetAll().
                 Where(x => x.AppUserId == user.Id).OrderByDescending(x => x.Id).ToPagedList(pageNumber, pageSize);
+            var listCountComment = (from video in _videoService.GetAll().Where(x => x.AppUserId == user.Id)
+                                    join comment in _commentService.GetAll() on video.Id equals comment.VideoId
+                                    orderby video.Id, comment.Id descending
+                                    group comment by comment.VideoId into grp
+                                    select new { Key = grp.Key, Count = grp.Count() }).ToList();
+            var listCount = new List<CountComment>();
+            foreach (var item in listCountComment)
+            {
+                var count = new CountComment();
+                count.Id = item.Key;
+                count.Count = item.Count;
+                listCount.Add(count);
+            }
+            ViewBag.CountComment = listCount;
             return View(list);
         }
 
