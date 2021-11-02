@@ -28,16 +28,20 @@ namespace DoanApp.Services
         private readonly SignInManager<AppUser> _signInManager;
         private readonly RoleManager<AppRole> _roleManager;
         private readonly DpContext _context;
+        private readonly INotificationService _notificationService;
+        private readonly IMessageService _messageService;
         private readonly IConfiguration _config;
         public UserService(UserManager<AppUser> userManager,
             SignInManager<AppUser> signInManager, DpContext context,RoleManager<AppRole> role,
-            IConfiguration config)
+            IConfiguration config, IMessageService messageService, INotificationService notificationService)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _context = context;
             _roleManager = role;
             _config = config;
+            _messageService = messageService;
+            _notificationService = notificationService;
         }
 
         public async Task<string> AuthenticatedApi(AppUserRequest request)
@@ -57,7 +61,7 @@ namespace DoanApp.Services
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Tokens:Key"]));
             var credential = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
             var token = new JwtSecurityToken(_config["Tokens:Issuer"], _config["Tokens:Issuer"],
-                claims, expires: DateTime.Now.AddHours(1), signingCredentials: credential);
+                claims, expires: DateTime.Now.AddMinutes(30), signingCredentials: credential);
 
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
@@ -112,7 +116,7 @@ namespace DoanApp.Services
                 TotalView = y.Sum(x => x.ViewCount)
             });
             var userNovideo = GetAll().Where(x => !_context.Video.Any(y => y.AppUserId == x.Id)&&x.UserName!=name).ToList();
-            var userAdmin = (from user in GetAll().Where(x=>x.UserName!=name).ToList()
+            var userAdmin = (from user in GetAll().Where(x=>x.UserName!=name&& !_userManager.IsInRoleAsync(x, "Admin").Result).ToList()
                              join vd in video on user.Id equals vd.Key
                              select new
                              {
@@ -288,7 +292,35 @@ namespace DoanApp.Services
             }
             return false;
          }
+        public async Task<int> UpdateNameChannel(UpdateNameChannel request)
+        {
+            var user = await _userManager.FindByEmailAsync(request.Email);
+            if (user != null)
+            {
+                var names = request.Name.Split(' ');
+                user.FirtsName = names[0];
+                if (names.Length == 1)
+                    user.LastName = "";
+                else
+                {
+                    user.LastName = "";
+                    for (var i=1;i<names.Length; i++)
+                    {
+                        user.LastName +=names[i]+" ";
+                    }
+                }
 
+                //Update user in list static of system
+                UserAuthenticated.UpdateNameChannel(user);
+
+                var ntService =await  _notificationService.UpdateNameChannel(user.Id, request.Name.Trim());
+                var msService =await  _messageService.UpdateNameChannel(user.Id, request.Name.Trim());
+
+                _context.Update(user);
+               return  await _context.SaveChangesAsync();
+            }
+            return -1;
+        }
         public async Task<int> UpdateAvartar(int id,string avartar)
         {
             var user = await FindUserId(id);
@@ -297,7 +329,9 @@ namespace DoanApp.Services
                 user.Avartar = avartar;
                 user.LoginExternal = false;
                 _context.Update(user);
-                return await _context.SaveChangesAsync();
+                var item1=await _notificationService.UpdateAvartar(id, avartar);
+                var item2 =await _messageService.UpdateAvartar(id, avartar);
+              return await _context.SaveChangesAsync();
             }
             return -1;
         }

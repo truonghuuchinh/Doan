@@ -12,14 +12,11 @@
     .card-body{
         text-align:center;
     }
-    .login-card form {
-        max-width: 400px !important;
+    .sbFacebook{
+        margin-top:12px;
     }
-    form {
-        margin-left: 65px;
-    }
-    .form-group{
-        max-width:none !important;
+    .form-group {
+        max-width: none !important;
     }
     #ForgotPassword {
         color: #938b8c;
@@ -30,11 +27,10 @@
         cursor:pointer;
     }
     .provider{
-        width:136px !important;
+        width:520px !important;
+        margin-top:3%;
     }
-    p{
-        width:auto;
-    }
+
   
 </style>
 <div class="card-body">
@@ -65,7 +61,7 @@
                 {
                     if (dem == 0)
                     {
-                        <button onclick="imgLoading()" type="submit" class="btn btn-primary provider" name="provider" 
+                        <button onclick="imgLoading()" type="submit" class="btn btn-primary provider sbFacebook" name="provider" 
                                 value="@provider.Name" title="Log in using your @provider.DisplayName account"><i class="fab fa-facebook"></i> @provider.DisplayName</button>
                     }
                     else

@@ -2,26 +2,35 @@
 using DoanApp.Models;
 using DoanData.DoanContext;
 using DoanData.Models;
-using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Hosting;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
+using System.Xml;
+using System.Xml.Linq;
 
 namespace DoanApp.Services
 {
     public class MessageService : IMessageService
     {
         private readonly DpContext _context;
-        public MessageService(DpContext context)
+        private readonly IHostingEnvironment _enviroment;
+        private string PathXML = "";
+        public MessageService(DpContext context, IHostingEnvironment environment)
         {
             _context = context;
+            _enviroment = environment;
+            PathXML = _enviroment.WebRootPath + "\\Client\\fileXMLMessage\\xmlMessage.xml";
+
         }
-        public async Task<int> Create(MessageRequest request,bool admin)
+        public async Task<int> Create(MessageRequest request, bool admin)
         {
             if (request != null)
             {
-                
+
                 var message = new Message();
                 message.ReceiverId = request.ReceiverId;
                 message.SenderId = request.SenderId;
@@ -40,37 +49,209 @@ namespace DoanApp.Services
                     message.Avartar = request.Avartar;
                     message.UserName = request.UserName;
                 }
-
-                _context.Message.Add(message);
-                return await _context.SaveChangesAsync();
+                if (await CreateXMLMessage(message))
+                {
+                    return 1;
+                }
+                /* GetAll().Add(message);
+                  return await _context.SaveChangesAsync();*/
             }
             return -1;
+        }
+        public int CheckIdMessage(string pathXML)
+        {
+            XmlDocument xd = new XmlDocument();
+            xd.Load(pathXML);
+            XmlNodeList nl = xd.GetElementsByTagName("Id");
+            if (nl.Count > 0)
+            {
+                foreach (XmlNode node in nl.Item(nl.Count - 1))
+                {
+                    return int.Parse(node.InnerText);
+                }
+            }
+
+            return 0;
+        }
+
+        public async Task<bool> CreateXMLMessage(Message message)
+        {
+            try
+            {
+                //set id initial if file nos exit in system
+                message.Id = 1;
+
+                //Check if not exit to create file xmlMessage.xml
+                if (!File.Exists(PathXML))
+                {
+                    var doc = new XmlDocument();
+                    //xml declaration is recommended, but not mandatory
+                    var xmlDeclaration = doc.CreateXmlDeclaration("1.0", "UTF-8", null);
+
+                    //create the root element
+                    var root = doc.DocumentElement;
+                    doc.InsertBefore(xmlDeclaration, root);
+                    //string.Empty makes cleaner code
+                    XmlElement mainBody = doc.CreateElement("Messages");
+                    doc.AppendChild(mainBody);
+                    XmlElement body = doc.CreateElement("message");
+                    body.SetAttribute("id", message.Id.ToString());
+                    mainBody.AppendChild(body);
+
+                    //Element item
+                    XmlElement id = doc.CreateElement("Id");
+
+                    //XmlText text1 = doc.CreateTextNode(message.Id.ToString());
+                    id.InnerText = message.Id.ToString();
+
+                    XmlElement username = doc.CreateElement("UserName");
+                    //XmlText text2 = doc.CreateTextNode(message.UserName);
+                    username.InnerText = message.UserName;
+
+                    XmlElement content = doc.CreateElement("Content");
+                    content.InnerText = message.Content;
+                    //XmlText text3 = doc.CreateTextNode(message.UserName);
+
+                    XmlElement createDate = doc.CreateElement("CreateDate");
+                    createDate.InnerText = message.CreateDate;
+
+                    XmlElement avartar = doc.CreateElement("Avartar");
+                    avartar.InnerText = message.Avartar;
+
+
+                    XmlElement loginExternal = doc.CreateElement("LoginExternal");
+                    loginExternal.InnerText = message.LoginExternal.ToString();
+
+                    XmlElement checkWatched = doc.CreateElement("CheckWatched");
+                    checkWatched.InnerText = message.CheckWatched.ToString();
+
+                    XmlElement watched = doc.CreateElement("Watched");
+                    watched.InnerText = message.Watched.ToString();
+
+                    XmlElement senderId = doc.CreateElement("SenderId");
+                    senderId.InnerText = message.SenderId.ToString();
+
+                    XmlElement receiverId = doc.CreateElement("ReceiverId");
+                    receiverId.InnerText = message.ReceiverId.ToString();
+                    //End
+
+                    body.AppendChild(id);
+                    body.AppendChild(username);
+                    body.AppendChild(content);
+                    body.AppendChild(createDate);
+                    body.AppendChild(avartar);
+                    body.AppendChild(loginExternal);
+                    body.AppendChild(checkWatched);
+                    body.AppendChild(watched);
+                    body.AppendChild(senderId);
+                    body.AppendChild(receiverId);
+                    doc.Save(PathXML);
+                }
+                else
+                {
+                    //Get id last xml in message
+                    var id = CheckIdMessage(PathXML) + 1; ;
+                    //end
+                    var main = XElement.Load(PathXML);
+
+
+                    var nodeMessage = new XElement("message");
+                    nodeMessage.SetAttributeValue("id", id.ToString());
+
+                    nodeMessage.Add(new XElement("Id", id.ToString()));
+                    nodeMessage.Add(new XElement("UserName", message.UserName));
+                    nodeMessage.Add(new XElement("Content", message.Content));
+                    nodeMessage.Add(new XElement("CreateDate", message.CreateDate));
+                    nodeMessage.Add(new XElement("Avartar", message.Avartar));
+                    nodeMessage.Add(new XElement("LoginExternal", message.LoginExternal.ToString()));
+                    nodeMessage.Add(new XElement("CheckWatched", message.CheckWatched.ToString()));
+                    nodeMessage.Add(new XElement("Watched", message.Watched.ToString()));
+                    nodeMessage.Add(new XElement("SenderId", message.SenderId.ToString()));
+                    nodeMessage.Add(new XElement("ReceiverId", message.ReceiverId.ToString()));
+
+                    //Save element 
+                    main.Add(nodeMessage);
+                    main.Save(PathXML);
+                }
+                return true;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                return false;
+            }
         }
 
         public async Task<int> Delete(int id)
         {
             if (id != 0)
             {
-                var message = _context.Message.FirstOrDefault(x => x.Id == id);
-                if(message!=null)
-                {
-                    _context.Remove(message);
-                    return await _context.SaveChangesAsync();
-                }
+                var doc = XDocument.Load(PathXML);
+                var listFind = FindElementById(id, doc);
+                listFind.Result.ToList().ForEach(x => x.Remove());
+                doc.Save(PathXML);
+                return 1;
             }
             return -1;
+        }
+        public async Task<IEnumerable<XElement>> FindElementById(int id, XDocument doc)
+        {
+            var listFind = from node in doc.Descendants("Messages").Descendants("message")
+                           let attr = node.Attribute("id")
+                           where attr != null && attr.Value == id.ToString()
+                           select node;
+            return listFind;
         }
 
         public async Task<Message> FindMessageAsync(int id)
         {
-            var mesage = await _context.Message.FirstOrDefaultAsync(X => X.Id == id);
+            var mesage = GetAll().FirstOrDefault(x => x.Id == id);
             if (mesage != null) return mesage;
             return null;
         }
 
         public List<Message> GetAll()
         {
-            return _context.Message.ToList();
+            var listMessage = new List<Message>();
+            XmlDocument xd = new XmlDocument();
+
+            if (File.Exists(PathXML))
+            {
+                xd.Load(PathXML);
+                XmlNodeList nl = xd.GetElementsByTagName("message");
+
+                //loop to delete messages longer than two weeks
+                
+                foreach (XmlNode item in nl)
+                {
+                    var timeMessage = DateTime.Parse(item.ChildNodes.Item(3).InnerText);
+                    var caculator = DateTime.Now - timeMessage;
+                    if (caculator.Days > 7)
+                    {
+                        var result = Delete(int.Parse(item.ChildNodes.Item(0).InnerText)).Result;
+                        if (result > 0) continue;
+                    }
+                }
+                //get node element into message
+                foreach (XmlNode node in nl)
+                {
+                    var message = new Message();
+                    message.Id = int.Parse(node.ChildNodes.Item(0).InnerText);
+                    message.UserName = node.ChildNodes.Item(1).InnerText;
+                    message.Content = node.ChildNodes.Item(2).InnerText;
+                    message.CreateDate = node.ChildNodes.Item(3).InnerText;
+                    message.Avartar = node.ChildNodes.Item(4).InnerText;
+                    message.LoginExternal = bool.Parse(node.ChildNodes.Item(5).InnerText);
+                    message.CheckWatched = bool.Parse(node.ChildNodes.Item(6).InnerText);
+                    message.Watched = bool.Parse(node.ChildNodes.Item(7).InnerText);
+                    message.SenderId = int.Parse(node.ChildNodes.Item(8).InnerText);
+                    message.ReceiverId = int.Parse(node.ChildNodes.Item(9).InnerText);
+
+                    listMessage.Add(message);
+                }
+            }
+
+            return listMessage;
         }
 
         public List<Message> GetMessage_Partial(int senderId, int receiverId, bool flag = false)
@@ -84,17 +265,17 @@ namespace DoanApp.Services
             return listMessage;
         }
 
-        public List<Message_Vm> GetUserChat(int userId,List<AppUser> users)
+        public List<Message_Vm> GetUserChat(int userId, List<AppUser> users)
         {
-            var listGetUserChat = _context.Message.Where(x => x.SenderId == userId).GroupBy(x => x.ReceiverId).
-                Select(x=>new { x.Key});
-            var listUserChatRecei = _context.Message.Where(x => x.ReceiverId == userId).GroupBy(x => x.SenderId).
+            var listGetUserChat = GetAll().Where(x => x.SenderId == userId).GroupBy(x => x.ReceiverId).
                 Select(x => new { x.Key });
-             var listOverView=listGetUserChat.Union(listUserChatRecei).ToList();
+            var listUserChatRecei = GetAll().Where(x => x.ReceiverId == userId).GroupBy(x => x.SenderId).
+                Select(x => new { x.Key });
+            var listOverView = listGetUserChat.Union(listUserChatRecei).ToList();
             var listMessage = new List<Message>();
             var listNoneMessage = new List<Message>();
             var listMessage_Vm = new List<Message_Vm>();
-            var listAll = _context.Message.OrderByDescending(x => x.Id).ToList();
+            var listAll = GetAll().OrderByDescending(x => x.Id).ToList();
             var checkUserIntoSender = listAll.Any(X => X.SenderId == userId);
             if (checkUserIntoSender)
             {
@@ -106,17 +287,17 @@ namespace DoanApp.Services
                     {
                         var sender = item.ReceiverId;
                         var receiver = item.SenderId;
-                        
-                        if (j.Key == item.SenderId&&item.ReceiverId==userId||j.Key==item.ReceiverId&&item.SenderId==userId)
+
+                        if (j.Key == item.SenderId && item.ReceiverId == userId || j.Key == item.ReceiverId && item.SenderId == userId)
                         {
                             var ms = new Message();
                             if (item.SenderId != userId)
                             {
                                 item.SenderId = sender;
                                 item.ReceiverId = receiver;
-                                
+
                                 ms = item;
-                               if(!item.Watched)
+                                if (!item.Watched)
                                     ms.CheckWatched = true;
                             }
                             else
@@ -132,15 +313,16 @@ namespace DoanApp.Services
 
                                 var checkItem = false;
                                 if (item.SenderId != userId)
-                                { 
-                                    checkItem= listMessage.Any(x => x.ReceiverId == item.ReceiverId);
-                                }else checkItem= listMessage.Any(x => x.SenderId == item.SenderId&&x.ReceiverId==item.ReceiverId);
+                                {
+                                    checkItem = listMessage.Any(x => x.ReceiverId == item.ReceiverId);
+                                }
+                                else checkItem = listMessage.Any(x => x.SenderId == item.SenderId && x.ReceiverId == item.ReceiverId);
                                 if (!checkItem)
                                 {
                                     listMessage.Add(ms);
                                     break;
                                 }
-                               
+
                             }
                         }
 
@@ -158,7 +340,7 @@ namespace DoanApp.Services
                                 if (!checkUserAdmin)
                                 {
                                     message.LoginExternal = false;
-                                    message.Avartar ="avartarDefault.jpg";
+                                    message.Avartar = "avartarDefault.jpg";
                                     message.UserName = "Admin";
                                 }
                                 else
@@ -190,7 +372,7 @@ namespace DoanApp.Services
                                 }
                                 break;
                             }
-                           
+
                         }
                     }
 
@@ -204,10 +386,10 @@ namespace DoanApp.Services
                     {
                         foreach (var us2 in _context.AppUser.Where(x => x.Status))
                         {
-                                var message = new Message();
+                            var message = new Message();
                             if (ms.SenderId == us2.Id)
                             {
-                               
+
                                 message.SenderId = userId;
                                 message.ReceiverId = ms.SenderId;
                                 message.Content = ms.Content;
@@ -224,24 +406,24 @@ namespace DoanApp.Services
                                     message.Avartar = us2.Avartar;
                                     message.UserName = us2.FirtsName + " " + us2.LastName;
                                 }
-                                if(!ms.Watched) message.CheckWatched = true;
+                                if (!ms.Watched) message.CheckWatched = true;
                                 if (listNoneMessage.Count == 0)
                                     listNoneMessage.Add(message);
                                 else
                                 {
                                     var checknone = listNoneMessage.Any(X => X.ReceiverId == ms.SenderId);
-                                    if(!checknone) listNoneMessage.Add(message);
+                                    if (!checknone) listNoneMessage.Add(message);
                                 }
                                 break;
                             }
-                            
+
 
                         }
-                        
+
                     }
 
                 }
-                   
+
             }
             listMessage.AddRange(listNoneMessage);
             foreach (var item in listMessage)
@@ -273,16 +455,16 @@ namespace DoanApp.Services
                         ms_vm.Online = true;
                         break;
                     }
-                       
+
                 }
                 listMessage_Vm.Add(ms_vm);
             }
-           
-            return listMessage_Vm.OrderByDescending(x=>x.Id).ToList();
+
+            return listMessage_Vm.OrderByDescending(x => x.Id).ToList();
         }
         public Message GetUserInList(Message message)
         {
-            foreach (var us2 in _context.AppUser.Where(x=>x.Status))
+            foreach (var us2 in _context.AppUser.Where(x => x.Status))
             {
                 if (us2.Id == message.ReceiverId)
                 {
@@ -295,10 +477,11 @@ namespace DoanApp.Services
             return null;
         }
 
-        public List<Message_Vm> GetUserNoneChat(List<Message_Vm> message_Vms,int userId,List<AppUser> users)
+        public List<Message_Vm> GetUserNoneChat(List<Message_Vm> message_Vms, int userId, List<AppUser> users)
         {
             var listMessage_Vm = new List<Message_Vm>();
-            var listUser = _context.AppUser.Where(x => x.Status && x.Id != userId).ToList();
+            var listUserFollow = _context.FollowChannel.Where(X => X.FromUserId == userId);
+            var listUser = _context.AppUser.Where(x => x.Status && x.Id != userId && listUserFollow.Any(y => y.ToUserId == x.Id)).ToList();
             foreach (var item in users)
             {
                 foreach (var item1 in listUser)
@@ -338,7 +521,7 @@ namespace DoanApp.Services
 
         public async Task<int> Update(MessageRequest request)
         {
-            var message = await _context.Message.FirstOrDefaultAsync(X => X.Id == request.Id);
+            var message = GetAll().FirstOrDefault(X => X.Id == request.Id);
             if (message != null)
             {
                 message.Content = request.Content;
@@ -348,11 +531,65 @@ namespace DoanApp.Services
             return -1;
         }
 
-        public async Task<int> UpdateWatched(int senderId, int receiverId,bool flag)
+        public async Task<int> UpdateAvartar(int userId,string img)
+        {
+            try
+            {
+                var doc = XDocument.Load(PathXML);
+                var findListMessage = GetAll().Where(x => x.SenderId == userId);
+                if (findListMessage.Count() > 0)
+                {
+                    foreach (var item in findListMessage)
+                    {
+                        FindElementById(item.Id, doc).Result.ToList().ForEach(x =>
+                        {
+                            x.Element("LoginExternal").Value = false.ToString();
+                            x.Element("Avartar").Value = img;
+                            doc.Save(PathXML);
+                        });
+                    }
+                    return 1;
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
+            return 0;
+        }
+
+        public async Task<int> UpdateNameChannel(int userId,string username)
+        {
+            try
+            {
+                var doc = XDocument.Load(PathXML);
+                var findListMessage = GetAll().Where(x => x.SenderId == userId);
+                if (findListMessage.Count() > 0)
+                {
+                    foreach (var item in findListMessage)
+                    {
+                        FindElementById(item.Id, doc).Result.ToList().ForEach(x =>
+                        {
+                            x.Element("UserName").Value = username;
+                            doc.Save(PathXML);
+                        });
+                    }
+                    return 1;
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
+            return 0;
+        }
+        public async Task<int> UpdateWatched(int senderId, int receiverId, bool flag)
         {
             var countChange = 0;
+            //Load file xml 
+            var doc = XDocument.Load(PathXML);
 
-            var listMessage = _context.Message.ToList();
+            var listMessage = GetAll().ToList();
             if (receiverId == 0)
             {
                 listMessage = listMessage.Where(x => x.ReceiverId == senderId && !x.Watched).ToList();
@@ -361,9 +598,9 @@ namespace DoanApp.Services
             {
                 if (!flag)
                     listMessage = listMessage.Where(x => x.ReceiverId == senderId && !x.Watched).ToList();
-                else 
-                   listMessage =listMessage.Where(x => x.SenderId == senderId && x.ReceiverId == receiverId&&!x.Watched||
-                     x.SenderId == receiverId && x.ReceiverId == senderId&&!x.Watched).ToList();
+                else
+                    listMessage = listMessage.Where(x => x.SenderId == senderId && x.ReceiverId == receiverId && !x.Watched ||
+                       x.SenderId == receiverId && x.ReceiverId == senderId && !x.Watched).ToList();
             }
             receiverId = receiverId == 0 ? senderId : receiverId;
 
@@ -373,17 +610,17 @@ namespace DoanApp.Services
                 {
                     if (flag)
                     {
-                        var message = _context.Message.FirstOrDefault(X => X.Id == item.Id);
-                        message.Watched = true;
-                        _context.Update(message);
-                        await _context.SaveChangesAsync();
+                        FindElementById(item.Id, doc).Result.ToList().ForEach(x =>
+                        {
+                            x.Element("Watched").Value = true.ToString();
+                        });
+                        doc.Save(PathXML);
                     }
                     countChange++;
                 }
 
             }
             return countChange;
-  
         }
     }
 }

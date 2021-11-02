@@ -19,7 +19,6 @@ connection.onclose(function (e) {
 });
 
 function sendMessageToHub(messages) {
-    console.log(messages)
     connection.invoke("SendMessage",messages).catch(function (err) {
         
     });;

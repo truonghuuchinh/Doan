@@ -12,6 +12,6 @@ namespace DoanApp.Services
         List<LikeCommentDetail> GetAll();
         Task<int> Create(LikeCommentRequest likeRequest);
         Task<int> Delete(int id);
-        Task<LikeCommentDetail> FindLikeAsync(int userId,int videoId);
+        Task<LikeCommentDetail> FindLikeAsync(int idComment,string reaction);
     }
 }

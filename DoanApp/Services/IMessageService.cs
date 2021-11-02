@@ -1,9 +1,8 @@
 ﻿using DoanApp.Models;
 using DoanData.Models;
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 
 namespace DoanApp.Services
 {
@@ -18,6 +17,12 @@ namespace DoanApp.Services
         Task<int> Delete(int id);
         Task<int> Update(MessageRequest request);
         Task<int> UpdateWatched(int senderId, int receiverId,bool flag);
+        Task<int> UpdateAvartar(int userId, string img);
         Task<Message> FindMessageAsync(int id);
+        Task<bool> CreateXMLMessage(Message request);
+       Task<IEnumerable<XElement>> FindElementById(int id, XDocument doc);
+        int CheckIdMessage(string pathXML);
+        Task<int> UpdateNameChannel(int userId, string username);
+
     }
 }

@@ -15,8 +15,6 @@ namespace DoanData.Models
         public bool CheckWatched { get; set; } = false;
         public bool Watched { get; set; }
         public int SenderId { get; set; }
-        public virtual AppUser AppusersSender { get; set; }
         public int ReceiverId { get; set; }
-        public virtual AppUser AppusersReceiver { get; set; }
     }
 }

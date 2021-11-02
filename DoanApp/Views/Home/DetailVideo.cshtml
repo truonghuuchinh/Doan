@@ -224,7 +224,9 @@
                                         <div class="kekhungheader"></div>
                                         <div class=" hover class_nameimg_anthongbao">
                                             <div class="khung_img_class_nameimg_anthongbo">
-                                                <div class="img_class_nameimg_anthongbo"></div>
+                                                <div class="img_class_nameimg_anthongbo">
+                                                    <i class="fa fa-eye-slash" aria-hidden="true"></i>
+                                                </div>
                                             </div>
                                             <div onclick="revertStatus(event,@item.Id)" class="noidung_class_nameimg_anthongbao">Ẩn thông báo này</div>
                                         </div>
@@ -233,7 +235,7 @@
                                             <div class=" hover class_nameimg_anthongbao">
                                                 <div class="khung_img_class_nameimg_anthongbo">
                                                     <div class="img_offthongbao">
-                                                        <i class="material-icons">&#xe7f6;</i>
+                                                        <i class="fa fa-bell-slash" aria-hidden="true"></i>
                                                     </div>
                                                 </div>
                                                 <div onclick="revertFollow(event,@item.Id)" class="noidung_class_nameimg_anthongbao">Tắt thông báo từ kênh </div>
@@ -278,21 +280,25 @@
                                     <div class="like_shares">
                                         <input type="hidden" id="Reaction" value="@Model.Reaction" />
                                         <div id="Like" class="unlike hover">
-                                            <i title=" Tôi Thích video này" class="zmdi zmdi-thumb-up likeVideo"></i>
+                                            <i title=" Tôi Thích video này" class="zmdi zmdi-thumb-up likeVideo icon-sidebar-item_content"></i>
                                             <span id="countLike" class="text-sidebar-item_content">@Model.Like</span>
                                         </div>
                                         <div id="DisLike" class="unlike hover">
-                                            <i title=" Tôi không Thích video này" class="zmdi zmdi-thumb-down dislikeVideo" style=""></i>
+                                            <i title=" Tôi không Thích video này" class="zmdi zmdi-thumb-down dislikeVideo icon-sidebar-item_content" style=""></i>
                                             <span id="countDisLike" class="text-sidebar-item_content">@Model.DisLike</span>
                                         </div>
-
-                                        <div id="Share" class="unlike acount_share hover">
-                                            <a class="dowload" download href="/Client/video/@Model.LinkVideo">
+                                         <a class="dowload" download href="/Client/video/@Model.LinkVideo">
+                                            <div  class="unlike acount_share hover">
+                                           
                                                 <i style="margin-top:1px;" title="Chia sẻ video này" class="icon-sidebar-item_content zmdi zmdi-download"></i>
-                                                <span class="text-sidebar-item_content">Tải xuống</span>
-                                            </a>
+                                                <span class="text-sidebar-item_content">TẢI</span>
+                                            
+                                            </div>
+                                         </a>
+                                        <div class="unlike hover acount_share" onclick="showPlayListInDetail(@Model.Id)">
+                                            <i class="zmdi zmdi-view-headline icon-sidebar-item_content" title="Lưu vào danh sách phát"></i>
+                                            <span class="text-sidebar-item_content">LƯU</span>
                                         </div>
-
                                     </div>
                                 </div>
                                 <div class="cut"></div>
@@ -500,7 +506,7 @@
                                                                         <div class="khung_hang_2">
                                                                             <div class="noi_dung_binh_luan">
                                                                                 <div class="content__Comment">
-                                                                                    <label style="background:#cac9c9;">@(child.ReplyFor!="childOne"?child.ReplyFor:"")</label>
+                                                                                    <label style="background:#cac9c9;   margin-right:2% ">@(child.ReplyFor!="childOne"?child.ReplyFor:"")</label>
                                                                                     <div class="content__Comment-@child.Id">
                                                                                         @child.Content
                                                                                     </div>
@@ -649,35 +655,38 @@
                             </div>
                         </li>
                     </a>
-                    <a class="move_page" asp-action="SubscriptionChannel" asp-controller="Video">
-                        <li class="text-white sidebar-item sidebar-menu @(ViewBag.ForCus ==2?"forcus__item":"")">
-                            <div class="row">
-                                <i class="icon-sidebar-item zmdi zmdi-youtube-play"></i>
-                                <span class="text-sidebar-item">Kênh đăng ký</span>
-                            </div>
-                        </li>
-                    </a>
-                    <li class="text-white sidebar-item sidebar-menu sider_colors " style="height: 0px;">
+                    <li class="text-white sidebar-item sidebar-menu sider_colors" style="height: 0px;">
                         <div style="background-color: #0C386A; height:1px"></div>
                     </li>
-                    <a class="move_page" asp-action="LibaryVideo" asp-controller="Video">
-                        <li class="text-white sidebar-item sidebar-menu @(ViewBag.ForCus ==3?"forcus__item":"")">
-                            <div class="row">
-                                <i class="icon-sidebar-item zmdi zmdi-collection-video"></i>
-                                <span class="text-sidebar-item">Thư viện</span>
-                            </div>
-                        </li>
-                    </a>
-                    <a class="move_page" asp-action="@(user!=null?"Index":"Login")" asp-controller="@(user!=null?"VideoWatched":"Home")">
-                        <li class="text-white sidebar-item sidebar-menu @(ViewBag.ForCus ==4?"forcus__item":"")">
-                            <div class="row">
-                                <i class="icon-sidebar-item zmdi zmdi-time-restore-setting"></i>
-                                <span class="text-sidebar-item">Video đã xem</span>
-                            </div>
-                        </li>
-                    </a>
                     @if (User.Identity.IsAuthenticated)
                     {
+                        <a class="move_page" asp-action="SubscriptionChannel" asp-controller="Video">
+                            <li class="text-white sidebar-item sidebar-menu @(ViewBag.ForCus ==2?"forcus__item":"")">
+                                <div class="row">
+                                    <i class="icon-sidebar-item zmdi zmdi-youtube-play"></i>
+                                    <span class="text-sidebar-item">Kênh đăng ký</span>
+                                </div>
+                            </li>
+                        </a>
+                        <li class="text-white sidebar-item sidebar-menu sider_colors " style="height: 0px;">
+                            <div style="background-color: #0C386A; height:1px"></div>
+                        </li>
+                        <a class="move_page" asp-action="LibaryVideo" asp-controller="Video">
+                            <li class="text-white sidebar-item sidebar-menu @(ViewBag.ForCus ==3?"forcus__item":"")">
+                                <div class="row">
+                                    <i class="icon-sidebar-item zmdi zmdi-collection-video"></i>
+                                    <span class="text-sidebar-item">Thư viện</span>
+                                </div>
+                            </li>
+                        </a>
+                        <a class="move_page" asp-action="@(user!=null?"Index":"Login")" asp-controller="@(user!=null?"VideoWatched":"Home")">
+                            <li class="text-white sidebar-item sidebar-menu @(ViewBag.ForCus ==4?"forcus__item":"")">
+                                <div class="row">
+                                    <i class="icon-sidebar-item zmdi zmdi-time-restore-setting"></i>
+                                    <span class="text-sidebar-item">Video đã xem</span>
+                                </div>
+                            </li>
+                        </a>
                         <a class="move_page" asp-action="MyChannel" asp-controller="Video">
                             <li class="text-white sidebar-item sidebar-menu @(ViewBag.ForCus ==5?"forcus__item":"")">
                                 <div class="row">
@@ -696,6 +705,30 @@
                             </li>
                         </a>
 
+                    }
+                    else
+                    {
+                        <div class="hearer_container_text">Kênh đề xuất</div>
+                        <div class="xohangall">
+                            @if (ViewBag.UserFollow != null)
+                            {
+                                @foreach (var item in ViewBag.UserFollow)
+                                {
+                                    <a class="move_page" asp-action="MyPage" asp-controller="Video" asp-route-idUser="@item.Id">
+                                        <li class="text-white sidebar-item sidebar-menu fix_texts_count">
+                                            <div class="row">
+                                                <img class="icon-sidebar-item img_follow" alt="" src="@(item.LoginExternal ? item.Avartar : "/Client/avartar/" + item.Avartar)">
+                                                <span class="text-sidebar-item fix_texts">@item.FirtsName @item.LastName</span>
+                                            </div>
+                                        </li>
+                                    </a>
+                                }
+                            }
+
+                        </div>
+                        <div class="collapses hover">
+                            Xem thêm
+                        </div>
                     }
                     <li class="text-white sidebar-item sidebar-menu sider_colors" style="height: 0px;">
                         <div style="background-color: #0C386A; height:1px"></div>
@@ -727,6 +760,7 @@
                     }
                     else
                     {
+
                         <div class="title_NoSignin">Đăng nhập để like, comment và subscribe</div>
                         <div id="no_Login_Register">
                             <a class="move_page" asp-action="Login" asp-controller="Home">
@@ -750,7 +784,7 @@
                 <div class="au-card-title chatApplication__title" style="padding-bottom: 0; height: 50px;">
                     <div class="bg-overlay bg-overlay--blue chatApplication__title1"></div>
                     <h3 class="chatApplication__title2">
-                        <i class="zmdi zmdi-comment-text"></i> Chat
+                        <i class="zmdi zmdi-comment-text"></i> Trò chuyện
                     </h3>
                     <button class="au-btn-plus chatApplication__title">
                         <i class="zmdi zmdi-plus"></i>
@@ -814,14 +848,14 @@
     <div class="modal" tabindex="-1" id="modalPlayList" data-backdrop="static">
         <div class="modal-dialog">
             <div class="modal-content modalPlayList">
-                <div class="modal-header">
-                    <h5 class="modal-title">Lưu vào danh sách</h5>
+                <div class="modal-header" style=" background: #00b3ff;">
+                    <div class="modal-title" style="font-weight:400; ">Lưu vào danh sách</div>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true"><i class="fa fa-times"></i></span>
                     </button>
                 </div>
 
-                <div class="modal-body">
+                <div class="modal-body" style="background: linear-gradient(white,#c5c5c5);">
                     <div class="list__playlist">
                         @if (ViewBag.PlayList != null)
                         {
@@ -886,6 +920,7 @@
     <script src="https://cdn.plyr.io/3.6.2/demo.js" crossorigin="anonymous"></script>
     <script src="~/Client/js/site.js"></script>
     <script>
+        
         //--------------------Xử lý số bình luận-------------
         $(document).ready(function () {
             var countComment = 0;
@@ -905,23 +940,26 @@
             $("#Content").val('');
         });
         $(document).ready(function () {
-
-            setTimeout(function () {
-                loadDurationTime();
-            }, 2000);
+            //-------------------- Variable loccal-----------
             var userIds = $("#UserId").val();
             var videoIds = $("#VideoId").val();
             var toUserId = $("#userChannel").val();
+            setTimeout(function () {
+                loadDurationTime();
+            }, 2000);
+           
             //-------Gọi hàm thêm vào danh sách video đã xem
             addWatched(videoIds);
             //---------------Xử lý like comment----------------------
 
             if (userIds != undefined) {
-                $.get("/LikeComment/ListJsonLikeComment", function (respone) {
+                console.log("Id Video: "+videoIds);
+                $.get("/LikeComment/ListJsonLikeComment/?idVideo=" + videoIds, function (respone) {
 
                     respone = JSON.parse(respone);
-
+                    console.log(respone);
                     for (var i of respone) {
+                        console.log(i);
                         if (i.UserId == userIds && i.VideoId == videoIds) {
                             if (i.Reaction == "Like") {
                                 $(".like-" + i.Comment).attr("style", "color:blue;");

@@ -1050,7 +1050,6 @@ button{
     display: flex;
     width: 280px;
     height: 80px;
-    padding-left:12%;
 }
 .account-wrap {
     width: 70%;
@@ -1321,9 +1320,9 @@ button{
     margin-top:-18px;
 }
 .secondVideo {
-    width: 180px;
-    height: 120px;
-    border-radius: 14px 14px 5px 5px;
+    width: 190px;
+    height: 106px;
+    border-radius: 15px;
 }
 .img-loading {
     position: absolute;
@@ -2200,7 +2199,7 @@ button{
 
 .chatApplication__title1 {
     height: 51px;
-    background: rgba(49, 89, 253, 0.9);
+    background: #1f2833;
     margin-left: -40px;
     width: 400px;
 }
@@ -2456,5 +2455,16 @@ a:hover, a:focus, a:active {
 }
 .send-mess-wrap:hover .optionMessage{
     display:inline-flex;
+}
+.send-mess-list {
+    display: flex;
+}
+.optionMessage__delete {
+    display: none;
+    margin-right: 10px;
+    margin-top: 8px;
+}
+.send-mess-list:hover .optionMessage__delete {
+    display:block;
 }
 /*Kết thúc message*/

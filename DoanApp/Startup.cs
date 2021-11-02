@@ -21,6 +21,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Identity;
 
 namespace DoanApp
 {
@@ -38,35 +39,55 @@ namespace DoanApp
         {
             //Add service call api
             services.AddHttpClient();
-            /*services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
-                .AddCookie(options =>
-                {
-                    options.LoginPath = "/Administration/Home/Login";
-                    options.AccessDeniedPath = "/Administration/Home/Login";
-                    options.ExpireTimeSpan = TimeSpan.FromMinutes(1);
-                });*/
+
+
 #if DEBUG
+            //Config async view when edit 
             IMvcBuilder builder = services.AddRazorPages();
             var environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
             if(environment==Environments.Development)
                 builder.AddRazorRuntimeCompilation();
 #endif
-
             //Register Fluent for all validator
             services.AddControllersWithViews()  
             .AddFluentValidation(x => x.RegisterValidatorsFromAssemblyContaining<LoginValidator>()); 
             services.AddDistributedMemoryCache();
 
+            //Config Sesssion
             services.AddSession(options =>
-            {
+            { 
                 options.IdleTimeout = TimeSpan.FromMinutes(30);
                 options.Cookie.HttpOnly = true;
                 options.Cookie.IsEssential = true;
             });
+
             services.AddRazorPages();
-            services.AddDbContext<DpContext>(options=>options.UseSqlServer(Configuration.GetConnectionString("DpContext")), ServiceLifetime.Transient);
-            services.AddTransient<ICategoryService, CategoryService>();
+            //Add connection String
+            services.AddDbContext<DpContext>(options=>options.
+            UseSqlServer(Configuration.GetConnectionString("DpContext")), ServiceLifetime.Transient);
+
+            //Add Service Idetity 
+            services.AddIdentity<AppUser, AppRole>()
+             .AddEntityFrameworkStores<DpContext>().AddDefaultTokenProviders();
+
+            services.Configure<IdentityOptions>(options =>
+            {
+                options.SignIn.RequireConfirmedEmail = true;
+                options.Password.RequireUppercase = false;
+                options.User.RequireUniqueEmail = true;
+            });
+            services.ConfigureApplicationCookie(options =>
+            {
+                options.LoginPath = "/Administration/Home/Login";
+                options.AccessDeniedPath = "/Administration/Home/Login";
+
+            });
+
+            //Add service Controller
+            services.AddTransient<IMessageService, MessageService>();
+            services.AddTransient<INotificationService, NotificationService>();
             services.AddTransient<IUserService, UserService>();
+            services.AddTransient<ICategoryService, CategoryService>();
             services.AddTransient<IVideoService, VideoService>();
             services.AddTransient<ICommentService, CommentService>();
             services.AddTransient<ILikeVideoService, LikeVideoService>();
@@ -75,12 +96,11 @@ namespace DoanApp
             services.AddTransient<IPlayListService, PlayListService>();
             services.AddTransient<IDetailVideoService, DetailVideoService>();
             services.AddTransient<IReportVideoService, ReportVideoService>();
-            services.AddTransient<INotificationService, NotificationService>();
             services.AddTransient<IVideoWatchedService, VideoWatchedService>();
-            services.AddTransient<IMessageService, MessageService>();
             services.AddTransient<IUserApiCient, UserApiClient>();
             services.AddTransient<IReportApiClient, ReportApiClient>();
             services.AddTransient<ICategoryApiClient, CategoryApiClient>();
+
             services.AddAuthentication()
                  .AddFacebook(options =>
                  {
@@ -147,18 +167,18 @@ namespace DoanApp
             {
                 endpoints.MapRazorPages();
                
-              /*  endpoints.MapControllerRoute(
-                 name: "Administration",
-                 pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");*/
-                endpoints.MapControllerRoute(
+               /* endpoints.MapControllerRoute(
                  name: "areadefaultLogin",
-                 pattern: "{area:exists}/{controller=Home}/{action=Login}/{id?}");
+                 pattern: "{area:exists}/{controller=Home}/{action=Login}/{id?}");*/
+               //Route Area
                 endpoints.MapControllerRoute(
-               name: "areadefault",
-               pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
+                    name: "areadefault",
+                    pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
+
+                //Route User
                 endpoints.MapControllerRoute(
-                 name: "default",
-                 pattern: "{controller=Home}/{action=Index}/{id?}");
+                    name: "default",
+                    pattern: "{controller=Home}/{action=Index}/{id?}");
             });
         }
     }

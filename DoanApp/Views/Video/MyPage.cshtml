@@ -60,8 +60,21 @@
 
         </div>
         <div class="pass_kenhcuaban_right">
-            <div class="pass_kenhcuaban_rights">@ViewBag.UserMyPage.FirtsName @ViewBag.UserMyPage.LastName</div>
-            <div class="sub_dangkykenh">@ViewBag.CountUserFollow người đăng ký</div>
+            <div class="pass_kenhcuaban_rights">
+                <div class="main_name">
+                    <span id="nameChannel">@ViewBag.UserMyPage.FirtsName @ViewBag.UserMyPage.LastName</span>
+                    @if (ViewBag.FollowUser == false)
+                    {
+                        <i id="card__repair_nameChannel" title="Chỉnh sửa tên kênh" class="fas fa-pencil-alt hover"></i>
+                    }
+                </div>
+                <div class="repair__nameChannel row">
+                    <input type="text" name="Name" id="nameUpdateChannel" />
+                    <button class="btn btn-success" id="btnUpdateNameChannel">Hủy</button>
+                </div>
+            </div>
+            
+            <div  class="sub_dangkykenh">@ViewBag.CountUserFollow người đăng ký</div>
         </div>
     </div>
     <div class="danhsach_tible">
@@ -182,6 +195,53 @@
         setTimeout(function () {
             loadDurationTime();
         }, 2000);
+
+        //------Process update name Channel---------
+        $("#card__repair_nameChannel").click(function () {
+           
+            $(".main_name").get(0).style.display = "none";
+            $(".repair__nameChannel").get(0).style.display = "block";
+            $("#nameUpdateChannel").val($("#nameChannel").text().trim());
+
+        });
+
+        //Process click button update channel
+        $("#nameUpdateChannel").keyup(function () {
+            if ($(this).val() != $("#nameChannel").text())
+                $("#btnUpdateNameChannel").text("Cập nhật")
+            else $("#btnUpdateNameChannel").text("Hủy")
+        });
+
+        //Sendata to server
+        $("#btnUpdateNameChannel").click(function () {
+            var valueUpdate = $("#nameUpdateChannel").val();
+
+            if (valueUpdate == '') {
+                return;
+            }
+            if ($(this).text() == "Cập nhật") {
+                var data = {
+                    Name: valueUpdate,
+                    Email: emailUserAuthenticated
+                };
+
+                $.post("/Home/UpdateNameChannel", { request: data }, function (respone) {
+                    console.log("trang thái" + respone);
+                    if (respone == 200) {
+                        $(".main_name").get(0).style.display = "block";
+                        $(".repair__nameChannel").get(0).style.display = "none";
+                        $("#nameChannel").text($("#nameUpdateChannel").val());
+                        $(".name__avartar_fier_right").text($("#nameUpdateChannel").val());
+
+                    }
+                });
+            } else {
+                $(".main_name").get(0).style.display = "block";
+                $(".repair__nameChannel").get(0).style.display = "none";
+            }
+        });
+        //------End---------------------------------
+
         //-------Process update image of page-------
         $(".repair_img").click(function () {
             $("#upload_img").modal('show');

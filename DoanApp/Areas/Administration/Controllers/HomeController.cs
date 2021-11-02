@@ -60,7 +60,7 @@ namespace DoanApp.Areas.Administration.Controllers
             var week = new GetWeek().GetIso8601WeekOfYear(DateTime.Now);
             var dateNow = DateTime.Now.ToString("MM-d-yyyy H-mm-ss").Split('-');
             var arrayDate = GetDateWeek.CaculatorDate(week, int.Parse(dateNow[1]), int.Parse(dateNow[0])).ToArray();
-            var list = _reportService.GetAll().GroupBy(x => x.CreateDate.Split('-')[1]).Select(x => new
+            var list = _reportService.GetAll().Where(x=>int.Equals(x.CreateDate.Split('-')[0], dateNow[0])).GroupBy(x => x.CreateDate.Split('-')[1]).Select(x => new
             {
                 Name = x.Key,
                 Count = x.Count()
@@ -190,11 +190,9 @@ namespace DoanApp.Areas.Administration.Controllers
         [HttpPost]
         public IActionResult ConfirmPassword(string Email)
         {
-
-
-            if (ModelState.IsValid)
+            var user = _userService.FindUser(Email).Result;
+            if (user!=null)
             {
-                var user = _userService.FindUser(Email).Result;
                 GenerationTokenEmail(user, ConfirmEmailAccount.ForgotPassword.ToString(), false);
                 var url = Url.RouteUrl(new { action = "EmailVerification", controller = "Home", area = "" });
                 return Redirect(url);

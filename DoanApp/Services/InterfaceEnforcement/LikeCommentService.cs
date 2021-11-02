@@ -2,6 +2,7 @@
 using DoanApp.Models;
 using DoanData.DoanContext;
 using DoanData.Models;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -42,9 +43,9 @@ namespace DoanApp.Services
             return -1;
         }
 
-        public  async Task<LikeCommentDetail> FindLikeAsync(int userId,int videoId)
+        public  async Task<LikeCommentDetail> FindLikeAsync(int idComment, string reaction)
         {
-            var like = _context.LikeComments.FirstOrDefault(x=>x.UserId==userId&&x.VideoId==videoId);
+            var like =await  _context.LikeComments.FirstOrDefaultAsync(x=>x.Comment==idComment&&x.Reaction==reaction);
             return like;
         }
 

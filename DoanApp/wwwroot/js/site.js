@@ -8,6 +8,8 @@ function imgLoading() {
     $(".img-loading").css("display", "block");
 }
 //------------------------Xử lý Update and Delete Message---------//
+
+
 function deleteMessage(id) {
     var ms = new Message();
     ms.id = id;
@@ -20,13 +22,11 @@ function deleteMessage(id) {
         }
     });
 }
-/*function updateMessage(id) {
 
-}*/
 //------------------------Kết thúc--------------------------------//
 //------------------------Xử lý cập nhật đếm tin nhắn--------------//
 var user__Logins = $("#user_authenticated").val();
-if (user__Logins != '') {
+if (user__Logins != '' && user__Logins != undefined) {
 
     $.get("/Message/GetNotifyMessage/?id=" + user__Logins, function (respone) {
         if (respone != 0) {

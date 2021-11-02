@@ -17,10 +17,10 @@ namespace DoanApp.Services
         {
             _context = context;
         }
-        public async Task<int> Create(NotificationRequest request,int toUserId)
+        public async Task<int> Create(NotificationRequest request, int toUserId)
         {
             var listFollow = _context.FollowChannel.Where(x => x.ToUserId == toUserId).ToList();
-            if (request != null&&listFollow.Count>0)
+            if (request != null && listFollow.Count > 0)
             {
                 foreach (var item in listFollow)
                 {
@@ -45,10 +45,26 @@ namespace DoanApp.Services
             }
             return -1;
         }
+        public async Task<int> UpdateAvartar(int userId, string img)
+        {
+            var finNotification = GetAll().Where(x => x.UserId == userId);
+
+            if ( finNotification.Count()>0)
+            {
+                foreach (var item in finNotification)
+                {
+                    item.AvartarUser = img;
+                    item.LoginExternal = false;
+                    _context.Update(item);
+                }
+               return await _context.SaveChangesAsync();
+            }
+            return 0;
+        }
 
         public async Task<int> CreateNotifiComment(Comment_vm video_user, Comment comment_fromUser, Video video)
         {
-            if(video_user!=null&&comment_fromUser!=null&&video!=null)
+            if (video_user != null && comment_fromUser != null && video != null)
             {
                 var user = _context.AppUser.FirstOrDefault(X => X.Id == video_user.UserId);
                 if (user != null)
@@ -59,7 +75,7 @@ namespace DoanApp.Services
                     notifi.FromUserId = comment_fromUser.UserId;
                     notifi.LoginExternal = user.LoginExternal;
                     notifi.PoterImg = video.PosterImg;
-                    notifi.Content = ": Đã trả lời bình luận "+ comment_fromUser.Content+" của bạn";
+                    notifi.Content = ": Đã trả lời bình luận " + comment_fromUser.Content + " của bạn";
                     notifi.VideoId = video.Id;
                     notifi.Status = true;
                     notifi.CreateDate = new GetDateNow().DateNow;
@@ -71,7 +87,7 @@ namespace DoanApp.Services
             return -1;
         }
 
-        public async Task<int> CreateReplyReport(NotificationRequest request,int idAmdin)
+        public async Task<int> CreateReplyReport(NotificationRequest request, int idAmdin)
         {
             if (request != null)
             {
@@ -99,7 +115,7 @@ namespace DoanApp.Services
             if (notifi != null)
             {
                 _context.Remove(notifi);
-                return await _context.SaveChangesAsync(); 
+                return await _context.SaveChangesAsync();
             }
             return -1;
         }
@@ -137,12 +153,12 @@ namespace DoanApp.Services
 
         public async Task<int> UpdateWatched(int[] id, int userId)
         {
-            
+
             for (int i = 0; i < id.Length; i++)
             {
-                foreach (var item in GetAll().Where(x=>x.FromUserId==userId).ToList())
+                foreach (var item in GetAll().Where(x => x.FromUserId == userId).ToList())
                 {
-                    if (item.Id == id[i]&&item.Watched)
+                    if (item.Id == id[i] && item.Watched)
                     {
                         item.Watched = false;
                         _context.Update(item);
@@ -151,6 +167,30 @@ namespace DoanApp.Services
                 }
             }
             return 1;
+        }
+
+        public async Task<int> UpdateNameChannel(int userId, string username)
+        {
+            try
+            {
+                var notifi = _context.Notification.Where(X => X.UserId == userId);
+                if (notifi.Count() > 0)
+                {
+                    foreach (var item in notifi)
+                    {
+                        item.UserName = username;
+                        _context.Update(item);
+                       
+                    }
+                    return await _context.SaveChangesAsync(); 
+                }
+                
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+            }
+            return 0;
         }
     }
 }
