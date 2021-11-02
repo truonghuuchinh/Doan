@@ -306,7 +306,7 @@ namespace DoanApp.Services
                     user.LastName = "";
                     for (var i=1;i<names.Length; i++)
                     {
-                        user.LastName += " "+names[i];
+                        user.LastName +=names[i]+" ";
                     }
                 }
 

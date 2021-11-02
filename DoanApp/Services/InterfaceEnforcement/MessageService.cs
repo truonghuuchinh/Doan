@@ -543,10 +543,10 @@ namespace DoanApp.Services
                     {
                         FindElementById(item.Id, doc).Result.ToList().ForEach(x =>
                         {
-                                x.Element("LoginExternal").Value = false.ToString();
-                                x.Element("Avartar").Value = img;
+                            x.Element("LoginExternal").Value = false.ToString();
+                            x.Element("Avartar").Value = img;
+                            doc.Save(PathXML);
                         });
-                        doc.Save(PathXML);
                     }
                     return 1;
                 }
@@ -571,8 +571,8 @@ namespace DoanApp.Services
                         FindElementById(item.Id, doc).Result.ToList().ForEach(x =>
                         {
                             x.Element("UserName").Value = username;
+                            doc.Save(PathXML);
                         });
-                        doc.Save(PathXML);
                     }
                     return 1;
                 }
