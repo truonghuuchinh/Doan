@@ -73,6 +73,11 @@ namespace DoanApp.Commons
                 }
             }
         }
+        public static void LogOutUser(string email)
+        {
+            var getIndex = ListtUser.FindIndex(x => x.Email == email);
+            ListtUser.RemoveAt(getIndex);
+        }
         public void UpdateAvartar(int id, string avartar)
         {
             var user = new AppUser();

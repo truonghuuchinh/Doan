@@ -361,6 +361,7 @@ namespace DoanApp.Controllers
         }
         public async Task<IActionResult> Logout()
         {
+            UserAuthenticated.LogOutUser(User.Identity.Name);
             await _signInManager.SignOutAsync();
             return Redirect("Index");
         }
