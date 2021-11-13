@@ -145,7 +145,6 @@ function showAllPlayList(id) {
 }
 function loadDataList(id, message, search) {
     $.get("/Video/GetAllPlayList/?id=" + id + "&nameSearch=" + search, function (respone) {
-        console.log(respone);
         if (respone != 'null') {
 
             respone = JSON.parse(respone);
