@@ -121,6 +121,7 @@ namespace DoanApp.Controllers
                 var playlist = _detailService.GetAll().Where(x => x.PlayListId == id).ToList();
                 var listVideo = (from plist in playlist
                                  join lvideo in _videoService.GetAll() on plist.VideoId equals lvideo.Id
+                                 where lvideo.HidenVideo
                                  select lvideo).ToList();
                 if (nameSearch != null)
                 {

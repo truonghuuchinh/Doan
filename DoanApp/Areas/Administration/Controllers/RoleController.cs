@@ -38,7 +38,10 @@ namespace DoanApp.Areas.Administration.Controllers
                 {
                     foreach (var user1 in list)
                     {
-                        user += user1.FirtsName + " " + user1.LastName + ", ";
+                        if (user1.Status && user1.LockoutEnabled)
+                        {
+                            user += user1.FirtsName + " " + user1.LastName + ", ";
+                        }
                     }
                     listUser.Add(user);
                 }

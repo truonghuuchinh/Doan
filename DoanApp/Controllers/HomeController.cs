@@ -262,37 +262,43 @@ namespace DoanApp.Controllers
             ViewBag.UserLogin = userLogin == null ? null : userLogin;
             var userIdLogin = userLogin == null ? 0 : userLogin.Id;
             var video = await _videoService.FinVideoAsync((int)id);
-            var user = await _userManager.FindByIdAsync(video.AppUserId.ToString());
-            var like = await _likeVideo.FindAsync(userIdLogin, video.Id);
+           
             var video_Vm = new Video_vm();
-            video_Vm.PosterImg = video.PosterImg;
-            video_Vm.Name = video.Name;
-            video_Vm.Id = video.Id;
-            video_Vm.Reaction = like == null ? " " : like.Reaction;
-            video_Vm.LinkVideo = video.LinkVideo;
-            video_Vm.Avartar = user.Avartar;
-            video_Vm.FirtsName = user.FirtsName;
-            video_Vm.Like = video.Like;
-            video_Vm.UserLike = like == null ? 0 : like.UserId;
-            video_Vm.DisLike = video.DisLike;
-            video_Vm.LastName = user.LastName;
-            video_Vm.ViewCount = video.ViewCount;
-            video_Vm.AppUserId = video.AppUserId;
-            video_Vm.Description = video.Description;
-            video_Vm.LoginExternal = user.LoginExternal;
-            video_Vm.CreateDate = video.CreateDate;
-            var lVideo = _videoService.GetAll().Where(x => x.CategorysId == video.CategorysId && x.Id != video.Id && x.HidenVideo).ToList();
-            var lUser = _userService.GetAll();
-            if (userLogin != null)
+            if (video != null)
             {
-                if (CheckUserFollow(userLogin.Id, video_Vm.AppUserId))
-                    userFollow = "true";
+
+                var user = await _userManager.FindByIdAsync(video.AppUserId.ToString());
+                var like = await _likeVideo.FindAsync(userIdLogin, video.Id);
+
+                video_Vm.PosterImg = video.PosterImg;
+                video_Vm.Name = video.Name;
+                video_Vm.Id = video.Id;
+                video_Vm.Reaction = like == null ? " " : like.Reaction;
+                video_Vm.LinkVideo = video.LinkVideo;
+                video_Vm.Avartar = user.Avartar;
+                video_Vm.FirtsName = user.FirtsName;
+                video_Vm.Like = video.Like;
+                video_Vm.UserLike = like == null ? 0 : like.UserId;
+                video_Vm.DisLike = video.DisLike;
+                video_Vm.LastName = user.LastName;
+                video_Vm.ViewCount = video.ViewCount;
+                video_Vm.AppUserId = video.AppUserId;
+                video_Vm.Description = video.Description;
+                video_Vm.LoginExternal = user.LoginExternal;
+                video_Vm.CreateDate = video.CreateDate;
+                var lVideo = _videoService.GetAll().Where(x => x.CategorysId == video.CategorysId && x.Id != video.Id && x.HidenVideo).ToList();
+                var lUser = _userService.GetAll();
+                if (userLogin != null)
+                {
+                    if (CheckUserFollow(userLogin.Id, video_Vm.AppUserId))
+                        userFollow = "true";
+                }
+                var comment = _commentService.GetAll().Where(x => x.VideoId == video.Id).ToList();
+                ViewBag.VideoRelationShip = _videoService.GetVideo_Vm(lVideo, lUser).OrderByDescending(x => x.Id).ToPagedList(1, 8).ToList();
+                ViewBag.Comment = _commentService.GetAll_vm(lUser, comment).OrderByDescending(x => x.Id).ToList();
+                ViewBag.CheckUserFollow = userFollow;
+                ViewBag.CountRegister = _channelService.GetAll().Where(x => x.ToUserId == video_Vm.AppUserId).Count();
             }
-            var comment = _commentService.GetAll().Where(x => x.VideoId == video.Id).ToList();
-            ViewBag.VideoRelationShip = _videoService.GetVideo_Vm(lVideo, lUser).OrderByDescending(x => x.Id).ToPagedList(1, 8).ToList();
-            ViewBag.Comment = _commentService.GetAll_vm(lUser, comment).OrderByDescending(x => x.Id).ToList();
-            ViewBag.CheckUserFollow = userFollow;
-            ViewBag.CountRegister = _channelService.GetAll().Where(x => x.ToUserId == video_Vm.AppUserId).Count();
             return View(video_Vm);
         }
         public IActionResult VideoRelationship_Partial(int? page, int id)
