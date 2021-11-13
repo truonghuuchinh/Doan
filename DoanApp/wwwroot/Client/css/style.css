@@ -4391,7 +4391,7 @@ option {
 .img-loading {
     position: absolute;
     width: 100%;
-    height: 100%;
+    height: 119vh;
     margin-top: -778px;
     display: none;
     opacity: 0.9;
@@ -5642,4 +5642,31 @@ a:hover, a:focus, a:active {
 }
 .send-mess-list:hover .optionMessage__delete {
     display: block;
+}
+.content_left .cannot_video {
+    color: white;
+    margin-top: 34%;
+    margin-left: 28%;
+    font-size: 40px;
+    font-style: oblique;
+    position: absolute;
+    font-family: inherit;
+}
+.content_left .a_cannot {
+    font-size: 18px;
+    position: absolute;
+    margin-left: 50%;
+    margin-top: 38%;
+}
+a {
+    border-bottom:none !important;
+    text-decoration:none !important;
+}
+a::after, button.faux-link::after {
+    background:none !important;
+}
+.cannot_img {
+    width: 100%;
+    height: 100%;
+    position: absolute;
 }

@@ -1,12 +1,12 @@
 ﻿@model IPagedList<Category>
 @using X.PagedList;
-@{ 
+@{
     Layout = null;
 }
 @foreach (var item in Model)
 {
     <tr class="tr-shadow">
-        <td>
+        <td class="name-@item.Id">
             @item.Name
         </td>
         <td>

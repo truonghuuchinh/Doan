@@ -94,7 +94,7 @@ namespace DoanApp.Services
 
         public async Task<Video> FinVideoAsync(int id)
         {
-            return await _context.Video.FirstOrDefaultAsync(x => x.Id == id&x.Status);
+            return  GetAll().AsEnumerable().FirstOrDefault(x => x.Id == id&&x.HidenVideo);
         }
 
         public List<Video> GetAll()

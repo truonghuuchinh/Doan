@@ -21,7 +21,7 @@ namespace DoanApp.Services
         {
             var playlist = _context.PlayList.FirstOrDefault(X => X.Id == request.PlayListId);
             var detail = new DetailVideo();
-            if (request != null&&playlist!=null)
+            if (request != null && playlist != null)
             {
                 detail.PlayListId = request.PlayListId;
                 detail.VideoId = request.VideoId;
@@ -30,13 +30,13 @@ namespace DoanApp.Services
 
             }
             return -1;
-           
+
         }
 
         public async Task<int> Delete(DetailVideoRequest request)
         {
-            var detail = _context.DetailVideo.FirstOrDefault(x => x.PlayListId==request.PlayListId&&x.VideoId==request.VideoId);
-            if(detail!=null)
+            var detail = _context.DetailVideo.FirstOrDefault(x => x.PlayListId == request.PlayListId && x.VideoId == request.VideoId);
+            if (detail != null)
             {
                 _context.Remove(detail);
                 return await _context.SaveChangesAsync();
@@ -53,10 +53,21 @@ namespace DoanApp.Services
             return _context.DetailVideo.ToList();
         }
 
-        public List<DetailPlayListVideo> GetDetailPlayList(AppUser user,string nameSearch)
+        public List<DetailPlayListVideo> GetDetailPlayList(AppUser user, string nameSearch)
         {
-            var list = _context.PlayList.ToList();
-            var playlistNoVideo = _context.PlayList.Where(x => !_context.DetailVideo.Any(y => y.PlayListId == x.Id) && x.UserId == user.Id).ToList();
+            //list check no video in play list if play list has video
+            var listCheckNovideo=new List<PlayList>();
+
+            //Get playlist in database
+            var list = _context.PlayList.ToList(); //105,95,100
+
+            var checkStatusNoVideo = from detail in _context.DetailVideo
+                                   join video in _context.Video on detail.VideoId equals video.Id
+                                   join cate in _context.Category on video.CategorysId equals cate.Id
+                                   where video.Status && video.HidenVideo&&cate.Status
+                                   select detail;
+            var playlistNoVideo = _context.PlayList.Where(x => !checkStatusNoVideo.Any(y => y.PlayListId == x.Id) && x.UserId == user.Id).ToList();
+
             if (nameSearch != null)
             {
                 nameSearch = ConvertUnSigned.convertToUnSign(nameSearch).ToLower().Trim();
@@ -78,6 +89,9 @@ namespace DoanApp.Services
                                       plist.CreateDate
                                   }).ToList();
             var listCountItem = from detail in detailPlayList
+                                join video in _context.Video on detail.VideoId equals video.Id
+                                join cate in _context.Category on video.CategorysId equals cate.Id
+                                where video.HidenVideo && video.Status&&cate.Status
                                 group detail by detail.Id into grp
                                 select new
                                 {
@@ -85,10 +99,32 @@ namespace DoanApp.Services
                                     Count = grp.Count()
                                 };
             var detailPlayListVideo = from dlist in detailPlayList
-                                      join video in _context.Video.Where(x=>x.Status&&x.HidenVideo) on dlist.VideoId equals video.Id
+                                      join video in _context.Video.Where(x => x.Status && x.HidenVideo) on dlist.VideoId equals video.Id
                                       join cate in _context.Category on video.CategorysId equals cate.Id
                                       where cate.Status
                                       select new { dlist, video.PosterImg };
+            if (detailPlayListVideo.Count() == 0)
+            {
+                //check list has video but category is not active
+                var checkList = from pl in _context.PlayList
+                                join us in _context.Users on pl.UserId equals us.Id
+                                join detail in _context.DetailVideo on pl.Id equals detail.PlayListId
+                                join video in _context.Video on detail.VideoId equals video.Id
+                                join cate in _context.Category on video.CategorysId equals cate.Id
+                                where !cate.Status && pl.UserId==user.Id
+                                select pl;
+                 listCheckNovideo=playlistNoVideo.Union(checkList.ToList()).ToList();
+
+                if (nameSearch!=null)
+                {
+                    listCheckNovideo = listCheckNovideo.Where(x => ConvertUnSigned.convertToUnSign(x.Name).
+                   ToLower().Contains(nameSearch)).ToList();
+                }
+            }
+            else
+            {
+                listCheckNovideo = playlistNoVideo;
+            }
             var listComplete = (from countItem in listCountItem
                                 join detail in detailPlayListVideo on countItem.Key equals detail.dlist.Id
                                 join listUser in _context.AppUser.ToList() on detail.dlist.UserId equals listUser.Id
@@ -128,11 +164,11 @@ namespace DoanApp.Services
                 }
                 else listDetail_vm.Add(i);
             }
-            var playlistNovideoComplete = (from novideo in playlistNoVideo
+            var playlistNovideoComplete = (from novideo in listCheckNovideo
                                            join us in _context.AppUser on novideo.UserId equals us.Id
                                            select new
                                            {
-                                               Count =0,
+                                               Count = 0,
                                                novideo.Id,
                                                novideo.Name,
                                                novideo.Status,
@@ -158,8 +194,8 @@ namespace DoanApp.Services
                 playlistNovideo_vm.Add(i);
             }
             listDetail_vm.AddRange(playlistNovideo_vm);
-            return listDetail_vm.OrderByDescending(x=>x.Id).ToList();
-            
+            return listDetail_vm.OrderByDescending(x => x.Id).ToList();
+
         }
 
         public async Task<int> Update(DetailVideoRequest request)
