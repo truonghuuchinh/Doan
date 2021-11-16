@@ -1,53 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Messages>
-  <message id="72">
-    <Id>72</Id>
-    <UserName>Phạm Nhật</UserName>
-    <Content>asdasdsa</Content>
-    <CreateDate>11-8-2021 8:15:23</CreateDate>
-    <Avartar>39.jpg</Avartar>
-    <LoginExternal>False</LoginExternal>
-    <CheckWatched>False</CheckWatched>
-    <Watched>True</Watched>
-    <SenderId>39</SenderId>
-    <ReceiverId>38</ReceiverId>
-  </message>
-  <message id="73">
-    <Id>73</Id>
-    <UserName>Công nghệ</UserName>
-    <Content>asdasdad</Content>
-    <CreateDate>11-8-2021 8:15:42</CreateDate>
-    <Avartar>38.jpg</Avartar>
-    <LoginExternal>False</LoginExternal>
-    <CheckWatched>False</CheckWatched>
-    <Watched>True</Watched>
-    <SenderId>38</SenderId>
-    <ReceiverId>39</ReceiverId>
-  </message>
-  <message id="74">
-    <Id>74</Id>
-    <UserName>Công nghệ</UserName>
-    <Content>asdasdad</Content>
-    <CreateDate>11-8-2021 8:15:59</CreateDate>
-    <Avartar>38.jpg</Avartar>
-    <LoginExternal>False</LoginExternal>
-    <CheckWatched>False</CheckWatched>
-    <Watched>True</Watched>
-    <SenderId>38</SenderId>
-    <ReceiverId>36</ReceiverId>
-  </message>
-  <message id="75">
-    <Id>75</Id>
-    <UserName>Admin</UserName>
-    <Content>SaADASDSADASDASDASD</Content>
-    <CreateDate>11-8-2021 8:26:57</CreateDate>
-    <Avartar>avartarDefault.jpg</Avartar>
-    <LoginExternal>False</LoginExternal>
-    <CheckWatched>False</CheckWatched>
-    <Watched>True</Watched>
-    <SenderId>36</SenderId>
-    <ReceiverId>39</ReceiverId>
-  </message>
   <message id="79">
     <Id>79</Id>
     <UserName>Phạm Nhật</UserName>
@@ -59,18 +11,6 @@
     <Watched>True</Watched>
     <SenderId>39</SenderId>
     <ReceiverId>38</ReceiverId>
-  </message>
-  <message id="80">
-    <Id>80</Id>
-    <UserName>Phạm Nhật</UserName>
-    <Content>addasdasdad</Content>
-    <CreateDate>11-12-2021 9:08:54</CreateDate>
-    <Avartar>39.jpg</Avartar>
-    <LoginExternal>False</LoginExternal>
-    <CheckWatched>False</CheckWatched>
-    <Watched>True</Watched>
-    <SenderId>39</SenderId>
-    <ReceiverId>36</ReceiverId>
   </message>
   <message id="81">
     <Id>81</Id>
@@ -98,7 +38,7 @@
   </message>
   <message id="83">
     <Id>83</Id>
-    <UserName>Công nghệ</UserName>
+    <UserName>Công nghệ Tv</UserName>
     <Content>chào bạn</Content>
     <CreateDate>11-13-2021 9:16:50</CreateDate>
     <Avartar>38.jpg</Avartar>
@@ -110,7 +50,7 @@
   </message>
   <message id="84">
     <Id>84</Id>
-    <UserName>Công nghệ</UserName>
+    <UserName>Công nghệ Tv</UserName>
     <Content>chào bạn</Content>
     <CreateDate>11-13-2021 9:17:58</CreateDate>
     <Avartar>38.jpg</Avartar>
@@ -120,16 +60,76 @@
     <SenderId>38</SenderId>
     <ReceiverId>39</ReceiverId>
   </message>
-  <message id="85">
-    <Id>85</Id>
-    <UserName>Công nghệ</UserName>
-    <Content>sdfsdfsdf</Content>
-    <CreateDate>11-13-2021 9:18:18</CreateDate>
+  <message id="86">
+    <Id>86</Id>
+    <UserName>Phạm Nhật </UserName>
+    <Content>asdasd</Content>
+    <CreateDate>11-16-2021 9:19:27</CreateDate>
+    <Avartar>39.jpg</Avartar>
+    <LoginExternal>False</LoginExternal>
+    <CheckWatched>False</CheckWatched>
+    <Watched>True</Watched>
+    <SenderId>39</SenderId>
+    <ReceiverId>38</ReceiverId>
+  </message>
+  <message id="87">
+    <Id>87</Id>
+    <UserName>Phạm Nhật </UserName>
+    <Content>Chào admin</Content>
+    <CreateDate>11-16-2021 10:07:11</CreateDate>
+    <Avartar>39.jpg</Avartar>
+    <LoginExternal>False</LoginExternal>
+    <CheckWatched>False</CheckWatched>
+    <Watched>True</Watched>
+    <SenderId>39</SenderId>
+    <ReceiverId>36</ReceiverId>
+  </message>
+  <message id="88">
+    <Id>88</Id>
+    <UserName>Công nghệ Tv</UserName>
+    <Content>Chào bạn</Content>
+    <CreateDate>11-16-2021 12:00:36</CreateDate>
     <Avartar>38.jpg</Avartar>
     <LoginExternal>False</LoginExternal>
     <CheckWatched>False</CheckWatched>
     <Watched>True</Watched>
     <SenderId>38</SenderId>
+    <ReceiverId>39</ReceiverId>
+  </message>
+  <message id="90">
+    <Id>90</Id>
+    <UserName>Phạm Nhật </UserName>
+    <Content>Helo bạn</Content>
+    <CreateDate>11-16-2021 12:00:56</CreateDate>
+    <Avartar>39.jpg</Avartar>
+    <LoginExternal>False</LoginExternal>
+    <CheckWatched>False</CheckWatched>
+    <Watched>True</Watched>
+    <SenderId>39</SenderId>
+    <ReceiverId>38</ReceiverId>
+  </message>
+  <message id="91">
+    <Id>91</Id>
+    <UserName>Công nghệ Tv</UserName>
+    <Content>Chào admin</Content>
+    <CreateDate>11-16-2021 12:01:23</CreateDate>
+    <Avartar>38.jpg</Avartar>
+    <LoginExternal>False</LoginExternal>
+    <CheckWatched>False</CheckWatched>
+    <Watched>False</Watched>
+    <SenderId>38</SenderId>
     <ReceiverId>36</ReceiverId>
+  </message>
+  <message id="92">
+    <Id>92</Id>
+    <UserName>Phạm Nhật </UserName>
+    <Content>hello</Content>
+    <CreateDate>11-16-2021 12:04:52</CreateDate>
+    <Avartar>39.jpg</Avartar>
+    <LoginExternal>False</LoginExternal>
+    <CheckWatched>False</CheckWatched>
+    <Watched>True</Watched>
+    <SenderId>39</SenderId>
+    <ReceiverId>38</ReceiverId>
   </message>
 </Messages>

@@ -239,10 +239,10 @@ namespace DoanApp.Controllers
             {
                 //Video watched
                 var listVideoWatched = _videoWatched.GetAll().
-                    OrderByDescending(X => X.Id).Where(x => x.UserId == user.Id).Take(6).ToList();
+                    OrderByDescending(X => X.Id).Where(x => x.UserId == user.Id).ToList();
 
                 var listvideo = (from video in _videoService.GetAll()
-                                 join watched in listVideoWatched on video.Id equals watched.VideoId
+                                 join watched in listVideoWatched.Take(6).ToList() on video.Id equals watched.VideoId
                                  select video).ToList();
                 var listvideo_vm = _videoService.GetVideo_Vm(listvideo, _userService.GetAll()).
                     OrderByDescending(x => x.Id).ToPagedList(1, 6);
