@@ -79,7 +79,7 @@ li:hover {
     margin-left: 155px;
     margin-top: 15px;
     float: left;
-    background: #f3f3f3;
+    background: #ffffff;
     position: relative;
     position: absolute;
     border: 1px solid lightgrey;
@@ -132,7 +132,6 @@ li:hover {
 }
 
 .searchs {
-    width: 5%;
     height: 40px;
     margin-top: 15px;
     float: left;
@@ -149,7 +148,7 @@ li:hover {
     float: left;
     position: relative;
     border: 0px;
-    background: #f3f3f3;
+    background: #ffffff;
     margin-left: 761px;
     width: 30px;
 }
@@ -162,6 +161,10 @@ li:hover {
     width: 55px;
     height: 39px;
     border: 0px;
+}
+.search_sokiuty_img:hover {
+    background: blue;
+    color: white;
 }
 
     .search_sokiuty_img:focus {
@@ -295,9 +298,6 @@ a {
     width: 5px;
 }
 
-::-webkit-scrollbar-track {
-    background: #f1f1f1;
-}
 
 ::-webkit-scrollbar-thumb {
     background: #888;
@@ -323,7 +323,7 @@ a {
 /* bên phải */
 .site-layout {
     height: 90vh;
-    background-color: #f3f3f3;
+    background-color: #ffffff;
     margin-left: 237px;
     overflow-y: scroll;
     width: 1155px;
@@ -336,13 +336,13 @@ a {
     float: left;
     margin-right: 5px;
     margin-left: 15px;
-    margin-top: 20px;
+    margin-top: 10px;
     position: relative;
 }
 
 
 .container222 {
-    background-color: #f3f3f3;
+    background-color: #ffffff;      
     width: 100%;
     height: 60%;
 }
@@ -350,7 +350,7 @@ a {
 .container222_end {
     width: 100%;
     height: 40%;
-    background: #f3f3f3;
+    background: #ffffff;
 }
 
 .icon-sidebar-item_video {
@@ -511,6 +511,7 @@ a {
     border: 1px solid gray;
     margin-top: 20px;
     margin-bottom: 10px;
+    background: gray;
 }
 
 .count_comment {
@@ -568,10 +569,10 @@ a {
 .registration {
     width: 105px;
     height: 40px;
-    background: #ff2e2e;
-    color: #343434;
+    background: red;
+    color: white;
     margin-top: 10px;
-    border-radius: 5px;
+    border-radius: 3px;
     border: 1px solid #e9e9e9;
     font-size: 18px;
     font-weight: 500;
@@ -613,7 +614,7 @@ a {
     color: black;
     font-size: 16px;
     margin-right: 28px;
-    max-height: 48px;
+    max-height: 76px;
     overflow: hidden;
 }
 
@@ -684,7 +685,7 @@ a {
     width: 95%;
     height: 100%;
     margin-left: 50px;
-    background: #f3f3f3;
+    background: #ffffff;
     margin-top: 20px;
     margin-bottom: 70px;
 }
@@ -698,14 +699,14 @@ a {
     font-weight: 600;
     font-size: 20px;
     color: black;
-    margin-bottom: 20px;
-    font-style: italic;
+    margin-bottom: 5px;
+    font-family: Roboto;
 }
 
 .popular_left {
     width: 24%;
     height: 160px;
-    background: #f3f3f3;
+    background: #ffffff;
     float: left;
     margin-bottom: 20px;
 }
@@ -713,11 +714,10 @@ a {
 .popular_right {
     width: 40%;
     height: 160px;
-    background: #f3f3f3;
+    background: #ffffff;
     float: left;
     margin-bottom: 35px;
     padding-left: 10px;
-    margin-top: 16px;
 }
 
 .header__popular {
@@ -1121,7 +1121,7 @@ a {
 
 
 .funtions_hien {
-    margin-left: 75px;
+    margin-left: 60px;
     margin-top: 5px;
     font-weight: 500;
     color: gray;
@@ -1164,10 +1164,11 @@ a {
     width: 100%;
     margin-top: 10px;
     height: 40px;
-    padding-left: 10px;
     outline: 0;
     border: 1px solid #ccc;
-    border-radius: 10px;
+    border-radius: 5px;
+    margin-left: 5px;
+    padding: 10px;
 }
 
 .check_comments_child {
@@ -1201,7 +1202,7 @@ a {
     width: 120px;
     padding: 5px;
     font-weight: 700;
-    background: #1f2833;
+    background: #1270e2;
     border: 1px;
     border-radius: 5px;
     color: white;
@@ -1565,7 +1566,7 @@ a {
     display: flex;
     flex-wrap: wrap;
     padding-left: 100px;
-    background: #c5c6c7;
+    background: #f4f4f4;
 }
 
 .khichthuoc_kenhcb {
@@ -1631,7 +1632,11 @@ a {
     margin-top: -10px;
     margin-left: 208px;
     position: relative;
-    background-color: rgb(219, 219, 219);
+    background-color: #ebebeb;
+}
+.click_search_kenhcb:hover {
+    background: blue;
+    color: white;
 }
 
 .imgs_search_fier {
@@ -2232,7 +2237,7 @@ tbody {
     width: 100px;
     height: 35px;
     position: absolute;
-    background: linear-gradient(gray 10%,#1395d3 80%);
+    background: red;
     color: white;
     text-align: center;
     padding-top: 5px;
@@ -2739,11 +2744,10 @@ tbody {
 
 /* chinhsua_video */
 .modal_chinhsuavideo {
-    border: 2px solid #1a4f89;
+
     width: 200px;
     height: 138px;
-    box-shadow: 2px 1px #7a6d64;
-    background: #e1e1e1;
+    background: #ffffff;
     margin-top: 14.5%;
     margin-left: 25.2%;
     position: relative;
@@ -2791,7 +2795,7 @@ tbody {
 
 .modal_reportvideo {
     width: 600px;
-    height: 270px;
+    height: 235px;
     background: white;
     margin-top: 10%;
     margin-left: 32%;
@@ -2873,7 +2877,7 @@ tbody {
 .sangphai_header_videodauu {
     float: right;
     padding-top: 7px;
-    padding-right: 23px;
+    padding-right: 15px;
 }
 
 .xacnhanvi_deo {
@@ -3321,7 +3325,7 @@ option {
     }
 
 .title_NoSignin {
-    font-size: 20px;
+    font-size: 19px;
     margin: 9px 10px 7px 25px;
 }
 
@@ -3436,6 +3440,7 @@ option {
     color: white;
     text-align: center;
     background: #1f2833;
+    padding-top: 10px;
 }
 
 .kengang_thong_bao {
@@ -3638,9 +3643,6 @@ option {
     background: #dee2e6;
     margin-left: 30% !important;
 }
-    .modalPlayList .modal-body .list__playlist {
-        padding-left: 17%;
-    }
 
 
     .listChoose {
@@ -3660,9 +3662,6 @@ option {
     border-bottom: 1px solid gray;
 }
 
-.modalPlayList .modal-body {
-    border-bottom: 1px solid gray;
-}
 
 .add-playlist {
     margin-bottom: 10px;
@@ -3941,7 +3940,7 @@ option {
 }
 
 .forcus__item {
-    background: rgb(206,201,201);
+    background: rgb(238 238 238);
 }
 
 .cards--display {
@@ -5595,6 +5594,12 @@ a:hover, a:focus, a:active {
     right: 0px;
     top: -26px;
 }
+.hellocacban {
+    height: 290px;
+    overflow: scroll;
+    text-overflow: initial;
+    padding-left: 10%;
+}
 
 .modal-dialog_es::after {
     content: "";
@@ -5611,6 +5616,8 @@ a:hover, a:focus, a:active {
 #valueReport:focus {
     outline:0;
     border: 1px solid #e7e7e7;
+    padding-left: 10px;
+    padding-top: 5px;
 }
 
 
