@@ -87,9 +87,13 @@
                                         <button class="item" data-toggle="tooltip" data-placement="top" title="Edit" onclick="editFunction(@item.Id)">
                                             <i class="zmdi zmdi-edit"></i>
                                         </button>
-                                        <button class="item" data-toggle="tooltip" data-placement="top" title="Delete" onclick="deleteFunction(@item.Id)">
-                                            <i class="zmdi zmdi-delete"></i>
-                                        </button>
+                                        @if (!item.Name.Contains("Admin"))
+                                        {
+                                            <button class="item" data-toggle="tooltip" data-placement="top" title="Delete" onclick="deleteFunction(@item.Id)">
+                                                <i class="zmdi zmdi-delete"></i>
+                                            </button>
+                                        }
+                                       
                                     </div>
                                 }
                             </td>
@@ -114,7 +118,11 @@
             OpenPopUp2("Thêm Quyền", "/Administration/Role/Create");
             $("#Name").val('');
             $("#errorName").text('');
-            setTimeout(() => { $("#Name").focus(); }, 500);
+            
+            setTimeout(() => {
+                $("#Name").focus();
+               
+            }, 500);
         });
         function editFunction(id) {
             OpenPopUp2("Cập nhật Quyền", "/Administration/Role/Update/?Id=" + id);

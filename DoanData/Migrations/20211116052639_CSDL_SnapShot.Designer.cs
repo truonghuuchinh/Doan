@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DoanData.Migrations
 {
     [DbContext(typeof(DpContext))]
-    [Migration("20211029130751_Social_Network1")]
-    partial class Social_Network1
+    [Migration("20211116052639_CSDL_SnapShot")]
+    partial class CSDL_SnapShot
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -366,7 +366,7 @@ namespace DoanData.Migrations
                     b.Property<string>("CreateDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("nvarchar(max)")
-                        .HasDefaultValue("29-10-2021 20:07:50");
+                        .HasDefaultValue("16-11-2021 12:26:38");
 
                     b.Property<int>("FromUserId")
                         .HasColumnType("int");

@@ -231,33 +231,39 @@
                 };
                 $.post("/PlayListVideo/Create", { request: data }, function (respone) {
                     respone = JSON.parse(respone);
-                    if (document.querySelector(".textNovideo") != null)
-                        $(".textNovideo").remove();
-                    $("tbody").prepend(`
-                        <tr class="remove-${respone.Id}">
-                            <td class="hover">
-                                <div class="table__playlist" onclick="showAllPlayList(${respone.Id})">
-                                    <img class="table__playlist__more"  onclick="showoptionPlaylist(event,${respone.Id})" src="/Client/img/more.png" alt="Alternate Text" />
-                                    <div class="name__playlist" id="name__playlist-${respone.Id}">${respone.Name}</div>
-                                    <img class="table__playlist__item1 table__playlist__item1-${respone.Id}" src="/Client/img/no_playlist.png" alt="Alternate Text" />
-                                    <div class="table__playlist__item2">
-                                        <div class="item2__count item2__count-${respone.Id}">${respone.CountItem}</div>
-                                        <img class="item2__playlist" src="/Client/img/add_playlist.png" alt="Alternate Text" />
-                                    </div>
-                                        <div class="more__option" id="more__opiton-${respone.Id}">
-                                        <div class="more__option__changename hover" onclick="changeName(event,${respone.Id})"><i class="fas fa-pencil-alt"></i> Đổi tên</div>
-                                        <div class="more__option__delete hover" onclick="xoaDanhsach(event,${respone.Id})"><i class="fas fa-trash"></i> Xóa</div>
-                                    </div>
-                                </div>
-                            </td>
-                            <td class="modifier__td">${respone.CreateDate.split(' ')[0]}</td>
-                            <td class="modifier__td" modifier__td-${respone.Id}>${respone.CountItem}</td>
-                        </tr>
-                    `);
-                    $("#modalCreatePlayList").modal('hide');
-                    $("#nameCreate").val('')
-                    
-                    MouseLeave();
+                    if (respone != null) {
+                       
+                        if (document.querySelector(".textNovideo") != null)
+                            $(".textNovideo").remove();
+                        $("tbody").prepend(`
+                                <tr class="remove-${respone.Id}">
+                                    <td class="hover">
+                                        <div class="table__playlist" onclick="showAllPlayList(${respone.Id})">
+                                            <img class="table__playlist__more"  onclick="showoptionPlaylist(event,${respone.Id})" src="/Client/img/more.png" alt="Alternate Text" />
+                                            <div class="name__playlist" id="name__playlist-${respone.Id}">${respone.Name}</div>
+                                            <img class="table__playlist__item1 table__playlist__item1-${respone.Id}" src="/Client/img/no_playlist.png" alt="Alternate Text" />
+                                            <div class="table__playlist__item2">
+                                                <div class="item2__count item2__count-${respone.Id}">${respone.CountItem}</div>
+                                                <img class="item2__playlist" src="/Client/img/add_playlist.png" alt="Alternate Text" />
+                                            </div>
+                                                <div class="more__option" id="more__opiton-${respone.Id}">
+                                                <div class="more__option__changename hover" onclick="changeName(event,${respone.Id})"><i class="fas fa-pencil-alt"></i> Đổi tên</div>
+                                                <div class="more__option__delete hover" onclick="xoaDanhsach(event,${respone.Id})"><i class="fas fa-trash"></i> Xóa</div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="modifier__td">${respone.CreateDate.split(' ')[0]}</td>
+                                    <td class="modifier__td" modifier__td-${respone.Id}>${respone.CountItem}</td>
+                                </tr>
+                        `);
+                        $("#modalCreatePlayList").modal('hide');
+                        $("#nameCreate").val('')
+
+                        MouseLeave();
+                    } else {
+                        alertWarn('Tên danh sách đã có!');
+                    }
+                   
                 });
             }
         });

@@ -38,7 +38,7 @@
   </message>
   <message id="83">
     <Id>83</Id>
-    <UserName>Công nghệ Tv</UserName>
+    <UserName>Công nghệ</UserName>
     <Content>chào bạn</Content>
     <CreateDate>11-13-2021 9:16:50</CreateDate>
     <Avartar>38.jpg</Avartar>
@@ -50,7 +50,7 @@
   </message>
   <message id="84">
     <Id>84</Id>
-    <UserName>Công nghệ Tv</UserName>
+    <UserName>Công nghệ</UserName>
     <Content>chào bạn</Content>
     <CreateDate>11-13-2021 9:17:58</CreateDate>
     <Avartar>38.jpg</Avartar>
@@ -86,7 +86,7 @@
   </message>
   <message id="88">
     <Id>88</Id>
-    <UserName>Công nghệ Tv</UserName>
+    <UserName>Công nghệ</UserName>
     <Content>Chào bạn</Content>
     <CreateDate>11-16-2021 12:00:36</CreateDate>
     <Avartar>38.jpg</Avartar>
@@ -110,13 +110,13 @@
   </message>
   <message id="91">
     <Id>91</Id>
-    <UserName>Công nghệ Tv</UserName>
+    <UserName>Công nghệ</UserName>
     <Content>Chào admin</Content>
     <CreateDate>11-16-2021 12:01:23</CreateDate>
     <Avartar>38.jpg</Avartar>
     <LoginExternal>False</LoginExternal>
     <CheckWatched>False</CheckWatched>
-    <Watched>False</Watched>
+    <Watched>True</Watched>
     <SenderId>38</SenderId>
     <ReceiverId>36</ReceiverId>
   </message>
@@ -130,6 +130,42 @@
     <CheckWatched>False</CheckWatched>
     <Watched>True</Watched>
     <SenderId>39</SenderId>
+    <ReceiverId>38</ReceiverId>
+  </message>
+  <message id="94">
+    <Id>94</Id>
+    <UserName>Công nghệ </UserName>
+    <Content>Chào</Content>
+    <CreateDate>11-18-2021 19:28:44</CreateDate>
+    <Avartar>38.jpg</Avartar>
+    <LoginExternal>False</LoginExternal>
+    <CheckWatched>False</CheckWatched>
+    <Watched>True</Watched>
+    <SenderId>38</SenderId>
+    <ReceiverId>39</ReceiverId>
+  </message>
+  <message id="95">
+    <Id>95</Id>
+    <UserName>Phạm Nhật </UserName>
+    <Content>chào</Content>
+    <CreateDate>11-18-2021 19:28:54</CreateDate>
+    <Avartar>39.jpg</Avartar>
+    <LoginExternal>False</LoginExternal>
+    <CheckWatched>False</CheckWatched>
+    <Watched>True</Watched>
+    <SenderId>39</SenderId>
+    <ReceiverId>38</ReceiverId>
+  </message>
+  <message id="96">
+    <Id>96</Id>
+    <UserName>Admin</UserName>
+    <Content>Chào</Content>
+    <CreateDate>11-18-2021 19:33:11</CreateDate>
+    <Avartar>avartarDefault.jpg</Avartar>
+    <LoginExternal>False</LoginExternal>
+    <CheckWatched>False</CheckWatched>
+    <Watched>True</Watched>
+    <SenderId>36</SenderId>
     <ReceiverId>38</ReceiverId>
   </message>
 </Messages>

@@ -118,13 +118,14 @@ namespace DoanApp.Areas.Administration.Controllers
         }
         public async Task<IActionResult> Update(string Id)
         {
-            var role = await _roleManager.FindByIdAsync(Id);
+            var role =await  _roleManager.FindByIdAsync(Id);
+
             var members = new List<AppUser>();
            var nonMembers = new List<AppUser>();
             foreach (var user in _userManager.Users)
             {
-                var list = await _userManager.IsInRoleAsync(user, role.Name) ? members : nonMembers;
-                list.Add(user);
+                    var list = await _userManager.IsInRoleAsync(user, role.Name) ? members : nonMembers;
+                    list.Add(user);
             }
             return View(new RoleEdit
             {

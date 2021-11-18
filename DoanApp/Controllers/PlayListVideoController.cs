@@ -51,7 +51,6 @@ namespace DoanApp.Controllers
                         playlist_vm.CreateDate = result.CreateDate;
                         return Content(JsonConvert.SerializeObject(playlist_vm));
                 }
-                
             }
             return Content("null");
         }

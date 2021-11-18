@@ -1630,7 +1630,7 @@ a {
     border-radius: 0px 6px 6px 0px;
     float: left;
     margin-top: -10px;
-    margin-left: 208px;
+    margin-left: 123px;
     position: relative;
     background-color: #ebebeb;
 }
@@ -5681,23 +5681,23 @@ a::after, button.faux-link::after {
 }
 /* width */
 .strong_headers::-webkit-scrollbar {
-    width: 8px;
+    width: 5px;
     display: none;
 }
 .site-layout::-webkit-scrollbar {
-    width: 8px;
+    display: none;
 }
 .strong_headers:hover::-webkit-scrollbar {
     display: block;
 }
 /* Handle */
-.strong_headers::-webkit-scrollbar-thumb, .site-layout::-webkit-scrollbar {
+.strong_headers::-webkit-scrollbar-thumb {
     background: #909090;
     border-radius: 10px;
 }
 
 /* Track */
-.strong_headers::-webkit-scrollbar-track, .site-layout::-webkit-scrollbar {
+.strong_headers::-webkit-scrollbar-track {
     box-shadow: inset 0 0 5px grey;
     border-radius: 10px;
 }
