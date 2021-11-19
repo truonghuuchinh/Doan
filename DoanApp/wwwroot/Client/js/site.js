@@ -51,6 +51,7 @@ $(".btnPlaylist").click(function () {
         "UserId": $("#idUser").val()
     };
     $.post("/PlayListVideo/Create", { request: data }, function (respone) {
+        console.log(respone);
         respone = JSON.parse(respone);
         if (respone != null) {
             $(".list__playlist").prepend(`
@@ -59,11 +60,14 @@ $(".btnPlaylist").click(function () {
                     <label class="hover" onclick="addItem(${respone.Id})" for="chooseList-${respone.Id}"><span>${respone.Name}</span></label>
                 </div>
             `);
+            $("#namePlayList").val('');
+            $(".create_playlist").css("display", "");
+            $(".add-playlist").css("display", "");
+        } else {
+            alertWarn("Tên danh sách đã có!");
         }
     });
-    $("#namePlayList").val('');
-    $(".create_playlist").css("display", "");
-    $(".add-playlist").css("display", "");
+   
 });
 $("#namePlayList").keyup(function () {
     if ($(this).val() == '')
@@ -567,6 +571,7 @@ function viewBefore(id) {
         nextTime += 30;
     }, 600);
 }
+
 function clearBefore(id) {
 
     document.querySelector(".nextSecond-" + id).currentTime = 10;

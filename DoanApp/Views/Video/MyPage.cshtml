@@ -87,7 +87,9 @@
         <div class="search_kencb">
             <div class="chuyenphai_kenhcb">
                 <select id="search_name_video">
-                    <option value="value">Tìm kiếm</option>
+                    <option value="value">
+                        Tìm kiếm video kênh...
+                    </option>
                 </select>
                 <div class="click_search_kenhcb hover">
                     <i style="margin:10px 0px 0px 10px;" class="fas fa-search"></i>
@@ -264,7 +266,9 @@
         //-------End-------------------------------
         //-------Process search Video----
         $(".click_search_kenhcb").click(function () {
+            
             var nameSearch = $("#select2-search_name_video-container").text();
+           
             $.get("/Video/MyPage_Partial/?nameSearch=" + nameSearch + "&id=" + $('#idChannel').val(), function (respone) {
                 $(".content_video").html(respone);
                 loadSecondVideo();
@@ -280,8 +284,8 @@
 
             $("#search_name_video").select2({
                 them: 'clasic',
-                placeholder: 'Tìm kiếm......',
-                data: respone
+                placeholder: 'Tìm kiếm video kênh..',
+                data: respone,
             });
         })
         //-------End--------------------

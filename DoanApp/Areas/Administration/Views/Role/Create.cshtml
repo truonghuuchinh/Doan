@@ -39,13 +39,13 @@
     //-------Xử lý tạo quyền-----------------
 
 
-    $("#Name").blur(function () {
+    $("#Name").change(function () {
         var roleName = $("#Name").val();
         $("#errorName").text('');
         $.get("/Administration/Role/CheckName/?name=" + roleName, function (respone) {
             if (respone == "Error") {
-                $("#errorName").text("Tên chủ đề bạn nhập đã tồn tại!");
-            }
+                $("#errorName").text("(Tên Role bạn nhập đã tồn tại!)");
+            } 
           
         });
 

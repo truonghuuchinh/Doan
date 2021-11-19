@@ -22,15 +22,27 @@ namespace DoanApp.Services
             var playlist = new PlayList();
             if (plRequest != null)
             {
-                playlist.Name = plRequest.Name;
-                playlist.Status = plRequest.Status;
-                playlist.UserId = plRequest.UserId;
-                playlist.CreateDate = new GetDateNow().DateNow;
-                _context.PlayList.Add(playlist);
-                 await _context.SaveChangesAsync();
-                var getPlaylist = _context.PlayList.OrderByDescending(x => x.Id).
-                    FirstOrDefault(x => x.Name == plRequest.Name && x.UserId == plRequest.UserId);
-                return getPlaylist;
+                PlayList checkName=new PlayList();
+                foreach (var item in GetAll().Where(x=>x.UserId==plRequest.UserId))
+                {
+                    if (ConvertUnSigned.convertToUnSign(item.Name.ToLower()).Contains(ConvertUnSigned.convertToUnSign(plRequest.Name.ToLower())))
+                    {
+                        checkName = item;
+                        break;
+                    }
+                }
+                if (checkName.Name==null)
+                {
+                    playlist.Name = plRequest.Name;
+                    playlist.Status = plRequest.Status;
+                    playlist.UserId = plRequest.UserId;
+                    playlist.CreateDate = new GetDateNow().DateNow;
+                    _context.PlayList.Add(playlist);
+                    await _context.SaveChangesAsync();
+                    var getPlaylist = _context.PlayList.OrderByDescending(x => x.Id).
+                        FirstOrDefault(x => x.Name == plRequest.Name && x.UserId == plRequest.UserId);
+                    return getPlaylist;
+                }
             }
             return null;  
         }

@@ -364,7 +364,7 @@ namespace DoanData.Migrations
                     b.Property<string>("CreateDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("nvarchar(max)")
-                        .HasDefaultValue("29-10-2021 20:07:50");
+                        .HasDefaultValue("16-11-2021 12:26:38");
 
                     b.Property<int>("FromUserId")
                         .HasColumnType("int");

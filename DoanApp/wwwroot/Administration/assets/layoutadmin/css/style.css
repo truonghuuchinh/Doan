@@ -159,7 +159,7 @@ a {
 }
 
 .sidebar-menu > li > a > i {
-    font-size: 1.5rem;
+    font-size: 20px;
     margin-right: 10px;
 }
 
@@ -1202,8 +1202,8 @@ button{
     overflow-y: overlay;
 }
 #errorName {
-    font-size: 14px;
-    margin: 1px 0px 0px 5px;
+    font-size: 12px;
+    margin: 3px 7px 4px 5px;
 }
 .check__status{
     width:170px;

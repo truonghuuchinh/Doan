@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace DoanData.Migrations
 {
-    public partial class SocialNetwork : Migration
+    public partial class CSDL_SnapShot : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -225,38 +225,6 @@ namespace DoanData.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Message",
-                columns: table => new
-                {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    UserName = table.Column<string>(nullable: true),
-                    Content = table.Column<string>(nullable: true),
-                    CreateDate = table.Column<string>(nullable: true),
-                    Avartar = table.Column<string>(nullable: true),
-                    LoginExternal = table.Column<bool>(nullable: false),
-                    CheckWatched = table.Column<bool>(nullable: false),
-                    Watched = table.Column<bool>(nullable: false),
-                    SenderId = table.Column<int>(nullable: false),
-                    ReceiverId = table.Column<int>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Message", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Message_User_ReceiverId",
-                        column: x => x.ReceiverId,
-                        principalTable: "User",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_Message_User_SenderId",
-                        column: x => x.SenderId,
-                        principalTable: "User",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "PlayList",
                 columns: table => new
                 {
@@ -434,7 +402,7 @@ namespace DoanData.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Content = table.Column<string>(nullable: true),
                     UserName = table.Column<string>(nullable: true),
-                    CreateDate = table.Column<string>(nullable: true, defaultValue: "28-10-2021 9:42:35"),
+                    CreateDate = table.Column<string>(nullable: true, defaultValue: "16-11-2021 12:26:38"),
                     AvartarUser = table.Column<string>(nullable: true),
                     LoginExternal = table.Column<bool>(nullable: false),
                     PoterImg = table.Column<string>(nullable: true),
@@ -594,16 +562,6 @@ namespace DoanData.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Message_ReceiverId",
-                table: "Message",
-                column: "ReceiverId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Message_SenderId",
-                table: "Message",
-                column: "SenderId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Notification_FromUserId",
                 table: "Notification",
                 column: "FromUserId");
@@ -707,9 +665,6 @@ namespace DoanData.Migrations
 
             migrationBuilder.DropTable(
                 name: "ListVideoFavorite");
-
-            migrationBuilder.DropTable(
-                name: "Message");
 
             migrationBuilder.DropTable(
                 name: "Notification");
