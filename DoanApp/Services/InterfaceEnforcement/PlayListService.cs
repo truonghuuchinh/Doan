@@ -22,9 +22,16 @@ namespace DoanApp.Services
             var playlist = new PlayList();
             if (plRequest != null)
             {
-                var checkName = await _context.PlayList.FirstOrDefaultAsync(x => x.Name.ToLower().
-                  Contains(plRequest.Name.ToLower()) && x.UserId == plRequest.UserId);
-                if (checkName == null)
+                PlayList checkName=new PlayList();
+                foreach (var item in GetAll().Where(x=>x.UserId==plRequest.UserId))
+                {
+                    if (ConvertUnSigned.convertToUnSign(item.Name.ToLower()).Contains(ConvertUnSigned.convertToUnSign(plRequest.Name.ToLower())))
+                    {
+                        checkName = item;
+                        break;
+                    }
+                }
+                if (checkName.Name==null)
                 {
                     playlist.Name = plRequest.Name;
                     playlist.Status = plRequest.Status;

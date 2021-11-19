@@ -51,6 +51,7 @@ $(".btnPlaylist").click(function () {
         "UserId": $("#idUser").val()
     };
     $.post("/PlayListVideo/Create", { request: data }, function (respone) {
+        console.log(respone);
         respone = JSON.parse(respone);
         if (respone != null) {
             $(".list__playlist").prepend(`
