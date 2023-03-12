@@ -1,25 +1,24 @@
-﻿using DoanApp.Commons;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Threading.Tasks;
+using System.Xml;
+using System.Xml.Linq;
+using DoanApp.Commons;
 using DoanApp.Models;
 using DoanData.DoanContext;
 using DoanData.Models;
 using Microsoft.AspNetCore.Hosting;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml;
-using System.Xml.Linq;
 
 namespace DoanApp.Services
 {
     public class MessageService : IMessageService
     {
         private readonly DpContext _context;
-        private readonly IHostingEnvironment _enviroment;
+        private readonly IWebHostEnvironment _enviroment;
         private string PathXML = "";
-        public MessageService(DpContext context, IHostingEnvironment environment)
+        public MessageService(DpContext context, IWebHostEnvironment environment)
         {
             _context = context;
             _enviroment = environment;
@@ -221,7 +220,7 @@ namespace DoanApp.Services
                 XmlNodeList nl = xd.GetElementsByTagName("message");
 
                 //loop to delete messages longer than two weeks
-                
+
                 foreach (XmlNode item in nl)
                 {
                     var timeMessage = DateTime.Parse(item.ChildNodes.Item(3).InnerText);
@@ -531,7 +530,7 @@ namespace DoanApp.Services
             return -1;
         }
 
-        public async Task<int> UpdateAvartar(int userId,string img)
+        public async Task<int> UpdateAvartar(int userId, string img)
         {
             try
             {
@@ -558,7 +557,7 @@ namespace DoanApp.Services
             return 0;
         }
 
-        public async Task<int> UpdateNameChannel(int userId,string username)
+        public async Task<int> UpdateNameChannel(int userId, string username)
         {
             try
             {

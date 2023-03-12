@@ -1,30 +1,21 @@
-﻿using DoanApp.Commons;
-using DoanApp.Models;
-using DoanData.DoanContext;
-using DoanData.Models;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.WebUtilities;
-using Microsoft.Extensions.Logging;
-using MimeKit;
-using MailKit.Net.Smtp;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using System.IO;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Authentication;
-using System.Security.Claims;
-using Newtonsoft.Json;
-using DoanApp.Services;
-using X.PagedList;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using DoanApp.ServiceApi;
 using DoanApp.Areas.Administration.Models;
+using DoanApp.Commons;
+using DoanApp.Models;
+using DoanApp.ServiceApi;
+using DoanApp.Services;
+using DoanData.Models;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.WebUtilities;
+using Newtonsoft.Json;
+using X.PagedList;
 
 namespace DoanApp.Controllers
 {
@@ -198,7 +189,7 @@ namespace DoanApp.Controllers
         [HttpPost]
         public async Task<IActionResult> UpdateNameChannel(UpdateNameChannel request)
         {
-            if(ModelState.IsValid)
+            if (ModelState.IsValid)
             {
                 var result = await _userService.UpdateNameChannel(request);
                 if (result > 0)
@@ -262,7 +253,7 @@ namespace DoanApp.Controllers
             ViewBag.UserLogin = userLogin == null ? null : userLogin;
             var userIdLogin = userLogin == null ? 0 : userLogin.Id;
             var video = await _videoService.FinVideoAsync((int)id);
-           
+
             var video_Vm = new Video_vm();
             if (video != null)
             {
@@ -513,6 +504,7 @@ namespace DoanApp.Controllers
             ViewBag.Titles = "Đăng ký";
             return View();
         }
+
         [HttpPost]
         public async Task<IActionResult> Register(AppUserRequest model, IFormFile avartarFile)
         {
